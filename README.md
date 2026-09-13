@@ -1,55 +1,37 @@
-# DSS5105 Track 4 - Student Productivity Agent
+# DSS5105 Track 4：学生效率助手
 
-Status: project collaboration scaffold; the application is not implemented yet.
+五人小组项目，目前处于准备阶段。
 
-## Scope
+## 大概要做什么
 
-Build a focused student productivity assistant for Outlook / Teams: triage messages, extract deadlines with source references, and propose a weekly plan. Canvas / LMS integration is excluded by the supplied Capstone_Project_Spec_v4.pdf.
+做一个能演示、能实际操作的学生助手：整理 Outlook / Teams 消息、提取待办和截止日期、生成每周计划。先把这条流程做通，不接 Canvas / LMS。
 
-Start with synthetic messages and a single end-to-end workflow. Microsoft integration and the technical stack remain team decisions. The separate Capstone_Project_Tracks_v3.pdf has not yet been reviewed.
+最后需要有：可用界面、完整代码、演示视频和 PPT、项目文档，以及效果评估（例如比手动整理节省多少时间、提取是否准确，并逐个分析至少 10 个失败案例）。
 
-## Proposed MVP
+## 什么时候干什么
 
-- Classify messages into actionable categories and explain priority.
-- Extract task, due date, time zone, and source; flag missing or ambiguous dates.
-- Suggest a weekly plan respecting availability and deadlines.
-- Let the student review and correct extracted tasks and plans.
-- Present an interface with traceable results and clear failure states.
-
-## Repository map
-
-| Path | Purpose |
+| 时间（2026 年） | 要完成什么 |
 | --- | --- |
-| `src/` | Application implementation |
-| `tests/` | Behaviour and integration tests |
-| `data/synthetic/` | Synthetic example messages only |
-| `docs/plan.md` | Milestones, ownership and acceptance criteria |
-| `docs/evaluation.md` | Evaluation protocol and failure analysis |
-| `CONTRIBUTING.md` | Team workflow |
-| `.github/` | Issue and pull request templates |
+| 现在到 10 月上旬（建议） | 五个人定分工、选技术和数据来源，做出“消息 → 待办”的初版。 |
+| **10 月 16 日：Sprint 1** | 讲清问题、价值、架构、风险和后续计划；15:00 前交 PPT/PDF，19:00 开始现场展示，5 分钟讲解 + 2 分钟问答。 |
+| **10 月 30 日：Sprint 2** | 展示能跑的初版，说明谁做了什么、还有什么没做、准备怎么测试；15:00 前交 5 分钟视频和幻灯片，19:00 展示与问答。 |
+| **11 月 13 日：Sprint 3** | 展示最终系统、测试结果和不足；15:00 前交 5 分钟视频和幻灯片，19:00 展示与问答。 |
+| **11 月 15 日 23:59 前** | 提交最终 `GroupNN.zip`，检查代码能按说明运行、材料齐全。 |
 
-## Getting started
+三次展示全员到场。Sprint 2 起，幻灯片首页放组号、成员及学号、公开 GitHub 链接和 demo 链接。
 
-1. Accept the repository collaboration invitation.
-2. Clone the repository and create a feature branch.
-3. Agree on the MVP and fill the ownership table in `docs/plan.md`.
-4. Choose the stack and add installation/run instructions when implementation begins.
+## 五个人怎么分（建议，可调整）
 
-There are currently no runtime dependencies or executable application commands.
+1. 消息接入与数据整理。
+2. AI 消息分类、待办和截止日期提取。
+3. 每周计划与后端整合。
+4. 页面和交互。
+5. 测试评估、材料汇总与 demo；其他人共同补充各自负责部分。
 
-## Course milestones
+## 最后交什么
 
-Dates below are transcribed from the supplied specification; check course announcements for changes.
+`GroupNN.zip` 内放：`Readme.pdf`、`Slide.pdf` 或 `Slide.pptx`、`Video.mp4`（系统 demo）、`Documentation.pdf`（最多 15 页）、`Evaluation.pdf`、`Teams.pdf`、`Strategic_Recommendations.pdf`。
 
-| Milestone | Deadline |
-| --- | --- |
-| Sprint 1 slides | 16 Oct 2026, 15:00; presentation 19:00 |
-| Sprint 2 video and slides | 30 Oct 2026, 15:00; presentation 19:00 |
-| Sprint 3 video and slides | 13 Nov 2026, 15:00; presentation 19:00 |
-| Final submission | 15 Nov 2026, 23:59 |
+展示文件名依次用 `Presentation_GroupNN_Sprint1`、`Presentation_GroupNN_Sprint2`、`Presentation_GroupNN`，再加对应扩展名；NN 为两位组号，例如 01。
 
-Use a two-digit group number in submission filenames. Group number: TBD.
-
-Final `GroupNN.zip` contains `Readme.pdf`, `Slide.pdf` or `Slide.pptx`, `Video.mp4`, `Documentation.pdf` (maximum 15 pages), `Evaluation.pdf`, `Teams.pdf`, and `Strategic_Recommendations.pdf`. The specification requires a public GitHub link by Sprint 2 and at final submission. Review repository contents before making it public.
-
-Do not commit credentials, access tokens, real inbox exports or student IDs. Use synthetic data in this repository.
+日期及提交要求依据课程说明 v4，若老师更新，以最新通知为准。代码放 `src/`，测试放 `tests/`，示例数据放 `data/synthetic/`；不要上传密钥或真实私人邮件。
