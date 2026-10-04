@@ -1,54 +1,129 @@
-# DSS5105 Track 4：学生效率助手 / Student Productivity Agent
+# 学习安排规则（4 号负责）
 
-五人小组项目，目前处于准备阶段。  
-A five-person team project, currently in preparation.
+本模块接收**学生已确认的任务**、预计用时和日历空闲时间，生成一份可以检查、修改和保存的学习计划。第一版覆盖团队确定的主流程：输入课程公告 → 整理任务与截止时间 → 学生确认 → 按空闲时间安排学习 → 保存结果。
 
-## 大概要做什么 / What we are building
+本 README 是规则和验收约定。排程实现由 4 号与 5 号协作完成；5 号负责把规则接入程序和页面，4 号负责规则、例子和结果检查。
 
-整理 Outlook / Teams 消息 → 提取待办和截止日期 → 生成每周计划。先把这条流程做通，不接 Canvas / LMS。  
-Organise Outlook / Teams messages → extract tasks and deadlines → generate a weekly plan. Get this workflow working first; Canvas / LMS integration is excluded.
+## 我负责交付什么
 
-最终要有可用界面、完整代码、演示视频和 PPT、项目文档及效果评估。可评估节省的时间和提取准确率，并逐个分析至少 10 个失败案例。  
-Deliver a usable interface, complete code, demo video and slides, documentation, and evaluation. Possible measures include time saved and extraction accuracy; analyse at least 10 failure cases individually.
+1. 首次开会前：准备下面的 3 个任务、空闲时间表和手排结果；另准备一个时间不够的例子。
+2. 会上：与全组确认“任务由学生确认后才能进入排程”，并与 5 号约定输入、输出字段。
+3. 会后：与 5 号实现排程预览；用例子逐项检查结果，发现不现实的安排就修改规则。
+4. 演示前：提供正常排程、时间不足和任务延期后的重新排程结果；把规则与实际结果交给 6 号测试。
 
-## 什么时候干什么 / Timeline
+## 第一版范围
 
-| 时间 / Date (2026) | 要完成什么 / What to finish |
+- 输入：已确认的任务及截止时间、每项任务的剩余预计用时、已有日历占用、学生允许学习的时间段。
+- 输出：建议学习时段、每项任务尚未安排的时间、原因明确的警告。
+- 用户可以修改任务、预计用时、可用时间和建议时段；修改后预览新计划，再决定是否保存。
+- 本模块只产生计划建议，不自动创建、修改或删除外部日历事件。
+- 没有明确截止日期或时间的任务先进入“待确认”，不得偷偷假设为当天 23:59。
+
+## 排程规则
+
+| 类型 | 第一版规则 | 理由 |
+| --- | --- | --- |
+| 硬约束 | 学习时段不能与课程、会议等已占用时段重叠，也不能互相重叠 | 避免双重预约 |
+| 硬约束 | 学习时段必须位于学生提供的可用时间内；不在过去，也不晚于任务截止时间 | 避免无法执行的计划 |
+| 硬约束 | 每日安排的专注学习总量最多 3 小时，默认每段 30–90 分钟 | 防止一天被排满或出现超长学习段 |
+| 硬约束 | 没有确认截止时间、预计用时或时区的任务不自动排程 | 避免错误日期影响整周安排 |
+| 优先目标 | 尽量在截止前 24 小时完成；做不到时可以用更近的空档，但必须提示“缓冲不足” | 给修改和突发情况留余地 |
+| 优先顺序 | 先按截止时间从早到晚，再按学生标注的优先级；仍相同则按任务 ID 固定排序 | 结果可解释、可重复 |
+| 无解处理 | 时间不足时保留可安排部分，并显示缺少多少小时、受影响任务；绝不排到截止之后 | 让用户决定减少工作量、调整时间或寻求延期 |
+
+默认时区为 `Asia/Singapore`，实际排程应以学生选择的时区为准。预计用时和可用时间以 30 分钟为最小单位；若输入 45 分钟，第一版按 60 分钟预留，并在界面显示这一取整。以上默认值都应做成可配置项，不要写死在页面里。
+
+### 排程步骤（给 5 号的实现依据）
+
+1. 校验任务：只接收学生已确认、截止时间晚于当前时间、剩余用时大于 0 的任务；其他任务返回待处理原因。
+2. 生成候选空档：从学生允许学习的时间段中扣除课程、会议、已锁定的个人安排和过去时间。
+3. 按“截止时间 → 优先级 → ID”排序任务，优先把任务排进截止前至少 24 小时的空档。
+4. 对还没排完的任务，再使用截止前 24 小时以内的空档，并添加“缓冲不足”提示。
+5. 分配每段 30–90 分钟，同时检查每天累计学习量不超过 3 小时。
+6. 若可用时间耗尽，返回未安排的分钟数及原因；不要生成一个看起来完整、实际却不可执行的计划。
+
+重新排程时，已完成时段、过去时段及学生手动锁定的时段保持不动。只重新安排未来且未锁定的建议时段；如果原计划与新增课程冲突，向用户展示变更，让用户确认后保存。
+
+## 会前手排示例：3 个任务
+
+以下为**虚构数据**，用于把规则讲清楚，并非真实课程截止时间。时间均为新加坡时间，排程开始于 2026-10-05（周一）上午。
+
+| 任务 ID | 任务 | 截止时间 | 剩余预计用时 | 优先级 |
+| --- | --- | --- | --- | --- |
+| A | 报告初稿 | 10 月 8 日（周四）18:00 | 4 小时 | 高 |
+| B | 小测复习 | 10 月 7 日（周三）20:00 | 1.5 小时 | 高 |
+| C | 小组汇报幻灯片 | 10 月 9 日（周五）12:00 | 2 小时 | 中 |
+
+学生确认的可用时间：周一 16:00–18:00；周二 09:00–11:00、15:00–17:00；周三 10:00–12:00、16:00–18:00；周四 09:00–11:00。其他时间视为不可用。
+
+| 日期 | 安排 | 当天总学习量 |
+| --- | --- | --- |
+| 周一 10 月 5 日 | 16:00–17:30 报告初稿 A | 1.5 小时 |
+| 周二 10 月 6 日 | 09:00–10:30 小测复习 B；15:00–16:30 报告初稿 A | 3 小时 |
+| 周三 10 月 7 日 | 10:00–11:00 报告初稿 A；16:00–17:00 幻灯片 C | 2 小时 |
+| 周四 10 月 8 日 | 09:00–10:00 幻灯片 C | 1 小时 |
+
+核对：A 共 4 小时，B 共 1.5 小时，C 共 2 小时；所有安排均在可用时间内；每天不超过 3 小时；三个任务都在各自截止前至少 24 小时完成。
+
+这是一份**符合规则的手排方案**，不是要求程序输出完全相同的时段。自动排程可能优先安排截止更早的小测；验收时检查规则是否满足，以及结果是否清楚可解释。
+
+重新排程例子：如果周三 16:00–17:00 临时加入一场会议，原定的幻灯片学习时段发生冲突。保留已完成的 A、B 和其他锁定时段，把 C 的这一小时移到周三 17:00–18:00；如果那时学生也不可用，就尝试周四 10:00–11:00。预览变更后由学生决定是否保存。
+
+## 会前反例：时间不够
+
+另设 3 个任务 D、E、F，均在周三 18:00 截止，各需 3 小时，总需求 **9 小时**。截止前学生仅有周一 16:00–17:00、周二 10:00–11:00 和 15:00–16:00 可用，总容量 **3 小时**。
+
+正确结果：最多安排 3 小时，明确显示**还缺 6 小时**，列出未完成的任务，并提示学生增加可用时间、调整目标或联系相关人员。不能把剩余 6 小时塞到周三 18:00 后，也不能把一天排成 9 小时。
+
+## 与其他同学的接口约定
+
+以下是建议的数据字段；与 3 号、5 号确认后再固定为实际接口。所有时间使用带时区的 ISO 8601 字符串，时段采用 `[start, end)`，即开始包含、结束不包含。
+
+```json
+{
+  "now": "2026-10-05T08:00:00+08:00",
+  "timezone": "Asia/Singapore",
+  "tasks": [
+    {
+      "id": "A",
+      "title": "报告初稿",
+      "due_at": "2026-10-08T18:00:00+08:00",
+      "remaining_minutes": 240,
+      "priority": "high",
+      "confirmed": true
+    }
+  ],
+  "availability": [
+    { "start": "2026-10-05T16:00:00+08:00", "end": "2026-10-05T18:00:00+08:00" }
+  ],
+  "busy": [],
+  "locked_blocks": [],
+  "settings": {
+    "max_study_minutes_per_day": 180,
+    "min_block_minutes": 30,
+    "max_block_minutes": 90,
+    "target_buffer_minutes": 1440
+  }
+}
+```
+
+建议输出：`blocks[]`（任务 ID、开始、结束、状态）、`unscheduled[]`（任务 ID、未排分钟数）、`warnings[]`（类型、关联任务、说明）。输出还应能标明某项截止时间缺失或未经确认，以便 1 号页面明确请求学生补充。学生修改截止时间或可用时间后，重新调用同一排程逻辑即可预览结果。
+
+3 号提供已提取的任务、原文依据和日期置信度；学生确认后才转换为本模块的 `tasks`。1 号提供确认和修改页面，5 号负责传入空闲时间并呈现排程结果，6 号用下列检查项评估。
+
+## 验收与测试
+
+| 输入情况 | 应得到的结果 |
 | --- | --- |
-| 现在至 10 月上旬 / Now–early Oct（建议 / suggested） | 定分工、选技术和数据来源，做出“消息 → 待办”初版。<br>Assign roles, choose the stack and data sources, and prototype message-to-task extraction. |
-| **10 月 16 日 / 16 Oct — Sprint 1** | 讲清问题、价值、架构、风险和后续计划。15:00 前交 PPT/PDF；19:00 开始展示，现场讲解 5 分钟 + 问答 2 分钟。<br>Explain the problem, value, architecture, risks and roadmap. Submit slides by 15:00; session starts at 19:00, with a 5-minute live presentation + 2-minute Q&A. |
-| **10 月 30 日 / 30 Oct — Sprint 2** | 展示能跑的初版，说明分工、进度和测试计划。15:00 前交 5 分钟视频和幻灯片；19:00 展示与问答。<br>Demo a working prototype; show ownership, progress and the validation plan. Submit a 5-minute video and slides by 15:00; presentation and Q&A at 19:00. |
-| **11 月 13 日 / 13 Nov — Sprint 3** | 展示最终系统、测试结果和不足。15:00 前交 5 分钟视频和幻灯片；19:00 展示与问答。<br>Show the final system, evaluation results and limitations. Submit a 5-minute video and slides by 15:00; presentation and Q&A at 19:00. |
-| **11 月 15 日 / 15 Nov — 23:59** | 交最终 `GroupNN.zip`，检查代码能按说明运行、材料齐全。<br>Submit the final `GroupNN.zip`; check that setup instructions work and all deliverables are included. |
+| 上面的 3 任务样例 | 全部排完，无重叠、无超时、无截止后安排 |
+| 截止时间缺失或未确认 | 不排程，提示学生补充或确认 |
+| 空闲时间与课程重叠 | 自动扣除课程占用，不生成冲突时段 |
+| 总需求 9 小时、截止前只剩 3 小时 | 返回至少 6 小时未安排及清晰警告 |
+| 新增会议占用了原计划 | 已完成和手动锁定时段不动；未来建议重新计算 |
+| 学生把某项任务延后、修改预计用时 | 预览新计划，说明哪些时段改变；保存前需用户确认 |
 
-三次展示全员到场。Sprint 2 起，幻灯片首页放组号、成员及学号、公开 GitHub 链接和 demo 链接。  
-Everyone attends all three reviews. From Sprint 2, the first slide must show the group number, members and student IDs, public GitHub link, and demo link.
+批量检查指标：双重预约数、每天超过上限的天数、截止后安排数，这三项的目标都是 **0**；另外记录未排任务数与缓冲不足任务数。这些是团队的内部质量目标，不是老师给出的分数线。
 
-## 五人分工 / Five-person roles
+## 隐私与边界
 
-建议分工，可调整；每人补充自己负责部分的文档。  
-Suggested roles, open to adjustment; everyone documents their own work.
-
-1. 消息接入与数据整理 / Message ingestion and data preparation.
-2. AI 消息分类、待办和截止日期提取 / AI triage, task and deadline extraction.
-3. 每周计划与后端整合 / Weekly planning and backend integration.
-4. 页面和交互 / User interface and interactions.
-5. 测试评估、材料汇总与 demo / Evaluation, deliverable coordination and demo.
-
-## 最后交什么 / Final submission
-
-`GroupNN.zip` 包含以下文件 / Include these files in `GroupNN.zip`:
-
-- `Readme.pdf` — 运行说明 / Setup and run instructions.
-- `Slide.pdf` 或 / or `Slide.pptx` — 最终幻灯片 / Final slides.
-- `Video.mp4` — 系统 demo / System demo.
-- `Documentation.pdf` — 项目文档，最多 15 页 / Project documentation, maximum 15 pages.
-- `Evaluation.pdf` — 效果评估 / Evaluation report.
-- `Teams.pdf` — 分工与贡献 / Roles and contributions.
-- `Strategic_Recommendations.pdf` — 战略建议 / Strategic recommendations.
-
-展示文件名依次为 `Presentation_GroupNN_Sprint1`、`Presentation_GroupNN_Sprint2`、`Presentation_GroupNN`，加对应扩展名；NN 是两位组号，例如 01。  
-Use these presentation filenames respectively, with the appropriate extension: `Presentation_GroupNN_Sprint1`, `Presentation_GroupNN_Sprint2`, `Presentation_GroupNN`. NN is the two-digit group number, e.g. 01.
-
-日期及要求依据课程说明 v4，更新以老师通知为准。代码放 `src/`，测试放 `tests/`，示例数据放 `data/synthetic/`；不要上传密钥或真实私人邮件。  
-Dates and requirements follow the course specification v4; later instructor announcements take precedence. Use `src/` for code, `tests/` for tests and `data/synthetic/` for sample data. Do not upload secrets or real private emails.
+排程只需要任务标题、截止时间、预计用时和日历占用区间；不需要原始邮件全文。日历占用可只传开始与结束时间，避免把私人会议标题送给排程模块。所有结果先作为建议展示，学生保存前可检查和修改。Canvas / LMS 不在本项目范围内。
