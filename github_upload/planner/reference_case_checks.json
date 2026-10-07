@@ -1,0 +1,106 @@
+{
+  "scope": "Manual synthetic reference-plan checks only. No scheduler, LLM, Graph integration, user study or held-out evaluation has been tested.",
+  "all_passed": true,
+  "reference_checks": [
+    {
+      "case_id": "normal_week",
+      "category": "normal",
+      "passed": true,
+      "scheduled_minutes": 450.0,
+      "unscheduled_minutes": 0,
+      "buffer_hours": {
+        "A": 31.0,
+        "B": 33.5,
+        "C": 26.0
+      },
+      "daily_minutes": {
+        "2026-10-12": 90.0,
+        "2026-10-13": 180.0,
+        "2026-10-14": 120.0,
+        "2026-10-15": 60.0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "capacity_shortage",
+      "category": "infeasible_capacity",
+      "passed": true,
+      "scheduled_minutes": 180.0,
+      "unscheduled_minutes": 360,
+      "buffer_hours": {
+        "D": 26.0
+      },
+      "daily_minutes": {
+        "2026-10-12": 60.0,
+        "2026-10-13": 120.0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "buffer_warning",
+      "category": "low_buffer",
+      "passed": true,
+      "scheduled_minutes": 60.0,
+      "unscheduled_minutes": 0,
+      "buffer_hours": {
+        "H": 17.0
+      },
+      "daily_minutes": {
+        "2026-10-12": 60.0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "unconfirmed_deadline",
+      "category": "needs_input",
+      "passed": true,
+      "scheduled_minutes": 0,
+      "unscheduled_minutes": 0,
+      "buffer_hours": {},
+      "daily_minutes": {},
+      "issues": []
+    },
+    {
+      "case_id": "meeting_replan",
+      "category": "replanning",
+      "passed": true,
+      "scheduled_minutes": 60.0,
+      "unscheduled_minutes": 0,
+      "buffer_hours": {
+        "C": 26.0
+      },
+      "daily_minutes": {
+        "2026-10-14": 120.0,
+        "2026-10-15": 60.0
+      },
+      "issues": []
+    }
+  ],
+  "invalid_output_sentinels": [
+    {
+      "name": "night_session",
+      "expected_code": "OUTSIDE_STUDY_HOURS",
+      "detected": true
+    },
+    {
+      "name": "after_deadline",
+      "expected_code": "AFTER_DEADLINE",
+      "detected": true
+    },
+    {
+      "name": "double_booking",
+      "expected_code": "PLAN_OVERLAP",
+      "detected": true
+    },
+    {
+      "name": "hidden_shortage",
+      "expected_code": "MISSING_SHORTAGE_WARNING",
+      "detected": true
+    },
+    {
+      "name": "moved_locked_block",
+      "expected_code": "LOCKED_CHANGED",
+      "detected": true
+    }
+  ]
+}
