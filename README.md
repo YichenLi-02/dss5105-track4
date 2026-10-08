@@ -1,54 +1,85 @@
-# DSS5105 Track 4：学生效率助手 / Student Productivity Agent
+# Sprint 1：资料与数据准备
 
-五人小组项目，目前处于准备阶段。  
-A five-person team project, currently in preparation.
+DSS5105 Data Science Projects in Practice，Track 4 — Student Productivity Agent。
+本目录是小组分工中 **2号：资料与数据准备** 的交接资料，用于任务/截止日期提取的开发、讨论和人工标注。
+当前版本：v0.1，整理日期：2026-10-05。
 
-## 大概要做什么 / What we are building
+## 文件
 
-整理 Outlook / Teams 消息 → 提取待办和截止日期 → 生成每周计划。先把这条流程做通，不接 Canvas / LMS。  
-Organise Outlook / Teams messages → extract tasks and deadlines → generate a weekly plan. Get this workflow working first; Canvas / LMS integration is excluded.
-
-最终要有可用界面、完整代码、演示视频和 PPT、项目文档及效果评估。可评估节省的时间和提取准确率，并逐个分析至少 10 个失败案例。  
-Deliver a usable interface, complete code, demo video and slides, documentation, and evaluation. Possible measures include time saved and extraction accuracy; analyse at least 10 failure cases individually.
-
-## 什么时候干什么 / Timeline
-
-| 时间 / Date (2026) | 要完成什么 / What to finish |
+| 文件 | 用途 |
 | --- | --- |
-| 现在至 10 月上旬 / Now–early Oct（建议 / suggested） | 定分工、选技术和数据来源，做出“消息 → 待办”初版。<br>Assign roles, choose the stack and data sources, and prototype message-to-task extraction. |
-| **10 月 16 日 / 16 Oct — Sprint 1** | 讲清问题、价值、架构、风险和后续计划。15:00 前交 PPT/PDF；19:00 开始展示，现场讲解 5 分钟 + 问答 2 分钟。<br>Explain the problem, value, architecture, risks and roadmap. Submit slides by 15:00; session starts at 19:00, with a 5-minute live presentation + 2-minute Q&A. |
-| **10 月 30 日 / 30 Oct — Sprint 2** | 展示能跑的初版，说明分工、进度和测试计划。15:00 前交 5 分钟视频和幻灯片；19:00 展示与问答。<br>Demo a working prototype; show ownership, progress and the validation plan. Submit a 5-minute video and slides by 15:00; presentation and Q&A at 19:00. |
-| **11 月 13 日 / 13 Nov — Sprint 3** | 展示最终系统、测试结果和不足。15:00 前交 5 分钟视频和幻灯片；19:00 展示与问答。<br>Show the final system, evaluation results and limitations. Submit a 5-minute video and slides by 15:00; presentation and Q&A at 19:00. |
-| **11 月 15 日 / 15 Nov — 23:59** | 交最终 `GroupNN.zip`，检查代码能按说明运行、材料齐全。<br>Submit the final `GroupNN.zip`; check that setup instructions work and all deliverables are included. |
+| [Sprint1_核心10封_系统输入_交接版.csv](Sprint1_核心10封_系统输入_交接版.csv) | 程序输入：10封核心邮件的脱敏任务相关摘录；UTF-8 BOM；不含人工答案或类别标签。 |
+| [Sprint1_资料与数据准备_GitHub版.xlsx](Sprint1_资料与数据准备_GitHub版.xlsx) | 人工查阅：资料登记、字段解释、覆盖情况、核对限制、补充5条及3号标注表。已移除私人邮件链接表。 |
+| [CHANGELOG.md](CHANGELOG.md) | 每批资料更新的日期、内容和原因。 |
 
-三次展示全员到场。Sprint 2 起，幻灯片首页放组号、成员及学号、公开 GitHub 链接和 demo 链接。  
-Everyone attends all three reviews. From Sprint 2, the first slide must show the group number, members and student IDs, public GitHub link, and demo link.
+Excel 的“示例_全为虚构”只是模板示例，不计入真实样本；“补充材料_5条”不在核心CSV中。
 
-## 五人分工 / Five-person roles
+## 数据来源与处理
 
-建议分工，可调整；每人补充自己负责部分的文档。  
-Suggested roles, open to adjustment; everyone documents their own work.
+资料来自本学期 AY2026/27 Semester 1 的真实课程邮件，由资料持有人使用学校版 ChatGPT 的 Outlook Email 工具搜索和读取，再整理转交读取报告。
+标题、核心任务信息和接收时间按这些报告核对；本地整理过程没有独立访问学校邮箱。
+个人姓名、邮箱、学号及口令使用占位符脱敏；保留课程、任务、原文中的日期和条件。
+`body_text` 是任务相关原文摘录，不是整封邮件；S009 保留了原回传中的省略标记。
 
-1. 消息接入与数据整理 / Message ingestion and data preparation.
-2. AI 消息分类、待办和截止日期提取 / AI triage, task and deadline extraction.
-3. 每周计划与后端整合 / Weekly planning and backend integration.
-4. 页面和交互 / User interface and interactions.
-5. 测试评估、材料汇总与 demo / Evaluation, deliverable coordination and demo.
+## 核心10封与覆盖情况
 
-## 最后交什么 / Final submission
+核心编号保持稳定：`S001, S002, S003, S011, S005, S013, S006, S015, S009, S010`。
+编号不连续，因为补充资料使用了其他编号；更新时不要重新编号。
 
-`GroupNN.zip` 包含以下文件 / Include these files in `GroupNN.zip`:
+| 情况 | 核心编号 |
+| --- | --- |
+| 明确日期/时刻 | S001、S002、S003 |
+| 真实改期链：23 Sep → 30 Sep | S011、S005、S013 |
+| 相对日期/时间：this Friday / tonight | S006、S010 |
+| 有明确行动，本封未写截止日期 | S015 |
+| 同一考试的原通知与重复提醒 | S009、S010 |
 
-- `Readme.pdf` — 运行说明 / Setup and run instructions.
-- `Slide.pdf` 或 / or `Slide.pptx` — 最终幻灯片 / Final slides.
-- `Video.mp4` — 系统 demo / System demo.
-- `Documentation.pdf` — 项目文档，最多 15 页 / Project documentation, maximum 15 pages.
-- `Evaluation.pdf` — 效果评估 / Evaluation report.
-- `Teams.pdf` — 分工与贡献 / Roles and contributions.
-- `Strategic_Recommendations.pdf` — 战略建议 / Strategic recommendations.
+S002 的“12 midnight Sept 28”与正文“28 Sep at 23:59”应保留原始表达供人工判断。
+S015 中正式考试的日期不能自动作为 mock exam 的截止日期；后续 S006 的提醒应按独立来源处理。
 
-展示文件名依次为 `Presentation_GroupNN_Sprint1`、`Presentation_GroupNN_Sprint2`、`Presentation_GroupNN`，加对应扩展名；NN 是两位组号，例如 01。  
-Use these presentation filenames respectively, with the appropriate extension: `Presentation_GroupNN_Sprint1`, `Presentation_GroupNN_Sprint2`, `Presentation_GroupNN`. NN is the two-digit group number, e.g. 01.
+## CSV字段
 
-日期及要求依据课程说明 v4，更新以老师通知为准。代码放 `src/`，测试放 `tests/`，示例数据放 `data/synthetic/`；不要上传密钥或真实私人邮件。  
-Dates and requirements follow the course specification v4; later instructor announcements take precedence. Use `src/` for code, `tests/` for tests and `data/synthetic/` for sample data. Do not upload secrets or real private emails.
+| 字段 | 含义 |
+| --- | --- |
+| `record_id` | 稳定的邮件资料编号。 |
+| `course_code` | 课程代码。 |
+| `subject` | 邮件标题。 |
+| `posted_at` | 发件/发布时间。本批接口未提供独立发件时间，10条均留空。 |
+| `received_at` | 接收时间，来自 Outlook `receivedDateTime`，使用含秒的 ISO 8601 UTC+8 格式。 |
+| `timezone` | 时间所属时区。 |
+| `academic_context` | 学年和学期背景。 |
+| `body_text` | 脱敏的任务相关原文摘录，可包含换行。 |
+| `body_text_type` | 摘录类型及省略说明。 |
+
+使用能正确处理带引号、多行字段的 CSV 读取器；Python 可使用 `csv.DictReader` 并指定 `encoding="utf-8-sig"`。
+接收时间不能当作已核实的发件时间。若用接收日期解释相对日期，须明确这一假设。
+
+## 下一步分工
+
+- **3号**：在 Excel 的“标注对照_3号填写”选3–5条，填写任务、截止日期和原文证据；缺失信息明确标记。
+- **5号**：使用CSV进行实际程序导入，核对编号、中文、换行与时间字段。目前已检查文件结构，团队程序导入仍待验证。
+- **6号**：据此设计缺日期、改期、重复提醒等检查；后续独立评测另留未用于调试的资料。
+
+当前10封是开发/讨论样本，不代表模型准确率或节省时间的实测结果。关联消息在后续数据划分时应分到同一组。
+仅处理已有邮件文本，不集成或调用 Canvas/LMS。
+
+## 放入小组仓库与更新
+
+建议将本目录的4个文件一起放入小组仓库的 `data/sprint1/`，保留仓库已有的项目根目录 README。
+
+每次更新按以下顺序操作：
+
+1. 更新资料文件，保持编号稳定，并检查脱敏与来源。
+2. 在 `CHANGELOG.md` 顶部新增日期和本次实际变化。
+3. 如果文件用途、字段或使用方式改变，同时更新本 README。
+4. 写清楚 Git 提交说明，例如 `data: add Sprint 1 core email samples and documentation`。
+
+README 说明当前资料如何使用；CHANGELOG 概括每批更新；Git 提交记录保留具体文件差异。因此不需要每次上传都在 README 中追加一整段历史。
+
+## 分享范围
+
+本包不包含私人 Outlook 邮件链接、原件定位表或含链接的核对报告；这些由资料持有人在本地保管，需要核对时私下提供。
+不要把旧版资料、原始邮件、核对依据文本、Excel 的 `~$` 临时文件或截图一并上传。
+若仓库公开，须先确认学校/课程允许公开这些真实邮件摘录；脱敏和移除链接本身不构成公开发布许可。可在获准的小组私有仓库内先协作。
+
+这些资料支持 Sprint 1 汇报；课程规定的 Sprint 1 正式提交仍是演示文稿，不能由数据文件上传代替。
