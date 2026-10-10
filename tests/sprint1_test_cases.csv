@@ -1,0 +1,21 @@
+case_id,area,input,expected_output,expected_warning,source,notes
+EX-01,extraction,S001 due: 29 Aug at 23:59,任务=CA1时间线(小组项目); 截止=2026-08-29 23:59,,2号S001 / 3号标注,明确日期+时刻
+EX-02,extraction,S006 this Friday (received 2026-09-30),任务=期中考试到场; 日期按接收时间推断为 2026-10-02,NEEDS_CONFIRM,2号S006,相对日期需确认
+EX-03,extraction,S011→S005→S013 同一问卷改期链 23 Sep→30 Sep,合并为一个任务; 截止=2026-09-30 23:59; 保留来源链,,2号S011/S005/S013 / 3号T001,改期链合并
+EX-04,extraction,S015 mock exam (本封未写截止日期),提示缺少截止日期; 标记需学生补充,MISSING_DUE_AT,2号S015,有行动但无截止
+EX-05,extraction,S009+S010 同一考试 (原通知+重复提醒 tonight),不重复建任务; tonight 按接收时间推断需确认,NEEDS_CONFIRM,2号S009/S010,重复提醒去重
+EX-06,extraction,S002 12 midnight Sept 28 vs 28 Sep at 23:59,同一截止两种表达; 需人工确认不默认23:59,MIDNIGHT_AMBIGUITY,2号S002,凌晨歧义
+SC-01,scheduling,normal_week: 3任务共7.5h,全部排完; 每任务缓冲≥24h; 无告警,,4号reference_cases,开发对照样本
+SC-02,scheduling,capacity_shortage: 9h需求/3h空档,只排3h; E与F各未排3h; 明确显示6h缺口,INSUFFICIENT_TIME,4号reference_cases,容量不足
+SC-03,scheduling,buffer_warning: 合法但<24h,排完; 缓冲17h; 显示缓冲不足,LOW_BUFFER,4号reference_cases,缓冲不足
+SC-04,scheduling,unconfirmed_deadline: 缺日期未确认,不入排程; 返回待处理,MISSING_DUE_AT;UNCONFIRMED_TASK,4号reference_cases,缺字段待确认
+SC-05,scheduling,meeting_replan: 新会议冲突+锁定段,只移未锁定段; 锁定段保留,,4号reference_cases,重排保留锁定
+IN-01,integration,导入核心10封CSV,10条来源正确读取; 编号/中文/换行/时区/空posted_at保留,,5号验收清单,CSV导入
+IN-02,integration,重复导入同一来源,不新增记录; 返回重复,,5号验收清单,去重
+IN-03,integration,T002+T004 同一模拟考试,不重复建任务; 缺具体时刻仍待确认,,5号验收清单 / 3号T002/T004,标注适配
+IN-04,integration,任务缺日期/时区/用时,留在待处理列表; 其余完整任务可继续,,5号验收清单,排程前确认
+IN-05,integration,生成草稿但不采用,不替换当前已采用计划,,5号验收清单,草稿采用
+IN-06,integration,完成量+锁定段后重排,锁定段保留; 重复进度操作不重复扣减,,5号验收清单,锁定与进度
+IN-07,integration,保存失败,保留原有效计划,,5号验收清单,保存恢复
+IN-08,integration,模型/模块失败重试,返回明确错误; 已有数据可查看; 重试不重复创建记录,,5号验收清单,失败路径
+IN-09,integration,关闭重开后恢复,恢复来源/任务/计划/完成记录,,5号验收清单,保存恢复
