@@ -1,7 +1,7 @@
 # DSS5105 Track 4：学生效率助手 / Student Productivity Agent
 
-五人小组项目，目前处于准备阶段。  
-A five-person team project, currently in preparation.
+六人小组项目，目前处于准备阶段。  
+A six-person team project, currently in preparation.
 
 ## 大概要做什么 / What we are building
 
@@ -24,16 +24,17 @@ Deliver a usable interface, complete code, demo video and slides, documentation,
 三次展示全员到场。Sprint 2 起，幻灯片首页放组号、成员及学号、公开 GitHub 链接和 demo 链接。  
 Everyone attends all three reviews. From Sprint 2, the first slide must show the group number, members and student IDs, public GitHub link, and demo link.
 
-## 五人分工 / Five-person roles
+## 六人分工 / Six-person roles
 
 建议分工，可调整；每人补充自己负责部分的文档。  
 Suggested roles, open to adjustment; everyone documents their own work.
 
-1. 消息接入与数据整理 / Message ingestion and data preparation.
-2. AI 消息分类、待办和截止日期提取 / AI triage, task and deadline extraction.
-3. 每周计划与后端整合 / Weekly planning and backend integration.
-4. 页面和交互 / User interface and interactions.
-5. 测试评估、材料汇总与 demo / Evaluation, deliverable coordination and demo.
+1. 使用步骤与页面 / Usage steps and pages.
+2. 资料与数据准备 / Materials and data preparation.
+3. 信息整理规则 / Information organisation rules (task and deadline extraction).
+4. 学习安排规则 / Study scheduling rules (weekly planning).
+5. 程序实现与连接 / Program implementation and integration.
+6. 检查效果与演示 / Evaluation, testing and demo.
 
 ## 最后交什么 / Final submission
 
