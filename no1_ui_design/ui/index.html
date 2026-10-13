@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Studyspace · Student Productivity Agent</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+<aside class="sidebar">
+ <a class="brand" href="#input"><span class="brand-icon">s</span>studyspace<span class="brand-dot">.</span></a>
+ <div class="workspace"><span class="avatar">ZJ</span><div><strong>Your workspace</strong><small>Student planner</small></div></div>
+ <div class="nav-label">WORKFLOW</div>
+ <nav aria-label="Workflow"><button data-page="input"><span class="nav-num">01</span>Input messages</button><button data-page="review"><span class="nav-num">02</span>Review tasks<span id="task-count" class="nav-count">3</span></button><button data-page="plan"><span class="nav-num">03</span>Study plan</button></nav>
+ <div class="side-note"><span class="tiny-orbit"></span><strong>A week that works for you</strong><p>Make room for focused work, without filling every free hour.</p></div>
+ <div class="profile"><span class="avatar pale">Z</span><div><strong>zhengjunduo</strong><small>DSS5105 · Track 4</small></div></div>
+</aside>
+<div class="main">
+ <header class="topbar"><span>Workspace <span class="slash">/</span> <strong id="breadcrumb">Input messages</strong></span><div class="top-actions"><span class="prototype">Interactive UI prototype</span><span class="timezone">SGT · UTC+8</span></div></header>
+ <div class="demo-bar"><div><span class="demo-dot"></span><strong>Demo workspace</strong><span>Fictional data · clock fixed at 12 Oct 2026, 08:00</span></div><label>Scenario <select id="scenario"><option value="normal">Normal week</option><option value="missing">Missing deadline</option><option value="shortage">Not enough time</option><option value="changed">Deadline change</option></select></label><button id="reset" class="text-button">Reset demo</button></div>
+ <main id="content"></main>
+ <footer>UI design by zhengjunduo <span>Student Productivity Agent · Sprint 1</span></footer>
+</div>
+<dialog id="modal"><div id="modal-body"></div></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="planner.js"></script><script src="app.js"></script>
+</body></html>
+
