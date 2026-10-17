@@ -1,6 +1,6 @@
-"""Weekly planner (member 4's area). `build_request` assembles the planner input from stored data;
-`generate` turns a PlanRequest into a PlanResult and is implemented in P1 from member 4's rules and
-reference cases (tests/fixtures/reference_cases.json).
+"""Weekly planner (member 4's area). `build_request` assembles the planner input from stored data,
+`generate` (engine.py) turns it into a plan, and `check_plan` (check.py) independently verifies the plan
+against member 4's rules before it may be saved.
 
 Input semantics follow the reference cases:
 - remaining_minutes is the work still to do, including any locked future blocks of that task
@@ -12,11 +12,11 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta
 
-from ..models import Interval, PlanBlock, PlanRequest, PlanResult, PlanSettings, PlanTask, PlanWarning, Progress, Task, TimeSlot
+from ..models import Interval, PlanBlock, PlanRequest, PlanSettings, PlanTask, Progress, Task, TimeSlot
+from .check import check_plan
+from .engine import generate
 
-
-class NotImplementedYet(Exception):
-    pass
+__all__ = ["build_request", "check_plan", "generate"]
 
 
 def build_request(
@@ -59,22 +59,3 @@ def build_request(
 def _event_length(task: Task) -> timedelta:
     """For an event, remaining_minutes holds its length; one hour when unknown."""
     return timedelta(minutes=task.remaining_minutes or 60)
-
-
-def generate(request: PlanRequest) -> PlanResult:
-    """Placeholder until the P1 engine lands: reports what would be planned without placing blocks."""
-    raise NotImplementedYet("the planning engine is part of P1")
-
-
-def preview(request: PlanRequest) -> PlanResult:
-    """Inputs check used by the API until `generate` exists: flags tasks that cannot be planned."""
-    warnings: list[PlanWarning] = []
-    for t in request.tasks:
-        if t.due_at is None:
-            warnings.append(PlanWarning(code="MISSING_DUE_AT", task_id=t.id, message=f"{t.title}: no deadline yet"))
-        if not t.confirmed:
-            warnings.append(PlanWarning(code="UNCONFIRMED_TASK", task_id=t.id, message=f"{t.title}: not confirmed"))
-        if t.due_at is not None and t.due_at <= request.now:
-            warnings.append(PlanWarning(code="PAST_DEADLINE", task_id=t.id, message=f"{t.title}: deadline has passed"))
-    status = "needs_input" if warnings else "partial"
-    return PlanResult(status=status, warnings=warnings, retained_locked_blocks=request.locked_blocks)

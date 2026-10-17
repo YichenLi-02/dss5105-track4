@@ -12,6 +12,7 @@ from typing import Iterable
 
 from ..ingest.common import short_hash
 from ..models import DATE_CHANGED, MIDNIGHT_AMBIGUITY, MISSING_DUE_AT, NEEDS_CONFIRM, Candidate, Task
+from ..timeutil import at
 from .rules import Mention
 
 _STOP = {"the", "a", "an", "of", "for", "on", "in", "to", "and", "your", "our", "submission", "due", "deadline",
@@ -104,8 +105,15 @@ def _to_candidate(g: dict) -> Candidate:
         flags.discard(MISSING_DUE_AT)
         if best.due_at and best.hit and not best.hit.inferred:
             flags.discard(NEEDS_CONFIRM)
-    if MIDNIGHT_AMBIGUITY in flags and best.due_at is None:
+    due_at, options = best.due_at, []
+    if MIDNIGHT_AMBIGUITY in flags and best.due_date:
+        # "12 midnight Sept 28": the start or the end of 28 Sept. Never pick one for the student.
+        end_of_day, start_of_day = at(best.due_date, "23:59"), at(best.due_date, "00:00")
+        options = [o for o in dict.fromkeys([due_at, end_of_day, start_of_day]) if o is not None]
+        due_at = None
         flags.add(NEEDS_CONFIRM)
+    elif due_at is None and best.options:
+        options = list(best.options)
     order = [DATE_CHANGED, MISSING_DUE_AT, MIDNIGHT_AMBIGUITY, NEEDS_CONFIRM]
     return Candidate(
         candidate_id=f"C-{short_hash(g['course'] or '', ' '.join(sorted(title_tokens(g['title']))), g['first_source'])}",
@@ -115,7 +123,8 @@ def _to_candidate(g: dict) -> Candidate:
         kind=best.kind,  # type: ignore[arg-type]
         due_text=best.due_text,
         due_date=best.due_date,
-        due_at=best.due_at,
+        due_at=due_at,
+        due_options=options,
         evidence=best.evidence,
         flags=sorted(flags, key=lambda f: order.index(f) if f in order else len(order)),
         history=g["history"],

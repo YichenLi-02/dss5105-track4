@@ -34,6 +34,17 @@ def _body(msg: EmailMessage) -> str:
     return html_to_text(content) if part.get_content_subtype() == "html" else content.strip()
 
 
+def _sender(msg: EmailMessage) -> str | None:
+    """Decoded From header, keeping a role comment such as "(TA)" that the address parser drops."""
+    decoded = str(msg.get("From", "")).strip()
+    raw = next((str(v) for k, v in msg.raw_items() if k.lower() == "from"), "")
+    comment = re.search(r"\(([^()]{1,40})\)", raw.split("<")[0])
+    if comment and comment.group(0) not in decoded and "<" in decoded:
+        name, addr = decoded.split("<", 1)
+        decoded = f"{name.strip()} {comment.group(0)} <{addr}"
+    return decoded or None
+
+
 def parse_eml(data: bytes, filename: str = "") -> ImportResult:
     msg = BytesParser(policy=policy.default).parsebytes(data)
     subject = str(msg.get("Subject", "")).strip() or None
@@ -66,7 +77,7 @@ def parse_eml(data: bytes, filename: str = "") -> ImportResult:
         source_type="eml",
         course_code=str(msg.get("X-Course-Code", "")).strip() or guess_course_code(subject, body),
         subject=subject,
-        sender=str(msg.get("From", "")).strip() or None,
+        sender=_sender(msg),  # type: ignore[arg-type]
         received_at=received_at,
         body_text=body,
         meta=meta,

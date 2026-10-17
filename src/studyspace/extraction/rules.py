@@ -73,6 +73,17 @@ NON_TASK = re.compile(
 SKIP_SENTENCE = re.compile(
     r"\b(week ending|weekly report|signed up to receive|click to view|replies to this email|notification preferences)\b", re.I
 )
+# preparation that belongs to an exam or class in the same message: "Download the paper beforehand"
+PREP_ANCHOR = re.compile(
+    r"\b(beforehand|(?:before|prior to|ahead of)\s+(?:you\s+come\s+to\s+|coming\s+to\s+|the\s+start\s+of\s+)?(?:the\s+)?"
+    r"(?:exam|midterm|mid-term|test|quiz|lecture|seminar|class|venue|exam venue|presentation)\b)",
+    re.I,
+)
+PREP_ACTION = re.compile(
+    r"^(?:please\s+|pls\s+|remember to\s+|make sure (?:to|you)\s+)?(download|bring|write|run|install|print|register|read|"
+    r"complete|submit|prepare|charge|check|fill in)\s+(?P<obj>.+?)(?=\s+(?:beforehand|before|prior to|ahead of)\b|[:.;!?]|$)",
+    re.I,
+)
 START_WORD = re.compile(r"\b(start|starts|begin|begins|runs|commence\w*)\b", re.I)
 NEAR_DATE = re.compile(r"\b(by|before|on|until|till)\s*$", re.I)
 SPLIT = re.compile(r"(?<=[.!?])\s+(?=[A-Z0-9\"'(])|\n+")
@@ -92,6 +103,8 @@ class Mention:
     old_hits: list[DateHit] = field(default_factory=list)
     received_at: datetime | None = None
     from_subject: bool = False
+    anchored: bool = False  # due date borrowed from an exam or class in the same message
+    options: list[datetime] = field(default_factory=list)  # suggested times the student can pick from
 
     @property
     def due_date(self) -> date | None:
@@ -179,8 +192,13 @@ class RuleExtractor:
         found: list[Mention] = []
         recent: str | None = None
 
+        preps: list[tuple[str, str]] = []
         for text, is_subject in units:
             if SKIP_SENTENCE.search(text):
+                continue
+            prep = PREP_ACTION.search(text) if not is_subject and PREP_ANCHOR.search(text) else None
+            if prep:
+                preps.append((tidy_title(f"{prep.group(1)} {prep.group('obj')}"), text))
                 continue
             noun, _ = noun_in(text)
             last_noun, last_pos = noun_in(text, last=True)
@@ -214,7 +232,19 @@ class RuleExtractor:
                 if not hit.inferred:
                     flags.discard(NEEDS_CONFIRM)
             found.append(self._mention(source, title, kind, text, hit, flags, old_hits, is_subject))
-        return self._merge_within(found, subj)
+        found = self._merge_within(found, subj)
+        events = sorted((m for m in found if m.kind == "event" and m.hit and m.hit.day), key=lambda m: m.rank, reverse=True)
+        if events:
+            anchor = events[0].hit
+            for title, text in preps:
+                # "before the exam": the day is known, the exact time is the student's call (the exam start is offered)
+                hit = DateHit(text=f"before {events[0].title}: {anchor.text}", start=0, end=0, day=anchor.day,
+                              time=None, flags={NEEDS_CONFIRM}, inferred=True)
+                m = self._mention(source, title, "deliverable", text, hit, {NEEDS_CONFIRM}, [], False)
+                m.anchored = True
+                m.options = [at(anchor.day, anchor.time)] if anchor.time else []
+                found.append(m)
+        return found
 
     # -- helpers --------------------------------------------------------------------------------
     @staticmethod
@@ -271,6 +301,8 @@ class RuleExtractor:
         from .merge import similar_titles
 
         def same(a: Mention, b: Mention) -> bool:
+            if a.anchored or b.anchored:
+                return a.anchored == b.anchored and similar_titles(a.title, b.title)
             if a.due_date and b.due_date and a.due_date != b.due_date:
                 return False
             if similar_titles(a.title, b.title):

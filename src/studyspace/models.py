@@ -56,6 +56,7 @@ class Candidate(BaseModel):
     due_text: str | None = None          # the deadline as written in the message
     due_date: date | None = None         # known day, even when the time is not
     due_at: AwareDatetime | None = None  # only when both day and time are known
+    due_options: list[AwareDatetime] = Field(default_factory=list)  # readings the student must choose from
     evidence: str                        # the sentence the task came from
     flags: list[str] = Field(default_factory=list)
     history: list[dict[str, Any]] = Field(default_factory=list)  # earlier mentions: source_id, due_text, due_at
@@ -93,6 +94,7 @@ class TimeSlot(Interval):
     kind: Literal["available", "busy"]
     label: str | None = None
     origin: Literal["manual", "ics", "synthetic"] = "manual"
+    slot_id: str | None = None  # assigned when stored
 
 
 # ---- planning: field names follow member 4's reference cases ---------------------------------

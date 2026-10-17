@@ -85,8 +85,20 @@ def test_real_style_canvas_message():
                  received_at=sgt("2026-09-24T17:42"),
                  body_text="Assignment2 submission due 12 midnight Sept 28\ndue: 28 Sep at 23:59")
     (c,) = extract([src])
-    assert c.title == "Assignment2" and c.due_at == sgt("2026-09-28T23:59")
-    assert MIDNIGHT_AMBIGUITY in c.flags  # the conflict stays visible for the student to check
+    assert c.title == "Assignment2"
+    # member 6's EX-06: two readings of the same deadline; the student chooses, nothing defaults to 23:59
+    assert c.due_at is None and MIDNIGHT_AMBIGUITY in c.flags
+    assert c.due_options == [sgt("2026-09-28T23:59"), sgt("2026-09-28T00:00")]
+
+
+def test_preparation_steps_take_the_exam_date():
+    src = Source(record_id="S006", source_type="csv", course_code="DSS5105", subject="Midterm This Friday: DSS5105",
+                 received_at=sgt("2026-09-30T21:09"),
+                 body_text="Friday, 2 October 2026 (Week 7), LT29 — be seated by 7:00 PM\n"
+                           "* Download the paper beforehand: the midterm is available from 6:00 AM on Friday, 2 October 2026.")
+    titles = {c.title: c for c in extract([src])}
+    assert titles["Download the paper"].due_date == date(2026, 10, 2)
+    assert titles["Midterm"].kind == "event"
 
 
 def test_candidate_points_at_the_task_it_updates():

@@ -5,10 +5,11 @@ from __future__ import annotations
 import hashlib
 import json
 import sqlite3
+import uuid
 from datetime import datetime
 from typing import Iterable, Literal
 
-from ..models import Candidate, PlanRequest, PlanResult, PlanSettings, Progress, Source, Task, TimeSlot
+from ..models import Candidate, PlanBlock, PlanRequest, PlanResult, PlanSettings, Progress, Source, Task, TimeSlot
 from ..timeutil import now
 
 ImportStatus = Literal["added", "duplicate", "updated"]
@@ -39,7 +40,7 @@ def get_demo_now(conn: sqlite3.Connection, ws: str) -> datetime | None:
 
 
 def reset_workspace(conn: sqlite3.Connection, ws: str) -> None:
-    for table in ("sources", "candidates", "tasks", "time_slots", "plans", "progress", "llm_log"):
+    for table in ("sources", "candidates", "tasks", "time_slots", "plans", "progress", "llm_log", "locks", "settings", "drafts"):
         conn.execute(f"DELETE FROM {table} WHERE workspace_id = ?", (ws,))
     conn.execute("UPDATE workspaces SET demo_now = NULL WHERE id = ?", (ws,))
 
@@ -170,9 +171,12 @@ def get_task(conn: sqlite3.Connection, ws: str, task_id: str) -> Task | None:
 def replace_time_slots(conn: sqlite3.Connection, ws: str, slots: Iterable[TimeSlot]) -> None:
     ensure_workspace(conn, ws)
     conn.execute("DELETE FROM time_slots WHERE workspace_id = ?", (ws,))
-    conn.executemany(
-        "INSERT INTO time_slots (workspace_id, body) VALUES (?, ?)", [(ws, s.model_dump_json()) for s in slots]
-    )
+    rows = []
+    for s in slots:
+        if not s.slot_id:
+            s = s.model_copy(update={"slot_id": uuid.uuid4().hex[:10]})
+        rows.append((ws, s.model_dump_json()))
+    conn.executemany("INSERT INTO time_slots (workspace_id, body) VALUES (?, ?)", rows)
 
 
 def list_time_slots(conn: sqlite3.Connection, ws: str) -> list[TimeSlot]:
@@ -201,7 +205,7 @@ def input_version(conn: sqlite3.Connection, ws: str, settings: PlanSettings) -> 
     """Fingerprint of everything a plan depends on. If it changes, a draft is stale."""
     payload = {
         "tasks": [t.model_dump(mode="json") for t in list_tasks(conn, ws)],
-        "slots": [s.model_dump(mode="json") for s in list_time_slots(conn, ws)],
+        "slots": [s.model_dump(mode="json", exclude={"slot_id"}) for s in list_time_slots(conn, ws)],
         "progress": [p.model_dump(mode="json") for p in list_progress(conn, ws)],
         "settings": settings.model_dump(),
     }
@@ -258,3 +262,46 @@ def log_llm_call(conn: sqlite3.Connection, ws: str, provider: str, purpose: str,
         "INSERT INTO llm_log (workspace_id, provider, purpose, sent_text, created_at) VALUES (?, ?, ?, ?, ?)",
         (ws, provider, purpose, sent_text, _ts()),
     )
+
+
+# ---- locks ----------------------------------------------------------------------------------
+def list_locks(conn: sqlite3.Connection, ws: str) -> list[PlanBlock]:
+    rows = conn.execute("SELECT task_id, start, end FROM locks WHERE workspace_id = ? ORDER BY start", (ws,)).fetchall()
+    return [PlanBlock(task_id=r["task_id"], start=datetime.fromisoformat(r["start"]), end=datetime.fromisoformat(r["end"])) for r in rows]
+
+
+def set_lock(conn: sqlite3.Connection, ws: str, block: PlanBlock, locked: bool) -> None:
+    conn.execute("DELETE FROM locks WHERE workspace_id = ? AND task_id = ? AND start = ?", (ws, block.task_id, block.start.isoformat()))
+    if locked:
+        conn.execute("INSERT INTO locks (workspace_id, task_id, start, end) VALUES (?, ?, ?, ?)",
+                     (ws, block.task_id, block.start.isoformat(), block.end.isoformat()))
+
+
+# ---- settings -------------------------------------------------------------------------------
+def get_setting(conn: sqlite3.Connection, ws: str, key: str, default=None):
+    row = conn.execute("SELECT value FROM settings WHERE workspace_id = ? AND key = ?", (ws, key)).fetchone()
+    return json.loads(row["value"]) if row else default
+
+
+def set_setting(conn: sqlite3.Connection, ws: str, key: str, value) -> None:
+    ensure_workspace(conn, ws)
+    conn.execute("INSERT OR REPLACE INTO settings (workspace_id, key, value) VALUES (?, ?, ?)",
+                 (ws, key, json.dumps(value, ensure_ascii=False)))
+
+
+# ---- drafts ---------------------------------------------------------------------------------
+def get_draft(conn: sqlite3.Connection, ws: str, record_id: str) -> dict | None:
+    row = conn.execute("SELECT body, status FROM drafts WHERE workspace_id = ? AND record_id = ?", (ws, record_id)).fetchone()
+    return {**json.loads(row["body"]), "status": row["status"]} if row else None
+
+
+def save_draft(conn: sqlite3.Connection, ws: str, record_id: str, body: dict, status: str = "draft") -> None:
+    ensure_workspace(conn, ws)
+    conn.execute("INSERT OR REPLACE INTO drafts (workspace_id, record_id, body, status, updated_at) VALUES (?, ?, ?, ?, ?)",
+                 (ws, record_id, json.dumps(body, ensure_ascii=False), status, _ts()))
+
+
+def list_llm_log(conn: sqlite3.Connection, ws: str) -> list[dict]:
+    rows = conn.execute("SELECT provider, purpose, sent_text, created_at FROM llm_log WHERE workspace_id = ? ORDER BY rowid DESC",
+                        (ws,)).fetchall()
+    return [dict(r) for r in rows]

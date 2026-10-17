@@ -11,7 +11,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterator
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS meta (
@@ -84,6 +84,33 @@ CREATE TABLE IF NOT EXISTS progress (
     body         TEXT NOT NULL,      -- Progress as JSON
     created_at   TEXT NOT NULL,
     PRIMARY KEY (workspace_id, op_id)
+);
+
+-- future study blocks the student fixed in place; re-planning keeps them
+CREATE TABLE IF NOT EXISTS locks (
+    workspace_id TEXT NOT NULL,
+    task_id      TEXT NOT NULL,
+    start        TEXT NOT NULL,
+    end          TEXT NOT NULL,
+    PRIMARY KEY (workspace_id, task_id, start)
+);
+
+-- per-workspace preferences: student name, email domain, plan settings, sent-mail samples
+CREATE TABLE IF NOT EXISTS settings (
+    workspace_id TEXT NOT NULL,
+    key          TEXT NOT NULL,
+    value        TEXT NOT NULL,      -- JSON
+    PRIMARY KEY (workspace_id, key)
+);
+
+-- reply drafts (gate 3): kept so edits survive a restart; never sent by the app
+CREATE TABLE IF NOT EXISTS drafts (
+    workspace_id TEXT NOT NULL,
+    record_id    TEXT NOT NULL,
+    body         TEXT NOT NULL,      -- Draft as JSON
+    status       TEXT NOT NULL DEFAULT 'draft',  -- draft | reviewed
+    updated_at   TEXT NOT NULL,
+    PRIMARY KEY (workspace_id, record_id)
 );
 
 -- what left the computer: every model call, with the cleaned text that was sent
