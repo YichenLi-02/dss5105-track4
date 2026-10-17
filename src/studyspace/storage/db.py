@@ -11,7 +11,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterator
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS meta (
@@ -111,6 +111,29 @@ CREATE TABLE IF NOT EXISTS drafts (
     status       TEXT NOT NULL DEFAULT 'draft',  -- draft | reviewed
     updated_at   TEXT NOT NULL,
     PRIMARY KEY (workspace_id, record_id)
+);
+
+-- original files (course PDFs) so the student can open exactly what was read
+CREATE TABLE IF NOT EXISTS files (
+    workspace_id TEXT NOT NULL,
+    file_id      TEXT NOT NULL,
+    record_id    TEXT,
+    filename     TEXT NOT NULL,
+    content_type TEXT NOT NULL,
+    size         INTEGER NOT NULL,
+    data         BLOB NOT NULL,
+    created_at   TEXT NOT NULL,
+    PRIMARY KEY (workspace_id, file_id)
+);
+
+-- what the agent did: every import and what it found, shown to the student as an activity log
+CREATE TABLE IF NOT EXISTS activity (
+    rowid        INTEGER PRIMARY KEY AUTOINCREMENT,
+    workspace_id TEXT NOT NULL,
+    kind         TEXT NOT NULL,      -- email | timetable | file | free_time | paste | extract | plan
+    label        TEXT NOT NULL,
+    detail       TEXT NOT NULL DEFAULT '{}',
+    created_at   TEXT NOT NULL
 );
 
 -- what left the computer: every model call, with the cleaned text that was sent

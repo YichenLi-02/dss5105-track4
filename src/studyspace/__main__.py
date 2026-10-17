@@ -47,13 +47,19 @@ def _evaluate(args) -> None:
     from .config import PROJECT_ROOT, load_settings
     from .evaluation import evaluate_extraction, evaluate_planner, load_gold_json, load_member3_xlsx, markdown_report
     from .extraction import extract
-    from .ingest import parse_csv, parse_eml
+    from .ingest import parse_csv, parse_eml, parse_pdf
 
     settings = load_settings()
     src_path = Path(args.sources) if args.sources else settings.synthetic_dir / "emails"
     gold_path = Path(args.gold) if args.gold else settings.synthetic_dir / "gold.json"
     if src_path.is_dir():
         sources = [s for f in sorted(src_path.glob("*.eml")) for s in parse_eml(f.read_bytes(), f.name).sources]
+        files_dir = src_path.parent / "files"  # course PDFs that sit beside the emails
+        if not args.sources and files_dir.is_dir():
+            from .synthetic import build
+
+            received = {name: when for name, _, when in build().course_files}
+            sources += [s for f in sorted(files_dir.glob("*.pdf")) for s in parse_pdf(f.read_bytes(), f.name, received.get(f.name)).sources]
     else:
         sources = parse_csv(src_path.read_bytes()).sources
     if gold_path.suffix == ".xlsx":

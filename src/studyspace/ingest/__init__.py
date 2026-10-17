@@ -15,8 +15,9 @@ from .common import ImportResult, guess_course_code, short_hash
 from .csv_import import parse_csv
 from .eml_import import parse_eml
 from .ics_import import parse_ics
+from .pdf_import import parse_pdf, pdf_record_id
 
-SUPPORTED = (".csv", ".eml", ".ics", ".json", ".txt")
+SUPPORTED = (".csv", ".eml", ".ics", ".json", ".txt", ".pdf")
 
 
 def parse_text(
@@ -45,8 +46,10 @@ def parse_text(
     )
 
 
-def parse_file(filename: str, data: bytes) -> ImportResult:
+def parse_file(filename: str, data: bytes, received_at: datetime | None = None) -> ImportResult:
     suffix = Path(filename).suffix.lower()
+    if suffix == ".pdf":
+        return parse_pdf(data, filename, received_at)
     if suffix == ".csv":
         return parse_csv(data)
     if suffix == ".eml":
@@ -56,7 +59,7 @@ def parse_file(filename: str, data: bytes) -> ImportResult:
     if suffix == ".json":
         return parse_availability_json(data)
     if suffix == ".txt":
-        return parse_text(data.decode("utf-8-sig"), subject=Path(filename).stem)
+        return parse_text(data.decode("utf-8-sig"), subject=Path(filename).stem, received_at=received_at)
     return ImportResult(skipped=[f"{filename}: unsupported file type (use {', '.join(SUPPORTED)})"])
 
 
@@ -70,5 +73,7 @@ __all__ = [
     "parse_eml",
     "parse_file",
     "parse_ics",
+    "parse_pdf",
     "parse_text",
+    "pdf_record_id",
 ]

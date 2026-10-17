@@ -10,7 +10,7 @@ let draft = null;     // POST /api/plans/draft response, kept until adopted or d
 let weekStart = null;
 let view = null;
 
-export async function render(root, ctx) {
+export async function render(root, ctx, params) {
   const [current, tasks, slots, settings] = await Promise.all([
     api.get("/api/plans/current"), api.get("/api/tasks"), api.get("/api/calendar"), api.get("/api/settings"),
   ]);
@@ -67,6 +67,10 @@ export async function render(root, ctx) {
     </div>`;
 
   bind(root, ctx, { current, taskById, settings, slots, now });
+  if (params?.get("edit") === "hours") {
+    history.replaceState(null, "", "#/plan");
+    hoursDialog(ctx, settings, slots);
+  }
 }
 
 function draftBlocks(d, current) {

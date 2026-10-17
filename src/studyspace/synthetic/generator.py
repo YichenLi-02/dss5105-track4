@@ -4,7 +4,9 @@ Everything here is invented (people, modules, addresses, phone numbers). It exis
 and demonstrated without anyone's real email. It is development data, not evaluation data: the extraction
 score reported in the final submission comes from the held-out real set.
 
-The demo clock is Monday 12 October 2026, 08:00 (Week 9). The 25 emails cover the cases the blueprint lists:
+The demo clock is Monday 12 October 2026, 08:00 (Week 9). Three course PDFs sit beside the inbox (a brief with a
+deadline that appears nowhere else, a problem set that repeats an email, lecture slides with no deadline).
+The 25 emails cover the cases the blueprint lists:
 explicit dates, a three-step deadline change, relative dates, week-based dates, a duplicate reminder,
 "12 midnight" ambiguity, a task with no date that a later email fills in, quoted replies, signatures with
 contact details, and non-task mail (newsletters, a recruiter, feedback notices).
@@ -21,7 +23,9 @@ from email.message import EmailMessage
 from email.utils import format_datetime
 from pathlib import Path
 
+from ..ingest.pdf_import import pdf_record_id
 from ..timeutil import TZ
+from .pdf import make_pdf
 
 DEMO_NOW = datetime(2026, 10, 12, 8, 0, tzinfo=TZ)
 STUDENT = ("Jordan Lee", "jordan.lee@u.example.edu")
@@ -178,12 +182,54 @@ EMAILS: list[SynEmail] = [
              "You have no upcoming deadlines this week in DSX5101 Data Storytelling.", "DSX5101"),
 ]
 
+# Course files (PDF): an assignment brief with deadlines, a problem set, and lecture slides with none.
+COURSE_FILES = [
+    ("ssx_brief", "SSX5103 Final Report Brief.pdf", "SSX5103 Final Report Brief", _t("2026-10-02T15:05"), [
+        "SSX5103 Sustainable Systems Design - Final Report Brief",
+        "Semester 1, AY2026/27. Coordinator: Dr. Ravi Kumar",
+        "",
+        "Overview",
+        "Each team analyses one urban system (energy, water, food or mobility) and proposes a redesign that cuts "
+        "its footprint by at least 30 percent.",
+        "",
+        "Milestones",
+        "1. Peer feedback form: each member must submit the form by Friday of Week 12.",
+        "2. Final report (4,000 words): due Friday, 13 November 2026 at 11:59 pm.",
+        "3. Team presentation: 15 minutes in Week 13 during the seminar.",
+        "",
+        "Assessment",
+        "Report 60%, presentation 25%, peer feedback 15%. Late submissions lose 5% of the mark per day.",
+    ]),
+    ("qfx_ps3", "QFX5202 Problem Set 3.pdf", "QFX5202 Problem Set 3", _t("2026-10-01T14:25"), [
+        "QFX5202 Portfolio Analytics - Problem Set 3",
+        "",
+        "Instructions",
+        "Work individually and show all steps. Submit a single PDF by Tuesday, 20 October 2026, 6:00 PM.",
+        "",
+        "Question 1 (30 marks): Estimate the covariance matrix of the five assets in the data file and comment on "
+        "its stability over time.",
+        "Question 2 (40 marks): Construct the minimum-variance portfolio with and without short-selling constraints.",
+        "Question 3 (30 marks): Compare the out-of-sample Sharpe ratios of both portfolios.",
+    ]),
+    ("mlx_lecture8", "MLX5204 Lecture 8 - Model Evaluation.pdf", "MLX5204 Lecture 8: Model evaluation", _t("2026-10-08T09:30"), [
+        "MLX5204 Applied Machine Learning - Lecture 8: Model evaluation",
+        "",
+        "Why accuracy is not enough",
+        "Precision, recall and the F1 score",
+        "Cross-validation and data leakage",
+        "Calibration curves and reliability diagrams",
+        "",
+        "Reading: chapter 7 of the course notes (optional).",
+        "Next week: Lecture 9 on interpretability.",
+    ]),
+]
+
 # What a careful human reads in each message. Written from the emails, not from the extractor's output.
 GOLD_TASKS = [
     {"gold_id": "G01", "source_ids": ["SYN-001"], "course_code": "DSX5101", "title": "Data Story Draft", "kind": "deliverable",
      "due_date": "2026-10-16", "due_time": "23:59", "flags": []},
-    {"gold_id": "G02", "source_ids": ["SYN-002"], "course_code": "QFX5202", "title": "Problem Set 3", "kind": "deliverable",
-     "due_date": "2026-10-20", "due_time": "18:00", "flags": []},
+    {"gold_id": "G02", "source_ids": ["SYN-002", "FILE:qfx_ps3"], "course_code": "QFX5202", "title": "Problem Set 3", "kind": "deliverable",
+     "due_date": "2026-10-20", "due_time": "18:00", "flags": [], "note": "the email and the problem set PDF give the same deadline"},
     {"gold_id": "G03", "source_ids": ["SYN-003", "SYN-004", "SYN-005"], "course_code": "SSX5103", "title": "Reflective essay",
      "kind": "deliverable", "due_date": "2026-10-15", "due_time": "17:00", "flags": ["DATE_CHANGED"],
      "note": "9 Oct 17:00 -> 14 Oct 17:00 -> 15 Oct 17:00"},
@@ -206,12 +252,14 @@ GOLD_TASKS = [
      "due_date": None, "due_time": None, "flags": ["NEEDS_CONFIRM"], "note": "'before Week 10': no exact day"},
     {"gold_id": "G12", "source_ids": ["SYN-019"], "course_code": "MLX5204", "title": "Finish the data cleaning section", "kind": "deliverable",
      "due_date": "2026-10-15", "due_time": None, "flags": ["NEEDS_CONFIRM"], "note": "'by Thursday night' from a groupmate"},
-    {"gold_id": "G13", "source_ids": ["SYN-021"], "course_code": "SSX5103", "title": "Final report", "kind": "deliverable",
-     "due_date": "2026-11-13", "due_time": "23:59", "flags": []},
-    {"gold_id": "G14", "source_ids": ["SYN-021"], "course_code": "SSX5103", "title": "Team presentation", "kind": "event",
+    {"gold_id": "G13", "source_ids": ["SYN-021", "FILE:ssx_brief"], "course_code": "SSX5103", "title": "Final report", "kind": "deliverable",
+     "due_date": "2026-11-13", "due_time": "23:59", "flags": [], "note": "email and brief agree"},
+    {"gold_id": "G14", "source_ids": ["SYN-021", "FILE:ssx_brief"], "course_code": "SSX5103", "title": "Team presentation", "kind": "event",
      "due_date": None, "due_time": None, "flags": ["NEEDS_CONFIRM"], "note": "'in Week 13 during the seminar': day not stated"},
     {"gold_id": "G15", "source_ids": ["SYN-022"], "course_code": "DSX5101", "title": "Weekly reflection", "kind": "deliverable",
      "due_date": None, "due_time": None, "flags": ["MISSING_DUE_AT"], "note": "recurring, no deadline given"},
+    {"gold_id": "G16", "source_ids": ["FILE:ssx_brief"], "course_code": "SSX5103", "title": "Peer feedback form", "kind": "deliverable",
+     "due_date": "2026-11-06", "due_time": None, "flags": ["NEEDS_CONFIRM"], "note": "only in the brief PDF: 'by Friday of Week 12'"},
 ]
 GOLD_NON_TASK = {
     "SYN-016": "newsletter (career fair)",
@@ -220,6 +268,7 @@ GOLD_NON_TASK = {
     "SYN-023": "information only",
     "SYN-024": "feedback notice; the date is a lecture, not a deadline",
     "SYN-025": "digest with no deadlines",
+    "FILE:mlx_lecture8": "lecture slides; optional reading without a date",
 }
 
 TIMETABLE = [
@@ -266,6 +315,7 @@ class Dataset:
     free_time: dict = field(default_factory=dict)
     gold: dict = field(default_factory=dict)
     emails_csv: str = ""
+    course_files: list[tuple[str, bytes, datetime]] = field(default_factory=list)  # (filename, PDF bytes, received)
 
 
 def _ics() -> str:
@@ -301,17 +351,23 @@ def _csv(emails: list[SynEmail]) -> str:
 
 
 def build() -> Dataset:
+    files = [(key, filename, make_pdf(title, lines), received) for key, filename, title, received, lines in COURSE_FILES]
+    ids = {f"FILE:{key}": pdf_record_id(data) for key, _, data, _ in files}
+    tasks = [{**t, "source_ids": [ids.get(sid, sid) for sid in t["source_ids"]]} for t in GOLD_TASKS]
+    non_task = {ids.get(k, k): v for k, v in GOLD_NON_TASK.items()}
     return Dataset(
         emails=[(f"{e.record_id}.eml", e.to_message().as_bytes()) for e in EMAILS],
         timetable_ics=_ics(),
         free_time=FREE_TIME,
         gold={
-            "provenance": "Synthetic development data, hand-labelled from the emails. Not evaluation data.",
+            "provenance": "Synthetic development data, hand-labelled from the messages and course files. Not evaluation data.",
             "demo_now": DEMO_NOW.isoformat(),
-            "tasks": GOLD_TASKS,
-            "non_task_sources": GOLD_NON_TASK,
+            "files": {ids[f"FILE:{key}"]: filename for key, filename, _, _ in files},
+            "tasks": tasks,
+            "non_task_sources": non_task,
         },
         emails_csv=_csv(EMAILS),
+        course_files=[(filename, data, received) for _, filename, data, received in files],
     )
 
 
@@ -328,4 +384,7 @@ def write(directory: str | Path) -> Path:
     (root / "emails.csv").write_text(data.emails_csv, encoding="utf-8")
     for name, text in SENT_SAMPLES:
         (root / "sent" / name).write_text(text + "\n", encoding="utf-8")
+    (root / "files").mkdir(parents=True, exist_ok=True)
+    for name, data, _ in data.course_files:
+        (root / "files" / name).write_bytes(data)
     return root

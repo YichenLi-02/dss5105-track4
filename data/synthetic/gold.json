@@ -1,6 +1,11 @@
 {
-  "provenance": "Synthetic development data, hand-labelled from the emails. Not evaluation data.",
+  "provenance": "Synthetic development data, hand-labelled from the messages and course files. Not evaluation data.",
   "demo_now": "2026-10-12T08:00:00+08:00",
+  "files": {
+    "PDF-f03a5dc403": "SSX5103 Final Report Brief.pdf",
+    "PDF-b3d676d251": "QFX5202 Problem Set 3.pdf",
+    "PDF-5a1143cb76": "MLX5204 Lecture 8 - Model Evaluation.pdf"
+  },
   "tasks": [
     {
       "gold_id": "G01",
@@ -17,14 +22,16 @@
     {
       "gold_id": "G02",
       "source_ids": [
-        "SYN-002"
+        "SYN-002",
+        "PDF-b3d676d251"
       ],
       "course_code": "QFX5202",
       "title": "Problem Set 3",
       "kind": "deliverable",
       "due_date": "2026-10-20",
       "due_time": "18:00",
-      "flags": []
+      "flags": [],
+      "note": "the email and the problem set PDF give the same deadline"
     },
     {
       "gold_id": "G03",
@@ -182,19 +189,22 @@
     {
       "gold_id": "G13",
       "source_ids": [
-        "SYN-021"
+        "SYN-021",
+        "PDF-f03a5dc403"
       ],
       "course_code": "SSX5103",
       "title": "Final report",
       "kind": "deliverable",
       "due_date": "2026-11-13",
       "due_time": "23:59",
-      "flags": []
+      "flags": [],
+      "note": "email and brief agree"
     },
     {
       "gold_id": "G14",
       "source_ids": [
-        "SYN-021"
+        "SYN-021",
+        "PDF-f03a5dc403"
       ],
       "course_code": "SSX5103",
       "title": "Team presentation",
@@ -220,6 +230,21 @@
         "MISSING_DUE_AT"
       ],
       "note": "recurring, no deadline given"
+    },
+    {
+      "gold_id": "G16",
+      "source_ids": [
+        "PDF-f03a5dc403"
+      ],
+      "course_code": "SSX5103",
+      "title": "Peer feedback form",
+      "kind": "deliverable",
+      "due_date": "2026-11-06",
+      "due_time": null,
+      "flags": [
+        "NEEDS_CONFIRM"
+      ],
+      "note": "only in the brief PDF: 'by Friday of Week 12'"
     }
   ],
   "non_task_sources": {
@@ -228,6 +253,7 @@
     "SYN-018": "recruiter: needs a reply, not a course task",
     "SYN-023": "information only",
     "SYN-024": "feedback notice; the date is a lecture, not a deadline",
-    "SYN-025": "digest with no deadlines"
+    "SYN-025": "digest with no deadlines",
+    "PDF-5a1143cb76": "lecture slides; optional reading without a date"
   }
 }

@@ -20,7 +20,8 @@ def _ts() -> str:
 
 
 def content_hash(source: Source) -> str:
-    raw = "\x1f".join([source.subject or "", source.body_text, source.received_at.isoformat() if source.received_at else ""])
+    """Same subject and text means the same item, whenever it was added (a re-uploaded PDF, a message pasted twice)."""
+    raw = "\x1f".join([source.subject or "", source.body_text])
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
 
@@ -40,7 +41,8 @@ def get_demo_now(conn: sqlite3.Connection, ws: str) -> datetime | None:
 
 
 def reset_workspace(conn: sqlite3.Connection, ws: str) -> None:
-    for table in ("sources", "candidates", "tasks", "time_slots", "plans", "progress", "llm_log", "locks", "settings", "drafts"):
+    for table in ("sources", "candidates", "tasks", "time_slots", "plans", "progress", "llm_log", "locks", "settings", "drafts",
+                  "files", "activity"):
         conn.execute(f"DELETE FROM {table} WHERE workspace_id = ?", (ws,))
     conn.execute("UPDATE workspaces SET demo_now = NULL WHERE id = ?", (ws,))
 
@@ -305,3 +307,52 @@ def list_llm_log(conn: sqlite3.Connection, ws: str) -> list[dict]:
     rows = conn.execute("SELECT provider, purpose, sent_text, created_at FROM llm_log WHERE workspace_id = ? ORDER BY rowid DESC",
                         (ws,)).fetchall()
     return [dict(r) for r in rows]
+
+
+# ---- original files -------------------------------------------------------------------------
+def save_file(conn: sqlite3.Connection, ws: str, f: dict, created_at: str | None = None) -> None:
+    ensure_workspace(conn, ws)
+    conn.execute(
+        """INSERT OR REPLACE INTO files (workspace_id, file_id, record_id, filename, content_type, size, data, created_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+        (ws, f["file_id"], f.get("record_id"), f["filename"], f["content_type"], len(f["data"]), f["data"], created_at or _ts()),
+    )
+
+
+def get_file(conn: sqlite3.Connection, ws: str, file_id: str) -> dict | None:
+    row = conn.execute("SELECT * FROM files WHERE workspace_id = ? AND file_id = ?", (ws, file_id)).fetchone()
+    return dict(row) if row else None
+
+
+def list_files(conn: sqlite3.Connection, ws: str) -> list[dict]:
+    rows = conn.execute(
+        "SELECT file_id, record_id, filename, content_type, size, created_at FROM files WHERE workspace_id = ? ORDER BY created_at DESC",
+        (ws,),
+    ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def delete_source(conn: sqlite3.Connection, ws: str, record_id: str) -> bool:
+    """Forget a message or file: its versions, its stored original, and pending candidates found only in it."""
+    cur = conn.execute("DELETE FROM sources WHERE workspace_id = ? AND record_id = ?", (ws, record_id))
+    conn.execute("DELETE FROM files WHERE workspace_id = ? AND record_id = ?", (ws, record_id))
+    conn.execute("DELETE FROM drafts WHERE workspace_id = ? AND record_id = ?", (ws, record_id))
+    for c in list_candidates(conn, ws, "pending"):
+        if set(c.source_ids) <= {record_id}:
+            conn.execute("DELETE FROM candidates WHERE workspace_id = ? AND candidate_id = ?", (ws, c.candidate_id))
+    return cur.rowcount > 0
+
+
+# ---- activity log ---------------------------------------------------------------------------
+def log_activity(conn: sqlite3.Connection, ws: str, kind: str, label: str, detail: dict | None = None) -> None:
+    ensure_workspace(conn, ws)
+    demo = get_demo_now(conn, ws)  # a demo workspace lives on its fixed clock, so its log reads consistently
+    stamp = demo.isoformat(timespec="seconds") if demo else _ts()
+    conn.execute("INSERT INTO activity (workspace_id, kind, label, detail, created_at) VALUES (?, ?, ?, ?, ?)",
+                 (ws, kind, label, json.dumps(detail or {}, ensure_ascii=False), stamp))
+
+
+def list_activity(conn: sqlite3.Connection, ws: str, limit: int = 30) -> list[dict]:
+    rows = conn.execute("SELECT kind, label, detail, created_at FROM activity WHERE workspace_id = ? ORDER BY rowid DESC LIMIT ?",
+                        (ws, limit)).fetchall()
+    return [{"kind": r["kind"], "label": r["label"], "detail": json.loads(r["detail"]), "created_at": r["created_at"]} for r in rows]

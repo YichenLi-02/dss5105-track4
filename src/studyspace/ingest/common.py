@@ -19,11 +19,13 @@ class ImportResult:
     sources: list[Source] = field(default_factory=list)
     slots: list[TimeSlot] = field(default_factory=list)
     skipped: list[str] = field(default_factory=list)  # human-readable notes about rows that were not imported
+    files: list[dict] = field(default_factory=list)   # original files to keep (file_id, filename, content_type, data)
 
     def extend(self, other: "ImportResult") -> None:
         self.sources.extend(other.sources)
         self.slots.extend(other.slots)
         self.skipped.extend(other.skipped)
+        self.files.extend(other.files)
 
 
 def guess_course_code(*texts: str | None) -> str | None:

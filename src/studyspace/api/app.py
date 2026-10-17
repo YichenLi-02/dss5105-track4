@@ -25,7 +25,7 @@ from ..academic_calendar import AcademicCalendar
 from ..config import Settings, load_settings
 from ..drafts import Draft, draft_reply, learn_style
 from ..extraction import extract
-from ..ingest import ImportResult, expand_template, parse_eml, parse_file, parse_ics, parse_text
+from ..ingest import ImportResult, expand_template, parse_eml, parse_file, parse_ics, parse_pdf, parse_text
 from ..llm import Gateway, get_provider, prepare
 from ..meetings import suggest_slots
 from ..models import (
@@ -50,6 +50,7 @@ from ..triage import triage
 
 WORKSPACE_ID = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 WEB_DIR = Path(__file__).resolve().parents[1] / "web"
+MAX_UPLOAD = 25 * 1024 * 1024
 
 
 class WebFiles(StaticFiles):
@@ -228,21 +229,58 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 names.add(re.sub(r"\s*\(.*?\)", "", display).replace("Prof. ", "").replace("Dr. ", "").strip())
         return sorted(n for n in names if n)
 
-    def store_import(conn, ws: str, result: ImportResult) -> dict:
+    def store_import(conn, ws: str, result: ImportResult, origin: str = "upload") -> dict:
         counts = {"added": 0, "duplicate": 0, "updated": 0}
         for source in result.sources:
             counts[repo.upsert_source(conn, ws, source)] += 1
+        for f in result.files:
+            repo.save_file(conn, ws, f)
         if result.slots:
             # a new timetable replaces the previous one from the same kind of input
             incoming = {(s.origin, s.kind) for s in result.slots}
             kept = [s for s in repo.list_time_slots(conn, ws) if (s.origin, s.kind) not in incoming]
             repo.replace_time_slots(conn, ws, kept + result.slots)
+        log_import(conn, ws, result, counts, origin)
         return {**counts, "slots": len(result.slots), "skipped": result.skipped}
 
+    def log_import(conn, ws: str, result: ImportResult, counts: dict, origin: str) -> None:
+        """Tell the student what was read, in the activity log."""
+        new = counts["added"] + counts["updated"]
+        via = " (demo)" if origin == "demo" else ""
+        pdfs = [s for s in result.sources if s.source_type == "pdf"]
+        messages = [s for s in result.sources if s.source_type != "pdf"]
+        if messages:
+            kind = "paste" if all(s.source_type == "paste" for s in messages) else "email"
+            noun = "pasted message" if kind == "paste" else "email"
+            label = f"Read {new} new {noun}{'s' if new != 1 else ''}{via}"
+            if counts["duplicate"]:
+                label += f", {counts['duplicate']} already here"
+            repo.log_activity(conn, ws, kind, label, {"record_ids": [m.record_id for m in messages][:50]})
+        if pdfs:
+            repo.log_activity(conn, ws, "file", f"Read {len(pdfs)} course file{'s' if len(pdfs) != 1 else ''}{via}: "
+                              + ", ".join(p.subject or p.record_id for p in pdfs[:3]), {"record_ids": [p.record_id for p in pdfs]})
+        busy = [x for x in result.slots if x.kind == "busy"]
+        free = [x for x in result.slots if x.kind == "available"]
+        if busy:
+            weekly = len({x.label for x in busy})
+            repo.log_activity(conn, ws, "timetable", f"Read the timetable{via}: {weekly} class{'es' if weekly != 1 else ''} a week, "
+                              f"{len(busy)} sessions kept free of study", {})
+        if free:
+            hours = sum((x.end - x.start).total_seconds() for x in free) / 3600
+            repo.log_activity(conn, ws, "free_time", f"Noted your free hours{via}: {hours:.0f} h over {len({x.start.date() for x in free})} days", {})
+
     def run_extraction(conn, ws: str) -> list[Candidate]:
+        before = {c.candidate_id for c in repo.list_candidates(conn, ws)}
         candidates = extract(repo.list_sources(conn, ws), calendar, clock(conn, ws), repo.list_tasks(conn, ws))
         repo.save_candidates(conn, ws, candidates)
-        return repo.list_candidates(conn, ws)
+        after = repo.list_candidates(conn, ws)
+        fresh = [c for c in after if c.candidate_id not in before]
+        if fresh:
+            unsure = sum(1 for c in fresh if c.due_at is None)
+            repo.log_activity(conn, ws, "extract", f"Found {len(fresh)} new task{'s' if len(fresh) != 1 else ''}"
+                              + (f" ({unsure} need a date or time from you)" if unsure else ""),
+                              {"candidate_ids": [c.candidate_id for c in fresh]})
+        return after
 
     def dump(items) -> list[dict]:
         return [i.model_dump(mode="json") for i in items]
@@ -371,27 +409,33 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         busy.slots = [s.model_copy(update={"origin": "synthetic"}) for s in busy.slots]
         result.extend(busy)
         result.slots.extend(expand_template(data.free_time, origin="synthetic"))
+        for name, raw, received in data.course_files:
+            result.extend(parse_pdf(raw, name, received))
         with db.connect() as conn:
             repo.reset_workspace(conn, ws)
             repo.set_demo_now(conn, ws, DEMO_NOW)
             repo.set_setting(conn, ws, "profile", {"name": STUDENT[0], "email": STUDENT[1]})
             repo.set_setting(conn, ws, "sent_samples", [text for _, text in SENT_SAMPLES])
             repo.set_setting(conn, ws, "availability_template", data.free_time)
-            summary = store_import(conn, ws, result)
+            summary = store_import(conn, ws, result, origin="demo")
             candidates = run_extraction(conn, ws)
         return ok({"workspace": ws, "now": DEMO_NOW.isoformat(), "import": summary, "candidates": len(candidates)})
 
     # -- input --------------------------------------------------------------------------------------
     @app.post("/api/import", tags=["input"])
     async def import_files(files: list[UploadFile] = File(...), x_workspace: str | None = Header(default=None)) -> dict:
-        """Upload .eml / .csv (member 2's format) / .ics timetable / free-time .json / .txt files."""
+        """Upload .eml / .csv (member 2's format) / .ics timetable / free-time .json / .pdf course files / .txt."""
         ws = workspace(x_workspace)
         report = []
         with db.connect() as conn:
+            now = clock(conn, ws)
             for f in files:
                 raw = await f.read()
+                if len(raw) > MAX_UPLOAD:
+                    report.append({"filename": f.filename, "error": "file is larger than 25 MB"})
+                    continue
                 try:
-                    result = parse_file(f.filename or "upload", raw)
+                    result = parse_file(f.filename or "upload", raw, now)
                 except (ValueError, KeyError, UnicodeDecodeError) as exc:
                     report.append({"filename": f.filename, "error": f"could not read file: {exc}"})
                     continue
@@ -424,20 +468,130 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         """Messages, newest first, with what each one asks of the student."""
         ws = workspace(x_workspace)
         with db.connect() as conn:
-            srcs = repo.list_sources(conn, ws)
-            items = {t.record_id: t for t in triage(srcs, repo.list_candidates(conn, ws), domain(conn, ws), clock(conn, ws))}
-            out = []
-            for s in sorted(srcs, key=lambda x: (x.received_at is not None, x.received_at), reverse=True):
-                t = items[s.record_id]
-                draft = repo.get_draft(conn, ws, s.record_id)
-                out.append({
-                    "record_id": s.record_id, "subject": s.subject, "sender": s.sender, "course_code": s.course_code,
-                    "received_at": s.received_at.isoformat() if s.received_at else None, "source_type": s.source_type,
-                    "snippet": re.sub(r"\s+", " ", s.body_text)[:160], "labels": t.labels, "primary": t.primary,
-                    "reasons": t.reasons, "candidate_ids": t.candidate_ids, "sender_kind": t.sender_kind, "urgent": t.urgent,
-                    "draft_status": draft["status"] if draft else None,
-                })
+            out = inbox_items(conn, ws)
         return ok(out)
+
+    def inbox_items(conn, ws: str) -> list[dict]:
+        srcs = [s for s in repo.list_sources(conn, ws) if s.source_type != "pdf"]  # course files are listed separately
+        items = {t.record_id: t for t in triage(srcs, repo.list_candidates(conn, ws), domain(conn, ws), clock(conn, ws))}
+        out = []
+        for s in sorted(srcs, key=lambda x: (x.received_at is not None, x.received_at), reverse=True):
+            t = items[s.record_id]
+            draft = repo.get_draft(conn, ws, s.record_id)
+            out.append({
+                "record_id": s.record_id, "subject": s.subject, "sender": s.sender, "course_code": s.course_code,
+                "received_at": s.received_at.isoformat() if s.received_at else None, "source_type": s.source_type,
+                "snippet": re.sub(r"\s+", " ", s.body_text)[:160], "labels": t.labels, "primary": t.primary,
+                "reasons": t.reasons, "candidate_ids": t.candidate_ids, "sender_kind": t.sender_kind, "urgent": t.urgent,
+                "draft_status": draft["status"] if draft else None,
+            })
+        return out
+
+    def last_activity(activity: list[dict], *kinds: str) -> str | None:
+        return next((a["created_at"] for a in activity if a["kind"] in kinds), None)
+
+    @app.get("/api/overview", tags=["input"])
+    def overview(x_workspace: str | None = Header(default=None)) -> dict:
+        """Everything the agent reads, per source, and what it found in it. Powers the Sources page."""
+        ws = workspace(x_workspace)
+        with db.connect() as conn:
+            now = clock(conn, ws)
+            messages = inbox_items(conn, ws)
+            candidates = repo.list_candidates(conn, ws)
+            live = [c for c in candidates if c.status != "dismissed"]
+            tasks_now = repo.list_tasks(conn, ws)
+            slots = repo.list_time_slots(conn, ws)
+            activity = repo.list_activity(conn, ws, 200)
+            files = {f["record_id"]: f for f in repo.list_files(conn, ws)}
+            pdfs = [s for s in repo.list_sources(conn, ws) if s.source_type == "pdf"]
+
+            week_start = (now - timedelta(days=now.weekday())).replace(hour=0, minute=0, second=0, microsecond=0)
+            week_end = week_start + timedelta(days=7)
+            classes = [x for x in slots if x.kind == "busy" and x.origin in ("ics", "synthetic")]
+            commitments = [x for x in slots if x.kind == "busy" and x.origin == "manual"]
+            this_week = sorted((x for x in classes + commitments if week_start <= x.start < week_end), key=lambda x: x.start)
+            free_week = sum((min(x.end, week_end) - max(x.start, now)).total_seconds() / 60
+                            for x in slots if x.kind == "available" and x.end > now and x.start < week_end)
+            events = sorted((t for t in tasks_now if t.kind == "event" and t.status == "open" and t.due_at >= now), key=lambda t: t.due_at)
+            event_cands = sorted((c for c in candidates if c.status == "pending" and c.kind == "event" and c.due_at and c.due_at >= now),
+                                 key=lambda c: c.due_at)
+
+            horizon = now + timedelta(days=7)
+            due_soon = {t.title for t in tasks_now if t.status == "open" and t.kind == "deliverable" and now <= t.due_at <= horizon}
+            due_soon |= {c.title for c in candidates if c.status == "pending" and c.due_date and now.date() <= c.due_date <= horizon.date()}
+            per_source: dict[str, int] = {}
+            for c in live:
+                for sid in c.source_ids:
+                    per_source[sid] = per_source.get(sid, 0) + 1
+
+            file_items = []
+            for p in sorted(pdfs, key=lambda x: (x.received_at is not None, x.received_at), reverse=True):
+                f = files.get(p.record_id, {})
+                file_items.append({
+                    "record_id": p.record_id, "file_id": f.get("file_id"), "title": p.subject, "filename": p.meta.get("filename"),
+                    "course_code": p.course_code, "pages": p.meta.get("pages"), "size": f.get("size"),
+                    "received_at": p.received_at.isoformat() if p.received_at else None, "tasks": per_source.get(p.record_id, 0),
+                    "no_text": bool(p.meta.get("no_text")),
+                })
+            return ok({
+                "now": now.isoformat(),
+                "inbox": {
+                    "total": len(messages),
+                    "needs_reply": sum("reply" in m["labels"] for m in messages),
+                    "with_tasks": sum("task" in m["labels"] for m in messages),
+                    "latest": messages[:5],
+                    "updated_at": last_activity(activity, "email", "paste"),
+                    "connected": False,
+                },
+                "timetable": {
+                    "classes_total": len(classes),
+                    "weekly": len({x.label for x in classes}),
+                    "this_week": [{"label": x.label, "start": x.start.isoformat(), "end": x.end.isoformat(), "origin": x.origin}
+                                  for x in this_week],
+                    "upcoming_events": [{"title": t.title, "start": t.due_at.isoformat(), "confirmed": True} for t in events[:3]]
+                    + [{"title": c.title, "start": c.due_at.isoformat(), "confirmed": False} for c in event_cands[:2]],
+                    "free_minutes_week": round(free_week),
+                    "commitments": len(commitments),
+                    "updated_at": last_activity(activity, "timetable", "free_time"),
+                    "connected": False,
+                },
+                "files": {"total": len(file_items), "items": file_items[:6], "updated_at": last_activity(activity, "file"), "connected": False},
+                "agent": {
+                    "messages": len(messages), "files": len(file_items), "classes": len(classes),
+                    "tasks_found": len(live), "to_review": sum(c.status == "pending" for c in candidates),
+                    "confirmed": sum(t.status == "open" for t in tasks_now), "replies": sum("reply" in m["labels"] for m in messages),
+                    "due_7_days": len(due_soon), "plan_saved": repo.get_adopted_plan(conn, ws) is not None,
+                },
+                "activity": activity[:8],
+            })
+
+    @app.get("/api/activity", tags=["input"])
+    def activity(x_workspace: str | None = Header(default=None)) -> dict:
+        """What the agent did: each import and what it found."""
+        ws = workspace(x_workspace)
+        with db.connect() as conn:
+            return ok(repo.list_activity(conn, ws, 100))
+
+    @app.get("/api/files/{file_id}/raw", tags=["input"])
+    def file_raw(file_id: str, x_workspace: str | None = Header(default=None)) -> Response:
+        """The original course file, exactly as uploaded."""
+        ws = workspace(x_workspace)
+        with db.connect() as conn:
+            f = repo.get_file(conn, ws, file_id)
+        if f is None:
+            raise ApiError("NOT_FOUND", f"no file {file_id}", 404)
+        safe = re.sub(r'[^A-Za-z0-9 ._-]', "_", f["filename"])
+        return Response(f["data"], media_type=f["content_type"], headers={"Content-Disposition": f'inline; filename="{safe}"'})
+
+    @app.delete("/api/sources/{record_id}", tags=["input"])
+    def delete_source(record_id: str, x_workspace: str | None = Header(default=None)) -> dict:
+        """Forget a message or file. Tasks you already confirmed stay; unconfirmed ones found only here go."""
+        ws = workspace(x_workspace)
+        with db.connect() as conn:
+            src = find_source(conn, ws, record_id)
+            repo.delete_source(conn, ws, record_id)
+            repo.log_activity(conn, ws, "removed", f"Removed “{src.subject or record_id}”", {"record_id": record_id})
+        return ok({"deleted": record_id})
 
     # -- extraction and gate 1 -------------------------------------------------------------------
     @app.post("/api/extract", tags=["tasks"])
@@ -647,6 +801,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 raise ApiError(STALE_DRAFT, "tasks or calendar changed since this draft was made; generate a new draft", 409,
                                {"draft_based_on": plan["based_on"], "current": current})
             repo.adopt_plan(conn, ws, plan_id)
+            result = plan["result"]
+            hours_planned = sum((b.end - b.start).total_seconds() for b in result.blocks) / 3600
+            repo.log_activity(conn, ws, "plan", f"Saved your study plan: {len(result.blocks)} sessions, {hours_planned:g} h"
+                              + (f", {sum(u.minutes for u in result.unscheduled) / 60:g} h did not fit" if result.unscheduled else ""), {})
             return ok(current_plan_view(conn, ws))
 
     @app.post("/api/plans/lock", tags=["plans"])

@@ -1,0 +1,54 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [6 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Length 493 >>
+stream
+BT
+/F1 11 Tf
+14 TL
+56 790 Td
+/F2 15 Tf (MLX5204 Applied Machine Learning - Lecture 8: Model evaluation) Tj T*
+/F1 11 Tf () Tj T*
+/F1 11 Tf (Why accuracy is not enough) Tj T*
+/F1 11 Tf (Precision, recall and the F1 score) Tj T*
+/F1 11 Tf (Cross-validation and data leakage) Tj T*
+/F1 11 Tf (Calibration curves and reliability diagrams) Tj T*
+/F1 11 Tf () Tj T*
+/F1 11 Tf (Reading: chapter 7 of the course notes \(optional\).) Tj T*
+/F1 11 Tf (Next week: Lecture 9 on interpretability.) Tj T*
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Title (MLX5204 Lecture 8: Model evaluation) /Producer (Studyspace synthetic data) >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000121 00000 n 
+0000000218 00000 n 
+0000000320 00000 n 
+0000000864 00000 n 
+0000001000 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R /Info 7 0 R >>
+startxref
+1104
+%%EOF

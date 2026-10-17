@@ -24,7 +24,7 @@ def test_health(client):
 
 def test_demo_flow_gate1_gate2_progress(client):
     loaded = data(client.post("/api/demo/load"))
-    assert loaded["import"]["added"] == 25 and loaded["candidates"] >= 12
+    assert loaded["import"]["added"] == 28 and loaded["candidates"] >= 12
     assert data(client.get("/api/workspace"))["now"] == "2026-10-12T08:00:00+08:00"
 
     # gate 1: a candidate with an ambiguous time cannot be confirmed without a checked time
@@ -204,7 +204,7 @@ def test_in09_everything_survives_a_restart(settings):
     data(c1.post(f"/api/plans/{draft['plan_id']}/adopt", json={"based_on": draft["based_on"]}))
     c2 = TestClient(create_app(settings))  # a new process on the same database
     ws = data(c2.get("/api/workspace"))
-    assert ws["sources"] == 25 and ws["adopted_plan"] == draft["plan_id"] and ws["demo_clock"]
+    assert ws["sources"] == 28 and ws["adopted_plan"] == draft["plan_id"] and ws["demo_clock"]
     assert data(c2.get("/api/tasks"))
 
 
@@ -252,3 +252,36 @@ def test_settings_and_manual_task(client):
 def test_web_front_end_is_served(client):
     r = client.get("/")
     assert r.status_code == 200 and "studyspace" in r.text.lower()
+
+
+def test_overview_shows_each_source_and_what_was_found(client):
+    client.post("/api/demo/load")
+    o = data(client.get("/api/overview"))
+    assert o["inbox"]["total"] == 25 and len(o["inbox"]["latest"]) == 5
+    assert o["inbox"]["latest"][0]["received_at"] >= o["inbox"]["latest"][1]["received_at"]  # newest first
+    assert o["timetable"]["weekly"] == 5 and o["timetable"]["this_week"]
+    assert o["timetable"]["free_minutes_week"] > 0
+    assert o["files"]["total"] == 3 and any(f["tasks"] for f in o["files"]["items"])
+    assert o["agent"]["to_review"] >= 12 and o["agent"]["replies"] == 2
+    kinds = {a["kind"] for a in o["activity"]}
+    assert {"email", "timetable", "file", "extract"} <= kinds
+
+
+def test_pdf_upload_original_and_delete(client):
+    from studyspace.synthetic.pdf import make_pdf
+
+    pdf = make_pdf("DSX5101 Project Brief", ["DSX5101 Data Storytelling - Project Brief",
+                                             "Storyboard: submit it by Friday, 30 October 2026 at 5 pm."])
+    report = data(client.post("/api/import", files=[("files", ("brief.pdf", pdf, "application/pdf"))]))["files"][0]
+    assert report["added"] == 1
+    cands = data(client.post("/api/extract"))["candidates"]
+    found = [c for c in cands if c["due_at"] == "2026-10-30T17:00:00+08:00"]
+    assert found
+    files = data(client.get("/api/overview"))["files"]["items"]
+    raw = client.get(f"/api/files/{files[0]['file_id']}/raw")
+    assert raw.status_code == 200 and raw.content == pdf and raw.headers["content-type"] == "application/pdf"
+    again = data(client.post("/api/import", files=[("files", ("renamed.pdf", pdf, "application/pdf"))]))["files"][0]
+    assert again["duplicate"] == 1 and again["added"] == 0  # same file under another name
+    data(client.delete(f"/api/sources/{files[0]['record_id']}"))
+    assert data(client.get("/api/overview"))["files"]["total"] == 0
+    assert all(c["candidate_id"] != found[0]["candidate_id"] for c in data(client.get("/api/candidates")))

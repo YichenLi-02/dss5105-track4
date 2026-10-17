@@ -56,6 +56,12 @@ VERB_OBJECT = re.compile(
 PRONOUN_OBJECT = re.compile(r"(?:it|them|this|that|these|those|your|my|our|their)\b", re.I)
 CANVAS_CREATED = re.compile(r"^Assignment created\s*-\s*(?P<t>.+?),\s*[A-Z]{2,4}\d{4}", re.I)
 CANVAS_CHANGED = re.compile(r"Assignment due date changed:\s*(?P<t>.+?),\s*[A-Z]{2,4}\d{4}", re.I)
+LEAD_COURSE = re.compile(r"^\s*[A-Z]{2,4}\d{4}[A-Z]?\s*(?:[-:|–]\s*)?")
+# "Peer feedback form: submit by Friday of Week 12" - the label before the colon names the task
+COLON_LABEL = re.compile(r"^(?:\d+[.)]\s*)?(?P<label>[A-Z][A-Za-z0-9 \-/&']{2,48}?)(?:\s*\([^)]*\))?\s*:\s+\S")
+GENERIC_LABELS = {"deadline", "due", "date", "time", "venue", "note", "notes", "format", "scope", "questions", "reminder",
+                  "important", "location", "overview", "instructions", "assessment", "subject", "quick update", "update",
+                  "next week", "this week", "today", "tonight", "tomorrow", "ps", "fyi"}
 COURSE_TAIL = re.compile(r"\s*(?:[:,\-|]\s*)?\b[A-Z]{2,4}\d{4}[A-Z]?\b.*$")
 DUE_TAIL = re.compile(r"\s+(?:submission\s+)?(?:is\s+)?(?:due|deadline)\b.*$", re.I)
 WHEN_TAIL = re.compile(
@@ -141,7 +147,7 @@ def subject_title(subject: str | None) -> tuple[str | None, bool]:
         return None, False
     subject = re.sub(r"^(?:(?:re|fw|fwd)\s*:\s*)+", "", subject.strip(), flags=re.I)
     m = CANVAS_CREATED.search(subject)
-    raw = m.group("t") if m else COURSE_TAIL.sub("", subject)
+    raw = m.group("t") if m else COURSE_TAIL.sub("", LEAD_COURSE.sub("", subject))
     raw = DUE_TAIL.sub("", raw)
     raw = WHEN_TAIL.sub("", raw)
     raw = STATUS_TAIL.sub("", raw)
@@ -158,6 +164,11 @@ def noun_in(sentence: str, last: bool = False) -> tuple[str | None, int]:
     m = CANVAS_CHANGED.search(sentence)
     if m:
         return tidy_title(m.group("t")), m.start("t")
+    label = COLON_LABEL.match(sentence)
+    if label and label.group("label").strip().lower() not in GENERIC_LABELS:
+        name = WHEN_TAIL.sub("", label.group("label"))  # "Midterm This Friday: ..." names the midterm
+        if name and (NOUN_PHRASE.search(name) or not NOUN_PHRASE.search(sentence[label.end("label"):])):
+            return tidy_title(name), label.start("label")
     matches = list(NOUN_PHRASE.finditer(sentence))
     if matches:
         m2 = matches[-1] if last else matches[0]

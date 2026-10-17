@@ -8,9 +8,13 @@ def test_build_is_deterministic():
 
 
 def test_gold_refers_to_real_messages():
+    from studyspace.ingest import pdf_record_id
+
     data = build()
     ids = {name.removesuffix(".eml") for name, _ in data.emails}
     assert len(ids) == 25
+    ids |= {pdf_record_id(raw) for _, raw, _ in data.course_files}
+    assert len(data.course_files) == 3
     gold_ids = [t["gold_id"] for t in data.gold["tasks"]]
     assert len(gold_ids) == len(set(gold_ids))
     for task in data.gold["tasks"]:
@@ -29,5 +33,6 @@ def test_every_email_parses_and_csv_matches():
 def test_write(tmp_path):
     root = write(tmp_path / "syn")
     assert len(list((root / "emails").glob("*.eml"))) == 25
+    assert len(list((root / "files").glob("*.pdf"))) == 3
     for name in ("timetable.ics", "free_time.json", "gold.json", "emails.csv"):
         assert (root / name).exists()

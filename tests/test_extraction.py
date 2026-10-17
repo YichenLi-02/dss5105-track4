@@ -15,8 +15,11 @@ def synthetic_candidates():
     from studyspace.academic_calendar import AcademicCalendar
     from studyspace.config import load_settings
 
+    from studyspace.ingest import parse_pdf
+
     data = build()
     sources = [parse_eml(raw, name).sources[0] for name, raw in data.emails]
+    sources += [parse_pdf(raw, name, when).sources[0] for name, raw, when in data.course_files]
     return extract(sources, AcademicCalendar.load(load_settings().calendar_path)), data.gold
 
 
@@ -76,7 +79,19 @@ def test_recall_on_synthetic_gold_does_not_regress(synthetic_candidates):
                 same_day = (c.due_date.isoformat() if c.due_date else None) == g["due_date"]
                 matched += same_day
                 break
-    assert matched >= 12, f"only {matched} of {len(gold['tasks'])} gold tasks found with the right day"
+    assert matched >= 13, f"only {matched} of {len(gold['tasks'])} gold tasks found with the right day"
+
+
+def test_course_file_merges_with_email_and_adds_its_own_deadline(synthetic_candidates):
+    cands, gold = synthetic_candidates
+    files = {v: k for k, v in gold["files"].items()}
+    brief = files["SSX5103 Final Report Brief.pdf"]
+    (report,) = find(cands, "SYN-021", brief)
+    assert report.due_at == sgt("2026-11-13T23:59")
+    (feedback,) = [c for c in cands if c.source_ids == [brief] and "feedback" in c.title.lower()]
+    assert feedback.due_date == date(2026, 11, 6) and NEEDS_CONFIRM in feedback.flags  # Friday of Week 12
+    lecture = files["MLX5204 Lecture 8 - Model Evaluation.pdf"]
+    assert not [c for c in cands if lecture in c.source_ids]
 
 
 def test_real_style_canvas_message():

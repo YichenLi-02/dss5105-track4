@@ -59,6 +59,11 @@ export const api = {
   del: (path) => request("DELETE", path),
   upload: (path, formData) => request("POST", path, formData, true),
   workspace: workspaceId,
+  async blobUrl(path) {
+    const res = await fetch(path, { headers: { "X-Workspace": workspaceId() } });
+    if (!res.ok) throw new ApiError("FILE", "The original file is not available.");
+    return URL.createObjectURL(await res.blob());
+  },
   async download(path, filename) {
     const res = await fetch(path, { headers: { "X-Workspace": workspaceId() } });
     if (!res.ok) {

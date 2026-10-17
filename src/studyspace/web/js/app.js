@@ -1,6 +1,7 @@
 // Shell: routing, workspace status, navigation counts, theme. Each page module exports render(root, ctx).
 import { api } from "./api.js";
 import { confirmDialog, esc, fmtDateTime, initials, showError, toast } from "./util.js";
+import * as sources from "./pages/sources.js";
 import * as inbox from "./pages/inbox.js";
 import * as review from "./pages/review.js";
 import * as plan from "./pages/plan.js";
@@ -10,7 +11,8 @@ import * as privacy from "./pages/privacy.js";
 import * as settings from "./pages/settings.js";
 
 const PAGES = {
-  inbox: { mod: inbox, title: "Inbox" },
+  sources: { mod: sources, title: "Sources", nav: "sources" },
+  inbox: { mod: inbox, title: "All messages", nav: "sources" },
   review: { mod: review, title: "Review tasks" },
   plan: { mod: plan, title: "Study plan" },
   replies: { mod: replies, title: "Replies" },
@@ -47,7 +49,7 @@ async function loadShell() {
       chip.innerHTML = `<span class="dot"></span>Model: ${esc(ws.llm_provider)}`;
       chip.title = "Cleaned, redacted text is sent to this provider. See Privacy & data.";
     }
-    setCount("count-inbox", inboxItems.filter((i) => i.urgent).length || "");
+    setCount("count-sources", inboxItems.filter((i) => i.urgent).length || "");
     setCount("count-review", ws.candidates_pending || "");
     setCount("count-plan", ws.adopted_plan ? "" : ws.tasks ? "!" : "");
     setCount("count-replies", inboxItems.filter((i) => i.labels.includes("reply") && i.draft_status !== "reviewed").length || "");
@@ -64,7 +66,7 @@ function setCount(id, value) {
 function parseHash() {
   const raw = location.hash.replace(/^#\/?/, "");
   const [page, query] = raw.split("?");
-  return { page: PAGES[page] ? page : "inbox", params: new URLSearchParams(query || "") };
+  return { page: PAGES[page] ? page : "sources", params: new URLSearchParams(query || "") };
 }
 
 let routeToken = 0;
@@ -72,7 +74,8 @@ async function route() {
   const token = ++routeToken;
   const { page, params } = parseHash();
   document.body.classList.remove("menu-open");
-  document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("active", a.dataset.page === page));
+  const navPage = PAGES[page].nav || page;
+  document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("active", a.dataset.page === navPage));
   document.getElementById("breadcrumb").textContent = PAGES[page].title;
   document.title = `${PAGES[page].title} · Studyspace`;
   const root = document.getElementById("content");
@@ -94,9 +97,9 @@ export async function loadDemo(button) {
   if (button) button.disabled = true;
   try {
     const r = await api.post("/api/demo/load");
-    toast(`Loaded ${r.import.added} emails, the timetable and free time. ${r.candidates} tasks found.`);
+    toast(`Loaded ${r.import.added} emails and files, the timetable and free hours. ${r.candidates} tasks found.`);
     await loadShell();
-    ctx.go("inbox");
+    ctx.go("sources");
     route();
   } catch (err) { showError(err); } finally { if (button) button.disabled = false; }
 }
@@ -107,7 +110,7 @@ async function resetWorkspace() {
     await api.post("/api/workspace/reset");
     toast("Workspace cleared.");
     await loadShell();
-    ctx.go("inbox");
+    ctx.go("sources");
     route();
   } catch (err) { showError(err); }
 }

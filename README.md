@@ -23,12 +23,12 @@ uv run pytest           # 运行测试 / run the tests
 uv run studyspace evaluate   # 抽取与排程评估报告 / extraction and planner evaluation report
 ```
 
-打开 http://127.0.0.1:8000 ，在收件箱页点 **Load demo student** 载入虚构学生（时钟固定在 2026-10-12 08:00，第 9 周），然后按左侧顺序走一遍。接口文档在 `/docs`。  
-Open http://127.0.0.1:8000 and click **Load demo student** on the Inbox page (a fictional student; clock fixed at Mon 12 Oct 2026, 08:00, Week 9), then follow the pages in the sidebar. API docs are at `/docs`.
+打开 http://127.0.0.1:8000 ，在 Sources 页点 **Load demo student** 载入虚构学生（时钟固定在 2026-10-12 08:00，第 9 周），然后按左侧顺序走一遍。接口文档在 `/docs`。  
+Open http://127.0.0.1:8000 and click **Load demo student** on the Sources page (a fictional student; clock fixed at Mon 12 Oct 2026, 08:00, Week 9), then follow the pages in the sidebar. API docs are at `/docs`.
 
 | 页面 / Page | 做什么 / What it does |
 | --- | --- |
-| 01 Inbox | 上传 .eml / .csv / .ics / 空闲时间 .json 或粘贴文本；每封消息标注“有任务 / 需回复 / 活动 / 通知 / 群发”。<br>Upload or paste messages; each one is labelled task / reply needed / event / info / newsletter. |
+| 01 Sources | 首页：agent 读了哪些来源、找到了什么。邮件（最近 5 封）、课表（本周课程与考试）、课件（PDF）三个区域，各有“+”手动添加和“Sync”（自动同步，规划中）；点任何一条看原件，邮件中产生任务的句子会高亮；下方是 agent 的活动记录。<br>Home: what the agent reads and what it found. Email (latest five), timetable (this week, exams) and course files (PDF), each with + to add and Sync (planned); open any item to see the original with the task sentences highlighted; an activity log below. |
 | 02 Review tasks | 第一道关口：看原文依据，改日期和用时，处理“改期”和“midnight”二选一，确认后才进入排程。<br>Gate 1: check the source sentence, fix dates and effort, resolve deadline changes and "midnight" choices. |
 | 03 Study plan | 按 4 号的规则生成草稿（不撞课、每天 ≤3 小时、单段 ≤90 分钟、截止前留 24 小时）；第二道关口：采用后才保存。可锁定、标记完成、重排、导出 .ics。<br>Gate 2: a checked draft is saved only when adopted. Lock or finish sessions, re-plan, export to your calendar. |
 | 04 Replies | 第三道关口：按学生自己的语气起草回复，读过并勾选后才能复制或在邮件程序中打开；系统从不发送。<br>Gate 3: drafts in the student's style; copy or open in the mail app only after review. Nothing is ever sent by the app. |
