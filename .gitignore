@@ -16,3 +16,11 @@ Thumbs.db
 data/raw/
 data/private/
 *.log
+
+# Studyspace local data (originals stay on this computer)
+.studyspace/
+*.db
+*.sqlite3
+# virtual environment kept out of iCloud sync (.venv may be a symlink to it)
+.venv
+.venv.nosync/

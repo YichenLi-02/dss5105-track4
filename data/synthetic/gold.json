@@ -1,0 +1,233 @@
+{
+  "provenance": "Synthetic development data, hand-labelled from the emails. Not evaluation data.",
+  "demo_now": "2026-10-12T08:00:00+08:00",
+  "tasks": [
+    {
+      "gold_id": "G01",
+      "source_ids": [
+        "SYN-001"
+      ],
+      "course_code": "DSX5101",
+      "title": "Data Story Draft",
+      "kind": "deliverable",
+      "due_date": "2026-10-16",
+      "due_time": "23:59",
+      "flags": []
+    },
+    {
+      "gold_id": "G02",
+      "source_ids": [
+        "SYN-002"
+      ],
+      "course_code": "QFX5202",
+      "title": "Problem Set 3",
+      "kind": "deliverable",
+      "due_date": "2026-10-20",
+      "due_time": "18:00",
+      "flags": []
+    },
+    {
+      "gold_id": "G03",
+      "source_ids": [
+        "SYN-003",
+        "SYN-004",
+        "SYN-005"
+      ],
+      "course_code": "SSX5103",
+      "title": "Reflective essay",
+      "kind": "deliverable",
+      "due_date": "2026-10-15",
+      "due_time": "17:00",
+      "flags": [
+        "DATE_CHANGED"
+      ],
+      "note": "9 Oct 17:00 -> 14 Oct 17:00 -> 15 Oct 17:00"
+    },
+    {
+      "gold_id": "G04",
+      "source_ids": [
+        "SYN-006"
+      ],
+      "course_code": "MLX5204",
+      "title": "Quiz 1",
+      "kind": "deliverable",
+      "due_date": "2026-10-12",
+      "due_time": "23:59",
+      "flags": [
+        "NEEDS_CONFIRM"
+      ],
+      "note": "'next Monday' from Wed 7 Oct"
+    },
+    {
+      "gold_id": "G05",
+      "source_ids": [
+        "SYN-007"
+      ],
+      "course_code": "QFX5202",
+      "title": "Portfolio Case Report",
+      "kind": "deliverable",
+      "due_date": "2026-10-23",
+      "due_time": null,
+      "flags": [
+        "MIDNIGHT_AMBIGUITY"
+      ],
+      "note": "'12 midnight Oct 23': start or end of 23 Oct; must be confirmed"
+    },
+    {
+      "gold_id": "G06",
+      "source_ids": [
+        "SYN-008",
+        "SYN-009"
+      ],
+      "course_code": "MLX5204",
+      "title": "Lab 4 notebook",
+      "kind": "deliverable",
+      "due_date": "2026-10-12",
+      "due_time": "23:00",
+      "flags": [
+        "NEEDS_CONFIRM"
+      ],
+      "note": "no date in SYN-008; SYN-009 says tonight 11pm"
+    },
+    {
+      "gold_id": "G07",
+      "source_ids": [
+        "SYN-010",
+        "SYN-011"
+      ],
+      "course_code": "DSX5101",
+      "title": "Midterm",
+      "kind": "event",
+      "due_date": "2026-10-22",
+      "due_time": "18:30",
+      "flags": [],
+      "note": "SYN-011 repeats SYN-010"
+    },
+    {
+      "gold_id": "G08",
+      "source_ids": [
+        "SYN-012"
+      ],
+      "course_code": "SSX5103",
+      "title": "Project proposal",
+      "kind": "deliverable",
+      "due_date": "2026-10-16",
+      "due_time": null,
+      "flags": [
+        "NEEDS_CONFIRM"
+      ],
+      "note": "'Friday of Week 9', no time"
+    },
+    {
+      "gold_id": "G09",
+      "source_ids": [
+        "SYN-013"
+      ],
+      "course_code": "QFX5202",
+      "title": "Peer review of case drafts",
+      "kind": "deliverable",
+      "due_date": "2026-09-28",
+      "due_time": "09:00",
+      "flags": [
+        "NEEDS_CONFIRM"
+      ],
+      "note": "'the Monday after recess week'; already past at the demo clock"
+    },
+    {
+      "gold_id": "G10",
+      "source_ids": [
+        "SYN-014",
+        "SYN-020"
+      ],
+      "course_code": "MLX5204",
+      "title": "Problem Set 2",
+      "kind": "deliverable",
+      "due_date": "2026-10-19",
+      "due_time": "23:59",
+      "flags": [
+        "DATE_CHANGED"
+      ],
+      "note": "16 Oct -> 19 Oct"
+    },
+    {
+      "gold_id": "G11",
+      "source_ids": [
+        "SYN-015"
+      ],
+      "course_code": "DSX5101",
+      "title": "Read chapters 4 and 5",
+      "kind": "deliverable",
+      "due_date": null,
+      "due_time": null,
+      "flags": [
+        "NEEDS_CONFIRM"
+      ],
+      "note": "'before Week 10': no exact day"
+    },
+    {
+      "gold_id": "G12",
+      "source_ids": [
+        "SYN-019"
+      ],
+      "course_code": "MLX5204",
+      "title": "Finish the data cleaning section",
+      "kind": "deliverable",
+      "due_date": "2026-10-15",
+      "due_time": null,
+      "flags": [
+        "NEEDS_CONFIRM"
+      ],
+      "note": "'by Thursday night' from a groupmate"
+    },
+    {
+      "gold_id": "G13",
+      "source_ids": [
+        "SYN-021"
+      ],
+      "course_code": "SSX5103",
+      "title": "Final report",
+      "kind": "deliverable",
+      "due_date": "2026-11-13",
+      "due_time": "23:59",
+      "flags": []
+    },
+    {
+      "gold_id": "G14",
+      "source_ids": [
+        "SYN-021"
+      ],
+      "course_code": "SSX5103",
+      "title": "Team presentation",
+      "kind": "event",
+      "due_date": null,
+      "due_time": null,
+      "flags": [
+        "NEEDS_CONFIRM"
+      ],
+      "note": "'in Week 13 during the seminar': day not stated"
+    },
+    {
+      "gold_id": "G15",
+      "source_ids": [
+        "SYN-022"
+      ],
+      "course_code": "DSX5101",
+      "title": "Weekly reflection",
+      "kind": "deliverable",
+      "due_date": null,
+      "due_time": null,
+      "flags": [
+        "MISSING_DUE_AT"
+      ],
+      "note": "recurring, no deadline given"
+    }
+  ],
+  "non_task_sources": {
+    "SYN-016": "newsletter (career fair)",
+    "SYN-017": "information only",
+    "SYN-018": "recruiter: needs a reply, not a course task",
+    "SYN-023": "information only",
+    "SYN-024": "feedback notice; the date is a lecture, not a deadline",
+    "SYN-025": "digest with no deadlines"
+  }
+}

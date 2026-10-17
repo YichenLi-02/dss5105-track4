@@ -1,0 +1,9 @@
+To: Daniel Koh
+Subject: Lab 4 submission
+
+Hi Daniel,
+
+I've uploaded Lab 4 to Canvas. One cell takes a while to run, so I left the outputs in.
+
+Best,
+Jordan

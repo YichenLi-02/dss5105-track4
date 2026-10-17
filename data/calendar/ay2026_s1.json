@@ -1,0 +1,23 @@
+{
+  "name": "AY2026/27 Semester 1",
+  "timezone": "Asia/Singapore",
+  "note": "Derived from course emails and the DSS5105 spec (Week 3 ends Sun 30 Aug, Week 7 contains Fri 2 Oct, Week 9 contains Fri 16 Oct, Week 13 contains Fri 13 Nov). Verify against the official NUS academic calendar before relying on it.",
+  "periods": [
+    {"label": "Week 1", "week": 1, "start": "2026-08-10", "end": "2026-08-16"},
+    {"label": "Week 2", "week": 2, "start": "2026-08-17", "end": "2026-08-23"},
+    {"label": "Week 3", "week": 3, "start": "2026-08-24", "end": "2026-08-30"},
+    {"label": "Week 4", "week": 4, "start": "2026-08-31", "end": "2026-09-06"},
+    {"label": "Week 5", "week": 5, "start": "2026-09-07", "end": "2026-09-13"},
+    {"label": "Week 6", "week": 6, "start": "2026-09-14", "end": "2026-09-18"},
+    {"label": "Recess Week", "key": "recess", "start": "2026-09-19", "end": "2026-09-27"},
+    {"label": "Week 7", "week": 7, "start": "2026-09-28", "end": "2026-10-04"},
+    {"label": "Week 8", "week": 8, "start": "2026-10-05", "end": "2026-10-11"},
+    {"label": "Week 9", "week": 9, "start": "2026-10-12", "end": "2026-10-18"},
+    {"label": "Week 10", "week": 10, "start": "2026-10-19", "end": "2026-10-25"},
+    {"label": "Week 11", "week": 11, "start": "2026-10-26", "end": "2026-11-01"},
+    {"label": "Week 12", "week": 12, "start": "2026-11-02", "end": "2026-11-08"},
+    {"label": "Week 13", "week": 13, "start": "2026-11-09", "end": "2026-11-13"},
+    {"label": "Reading Week", "key": "reading", "start": "2026-11-14", "end": "2026-11-20"},
+    {"label": "Examinations", "key": "exams", "start": "2026-11-21", "end": "2026-12-05"}
+  ]
+}

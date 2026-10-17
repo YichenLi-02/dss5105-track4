@@ -1,0 +1,56 @@
+{
+  "from": "2026-10-12",
+  "to": "2026-11-13",
+  "weekly": [
+    {
+      "weekday": "monday",
+      "start": "13:00",
+      "end": "18:00"
+    },
+    {
+      "weekday": "tuesday",
+      "start": "09:00",
+      "end": "12:00"
+    },
+    {
+      "weekday": "tuesday",
+      "start": "13:00",
+      "end": "17:00"
+    },
+    {
+      "weekday": "wednesday",
+      "start": "09:00",
+      "end": "12:00"
+    },
+    {
+      "weekday": "wednesday",
+      "start": "14:00",
+      "end": "17:30"
+    },
+    {
+      "weekday": "thursday",
+      "start": "09:00",
+      "end": "12:00"
+    },
+    {
+      "weekday": "thursday",
+      "start": "13:00",
+      "end": "17:00"
+    },
+    {
+      "weekday": "friday",
+      "start": "13:00",
+      "end": "18:00"
+    },
+    {
+      "weekday": "saturday",
+      "start": "10:00",
+      "end": "16:00"
+    },
+    {
+      "weekday": "sunday",
+      "start": "14:00",
+      "end": "18:00"
+    }
+  ]
+}

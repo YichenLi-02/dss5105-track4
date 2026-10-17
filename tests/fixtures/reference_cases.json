@@ -1,0 +1,142 @@
+{
+  "provenance": "Synthetic development fixtures. These are manually authored reference plans, not outputs of an implemented scheduler and not held-out evaluation data.",
+  "settings": {
+    "study_day_start": "09:00",
+    "study_day_end": "22:00",
+    "max_study_minutes_per_day": 180,
+    "min_block_minutes": 30,
+    "max_block_minutes": 90,
+    "min_break_minutes": 15,
+    "time_step_minutes": 15,
+    "target_buffer_minutes": 1440
+  },
+  "cases": [
+    {
+      "id": "normal_week",
+      "category": "normal",
+      "description": "Three confirmed tasks with a feasible manual reference plan.",
+      "input": {
+        "now": "2026-10-12T08:00:00+08:00",
+        "timezone": "Asia/Singapore",
+        "tasks": [
+          {"id": "A", "title": "Report draft", "due_at": "2026-10-15T18:00:00+08:00", "remaining_minutes": 240, "priority": "high", "confirmed": true},
+          {"id": "B", "title": "Quiz revision", "due_at": "2026-10-14T20:00:00+08:00", "remaining_minutes": 90, "priority": "high", "confirmed": true},
+          {"id": "C", "title": "Group slides", "due_at": "2026-10-16T12:00:00+08:00", "remaining_minutes": 120, "priority": "medium", "confirmed": true}
+        ],
+        "availability": [
+          {"start": "2026-10-12T16:00:00+08:00", "end": "2026-10-12T18:00:00+08:00"},
+          {"start": "2026-10-13T09:00:00+08:00", "end": "2026-10-13T11:00:00+08:00"},
+          {"start": "2026-10-13T15:00:00+08:00", "end": "2026-10-13T17:00:00+08:00"},
+          {"start": "2026-10-14T10:00:00+08:00", "end": "2026-10-14T12:00:00+08:00"},
+          {"start": "2026-10-14T16:00:00+08:00", "end": "2026-10-14T18:00:00+08:00"},
+          {"start": "2026-10-15T09:00:00+08:00", "end": "2026-10-15T11:00:00+08:00"}
+        ],
+        "busy": [{"start": "2026-10-13T11:00:00+08:00", "end": "2026-10-13T13:00:00+08:00"}],
+        "completed_blocks": [],
+        "locked_blocks": []
+      },
+      "reference_plan": {
+        "status": "complete",
+        "blocks": [
+          {"task_id": "A", "start": "2026-10-12T16:00:00+08:00", "end": "2026-10-12T17:30:00+08:00"},
+          {"task_id": "B", "start": "2026-10-13T09:00:00+08:00", "end": "2026-10-13T10:30:00+08:00"},
+          {"task_id": "A", "start": "2026-10-13T15:00:00+08:00", "end": "2026-10-13T16:30:00+08:00"},
+          {"task_id": "A", "start": "2026-10-14T10:00:00+08:00", "end": "2026-10-14T11:00:00+08:00"},
+          {"task_id": "C", "start": "2026-10-14T16:00:00+08:00", "end": "2026-10-14T17:00:00+08:00"},
+          {"task_id": "C", "start": "2026-10-15T09:00:00+08:00", "end": "2026-10-15T10:00:00+08:00"}
+        ],
+        "unscheduled": [],
+        "warnings": [],
+        "retained_locked_blocks": []
+      },
+      "expected": {"scheduled_minutes": 450, "unscheduled_minutes": 0, "minimum_buffer_hours": 26}
+    },
+    {
+      "id": "capacity_shortage",
+      "category": "infeasible_capacity",
+      "description": "Nine hours of work, only three hours of legal availability. The lower bound proves a six-hour shortage.",
+      "input": {
+        "now": "2026-10-12T08:00:00+08:00", "timezone": "Asia/Singapore",
+        "tasks": [
+          {"id": "D", "title": "Urgent report", "due_at": "2026-10-14T18:00:00+08:00", "remaining_minutes": 180, "priority": "high", "confirmed": true},
+          {"id": "E", "title": "Problem set", "due_at": "2026-10-14T18:00:00+08:00", "remaining_minutes": 180, "priority": "medium", "confirmed": true},
+          {"id": "F", "title": "Reading notes", "due_at": "2026-10-14T18:00:00+08:00", "remaining_minutes": 180, "priority": "low", "confirmed": true}
+        ],
+        "availability": [
+          {"start": "2026-10-12T16:00:00+08:00", "end": "2026-10-12T17:00:00+08:00"},
+          {"start": "2026-10-13T10:00:00+08:00", "end": "2026-10-13T11:00:00+08:00"},
+          {"start": "2026-10-13T15:00:00+08:00", "end": "2026-10-13T16:00:00+08:00"}
+        ],
+        "busy": [], "completed_blocks": [], "locked_blocks": []
+      },
+      "reference_plan": {
+        "status": "partial",
+        "blocks": [
+          {"task_id": "D", "start": "2026-10-12T16:00:00+08:00", "end": "2026-10-12T17:00:00+08:00"},
+          {"task_id": "D", "start": "2026-10-13T10:00:00+08:00", "end": "2026-10-13T11:00:00+08:00"},
+          {"task_id": "D", "start": "2026-10-13T15:00:00+08:00", "end": "2026-10-13T16:00:00+08:00"}
+        ],
+        "unscheduled": [{"task_id": "E", "minutes": 180}, {"task_id": "F", "minutes": 180}],
+        "warnings": [{"code": "INSUFFICIENT_TIME", "task_id": "E"}, {"code": "INSUFFICIENT_TIME", "task_id": "F"}],
+        "retained_locked_blocks": []
+      },
+      "expected": {"scheduled_minutes": 180, "unscheduled_minutes": 360}
+    },
+    {
+      "id": "buffer_warning",
+      "category": "low_buffer",
+      "description": "A valid slot exists, but the task finishes only 17 hours before its deadline.",
+      "input": {
+        "now": "2026-10-12T08:00:00+08:00", "timezone": "Asia/Singapore",
+        "tasks": [{"id": "H", "title": "Short submission", "due_at": "2026-10-13T12:00:00+08:00", "remaining_minutes": 60, "priority": "high", "confirmed": true}],
+        "availability": [{"start": "2026-10-12T18:00:00+08:00", "end": "2026-10-12T19:00:00+08:00"}],
+        "busy": [], "completed_blocks": [], "locked_blocks": []
+      },
+      "reference_plan": {
+        "status": "complete",
+        "blocks": [{"task_id": "H", "start": "2026-10-12T18:00:00+08:00", "end": "2026-10-12T19:00:00+08:00"}],
+        "unscheduled": [], "warnings": [{"code": "LOW_BUFFER", "task_id": "H"}], "retained_locked_blocks": []
+      },
+      "expected": {"scheduled_minutes": 60, "unscheduled_minutes": 0, "minimum_buffer_hours": 17}
+    },
+    {
+      "id": "unconfirmed_deadline",
+      "category": "needs_input",
+      "description": "An unconfirmed task with no exact deadline must not enter the plan.",
+      "input": {
+        "now": "2026-10-12T08:00:00+08:00", "timezone": "Asia/Singapore",
+        "tasks": [{"id": "U", "title": "Deadline to confirm", "due_at": null, "remaining_minutes": 60, "priority": "medium", "confirmed": false}],
+        "availability": [{"start": "2026-10-12T16:00:00+08:00", "end": "2026-10-12T18:00:00+08:00"}],
+        "busy": [], "completed_blocks": [], "locked_blocks": []
+      },
+      "reference_plan": {
+        "status": "needs_input", "blocks": [], "unscheduled": [],
+        "warnings": [{"code": "MISSING_DUE_AT", "task_id": "U"}, {"code": "UNCONFIRMED_TASK", "task_id": "U"}], "retained_locked_blocks": []
+      },
+      "expected": {"scheduled_minutes": 0, "unscheduled_minutes": 0}
+    },
+    {
+      "id": "meeting_replan",
+      "category": "replanning",
+      "description": "A new meeting occupies Wednesday 16:00. Move an unlocked suggestion while retaining Thursday's locked hour.",
+      "input": {
+        "now": "2026-10-14T12:00:00+08:00", "timezone": "Asia/Singapore",
+        "tasks": [{"id": "C", "title": "Group slides", "due_at": "2026-10-16T12:00:00+08:00", "remaining_minutes": 120, "priority": "medium", "confirmed": true}],
+        "availability": [
+          {"start": "2026-10-14T16:00:00+08:00", "end": "2026-10-14T18:00:00+08:00"},
+          {"start": "2026-10-15T09:00:00+08:00", "end": "2026-10-15T11:00:00+08:00"}
+        ],
+        "busy": [{"start": "2026-10-14T16:00:00+08:00", "end": "2026-10-14T17:00:00+08:00"}],
+        "completed_blocks": [{"task_id": "A", "start": "2026-10-14T10:00:00+08:00", "end": "2026-10-14T11:00:00+08:00"}],
+        "locked_blocks": [{"task_id": "C", "start": "2026-10-15T09:00:00+08:00", "end": "2026-10-15T10:00:00+08:00"}]
+      },
+      "reference_plan": {
+        "status": "complete",
+        "blocks": [{"task_id": "C", "start": "2026-10-14T17:00:00+08:00", "end": "2026-10-14T18:00:00+08:00"}],
+        "unscheduled": [], "warnings": [],
+        "retained_locked_blocks": [{"task_id": "C", "start": "2026-10-15T09:00:00+08:00", "end": "2026-10-15T10:00:00+08:00"}]
+      },
+      "expected": {"scheduled_minutes": 60, "unscheduled_minutes": 0, "locked_minutes": 60, "minimum_buffer_hours": 26}
+    }
+  ]
+}
