@@ -24,3 +24,5 @@ data/private/
 # virtual environment kept out of iCloud sync (.venv may be a symlink to it)
 .venv
 .venv.nosync/
+# local preview launcher (machine-specific paths)
+.claude/launch.json

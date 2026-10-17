@@ -52,6 +52,15 @@ WORKSPACE_ID = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 WEB_DIR = Path(__file__).resolve().parents[1] / "web"
 
 
+class WebFiles(StaticFiles):
+    """The front end, revalidated on every load so an updated version shows up without a hard refresh."""
+
+    async def get_response(self, path, scope):
+        response = await super().get_response(path, scope)
+        response.headers["Cache-Control"] = "no-cache"
+        return response
+
+
 class ApiError(Exception):
     def __init__(self, code: str, message: str, status: int = 400, details: Any = None):
         super().__init__(message)
@@ -367,6 +376,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             repo.set_demo_now(conn, ws, DEMO_NOW)
             repo.set_setting(conn, ws, "profile", {"name": STUDENT[0], "email": STUDENT[1]})
             repo.set_setting(conn, ws, "sent_samples", [text for _, text in SENT_SAMPLES])
+            repo.set_setting(conn, ws, "availability_template", data.free_time)
             summary = store_import(conn, ws, result)
             candidates = run_extraction(conn, ws)
         return ok({"workspace": ws, "now": DEMO_NOW.isoformat(), "import": summary, "candidates": len(candidates)})
@@ -613,7 +623,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "request": request.model_dump(mode="json"),
             "result": result.model_dump(mode="json"),
             "titles": titles,
-            "changes": _changes(adopted["result"].blocks if adopted else [], result.blocks, now),
+            "changes": _changes([b for b in adopted["result"].blocks if (b.task_id, b.start) not in done] if adopted else [],
+                                result.blocks, now),
         })
 
     @app.get("/api/plans/current", tags=["plans"])
@@ -770,7 +781,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     # -- web front end ----------------------------------------------------------------------------
     if WEB_DIR.exists():
-        app.mount("/", StaticFiles(directory=WEB_DIR, html=True), name="web")
+        app.mount("/", WebFiles(directory=WEB_DIR, html=True), name="web")
 
     return app
 

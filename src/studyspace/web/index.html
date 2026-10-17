@@ -1,1 +1,73 @@
-<!doctype html><title>Studyspace</title>studyspace
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Studyspace</title>
+  <meta name="description" content="Turn course messages into confirmed tasks and a realistic study plan.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%236555d7'/%3E%3Ctext x='16' y='23' font-family='Arial' font-size='20' font-style='italic' fill='white' text-anchor='middle'%3Es%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside class="sidebar" aria-label="Main navigation">
+    <a class="brand" href="#/inbox"><span class="brand-icon" aria-hidden="true">s</span>studyspace<span class="brand-dot">.</span></a>
+    <div class="workspace-card">
+      <span class="avatar" id="avatar">?</span>
+      <div><strong id="ws-name">Your workspace</strong><small id="ws-sub">Student planner</small></div>
+    </div>
+    <div class="nav-label">WORKFLOW</div>
+    <nav class="nav" aria-label="Workflow">
+      <a href="#/inbox" data-page="inbox"><span class="nav-num">01</span>Inbox<span class="nav-count" id="count-inbox"></span></a>
+      <a href="#/review" data-page="review"><span class="nav-num">02</span>Review tasks<span class="nav-count" id="count-review"></span></a>
+      <a href="#/plan" data-page="plan"><span class="nav-num">03</span>Study plan<span class="nav-count" id="count-plan"></span></a>
+    </nav>
+    <div class="nav-label">ASSIST</div>
+    <nav class="nav" aria-label="Assist">
+      <a href="#/replies" data-page="replies"><span class="nav-num">04</span>Replies<span class="nav-count" id="count-replies"></span></a>
+      <a href="#/meetings" data-page="meetings"><span class="nav-num">05</span>Find a meeting time</a>
+      <a href="#/privacy" data-page="privacy"><span class="nav-num">06</span>Privacy &amp; data</a>
+      <a href="#/settings" data-page="settings"><span class="nav-num">07</span>Settings</a>
+    </nav>
+    <div class="side-note">
+      <span class="tiny-orbit" aria-hidden="true"></span>
+      <strong>A week that works for you</strong>
+      <p>Make room for focused work, without filling every free hour.</p>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="row">
+        <button class="btn small menu-toggle" id="menu-toggle" aria-label="Open menu">☰</button>
+        <span><span class="crumb-ws">Workspace</span><span class="slash">/</span><strong id="breadcrumb">Inbox</strong></span>
+      </div>
+      <div class="top-actions">
+        <span class="chip green" id="mode-chip" title="No message leaves this computer"><span class="dot"></span>Offline mode</span>
+        <span class="tiny muted">SGT · UTC+8</span>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Switch light or dark theme">◐</button>
+      </div>
+    </header>
+
+    <div class="demo-bar" id="demo-bar" hidden>
+      <div><span class="demo-dot"></span><strong>Demo workspace</strong><span id="demo-text">Fictional data · clock fixed at 12 Oct 2026, 08:00</span></div>
+      <div class="row">
+        <button class="btn small" data-global="load-demo">Reload demo</button>
+        <button class="btn small ghost" data-global="reset">Clear workspace</button>
+      </div>
+    </div>
+
+    <main class="content" id="content" tabindex="-1">
+      <div class="loading"><span class="spinner"></span></div>
+    </main>
+
+    <footer class="foot">
+      <span>Interface built on the Studyspace UI design by zhengjunduo (member 1)</span>
+      <span>DSS5105 Track 4 · Student Productivity Agent</span>
+    </footer>
+  </div>
+
+  <dialog id="modal" aria-labelledby="modal-title"></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

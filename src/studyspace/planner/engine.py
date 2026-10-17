@@ -4,7 +4,8 @@ Hard rules: only confirmed tasks with an exact deadline; never in the past, afte
 window or the student's available hours; no overlap with classes, meetings, locked or other study blocks; at most
 180 focused minutes a day (completed and locked work included); at most 90 minutes in a row, then a 15-minute break.
 Preference: finish 24 hours before the deadline; when that is impossible, plan anyway and warn LOW_BUFFER.
-Order: deadline, then priority, then task id. When time runs out the shortfall is reported per task, never hidden.
+Order: deadline, then priority, then task id. A task gets at most one long session a day while there is room, so work
+spreads over the week. When time runs out the shortfall is reported per task, never hidden.
 
 This is an explainable greedy method. It can miss a feasible plan in rare cases; it never relaxes a hard rule.
 """
@@ -81,6 +82,7 @@ class Planner:
                                      for b in [*request.completed_blocks, *request.locked_blocks]]
         self.new_blocks: list[PlanBlock] = []
         self.daily: dict[date, int] = defaultdict(int)
+        self.task_daily: dict[tuple[str, date], int] = defaultdict(int)
         for a, b in self.existing:
             self.daily[a.date()] += _minutes(a, b)
 
@@ -97,9 +99,12 @@ class Planner:
             need = max(0, reserved - fixed)
             due = task.due_at.astimezone(self.zone)  # type: ignore[union-attr]
             soft_limit = due - timedelta(minutes=self.s.target_buffer_minutes)
-            placed = self._place(task.id, need, free, soft_limit) if need else 0
-            if placed < need:
-                placed += self._place(task.id, need - placed, free, due)
+            placed = 0
+            # spread a task over days (one long session per task per day) when there is room; when time is tight,
+            # relax that preference before giving up, so the earlier task still finishes first
+            for limit, spread in ((soft_limit, True), (soft_limit, False), (due, True), (due, False)):
+                if placed < need:
+                    placed += self._place(task.id, need - placed, free, limit, spread)
             missing = need - placed
             results.append(TaskResult(task_id=task.id, estimated_minutes=task.remaining_minutes, reserved_minutes=reserved,
                                       locked_future_minutes=fixed, scheduled_minutes=placed, unscheduled_minutes=missing))
@@ -177,7 +182,7 @@ class Planner:
             spans = _subtract(spans, cut)
         return sorted(s for s in spans if s[1] > s[0])
 
-    def _place(self, task_id: str, need: int, free: list[Span], limit: datetime) -> int:
+    def _place(self, task_id: str, need: int, free: list[Span], limit: datetime, spread: bool = False) -> int:
         """Fill earliest free time before `limit` with blocks of 30-90 minutes. Returns minutes placed."""
         placed = 0
         i = 0
@@ -189,11 +194,13 @@ class Planner:
             start = a
             made = False
             while start < hi and placed < need:
-                length = self._fit(start, hi, need - placed)
+                per_task = self.s.max_block_minutes - self.task_daily[(task_id, start.date())] if spread else None
+                length = self._fit(start, hi, need - placed, per_task)
                 if length:
                     end = start + timedelta(minutes=length)
                     self.new_blocks.append(PlanBlock(task_id=task_id, start=start, end=end))
                     self.daily[start.date()] += length
+                    self.task_daily[(task_id, start.date())] += length
                     placed += length
                     # availability entries may overlap: take these minutes out of every one of them
                     free[:] = sorted(piece for span in free for piece in _subtract([span], (start, end)))
@@ -205,13 +212,17 @@ class Planner:
                 i += 1
         return placed
 
-    def _fit(self, start: datetime, hi: datetime, left: int) -> int:
+    def _fit(self, start: datetime, hi: datetime, left: int, per_task: int | None = None) -> int:
         """Longest legal block starting at `start` (0 if none)."""
         s = self.s
         room = _minutes(start, hi)
         cap = s.max_study_minutes_per_day - self.daily[start.date()]
+        if per_task is not None:
+            cap = min(cap, per_task)
         longest = min(s.max_block_minutes, room, cap, round_up(left, self.step))
         shortest = min(s.min_block_minutes, round_up(left, self.step))
+        if longest < shortest:
+            return 0
         length = longest - longest % self.step
         while length >= shortest and length > 0:
             if self._continuity_ok(start, start + timedelta(minutes=length)):
