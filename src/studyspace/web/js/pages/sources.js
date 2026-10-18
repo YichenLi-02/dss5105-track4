@@ -66,12 +66,12 @@ function agentCard(a) {
       <p class="agent-line">From ${esc(list)}, Studyspace found:</p></div>
     </div>
     <div class="stats">
-      ${stat(a.to_review, `task${a.to_review === 1 ? "" : "s"} to check`, "#/review", a.to_review ? "accent" : "")}
+      ${stat(a.to_review, `task${a.to_review === 1 ? "" : "s"} to check`, "#/tasks", a.to_review ? "accent" : "")}
       ${stat(a.replies, `repl${a.replies === 1 ? "y" : "ies"} waiting`, "#/replies", a.replies ? "amber" : "")}
-      ${stat(a.due_7_days, `deadline${a.due_7_days === 1 ? "" : "s"} in 7 days`, "#/review")}
+      ${stat(a.due_7_days, `deadline${a.due_7_days === 1 ? "" : "s"} in 7 days`, "#/tasks")}
       ${stat(a.classes, "class sessions kept free", "#/plan")}
     </div>
-    <a class="btn primary" href="${a.to_review ? "#/review" : "#/plan"}">${a.to_review ? "Check tasks" : a.plan_saved ? "Open your plan" : "Make a plan"} ${ICON.arrow}</a>
+    <a class="btn primary" href="${a.to_review ? "#/tasks" : "#/plan"}">${a.to_review ? "Check tasks" : a.plan_saved ? "Open your plan" : "Make a plan"} ${ICON.arrow}</a>
   </section>`;
 }
 

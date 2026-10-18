@@ -1,8 +1,11 @@
-// 03 Study plan (gate 2): a draft replaces nothing until the student adopts it.
+// Study plan (gate 2): a draft replaces nothing until the student adopts it.
 import { api } from "../api.js";
+import { cantMakeIt, recordDone } from "../actions.js";
+import { openFocus } from "../focus.js";
+import { icon } from "../icons.js";
 import {
-  WARNING_TEXT, addDays, busy, courseColorClass, esc, fmtDate, fmtDateTime, fmtRange, hours, minutesBetween, modal, mondayOf,
-  sgDate, sgParts, showError, toast,
+  WARNING_TEXT, addDays, busy, courseIndex, courseTag, dueLabel, esc, fmtDate, fmtDateTime, fmtMinutes, fmtRange, hours, menu,
+  minutesBetween, modal, mondayOf, sgDate, sgParts, showError, toast,
 } from "../util.js";
 
 const DAY_START = 8, DAY_END = 22, PX_PER_HOUR = 40;
@@ -19,54 +22,59 @@ export async function render(root, ctx, params) {
   if (!view) view = window.matchMedia("(max-width: 820px)").matches ? "list" : "week";
   const taskById = Object.fromEntries(tasks.map((t) => [t.task_id, t]));
   const openTasks = tasks.filter((t) => t.status === "open");
+  const plannable = openTasks.filter((t) => t.kind === "deliverable" && t.remaining_minutes > 0 && t.due_at > now);
+
+  // one less click: a first plan (or an update the student asked for) is drafted straight away
+  const wantsUpdate = params?.get("replan") === "1";
+  if (wantsUpdate) history.replaceState(null, "", "#/plan");
+  if ((wantsUpdate || (!current && !draft && plannable.length)) && !draft) {
+    try { draft = await api.post("/api/plans/draft", {}); } catch (err) { showError(err); }
+  }
+
   const showing = draft ? "draft" : current ? "saved" : "none";
   const result = draft ? draft.result : current?.result;
   const blocks = draft ? draftBlocks(draft, current) : current?.blocks || [];
   const weekEnd = addDays(weekStart, 6);
   const inWeek = (iso) => { const d = sgDate(iso); return d >= weekStart && d <= weekEnd; };
   const weekBlocks = blocks.filter((b) => inWeek(b.start));
+  const lede = showing === "draft" ? "A proposal inside your free hours. Nothing changes until you adopt it."
+    : showing === "saved" ? "Your saved plan. Start, finish or move sessions as the week goes."
+    : "Confirm tasks and Studyspace fits them into your free hours.";
 
   root.innerHTML = `
     <div class="page-head">
-      <div>
-        <p class="eyebrow">Make room for focus</p>
-        <h1>Your week, with room to breathe.</h1>
-        <p class="lede">A realistic draft inside the hours you choose: never past a deadline, never more than your daily limit.</p>
+      <div><h1>Study plan</h1><p class="lede">${lede}</p></div>
+      <div class="row">
+        <button class="btn small" id="edit-hours">${icon("clock", 15)} Your hours</button>
+        ${current && !draft ? `<button class="btn small" id="export">${icon("calendar", 15)} Export to calendar</button>` : ""}
+        ${showing !== "draft" && (current || plannable.length) ? `<button class="btn small ${current?.replan_reasons.length ? "primary" : ""}" id="generate">${icon("sync", 15)} ${current ? "Update plan" : "Make plan"}</button>` : ""}
       </div>
-      <span class="step-tag">STEP 03 OF 03</span>
     </div>
-    ${notices(showing, current, draft, openTasks)}
-    <div class="row between" style="margin-bottom:14px">
+    ${notices(showing, current, draft, plannable, now)}
+    <div class="plan-toolbar">
       <div class="week-nav">
-        <button class="btn small" data-week="-1" aria-label="Previous week">‹</button>
-        <h2>${esc(fmtDate(weekStart + "T12:00:00+08:00"))} – ${esc(fmtDate(weekEnd + "T12:00:00+08:00"))} ${esc(weekStart.slice(0, 4))}</h2>
-        <button class="btn small" data-week="1" aria-label="Next week">›</button>
-        <button class="btn small ghost" data-week="0">This week</button>
+        <button class="icon-btn" data-week="-1" aria-label="Previous week">${icon("chevron", 16).replace("<path", '<path transform="rotate(90 12 12)"')}</button>
+        <h2>${esc(fmtDate(weekStart + "T12:00:00+08:00"))} – ${esc(fmtDate(weekEnd + "T12:00:00+08:00"))}</h2>
+        <button class="icon-btn" data-week="1" aria-label="Next week">${icon("chevron", 16).replace("<path", '<path transform="rotate(-90 12 12)"')}</button>
+        ${weekStart !== mondayOf(sgDate(now)) ? `<button class="btn tiny ghost" data-week="0">This week</button>` : ""}
       </div>
       <div class="row">
         ${statusPill(showing, current)}
         <div class="tabs"><button data-view="week" class="${view === "week" ? "active" : ""}">Week</button><button data-view="list" class="${view === "list" ? "active" : ""}">List</button></div>
-        <button class="btn small" id="edit-hours">Edit hours</button>
-        ${current && !draft ? `<button class="btn small" id="export">Export .ics</button>` : ""}
-        <button class="btn small primary" id="generate">${current || draft ? "Re-plan" : "Generate plan"}</button>
       </div>
     </div>
     <div class="grid">
       <div class="stack">
-        <section class="card">
-          <div class="card-head">
-            <h2>${showing === "draft" ? "Proposed study sessions" : showing === "saved" ? "Saved study sessions" : "Study sessions"}</h2>
-            <div class="legend"><span><i style="background:color-mix(in srgb,var(--purple) 30%,var(--card))"></i>Study</span><span><i style="background:var(--busy)"></i>Class / meeting</span><span><i style="background:var(--amber-bg);border:1px solid var(--amber)"></i>Exam / event</span><span><i style="background:color-mix(in srgb,var(--green) 15%,transparent)"></i>Your free hours</span><span><i style="background:var(--red)"></i>Deadline</span></div>
-          </div>
-          ${showing === "none" && !openTasks.length ? `<div class="empty"><strong>Nothing to plan yet</strong>Confirm tasks first, then generate a plan.<div style="margin-top:14px"><a class="btn primary" href="#/review">Review tasks →</a></div></div>` : ""}
-          ${view === "week" ? weekGrid(weekBlocks, slots, tasks, taskById, now, showing) : listView(weekBlocks, slots, tasks, taskById, now, showing)}
+        <section class="card plan-card">
+          ${showing === "none" && !plannable.length ? `<div class="calm big">${icon("calendar", 28)}<div><b>Nothing to plan yet</b><span>Confirm a few tasks and your week appears here.</span></div><a class="btn primary" href="#/tasks">Check tasks</a></div>` : ""}
+          ${view === "week" ? weekGrid(weekBlocks, slots, tasks, taskById, now, showing, settings) : listView(weekBlocks, slots, tasks, taskById, now, showing)}
+          <div class="legend plan-legend"><span><i class="lg-study"></i>Study</span><span><i class="lg-busy"></i>Class or meeting</span><span><i class="lg-event"></i>Exam or event</span><span><i class="lg-free"></i>Your free hours</span><span><i class="lg-due"></i>Deadline</span>${showing === "saved" ? `<span class="muted">Click a session for actions</span>` : ""}</div>
         </section>
-        ${showing === "draft" ? `<div class="row between"><button class="btn" id="discard">Discard draft</button><span class="tiny muted">Preview before replacing your saved plan.</span><button class="btn primary" id="adopt">Adopt and save</button></div>` : ""}
       </div>
-      <aside class="stack">${sidePanel(result, blocks, weekBlocks, openTasks, taskById, settings, current, showing)}</aside>
+      <aside class="stack">${sidePanel(result, blocks, weekBlocks, openTasks, taskById, settings, showing)}</aside>
     </div>`;
 
-  bind(root, ctx, { current, taskById, settings, slots, now });
+  bind(root, ctx, { current, taskById, settings, slots, now, blocks });
   if (params?.get("edit") === "hours") {
     history.replaceState(null, "", "#/plan");
     hoursDialog(ctx, settings, slots);
@@ -85,43 +93,50 @@ function draftBlocks(d, current) {
 
 function statusPill(showing, current) {
   if (showing === "draft") return `<span class="chip">Draft · not saved</span>`;
-  if (showing === "saved") return current.replan_reasons.length ? `<span class="chip amber">Saved · may be out of date</span>` : `<span class="chip green">Saved plan</span>`;
+  if (showing === "saved") return current.replan_reasons.length ? `<span class="chip amber">May be out of date</span>` : `<span class="chip green">${icon("check", 12)} Saved</span>`;
   return `<span class="chip outline">No plan yet</span>`;
 }
 
-function notices(showing, current, d, openTasks) {
-  const out = [];
+function notices(showing, current, d, plannable, now) {
   if (showing === "draft") {
     const c = d.changes;
-    out.push(`<div class="alert purple" style="margin-bottom:16px"><strong>This is a draft.</strong>
-      <span>${c.had_saved_plan ? `Compared with your saved plan: ${c.added.length} new or moved session(s), ${c.removed.length} removed, ${c.kept} unchanged.` : "You have no saved plan yet."}
-      Every session was checked against the rules (no clashes, daily limit, breaks, deadlines). Adopt it to save.</span></div>`);
-  } else if (showing === "saved" && current.replan_reasons.length) {
-    out.push(`<div class="alert amber" style="margin-bottom:16px"><strong>Your saved plan may no longer fit</strong><ul>${current.replan_reasons.map((r) => `<li>${esc(r)}</li>`).join("")}</ul><span>Re-plan to see a new draft. Locked and finished sessions stay where they are.</span></div>`);
-  } else if (showing === "none" && openTasks.length) {
-    out.push(`<div class="alert purple" style="margin-bottom:16px"><strong>${openTasks.length} confirmed task(s) ready.</strong><span>Generate a plan to see how they fit into your free hours.</span></div>`);
+    const r = d.result;
+    const missing = r.unscheduled.reduce((n, u) => n + u.minutes, 0);
+    const planned = r.blocks.reduce((n, b) => n + minutesBetween(b.start, b.end), 0);
+    const summary = c.had_saved_plan
+      ? `${c.added.length} new or moved, ${c.removed.length} removed, ${c.kept} unchanged compared with your saved plan.`
+      : `${r.blocks.length} sessions, ${fmtMinutes(planned)} in total${missing ? `; ${fmtMinutes(missing)} does not fit` : ", everything fits"}.`;
+    return `<div class="banner draft-banner"><span class="attn-icon purple">${icon("spark", 16)}</span>
+      <div><b>${c.had_saved_plan ? "Here's an updated plan" : "Here's a plan for your tasks"}</b><span>${esc(summary)} Checked against your rules: no clashes, daily limit, breaks, deadlines.</span></div>
+      <div class="row"><button class="btn small ghost" id="discard">Discard</button><button class="btn small primary" id="adopt">${icon("check", 15)} Adopt and save</button></div></div>`;
   }
-  return out.join("");
+  if (showing === "saved" && current.replan_reasons.length) {
+    return `<div class="banner warn-banner"><span class="attn-icon amber">${icon("sync", 16)}</span>
+      <div><b>Your plan may no longer fit</b><span>${esc(current.replan_reasons.join("; "))}</span></div>
+      <button class="btn small primary" id="generate-banner">Update plan</button></div>`;
+  }
+  return "";
 }
 
 function fixedItems(slots, tasks, start, end) {
   const busyItems = slots.filter((s) => s.kind === "busy" && s.end > start && s.start < end).map((s) => ({ ...s, type: "busy", title: s.label || "Busy" }));
   const events = tasks.filter((t) => t.kind === "event" && t.status === "open").map((t) => ({
-    start: t.due_at, end: new Date(new Date(t.due_at).getTime() + (t.remaining_minutes || 60) * 60000).toISOString(), type: "event", title: t.title,
+    start: t.due_at, end: new Date(new Date(t.due_at).getTime() + (t.remaining_minutes || 60) * 60000).toISOString(), type: "event", title: t.title, course_code: t.course_code,
   })).filter((e) => e.end > start && e.start < end);
   return [...busyItems, ...events];
 }
 
-function weekGrid(blocks, slots, tasks, taskById, now, showing) {
+function weekGrid(blocks, slots, tasks, taskById, now, showing, settings) {
   const days = [...Array(7)].map((_, i) => addDays(weekStart, i));
   const startIso = `${weekStart}T00:00:00+08:00`, endIso = `${addDays(weekStart, 7)}T00:00:00+08:00`;
   const fixed = fixedItems(slots, tasks, startIso, endIso);
   const free = slots.filter((s) => s.kind === "available" && s.end > startIso && s.start < endIso);
   const dues = tasks.filter((t) => t.kind === "deliverable" && t.status === "open" && t.due_at >= startIso && t.due_at < endIso);
   const top = (iso) => { const p = sgParts(iso); return Math.max(0, (p.h + p.min / 60 - DAY_START) * PX_PER_HOUR); };
-  const height = (a, b) => Math.max(14, Math.min(minutesBetween(a, b) / 60, DAY_END - DAY_START) * PX_PER_HOUR);
+  const height = (a, b) => Math.max(16, Math.min(minutesBetween(a, b) / 60, DAY_END - DAY_START) * PX_PER_HOUR);
   const today = sgDate(now);
   const colH = (DAY_END - DAY_START) * PX_PER_HOUR;
+  const limit = settings.plan.max_study_minutes_per_day;
   const cols = days.map((d) => {
     const on = (iso) => sgDate(iso) === d;
     const inner = [
@@ -129,21 +144,28 @@ function weekGrid(blocks, slots, tasks, taskById, now, showing) {
       ...fixed.filter((f) => on(f.start)).map((f) => `<div class="wg-block ${f.type}" style="top:${top(f.start)}px;height:${height(f.start, f.end)}px" title="${esc(f.title)} ${esc(fmtRange(f.start, f.end))}">${esc(f.title)}</div>`),
       ...blocks.filter((b) => on(b.start)).map((b) => {
         const t = taskById[b.task_id];
-        return `<div class="wg-block study ${b.done ? "done" : ""} ${b.conflict ? "conflict" : ""}" style="top:${top(b.start)}px;height:${height(b.start, b.end)}px" title="${esc(t?.title || b.task_id)} ${esc(fmtRange(b.start, b.end))}">${b.locked ? "🔒 " : ""}${b.done ? "✓ " : ""}<b>${esc(t?.title || b.task_id)}</b><br>${esc(fmtRange(b.start, b.end))}</div>`;
+        const h = height(b.start, b.end);
+        return `<button class="wg-block study k${courseIndex(t?.course_code)} ${b.done || b.task_done ? "done" : ""} ${b.conflict ? "conflict" : ""} ${b.added ? "added" : ""}" style="top:${top(b.start)}px;height:${h}px"
+          data-block='${esc(JSON.stringify({ task_id: b.task_id, start: b.start, end: b.end, locked: b.locked, done: b.done || b.task_done }))}' title="${esc(t?.title || b.task_id)} · ${esc(fmtRange(b.start, b.end))}">
+          <span class="wb-title">${b.locked ? icon("lock", 10) + " " : ""}${b.done ? "✓ " : ""}${esc(t?.title || b.task_id)}</span>${h >= 34 ? `<span class="wb-time">${esc(fmtRange(b.start, b.end))}</span>` : ""}</button>`;
       }),
-      ...dues.filter((t) => on(t.due_at)).map((t) => `<div class="wg-due" style="top:${Math.min(colH - 2, top(t.due_at))}px" title="Due: ${esc(t.title)}"><span>Due: ${esc(t.title)}</span></div>`),
+      ...dues.filter((t) => on(t.due_at)).map((t) => `<div class="wg-due" style="top:${Math.min(colH - 2, top(t.due_at))}px" title="Due: ${esc(t.title)} ${esc(fmtDateTime(t.due_at))}"><span>Due: ${esc(t.title)}</span></div>`),
       d === today ? `<div class="wg-now" style="top:${top(now)}px"></div>` : "",
     ].join("");
-    return `<div class="wg-col" style="height:${colH}px">${inner}</div>`;
+    return `<div class="wg-col ${d < today ? "past" : ""}" style="height:${colH}px">${inner}</div>`;
   });
   const hourLabels = [...Array(DAY_END - DAY_START)].map((_, i) => `<div class="wg-hour">${String(DAY_START + i).padStart(2, "0")}:00</div>`).join("");
   return `<div class="table-wrap"><div class="week-grid">
     <div class="wg-head"></div>
-    ${days.map((d) => { const p = sgParts(d + "T12:00:00+08:00"); return `<div class="wg-head ${d === today ? "today" : ""}">${p.weekday}<b>${p.d}</b></div>`; }).join("")}
+    ${days.map((d) => {
+      const p = sgParts(d + "T12:00:00+08:00");
+      const load = blocks.filter((b) => sgDate(b.start) === d).reduce((n, b) => n + minutesBetween(b.start, b.end), 0);
+      return `<div class="wg-head ${d === today ? "today" : ""}">${p.weekday}<b>${p.d}</b>
+        <span class="day-meter" title="${esc(fmtMinutes(load) || "0 min")} of ${esc(fmtMinutes(limit))}"><span style="width:${Math.min(100, (load / limit) * 100)}%"></span></span></div>`;
+    }).join("")}
     <div class="wg-hours">${hourLabels}</div>
     ${cols.join("")}
-  </div></div>
-  ${showing === "saved" ? `<div class="card-foot">Switch to List to lock a session or mark it done.</div>` : ""}`;
+  </div></div>`;
 }
 
 function listView(blocks, slots, tasks, taskById, now, showing) {
@@ -158,7 +180,8 @@ function listView(blocks, slots, tasks, taskById, now, showing) {
     ].sort((a, b) => a.start.localeCompare(b.start));
     if (!items.length) return "";
     const p = sgParts(d + "T12:00:00+08:00");
-    return `<div class="day-group"><div class="day-label ${d === today ? "today" : ""}">${p.weekday}<small>${esc(fmtDate(d + "T12:00:00+08:00"))}${d === today ? " · today" : ""}</small></div>
+    const load = items.filter((i) => i.kind === "study").reduce((n, b) => n + minutesBetween(b.start, b.end), 0);
+    return `<div class="day-group ${d < today ? "past" : ""}"><div class="day-label ${d === today ? "today" : ""}">${p.weekday}<small>${esc(fmtDate(d + "T12:00:00+08:00"))}${d === today ? " · today" : ""}</small>${load ? `<small>${esc(fmtMinutes(load))} study</small>` : ""}</div>
       <div class="sessions">${items.map((it) => it.kind === "study" ? sessionRow(it, taskById, showing, now) : `
         <div class="session ${it.kind === "event" ? "event" : "fixed"}"><span class="s-time">${esc(fmtRange(it.start, it.end))}</span><span><span class="s-title">${esc(it.title)}</span><div class="s-sub">${it.kind === "event" ? "exam or event" : "fixed"}</div></span><span></span></div>`).join("")}</div></div>`;
   }).join("");
@@ -168,61 +191,60 @@ function listView(blocks, slots, tasks, taskById, now, showing) {
 function sessionRow(b, taskById, showing, now) {
   const t = taskById[b.task_id];
   const past = b.end <= now;
+  const data = esc(JSON.stringify({ task_id: b.task_id, start: b.start, end: b.end, locked: b.locked, done: b.done }));
+  if (b.task_done && !b.done) {
+    return `<div class="session k${courseIndex(t?.course_code)} done"><span class="s-time">${esc(fmtRange(b.start, b.end))}</span>
+      <span><span class="s-title">${esc(t?.title || b.task_id)}</span><div class="s-sub">finished early · update the plan to free this time</div></span><span class="chip green">Spare</span></div>`;
+  }
   const actions = showing === "saved" && !b.done ? `
-    <button class="btn tiny ${b.locked ? "on" : ""}" data-lock='${esc(JSON.stringify({ task_id: b.task_id, start: b.start, end: b.end, locked: !b.locked }))}'>${b.locked ? "Locked" : "Lock"}</button>
-    <button class="btn tiny" data-done='${esc(JSON.stringify({ task_id: b.task_id, start: b.start, end: b.end }))}'>Done</button>` : b.done ? `<span class="chip green">Done</span>` : b.locked ? `<span class="chip">Locked</span>` : b.added ? `<span class="chip green">New</span>` : "";
-  return `<div class="session ${courseColorClass(t?.course_code || b.task_id)} ${b.done ? "done" : ""} ${b.conflict ? "conflict" : ""} ${b.added ? "added" : ""}">
+    ${!past ? `<button class="btn tiny" data-focus-block='${data}' title="Start a focus timer">${icon("play", 13)}</button>` : ""}
+    <button class="btn tiny" data-done-block='${data}'>${icon("check", 13)} Done</button>
+    <button class="icon-btn small" data-more='${data}' aria-label="More actions">⋯</button>`
+    : b.done ? `<span class="chip green">Done</span>` : b.locked ? `<span class="chip">${icon("lock", 11)} Locked</span>` : b.added ? `<span class="chip green">New</span>` : "";
+  return `<div class="session k${courseIndex(t?.course_code)} ${b.done ? "done" : ""} ${b.conflict ? "conflict" : ""} ${b.added ? "added" : ""}">
     <span class="s-time">${esc(fmtRange(b.start, b.end))}</span>
-    <span><span class="s-title">${esc(t?.title || b.task_id)}</span><div class="s-sub">${esc(t?.course_code || "")}${t ? ` · due ${esc(fmtDateTime(t.due_at))}` : ""}${b.conflict ? " · clashes with a fixed commitment" : ""}${past && !b.done && showing === "saved" ? " · did it happen?" : ""}</div></span>
+    <span><span class="s-title">${b.locked ? icon("lock", 11) + " " : ""}${esc(t?.title || b.task_id)}</span><div class="s-sub">${courseTag(t?.course_code)}${t ? `due ${esc(dueLabel(t.due_at, now))}` : ""}${b.conflict ? " · clashes with a fixed commitment" : ""}${past && !b.done && showing === "saved" ? " · did it happen?" : ""}</div></span>
     <span class="s-actions">${actions}</span>
   </div>`;
 }
 
-function sidePanel(result, blocks, weekBlocks, openTasks, taskById, settings, current, showing) {
+function sidePanel(result, blocks, weekBlocks, openTasks, taskById, settings, showing) {
   const p = settings.plan;
   const weekMinutes = weekBlocks.filter((b) => !b.done).reduce((n, b) => n + minutesBetween(b.start, b.end), 0);
   const missing = (result?.unscheduled || []).reduce((n, u) => n + u.minutes, 0);
-  const warnings = (result?.warnings || []);
+  const warnings = result?.warnings || [];
   const results = result?.task_results || [];
   return `
   <section class="card glance"><div class="card-body">
-    <p class="side-title">Your plan at a glance</p>
+    <p class="side-title">This week</p>
     <div class="big-number">${hours(weekMinutes)}<small>h</small></div>
-    <p class="small" style="color:var(--green);margin:6px 0 14px">${showing === "none" ? "no plan yet" : "planned for focused work this week"}</p>
-    <div class="kv"><span>Unassigned</span><b style="${missing ? "color:var(--red)" : ""}">${hours(missing)} h</b></div>
+    <p class="small" style="color:var(--green);margin:6px 0 14px">${showing === "none" ? "no plan yet" : "of focused work planned"}</p>
+    <div class="kv"><span>Does not fit</span><b style="${missing ? "color:var(--red)" : ""}">${missing ? fmtMinutes(missing) : "nothing"}</b></div>
     <div class="kv"><span>Confirmed tasks</span><b>${openTasks.filter((t) => t.kind === "deliverable").length}</b></div>
     <div class="kv"><span>Locked sessions</span><b>${blocks.filter((b) => b.locked).length}</b></div>
   </div></section>
-  ${warnings.length ? `<section class="card"><div class="card-body">
-    <p class="side-title">Things to know</p>
-    <div class="stack" style="gap:8px">${warnings.map((w) => `<div class="alert ${["INSUFFICIENT_TIME", "PAST_DEADLINE", "LOCK_CONFLICT"].includes(w.code) ? "red" : "amber"}"><strong>${esc(WARNING_TEXT[w.code] || w.code)}</strong><span>${esc(w.message)}</span></div>`).join("")}</div>
-    ${missing ? `<p class="small muted" style="margin:10px 0 0">Add free hours, lower an estimate, or talk to the course team. Studyspace never squeezes work into the night or past a deadline.</p>` : ""}
+  ${warnings.length ? `<section class="card"><div class="card-head"><h2>Things to know</h2></div><div class="card-body stack" style="gap:8px">
+    ${warnings.map((w) => `<div class="alert ${["INSUFFICIENT_TIME", "PAST_DEADLINE", "LOCK_CONFLICT"].includes(w.code) ? "red" : "amber"}"><strong>${esc(WARNING_TEXT[w.code] || w.code)}</strong><span>${esc(w.message)}</span></div>`).join("")}
+    ${missing ? `<p class="small muted" style="margin:4px 0 0">Add free hours, lower an estimate, or talk to the course team. Studyspace never squeezes work into the night or past a deadline.</p>` : ""}
   </div></section>` : ""}
-  ${results.length ? `<section class="card"><div class="card-body">
-    <p class="side-title">Task coverage</p>
+  ${results.length ? `<section class="card"><div class="card-head"><h2>Task coverage</h2></div><div class="card-body" style="padding-top:6px">
     ${results.map((r) => {
       const t = taskById[r.task_id];
       const planned = r.scheduled_minutes + r.locked_future_minutes;
       const pct = r.reserved_minutes ? Math.round((planned / r.reserved_minutes) * 100) : 100;
-      return `<div class="task-line"><div class="row between"><b>${esc(t?.title || r.task_id)}</b><span class="tiny muted">${hours(planned)} / ${hours(r.reserved_minutes)} h</span></div>
-        <div class="bar"><span style="width:${Math.min(100, pct)}%;${pct < 100 ? "background:var(--red)" : ""}"></span></div></div>`;
+      return `<div class="task-line"><div class="row between"><span class="row" style="gap:6px;min-width:0">${courseTag(t?.course_code)}<b class="ellipsis">${esc(t?.title || r.task_id)}</b></span><span class="tiny muted">${fmtMinutes(planned) || "0"} / ${fmtMinutes(r.reserved_minutes)}</span></div>
+        <span class="meter wide ${pct < 100 ? "short" : ""}"><span style="width:${Math.min(100, pct)}%"></span></span></div>`;
     }).join("")}
   </div></section>` : ""}
-  <section class="card"><div class="card-body">
-    <p class="side-title">A sustainable pace</p>
-    <div class="kv" style="border-top:0"><span>Daily focus limit</span><b>${hours(p.max_study_minutes_per_day)} h</b></div>
-    <div class="kv"><span>Longest session</span><b>${p.max_block_minutes} min</b></div>
-    <div class="kv"><span>Break between sessions</span><b>${p.min_break_minutes} min</b></div>
-    <div class="kv"><span>Preferred buffer</span><b>${hours(p.target_buffer_minutes)} h</b></div>
-    <p class="tiny muted" style="margin:8px 0 0">Work stays within ${esc(p.study_day_start)}–${esc(p.study_day_end)} and your available hours. A buffer warning stays visible.</p>
-  </div></section>
-  <section class="card soft"><div class="card-body">
-    <p class="side-title">A plan you can change</p>
-    <p class="small muted" style="margin:0">Lock a session to keep its time when you re-plan. Mark it done to count the work. Changed deadlines and hours need a new preview.</p>
+  <section class="card"><div class="card-head"><h2>Your pace</h2><button class="btn tiny ghost" id="edit-pace">Edit</button></div><div class="card-body" style="padding-top:4px">
+    <div class="kv" style="border-top:0"><span>Daily focus limit</span><b>${fmtMinutes(p.max_study_minutes_per_day)}</b></div>
+    <div class="kv"><span>Longest session</span><b>${p.max_block_minutes} min, then a ${p.min_break_minutes}-min break</b></div>
+    <div class="kv"><span>Finish before deadlines</span><b>${hours(p.target_buffer_minutes)} h early</b></div>
+    <div class="kv"><span>Study window</span><b>${esc(p.study_day_start)}–${esc(p.study_day_end)}</b></div>
   </div></section>`;
 }
 
-function bind(root, ctx, { current, taskById, settings, slots, now }) {
+function bind(root, ctx, { current, taskById, settings, slots, now, blocks }) {
   root.querySelectorAll("[data-week]").forEach((b) => b.addEventListener("click", () => {
     const step = +b.dataset.week;
     weekStart = step === 0 ? mondayOf(sgDate(now)) : addDays(weekStart, step * 7);
@@ -230,68 +252,72 @@ function bind(root, ctx, { current, taskById, settings, slots, now }) {
   }));
   root.querySelectorAll("[data-view]").forEach((b) => b.addEventListener("click", () => { view = b.dataset.view; ctx.refresh(); }));
 
-  root.querySelector("#generate").addEventListener("click", (e) => busy(e.currentTarget, async () => {
+  const generate = (btn) => busy(btn, async () => {
     try {
       draft = await api.post("/api/plans/draft", {});
       const r = draft.result;
-      toast(r.status === "complete" ? "Draft ready. Every task fits." : r.status === "partial" ? "Draft ready, but some work does not fit. See the warnings." : "Draft ready. Some tasks need input first.");
+      toast(r.status === "complete" ? "Draft ready. Every task fits." : r.status === "partial" ? "Draft ready, but some work does not fit." : "Draft ready. Some tasks need input first.");
       ctx.refresh();
     } catch (err) { showError(err); }
-  }));
+  });
+  root.querySelector("#generate")?.addEventListener("click", (e) => generate(e.currentTarget));
+  root.querySelector("#generate-banner")?.addEventListener("click", (e) => generate(e.currentTarget));
 
   root.querySelector("#adopt")?.addEventListener("click", (e) => busy(e.currentTarget, async () => {
     try {
       await api.post(`/api/plans/${draft.plan_id}/adopt`, { based_on: draft.based_on });
       draft = null;
-      toast("Plan saved. You can export it to your calendar.");
+      toast("Plan saved. Export it to your calendar any time.");
       ctx.refresh();
     } catch (err) {
       if (err.code === "STALE_DRAFT") {
         draft = null;
-        toast("Your tasks or hours changed since this draft. Generate a new one.", "error");
-        ctx.refresh();
+        toast("Something changed since this draft, so here is a fresh one.");
+        ctx.go("plan", "replan=1");
       } else showError(err);
     }
   }));
-  root.querySelector("#discard")?.addEventListener("click", () => { draft = null; ctx.refresh(); });
+  root.querySelector("#discard")?.addEventListener("click", () => { draft = null; toast("Draft discarded. Your saved plan is unchanged."); ctx.refresh(); });
   root.querySelector("#export")?.addEventListener("click", async () => {
     try { await api.download("/api/plans/current/ics", "studyspace-plan.ics"); toast("Calendar file downloaded. Open it to add the sessions to Outlook, Google or Apple Calendar."); }
     catch (err) { showError(err); }
   });
   root.querySelector("#edit-hours").addEventListener("click", () => hoursDialog(ctx, settings, slots));
+  root.querySelector("#edit-pace")?.addEventListener("click", () => hoursDialog(ctx, settings, slots));
 
-  root.querySelectorAll("[data-lock]").forEach((b) => b.addEventListener("click", async () => {
-    try {
-      const body = JSON.parse(b.dataset.lock);
-      await api.post("/api/plans/lock", body);
-      toast(body.locked ? "Locked. Re-planning keeps this session where it is." : "Unlocked.");
-      ctx.refresh();
-    } catch (err) { showError(err); }
+  const planId = current?.plan_id;
+  const actionsFor = (b, anchor) => {
+    const task = taskById[b.task_id];
+    const block = { ...b, plan_id: planId, title: task?.title, course_code: task?.course_code };
+    if (draft) return toast("Adopt the plan first; then you can start, finish or move sessions.");
+    if (b.done) return toast("This session is done.");
+    const past = b.end <= now;
+    menu(anchor, [
+      ...(!past ? [{ label: "Start focus timer", icon: "play", onClick: () => openFocus(ctx, block, task) }] : []),
+      { label: past ? "I did this session" : "Mark done", icon: "check", onClick: () => recordDone(ctx, block, task) },
+      { label: b.locked ? "Unlock" : "Lock in place", hint: b.locked ? "" : "kept when you update the plan", icon: "lock", onClick: () => toggleLock(ctx, b) },
+      { divider: true },
+      { label: "Can't make it", hint: "find another time", icon: "ban", onClick: () => cantMakeIt(ctx, block) },
+    ]);
+  };
+  root.querySelectorAll("[data-block]").forEach((el) => el.addEventListener("click", () => actionsFor(JSON.parse(el.dataset.block), el)));
+  root.querySelectorAll("[data-more]").forEach((el) => el.addEventListener("click", () => actionsFor(JSON.parse(el.dataset.more), el)));
+  root.querySelectorAll("[data-done-block]").forEach((el) => el.addEventListener("click", () => {
+    const b = JSON.parse(el.dataset.doneBlock);
+    recordDone(ctx, { ...b, plan_id: planId }, taskById[b.task_id]);
   }));
-  root.querySelectorAll("[data-done]").forEach((b) => b.addEventListener("click", () => doneDialog(ctx, JSON.parse(b.dataset.done), taskById, current)));
+  root.querySelectorAll("[data-focus-block]").forEach((el) => el.addEventListener("click", () => {
+    const b = JSON.parse(el.dataset.focusBlock);
+    openFocus(ctx, { ...b, plan_id: planId }, taskById[b.task_id]);
+  }));
 }
 
-async function doneDialog(ctx, block, taskById, current) {
-  const t = taskById[block.task_id];
-  const mins = minutesBetween(block.start, block.end);
-  const left = Math.max(0, (t?.remaining_minutes || 0) - mins);
-  await modal("Session done", `
-    <p style="margin:0"><b>${esc(t?.title || block.task_id)}</b><br><span class="muted small">${esc(fmtDateTime(block.start))} – ${esc(fmtRange(block.start, block.end).split("–")[1])} · ${hours(mins)} h</span></p>
-    <label class="field">How much work is left on this task? (hours)
-      <input type="number" id="left" min="0" step="0.25" value="${hours(left)}">
-      <span class="hint">Change it if the session went faster or slower than planned. 0 marks the task done.</span>
-    </label>`, {
-    actions: [{ label: "Cancel", value: null }, {
-      label: "Record", primary: true, onClick: async (dlg) => {
-        const leftMin = Math.round(parseFloat(dlg.querySelector("#left").value || "0") * 60);
-        const r = await api.post("/api/progress", {
-          op_id: `${current.plan_id}:${block.task_id}:${block.start}`, task_id: block.task_id, start: block.start, end: block.end, remaining_minutes: leftMin,
-        });
-        toast(r.recorded ? (r.task.status === "done" ? "Nice work. Task finished." : `Recorded. ${hours(r.task.remaining_minutes)} h left.`) : "Already recorded.");
-        ctx.refresh();
-      },
-    }],
-  });
+async function toggleLock(ctx, b) {
+  try {
+    await api.post("/api/plans/lock", { task_id: b.task_id, start: b.start, end: b.end, locked: !b.locked });
+    toast(b.locked ? "Unlocked." : "Locked. Updating the plan keeps this session where it is.");
+    ctx.refresh();
+  } catch (err) { showError(err); }
 }
 
 const WEEKDAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
@@ -305,7 +331,7 @@ async function hoursDialog(ctx, settings, slots) {
     return `<div class="row" data-day="${wd}" style="align-items:flex-start">
       <b style="width:90px;font-size:12.5px;padding-top:7px">${wd[0].toUpperCase() + wd.slice(1, 3)}</b>
       <div class="stack" style="gap:6px;flex:1" data-ranges>${ranges.map(rangeRow).join("")}</div>
-      <button class="btn tiny" data-add-range style="margin-top:4px">+ add</button></div>`;
+      <button class="btn tiny ghost" data-add-range style="margin-top:4px">+ add</button></div>`;
   }).join("");
   await modal("Your hours", `
     <p class="small muted" style="margin:0">When are you willing to study? Studyspace only plans inside these hours, never over classes or meetings.</p>

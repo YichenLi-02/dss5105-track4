@@ -62,6 +62,7 @@ class Candidate(BaseModel):
     history: list[dict[str, Any]] = Field(default_factory=list)  # earlier mentions: source_id, due_text, due_at
     related_task_id: str | None = None   # set when the candidate updates an existing task
     status: Literal["pending", "confirmed", "dismissed"] = "pending"
+    suggested_minutes: int | None = None  # a starting effort the student can accept or change (never applied silently)
 
 
 class Task(BaseModel):

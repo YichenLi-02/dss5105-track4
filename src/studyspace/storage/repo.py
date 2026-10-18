@@ -164,6 +164,11 @@ def list_tasks(conn: sqlite3.Connection, ws: str) -> list[Task]:
     return sorted((Task.model_validate_json(r["body"]) for r in rows), key=lambda t: (t.due_at, t.task_id))
 
 
+def delete_task(conn: sqlite3.Connection, ws: str, task_id: str) -> None:
+    conn.execute("DELETE FROM tasks WHERE workspace_id = ? AND task_id = ?", (ws, task_id))
+    conn.execute("DELETE FROM locks WHERE workspace_id = ? AND task_id = ?", (ws, task_id))
+
+
 def get_task(conn: sqlite3.Connection, ws: str, task_id: str) -> Task | None:
     r = conn.execute("SELECT body FROM tasks WHERE workspace_id = ? AND task_id = ?", (ws, task_id)).fetchone()
     return Task.model_validate_json(r["body"]) if r else None

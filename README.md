@@ -23,17 +23,21 @@ uv run pytest           # 运行测试 / run the tests
 uv run studyspace evaluate   # 抽取与排程评估报告 / extraction and planner evaluation report
 ```
 
-打开 http://127.0.0.1:8000 ，在 Sources 页点 **Load demo student** 载入虚构学生（时钟固定在 2026-10-12 08:00，第 9 周），然后按左侧顺序走一遍。接口文档在 `/docs`。  
-Open http://127.0.0.1:8000 and click **Load demo student** on the Sources page (a fictional student; clock fixed at Mon 12 Oct 2026, 08:00, Week 9), then follow the pages in the sidebar. API docs are at `/docs`.
+打开 http://127.0.0.1:8000 ，在首页点 **Try with a demo student** 载入虚构学生（时钟固定在 2026-10-12 08:00，第 9 周），然后按左侧顺序走一遍。接口文档在 `/docs`。  
+Open http://127.0.0.1:8000 and click **Try with a demo student** on the home page (a fictional student; clock fixed at Mon 12 Oct 2026, 08:00, Week 9), then follow the pages in the sidebar. API docs are at `/docs`.
 
 | 页面 / Page | 做什么 / What it does |
 | --- | --- |
-| 01 Sources | 首页：agent 读了哪些来源、找到了什么。邮件（最近 5 封）、课表（本周课程与考试）、课件（PDF）三个区域，各有“+”手动添加和“Sync”（自动同步，规划中）；点任何一条看原件，邮件中产生任务的句子会高亮；下方是 agent 的活动记录。<br>Home: what the agent reads and what it found. Email (latest five), timetable (this week, exams) and course files (PDF), each with + to add and Sync (planned); open any item to see the original with the task sentences highlighted; an activity log below. |
-| 02 Review tasks | 第一道关口：看原文依据，改日期和用时，处理“改期”和“midnight”二选一，确认后才进入排程。<br>Gate 1: check the source sentence, fix dates and effort, resolve deadline changes and "midnight" choices. |
-| 03 Study plan | 按 4 号的规则生成草稿（不撞课、每天 ≤3 小时、单段 ≤90 分钟、截止前留 24 小时）；第二道关口：采用后才保存。可锁定、标记完成、重排、导出 .ics。<br>Gate 2: a checked draft is saved only when adopted. Lock or finish sessions, re-plan, export to your calendar. |
-| 04 Replies | 第三道关口：按学生自己的语气起草回复，读过并勾选后才能复制或在邮件程序中打开；系统从不发送。<br>Gate 3: drafts in the student's style; copy or open in the mail app only after review. Nothing is ever sent by the app. |
-| 05 Find a meeting time | 避开课程、考试、会议、锁定时段，可加入组员的 .ics 忙碌时间。<br>Free times around classes, exams, meetings, locked sessions and groupmates' busy times. |
-| 06 Privacy & data | 并排显示“本机原文”和“模型会收到的内容”（清洗 + 脱敏），列出每次模型调用，可删除全部数据。<br>Original next to what a model would receive; every model call is listed; delete all data. |
+| Today | 首页：下一段学习（可开始专注计时）、今天的时间线、“需要你处理”的事（可直接选截止时间并确认）、7 天内截止的任务、本周负荷。<br>Home: what's next (with a focus timer), today's timeline, what needs you (pick a deadline right there), what's due in 7 days, the week's load. |
+| Sources | agent 读了哪些来源、找到了什么：邮件、课表、课件三个区域，各有“+”和“Sync”（规划中）；点开看原件，产生任务的句子会高亮；活动记录。<br>What the agent reads and found: email, timetable and course files, each with + and Sync (planned); originals with task sentences highlighted; activity log. |
+| Tasks | 第一道关口：按“需要你决定 / 可以直接确认 / 没有截止日期 / 已过期”分组；工作量给出建议值，一键确认、一键全部确认、撤销、键盘操作（J/K、Enter、X）。<br>Gate 1: grouped by what each needs; suggested effort, one-click confirm, confirm all, undo, keyboard shortcuts. |
+| Study plan | 第二道关口：自动生成草稿，采用后才保存；周视图里点任意时段可开始专注、完成、锁定或“没空”（自动给出新草稿）；导出 .ics。<br>Gate 2: drafted automatically, saved only when adopted; click a session to focus, finish, lock or say "can't make it" (a new draft follows); export to your calendar. |
+| Replies | 第三道关口：按学生自己的语气起草回复，读过并勾选后才能复制或在邮件程序中打开；系统从不发送。<br>Gate 3: drafts in the student's style; copy or open in the mail app only after review. Nothing is ever sent by the app. |
+| Meeting time | 避开课程、考试、会议、锁定时段，可加入组员的 .ics 忙碌时间。<br>Free times around classes, exams, meetings, locked sessions and groupmates' busy times. |
+| Privacy & data | 并排显示“本机原文”和“模型会收到的内容”（清洗 + 脱敏），列出每次模型调用，可删除全部数据。<br>Original next to what a model would receive; every model call is listed; delete all data. |
+
+任何页面右上角的 **+ Add** 可粘贴消息、上传文件、手动加任务；也可以把文件直接拖进窗口。  
+**+ Add** (top right, every page) pastes a message, uploads files or adds a task; files can also be dropped anywhere on the window.
 
 网页前端在 `src/studyspace/web/`：不需要 Node 或构建步骤，由同一个服务提供；界面沿用 1 号的设计稿。  
 The web front end lives in `src/studyspace/web/`: no Node or build step, served by the same process, following member 1's UI design.

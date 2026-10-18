@@ -1,4 +1,5 @@
 // Formatting and small DOM helpers. All times are shown in Singapore time.
+import { hydrateIcons, icon } from "./icons.js";
 
 export const TZ = "Asia/Singapore";
 
@@ -76,14 +77,94 @@ export function senderName(sender) {
   return m ? m[1].trim() : sender;
 }
 
+// ---- relative time --------------------------------------------------------------------------
+/** "tonight 23:59", "tomorrow 09:00", "Fri 18:00", "23 Oct" — read from the workspace clock, not the computer's. */
+export function dueLabel(iso, nowIso) {
+  if (!iso) return "";
+  const days = Math.round((new Date(`${sgDate(iso)}T12:00:00+08:00`) - new Date(`${sgDate(nowIso)}T12:00:00+08:00`)) / 864e5);
+  const t = fmtTime(iso);
+  if (days === 0) return sgParts(iso).h >= 18 ? `tonight ${t}` : `today ${t}`;
+  if (days === 1) return `tomorrow ${t}`;
+  if (days === -1) return `yesterday ${t}`;
+  if (days > 1 && days < 7) return `${sgParts(iso).weekday} ${t}`;
+  return `${fmtDate(iso)}, ${t}`;
+}
+
+/** "in 15 h", "in 3 days", "2 days ago" */
+export function fromNow(iso, nowIso) {
+  if (!iso) return "";
+  const mins = Math.round((new Date(iso) - new Date(nowIso)) / 60000);
+  const a = Math.abs(mins);
+  const txt = a < 60 ? `${a} min` : a < 48 * 60 ? `${Math.round(a / 60)} h` : `${Math.round(a / 1440)} days`;
+  return mins >= 0 ? `in ${txt}` : `${txt} ago`;
+}
+
+/** colour for a deadline chip: red within a day, amber within three, grey after; past is red */
+export function urgency(iso, nowIso) {
+  if (!iso) return "outline";
+  const h = (new Date(iso) - new Date(nowIso)) / 36e5;
+  return h < 24 ? "red" : h < 72 ? "amber" : "grey";
+}
+
+export function fmtMinutes(m) {
+  if (m == null) return "";
+  if (m < 60) return `${m} min`;
+  const h = Math.floor(m / 60), r = m % 60;
+  return r ? `${h} h ${r} min` : `${h} h`;
+}
+
+// ---- course colours ---------------------------------------------------------------------------
+// Fixed order (sorted course codes), never cycled: a seventh course is grey. Validated with the dataviz checker.
+let COURSES = [];
+export function setCourses(list) { COURSES = list || []; }
+export function courseIndex(code) {
+  const i = COURSES.indexOf(code);
+  return i >= 0 && i < 6 ? i + 1 : 0;
+}
+export function courseTag(code, { short = false } = {}) {
+  if (!code) return "";
+  return `<span class="course-tag"><span class="course-dot k${courseIndex(code)}"></span>${esc(short ? code.replace(/\d+[A-Z]?$/, "") : code)}</span>`;
+}
+
 // ---- feedback -------------------------------------------------------------------------------
 let toastTimer;
-export function toast(message, kind = "info") {
+/** A short message; pass an action ({label, onClick}) for an Undo button. */
+export function toast(message, kind = "info", action = null) {
   const el = document.getElementById("toast");
-  el.textContent = message;
-  el.className = `show ${kind === "error" ? "error" : ""}`;
+  el.innerHTML = `<span>${esc(message)}</span>${action ? `<button class="toast-action">${esc(action.label)}</button>` : ""}`;
+  el.className = `show ${kind === "error" ? "error" : ""} ${action ? "has-action" : ""}`;
+  if (action) {
+    el.querySelector(".toast-action").onclick = async () => {
+      el.className = "";
+      try { await action.onClick(); } catch (err) { showError(err); }
+    };
+  }
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => (el.className = ""), kind === "error" ? 5200 : 3200);
+  toastTimer = setTimeout(() => (el.className = ""), action ? 7000 : kind === "error" ? 5200 : 3200);
+}
+
+// ---- menus ------------------------------------------------------------------------------------
+/** A small dropdown under `anchor`. items: [{label, icon, onClick}] */
+export function menu(anchor, items) {
+  const el = document.getElementById("menu");
+  el.innerHTML = items.map((it, i) => it.divider ? `<hr>` : `<button role="menuitem" data-i="${i}">${it.icon ? icon(it.icon, 16) : ""}<span>${esc(it.label)}${it.hint ? `<small>${esc(it.hint)}</small>` : ""}</span></button>`).join("");
+  const r = anchor.getBoundingClientRect();
+  el.hidden = false;
+  const w = el.offsetWidth;
+  el.style.top = `${r.bottom + 6 + window.scrollY}px`;
+  const preferLeft = r.left + w <= window.innerWidth - 8;  // open to the right of the anchor when it fits
+  el.style.left = `${Math.max(8, preferLeft ? r.left : r.right - w)}px`;
+  const close = () => { el.hidden = true; document.removeEventListener("click", outside, true); document.removeEventListener("keydown", esc_); };
+  const outside = (e) => { if (!el.contains(e.target) && e.target !== anchor && !anchor.contains(e.target)) close(); };
+  const esc_ = (e) => { if (e.key === "Escape") close(); };
+  setTimeout(() => { document.addEventListener("click", outside, true); document.addEventListener("keydown", esc_); }, 0);
+  el.onclick = (e) => {
+    const b = e.target.closest("[data-i]");
+    if (!b) return;
+    close();
+    items[+b.dataset.i].onClick?.();
+  };
+  el.querySelector("button")?.focus();
 }
 
 export function showError(err) {
@@ -96,7 +177,7 @@ export function modal(title, bodyHtml, { actions = [], wide = false } = {}) {
   const dlg = document.getElementById("modal");
   dlg.style.width = wide ? "min(820px, calc(100vw - 32px))" : "";
   dlg.innerHTML = `
-    <div class="modal-head"><h3 id="modal-title">${esc(title)}</h3><button class="btn small ghost" data-close aria-label="Close">✕</button></div>
+    <div class="modal-head"><h3 id="modal-title">${esc(title)}</h3><button class="icon-btn" data-close aria-label="Close">${icon("x", 16)}</button></div>
     <div class="modal-body">${bodyHtml}</div>
     ${actions.length ? `<div class="modal-foot">${actions.map((a, i) => `<button class="btn ${a.primary ? "primary" : ""} ${a.danger ? "danger" : ""}" data-action-index="${i}">${esc(a.label)}</button>`).join("")}</div>` : ""}`;
   return new Promise((resolve) => {
@@ -121,6 +202,7 @@ export function modal(title, bodyHtml, { actions = [], wide = false } = {}) {
       }
     };
     dlg.oncancel = (e) => { e.preventDefault(); close(null); };
+    hydrateIcons(dlg);
     dlg.showModal();
     const first = dlg.querySelector("input, textarea, select");
     if (first) first.focus();

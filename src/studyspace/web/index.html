@@ -10,51 +10,48 @@
 </head>
 <body>
   <aside class="sidebar" aria-label="Main navigation">
-    <a class="brand" href="#/sources"><span class="brand-icon" aria-hidden="true">s</span>studyspace<span class="brand-dot">.</span></a>
-    <div class="workspace-card">
-      <span class="avatar" id="avatar">?</span>
-      <div><strong id="ws-name">Your workspace</strong><small id="ws-sub">Student planner</small></div>
-    </div>
+    <a class="brand" href="#/today"><span class="brand-icon" aria-hidden="true">s</span>studyspace<span class="brand-dot">.</span></a>
+
+    <nav class="nav" aria-label="Main">
+      <a href="#/today" data-page="today"><i data-icon="sun"></i>Today<span class="nav-count" id="count-today"></span></a>
+    </nav>
     <div class="nav-label">WORKFLOW</div>
     <nav class="nav" aria-label="Workflow">
-      <a href="#/sources" data-page="sources"><span class="nav-num">01</span>Sources<span class="nav-count" id="count-sources"></span></a>
-      <a href="#/review" data-page="review"><span class="nav-num">02</span>Review tasks<span class="nav-count" id="count-review"></span></a>
-      <a href="#/plan" data-page="plan"><span class="nav-num">03</span>Study plan<span class="nav-count" id="count-plan"></span></a>
+      <a href="#/sources" data-page="sources"><i data-icon="inbox"></i>Sources</a>
+      <a href="#/tasks" data-page="tasks"><i data-icon="check"></i>Tasks<span class="nav-count" id="count-tasks"></span></a>
+      <a href="#/plan" data-page="plan"><i data-icon="calendar"></i>Study plan<span class="nav-count" id="count-plan"></span></a>
     </nav>
     <div class="nav-label">ASSIST</div>
     <nav class="nav" aria-label="Assist">
-      <a href="#/replies" data-page="replies"><span class="nav-num">04</span>Replies<span class="nav-count" id="count-replies"></span></a>
-      <a href="#/meetings" data-page="meetings"><span class="nav-num">05</span>Find a meeting time</a>
-      <a href="#/privacy" data-page="privacy"><span class="nav-num">06</span>Privacy &amp; data</a>
-      <a href="#/settings" data-page="settings"><span class="nav-num">07</span>Settings</a>
+      <a href="#/replies" data-page="replies"><i data-icon="reply"></i>Replies<span class="nav-count" id="count-replies"></span></a>
+      <a href="#/meetings" data-page="meetings"><i data-icon="users"></i>Meeting time</a>
     </nav>
-    <div class="side-note">
-      <span class="tiny-orbit" aria-hidden="true"></span>
-      <strong>A week that works for you</strong>
-      <p>Make room for focused work, without filling every free hour.</p>
+
+    <div class="sidebar-foot">
+      <nav class="nav" aria-label="Account">
+        <a href="#/privacy" data-page="privacy"><i data-icon="shield"></i>Privacy &amp; data</a>
+        <a href="#/settings" data-page="settings"><i data-icon="settings"></i>Settings</a>
+      </nav>
+      <div class="workspace-card">
+        <span class="avatar" id="avatar">?</span>
+        <div><strong id="ws-name">Your workspace</strong><small id="ws-sub">Student planner</small></div>
+      </div>
     </div>
   </aside>
 
   <div class="main">
     <header class="topbar">
-      <div class="row">
-        <button class="btn small menu-toggle" id="menu-toggle" aria-label="Open menu">☰</button>
-        <span><span class="crumb-ws">Workspace</span><span class="slash">/</span><strong id="breadcrumb">Sources</strong></span>
+      <div class="row" style="gap:10px;min-width:0">
+        <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Open menu"><i data-icon="menu"></i></button>
+        <strong id="breadcrumb" class="crumb">Today</strong>
       </div>
       <div class="top-actions">
-        <span class="chip green" id="mode-chip" title="No message leaves this computer"><span class="dot"></span>Offline mode</span>
-        <span class="tiny muted">SGT · UTC+8</span>
-        <button class="theme-toggle" id="theme-toggle" aria-label="Switch light or dark theme">◐</button>
+        <button class="demo-pill" id="demo-pill" hidden aria-haspopup="menu"><span class="dot"></span><span id="demo-text">Demo</span><i data-icon="chevron"></i></button>
+        <span class="chip green" id="mode-chip" title="Extraction runs on this computer. No message is sent anywhere."><span class="dot"></span>Offline</span>
+        <button class="btn small primary" id="quick-add" aria-haspopup="menu"><i data-icon="plus"></i>Add</button>
+        <button class="icon-btn" id="theme-toggle" aria-label="Switch light or dark theme"><i data-icon="moon"></i></button>
       </div>
     </header>
-
-    <div class="demo-bar" id="demo-bar" hidden>
-      <div><span class="demo-dot"></span><strong>Demo workspace</strong><span id="demo-text">Fictional data · clock fixed at 12 Oct 2026, 08:00</span></div>
-      <div class="row">
-        <button class="btn small" data-global="load-demo">Reload demo</button>
-        <button class="btn small ghost" data-global="reset">Clear workspace</button>
-      </div>
-    </div>
 
     <main class="content" id="content" tabindex="-1">
       <div class="loading"><span class="spinner"></span></div>
@@ -66,6 +63,10 @@
     </footer>
   </div>
 
+  <div class="drop-overlay" id="drop-overlay" hidden>
+    <div><i data-icon="upload"></i><strong>Drop to add to Studyspace</strong><span>Emails (.eml), CSV, timetable (.ics), course files (PDF)</span></div>
+  </div>
+  <div class="menu" id="menu" role="menu" hidden></div>
   <dialog id="modal" aria-labelledby="modal-title"></dialog>
   <div id="toast" role="status" aria-live="polite"></div>
   <script type="module" src="js/app.js"></script>

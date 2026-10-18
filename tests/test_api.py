@@ -285,3 +285,69 @@ def test_pdf_upload_original_and_delete(client):
     data(client.delete(f"/api/sources/{files[0]['record_id']}"))
     assert data(client.get("/api/overview"))["files"]["total"] == 0
     assert all(c["candidate_id"] != found[0]["candidate_id"] for c in data(client.get("/api/candidates")))
+
+
+def test_suggested_effort_is_offered_not_applied(client):
+    client.post("/api/demo/load")
+    cands = {c["title"]: c for c in data(client.get("/api/candidates"))}
+    assert cands["Quiz 1"]["suggested_minutes"] == 60
+    assert cands["Problem Set 3"]["suggested_minutes"] == 180
+    assert cands["Midterm"]["suggested_minutes"] == 60          # an event: its length
+    # nothing is confirmed until the student sends the estimate
+    assert data(client.get("/api/tasks")) == []
+
+
+def test_undo_confirm_and_dismiss(client):
+    client.post("/api/demo/load")
+    quiz = candidate(client, "Quiz 1")
+    data(client.post(f"/api/candidates/{quiz['candidate_id']}/confirm", json={"remaining_minutes": 60}))
+    assert len(data(client.get("/api/tasks"))) == 1
+    back = data(client.post(f"/api/candidates/{quiz['candidate_id']}/restore"))
+    assert back["status"] == "pending" and data(client.get("/api/tasks")) == []
+    refl = candidate(client, "Weekly reflection")
+    data(client.post(f"/api/candidates/{refl['candidate_id']}/dismiss"))
+    assert data(client.post(f"/api/candidates/{refl['candidate_id']}/restore"))["status"] == "pending"
+
+
+def test_undo_restores_the_task_a_candidate_updated(client):
+    client.post("/api/demo/load")
+    t = data(client.post("/api/tasks", json={"title": "Problem Set 2", "course_code": "MLX5204",
+                                             "due_at": "2026-10-16T23:59:00+08:00", "remaining_minutes": 120}))
+    src = "MLX5204: Problem Set 2 is now due on 21 Oct, 11:59pm."
+    data(client.post("/api/import/text", json={"text": src, "received_at": "2026-10-12T09:00:00+08:00"}))
+    cands = data(client.post("/api/extract"))["candidates"]
+    update = next(c for c in cands if c["related_task_id"] == t["task_id"] and c["status"] == "pending" and c["due_at"] == "2026-10-21T23:59:00+08:00")
+    data(client.post(f"/api/candidates/{update['candidate_id']}/confirm", json={}))
+    assert next(x for x in data(client.get("/api/tasks")) if x["task_id"] == t["task_id"])["due_at"] == "2026-10-21T23:59:00+08:00"
+    data(client.post(f"/api/candidates/{update['candidate_id']}/restore"))
+    assert next(x for x in data(client.get("/api/tasks")) if x["task_id"] == t["task_id"])["due_at"] == "2026-10-16T23:59:00+08:00"
+
+
+def test_today_brings_the_day_together(client):
+    client.post("/api/demo/load")
+    d = data(client.get("/api/today"))
+    assert d["greeting"] == "Good morning" and d["name"] == "Jordan" and d["term"] == "Week 9"
+    kinds = [a["kind"] for a in d["attention"]]
+    assert "choose_time" in kinds and "confirm_ready" in kinds and kinds.count("reply") == 2
+    assert d["due_soon"][0]["title"] in ("Lab 4 notebook", "Quiz 1")
+    assert len(d["week"]) == 7 and d["week"][0]["date"] == "2026-10-12"
+    confirm_all(client)
+    draft = data(client.post("/api/plans/draft", json={}))
+    data(client.post(f"/api/plans/{draft['plan_id']}/adopt", json={"based_on": draft["based_on"]}))
+    d = data(client.get("/api/today"))
+    assert d["next_session"] and d["next_session"]["start"] > d["now"]
+    assert any(a["type"] == "session" for a in d["agenda"]) and sum(w["planned_minutes"] for w in d["week"]) > 0
+    assert "no_plan" not in [a["kind"] for a in d["attention"]]
+
+
+def test_finishing_early_frees_the_rest(client):
+    client.post("/api/demo/load")
+    confirm_all(client)
+    draft = data(client.post("/api/plans/draft", json={}))
+    plan = data(client.post(f"/api/plans/{draft['plan_id']}/adopt", json={"based_on": draft["based_on"]}))
+    tid = next(b["task_id"] for b in plan["blocks"] if sum(x["task_id"] == b["task_id"] for x in plan["blocks"]) > 1)
+    data(client.patch(f"/api/tasks/{tid}", json={"status": "done"}))
+    current = data(client.get("/api/plans/current"))
+    assert any(b["task_done"] for b in current["blocks"])
+    assert any(r.startswith("finished early") for r in current["replan_reasons"])
+    assert data(client.get("/api/today"))["next_session"]["task_id"] != tid

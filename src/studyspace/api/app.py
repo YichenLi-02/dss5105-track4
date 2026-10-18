@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import re
 import uuid
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
 from email.utils import parseaddr
 from pathlib import Path
 from typing import Any, Literal
@@ -24,6 +24,7 @@ from .. import __version__
 from ..academic_calendar import AcademicCalendar
 from ..config import Settings, load_settings
 from ..drafts import Draft, draft_reply, learn_style
+from ..estimates import suggest_minutes
 from ..extraction import extract
 from ..ingest import ImportResult, expand_template, parse_eml, parse_file, parse_ics, parse_pdf, parse_text
 from ..llm import Gateway, get_provider, prepare
@@ -215,6 +216,15 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def plan_settings(conn, ws: str) -> PlanSettings:
         return PlanSettings.model_validate(repo.get_setting(conn, ws, "plan_settings", {}))
 
+    def term_label(conn, ws: str) -> str | None:
+        period = calendar.period_of(clock(conn, ws).astimezone(TZ).date())
+        return period.label if period else None
+
+    def courses(conn, ws: str) -> list[str]:
+        """Course codes in a fixed order, so each course keeps the same colour everywhere."""
+        codes = {s.course_code for s in repo.list_sources(conn, ws)} | {t.course_code for t in repo.list_tasks(conn, ws)}
+        return sorted(c for c in codes if c)
+
     def gateway(conn, ws: str) -> Gateway:
         return Gateway(provider, log=lambda name, purpose, text: repo.log_llm_call(conn, ws, name, purpose, text))
 
@@ -307,6 +317,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         done = {(p.task_id, p.start.isoformat()) for p in repo.list_progress(conn, ws)}
         locks = repo.list_locks(conn, ws)
         locked = {(b.task_id, b.start.isoformat()) for b in locks}
+        finished = {t.task_id for t in repo.list_tasks(conn, ws) if t.status == "done"}
         blocks = []
         for b in [*plan["result"].blocks, *plan["result"].retained_locked_blocks]:
             key = (b.task_id, b.start.isoformat())
@@ -315,6 +326,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 "locked": key in locked,
                 "done": key in done,
                 "conflict": any(b.start < x.end and x.start < b.end for x in busy),
+                "task_done": b.task_id in finished,  # the task was finished early; this session is spare
             })
         blocks.sort(key=lambda b: b["start"])
         return {**_plan_json(plan), "blocks": blocks, "replan_reasons": replan_reasons(conn, ws, plan, blocks)}
@@ -340,9 +352,133 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         def future(intervals) -> set:
             return {(i.start, i.end) for i in intervals if i.end > now}
 
+        spare = {b["task_id"] for b in blocks if b.get("task_done") and not b["done"] and b["start"] > now.isoformat()}
+        for task_id in spare:
+            title = next((t.title for t in old.tasks if t.id == task_id), task_id)
+            reasons.append(f"finished early: {title}; its other sessions can be freed")
         if future(fresh.availability) != future(old.availability) or future(fresh.busy) != future(old.busy):
             reasons.append("your available hours or fixed commitments changed")
         return reasons
+
+    # -- today --------------------------------------------------------------------------------------
+    @app.get("/api/today", tags=["plans"])
+    def today(x_workspace: str | None = Header(default=None)) -> dict:
+        """The student's day: what is next, what needs them, what is due soon, and how the week is loaded."""
+        ws = workspace(x_workspace)
+        with db.connect() as conn:
+            now = clock(conn, ws).astimezone(TZ)
+            day = now.date()
+            day_start = datetime.combine(day, time(0), TZ)
+            day_end = day_start + timedelta(days=1)
+            tasks_now = repo.list_tasks(conn, ws)
+            by_id = {t.task_id: t for t in tasks_now}
+            pending = repo.list_candidates(conn, ws, "pending")
+            slots = repo.list_time_slots(conn, ws)
+            view = current_plan_view(conn, ws)
+            blocks = [{**b, "_s": datetime.fromisoformat(b["start"]), "_e": datetime.fromisoformat(b["end"])} for b in (view["blocks"] if view else [])]
+            settings_now = plan_settings(conn, ws)
+            period = calendar.period_of(day)
+
+            def task_info(task_id: str) -> dict:
+                t = by_id.get(task_id)
+                return {"title": t.title if t else task_id, "course_code": t.course_code if t else None}
+
+            agenda = []
+            for x in slots:
+                if x.kind == "busy" and x.start < day_end and x.end > day_start:
+                    agenda.append({"type": "class" if x.origin in ("ics", "synthetic") else "commitment", "title": x.label or "Busy",
+                                   "start": x.start.isoformat(), "end": x.end.isoformat()})
+            for b in blocks:
+                if day_start <= b["_s"] < day_end:
+                    agenda.append({"type": "session", **task_info(b["task_id"]), "task_id": b["task_id"], "start": b["start"],
+                                   "end": b["end"], "done": b["done"] or b.get("task_done", False), "locked": b["locked"],
+                                   "plan_id": view["plan_id"]})
+            for t in tasks_now:
+                if t.status != "open" or not (day_start <= t.due_at < day_end):
+                    continue
+                if t.kind == "event":
+                    agenda.append({"type": "event", "title": t.title, "course_code": t.course_code, "start": t.due_at.isoformat(),
+                                   "end": (t.due_at + timedelta(minutes=t.remaining_minutes or 60)).isoformat()})
+                else:
+                    agenda.append({"type": "deadline", "title": t.title, "course_code": t.course_code, "start": t.due_at.isoformat(),
+                                   "task_id": t.task_id})
+            agenda.sort(key=lambda a: a["start"])
+
+            upcoming = sorted((b for b in blocks if not b["done"] and not b.get("task_done") and b["_e"] > now), key=lambda b: b["_s"])
+            next_session = None
+            if upcoming:
+                b = upcoming[0]
+                next_session = {**task_info(b["task_id"]), "task_id": b["task_id"], "start": b["start"], "end": b["end"],
+                                "state": "now" if b["_s"] <= now else "next", "locked": b["locked"], "plan_id": view["plan_id"]}
+
+            attention: list[dict] = []
+            for c in [c for c in pending if c.due_at is None and (c.due_options or c.due_date) and (c.due_date is None or c.due_date >= day)][:4]:
+                attention.append({"kind": "choose_time", "candidate_id": c.candidate_id, "title": c.title, "course_code": c.course_code,
+                                  "options": [o.isoformat() for o in c.due_options], "due_date": c.due_date.isoformat() if c.due_date else None,
+                                  "due_text": c.due_text, "flags": c.flags, "suggested_minutes": suggest_minutes(c, tasks_now)})
+            ready = [c for c in pending if c.due_at is not None and c.due_at >= now]
+            if ready:
+                attention.append({"kind": "confirm_ready", "count": len(ready)})
+            past = [c for c in pending if (c.due_at and c.due_at < now) or (c.due_at is None and c.due_date and c.due_date < day)]
+            if past:
+                attention.append({"kind": "past_due", "count": len(past)})
+            undated = [c for c in pending if c.due_at is None and not c.due_options and not c.due_date]
+            if undated:
+                attention.append({"kind": "no_date", "count": len(undated)})
+            for m in inbox_items(conn, ws):
+                if "reply" in m["labels"] and m["draft_status"] != "reviewed":
+                    attention.append({"kind": "reply", "record_id": m["record_id"], "sender": m["sender"], "subject": m["subject"]})
+            if view and view["replan_reasons"]:
+                attention.append({"kind": "replan", "reasons": view["replan_reasons"]})
+            open_work = [t for t in tasks_now if t.status == "open" and t.kind == "deliverable" and t.remaining_minutes > 0 and t.due_at > now]
+            if view is None and open_work:
+                attention.append({"kind": "no_plan", "count": len(open_work)})
+            for b in [b for b in blocks if not b["done"] and not b.get("task_done") and now - timedelta(days=3) <= b["_e"] <= now][-3:]:
+                attention.append({"kind": "missed_session", **task_info(b["task_id"]), "task_id": b["task_id"], "start": b["start"],
+                                  "end": b["end"], "plan_id": view["plan_id"]})
+
+            planned: dict[str, int] = {}
+            for b in blocks:
+                if not b["done"] and b["_e"] > now:
+                    planned[b["task_id"]] = planned.get(b["task_id"], 0) + int((b["_e"] - b["_s"]).total_seconds() // 60)
+            horizon = now + timedelta(days=7)
+            due_soon = []
+            for t in open_work:
+                if t.due_at <= horizon:
+                    due_soon.append({"title": t.title, "course_code": t.course_code, "due_at": t.due_at.isoformat(), "state": "confirmed",
+                                     "task_id": t.task_id, "remaining": t.remaining_minutes, "planned": planned.get(t.task_id, 0)})
+            for c in pending:
+                when = c.due_at or (datetime.combine(c.due_date, time(23, 59), TZ) if c.due_date else None)
+                if when and now <= when <= horizon:
+                    due_soon.append({"title": c.title, "course_code": c.course_code, "due_at": c.due_at.isoformat() if c.due_at else None,
+                                     "due_date": c.due_date.isoformat() if c.due_date else None, "state": "to_check",
+                                     "candidate_id": c.candidate_id})
+            due_soon.sort(key=lambda d: d.get("due_at") or f"{d.get('due_date')}T23:59")
+
+            progress = repo.list_progress(conn, ws)
+            monday = day - timedelta(days=day.weekday())
+            week = []
+            for i in range(7):
+                d = monday + timedelta(days=i)
+                lo, hi = datetime.combine(d, time(0), TZ), datetime.combine(d + timedelta(days=1), time(0), TZ)
+                week.append({
+                    "date": d.isoformat(),
+                    "planned_minutes": sum(int((b["_e"] - b["_s"]).total_seconds() // 60) for b in blocks if lo <= b["_s"] < hi and not b["done"]),
+                    "done_minutes": sum(p.minutes for p in progress if lo <= p.start.astimezone(TZ) < hi),
+                    "free_minutes": int(sum((min(x.end, hi) - max(x.start, lo)).total_seconds() // 60
+                                            for x in slots if x.kind == "available" and x.start < hi and x.end > lo)),
+                    "limit": settings_now.max_study_minutes_per_day,
+                })
+            prof = profile(conn, ws)
+            first = (prof.get("name") or "").split()[0] if prof.get("name") and prof.get("name") != "Student" else ""
+            greeting = "Good morning" if now.hour < 12 else "Good afternoon" if now.hour < 18 else "Good evening"
+            return ok({
+                "now": now.isoformat(), "greeting": greeting, "name": first, "term": period.label if period else None,
+                "agenda": agenda, "next_session": next_session, "attention": attention, "due_soon": due_soon, "week": week,
+                "has_plan": view is not None, "activity": repo.list_activity(conn, ws, 4),
+                "counts": {"to_check": len(pending), "open_tasks": len(open_work)},
+                "empty": not repo.list_sources(conn, ws) and not tasks_now,
+            })
 
     # -- system -----------------------------------------------------------------------------------
     @app.get("/api/health", tags=["system"])
@@ -359,6 +495,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             return ok({
                 "workspace": ws,
                 "now": clock(conn, ws).isoformat(),
+                "term": term_label(conn, ws),
+                "courses": courses(conn, ws),
                 "demo_clock": repo.get_demo_now(conn, ws) is not None,
                 "profile": profile(conn, ws),
                 "sources": len(repo.list_sources(conn, ws)),
@@ -598,15 +736,19 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def run_extract(x_workspace: str | None = Header(default=None)) -> dict:
         ws = workspace(x_workspace)
         with db.connect() as conn:
-            candidates = run_extraction(conn, ws)
-        return ok({"mode": "offline-rules" if provider.name == "offline" else "model", "candidates": dump(candidates)})
+            found = with_suggestions(conn, ws, run_extraction(conn, ws))
+        return ok({"mode": "offline-rules" if provider.name == "offline" else "model", "candidates": found})
+
+    def with_suggestions(conn, ws: str, cands: list[Candidate]) -> list[dict]:
+        history = repo.list_tasks(conn, ws)
+        return [c.model_copy(update={"suggested_minutes": suggest_minutes(c, history)}).model_dump(mode="json") for c in cands]
 
     @app.get("/api/candidates", tags=["tasks"])
     def candidates(status: Literal["pending", "confirmed", "dismissed"] | None = None,
                    x_workspace: str | None = Header(default=None)) -> dict:
         ws = workspace(x_workspace)
         with db.connect() as conn:
-            return ok(dump(repo.list_candidates(conn, ws, status)))
+            return ok(with_suggestions(conn, ws, repo.list_candidates(conn, ws, status)))
 
     @app.post("/api/candidates/{candidate_id}/confirm", tags=["tasks"])
     def confirm(candidate_id: str, body: ConfirmCandidate, x_workspace: str | None = Header(default=None)) -> dict:
@@ -646,9 +788,32 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 priority=body.priority,
                 source_ids=sorted(set(c.source_ids) | set(existing.source_ids if existing else [])),
             )
+            # what "undo" needs: the task as it was before, or nothing if this created it
+            repo.set_setting(conn, ws, f"undo:{candidate_id}", existing.model_dump(mode="json") if existing else None)
             repo.save_task(conn, ws, task)
             repo.set_candidate_status(conn, ws, candidate_id, "confirmed")
         return ok({"task": task.model_dump(mode="json"), "updated_existing": existing is not None})
+
+    @app.post("/api/candidates/{candidate_id}/restore", tags=["tasks"])
+    def restore(candidate_id: str, x_workspace: str | None = Header(default=None)) -> dict:
+        """Undo a confirm or a dismiss: the candidate goes back to "to check"."""
+        ws = workspace(x_workspace)
+        with db.connect() as conn:
+            c = repo.get_candidate(conn, ws, candidate_id)
+            if c is None:
+                raise ApiError("NOT_FOUND", f"no candidate {candidate_id}", 404)
+            if c.status == "confirmed":
+                before = repo.get_setting(conn, ws, f"undo:{candidate_id}")
+                task_id = before["task_id"] if before else "T-" + candidate_id.removeprefix("C-")
+                if any(p.task_id == task_id for p in repo.list_progress(conn, ws)) and before is None:
+                    raise ApiError("HAS_PROGRESS", "work was already recorded on this task; edit it instead", 409)
+                if before:
+                    repo.save_task(conn, ws, Task.model_validate(before))
+                else:
+                    repo.delete_task(conn, ws, task_id)
+            repo.set_candidate_status(conn, ws, candidate_id, "pending")
+            restored = repo.get_candidate(conn, ws, candidate_id)
+        return ok(restored.model_dump(mode="json"))
 
     @app.post("/api/candidates/{candidate_id}/dismiss", tags=["tasks"])
     def dismiss(candidate_id: str, x_workspace: str | None = Header(default=None)) -> dict:

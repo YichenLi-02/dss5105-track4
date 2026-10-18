@@ -1,16 +1,11 @@
 // Shared pieces for the Sources and All messages pages: icons, the original viewer, add and sync dialogs.
 import { api } from "./api.js";
+import { icon } from "./icons.js";
 import { LABEL_TEXT, confirmDialog, esc, fmtDateTime, fmtRange, fromLocalInput, modal, senderName, sgDate, showError, toLocalInput, toast } from "./util.js";
 
-const svg = (path, size = 18) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${path}</svg>`;
 export const ICON = {
-  mail: svg('<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/>'),
-  calendar: svg('<rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 3v3M16 3v3"/>'),
-  file: svg('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>'),
-  plus: svg('<path d="M12 5v14M5 12h14"/>', 16),
-  sync: svg('<path d="M20 11a8 8 0 0 0-14.3-4.6L4 8"/><path d="M4 4v4h4M4 13a8 8 0 0 0 14.3 4.6L20 16"/><path d="M20 20v-4h-4"/>', 15),
-  spark: svg('<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>', 16),
-  arrow: svg('<path d="M5 12h14M13 6l6 6-6 6"/>', 14),
+  mail: icon("mail"), calendar: icon("calendar"), file: icon("file"), plus: icon("plus", 16), sync: icon("sync", 15),
+  spark: icon("spark", 16), arrow: icon("arrow", 14),
 };
 
 export function labelChips(labels = []) {
@@ -68,7 +63,7 @@ export async function openSource(recordId, ctx) {
       <aside class="viewer-side">
         <p class="side-title">Found here</p>
         ${foundList(mine)}
-        ${mine.some((c) => c.status === "pending") ? `<a class="btn small primary" style="margin-top:12px" href="#/review?focus=${encodeURIComponent(mine.find((c) => c.status === "pending").candidate_id)}" data-close>Check these tasks →</a>` : ""}
+        ${mine.some((c) => c.status === "pending") ? `<a class="btn small primary" style="margin-top:12px" href="#/tasks?focus=${encodeURIComponent(mine.find((c) => c.status === "pending").candidate_id)}" data-close>Check these tasks →</a>` : ""}
         <div class="stack" style="gap:8px;margin-top:18px">
           ${item?.labels.includes("reply") ? `<a class="btn small" href="#/replies?open=${encodeURIComponent(recordId)}" data-close>Draft a reply</a>` : ""}
           <a class="btn small" href="#/privacy?open=${encodeURIComponent(recordId)}" data-close>What a model would see</a>
