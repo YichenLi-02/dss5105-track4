@@ -5,7 +5,7 @@ import { useI18n } from '../app/i18n'
 import { DraftEditor } from '../components/DraftEditor'
 
 type Item = { source_id: string; speaker: string | null; timestamp: string | null; quote: string; owner?: string | null;
-  due_text?: string | null; acknowledged_by_owner?: boolean; kind?: string; basis?: string; reason?: string }
+  due_text?: string | null; acknowledged_by_owner?: boolean; kind?: string; basis?: string; reason?: string; status?: string; decision_source_id?: string }
 
 export function CollaborationPage() {
   const { t } = useI18n()
@@ -70,7 +70,8 @@ export function CollaborationPage() {
           {k === 'actions' && (
             <small>{t('collab.owner')}: {x.owner ?? t('collab.unknown')} · {t('collab.due')}: {x.due_text ?? t('collab.unknown')} · {t(x.acknowledged_by_owner ? 'collab.acked' : 'collab.not_acked')}</small>
           )}
-          {k === 'decisions' && x.basis && <small>{t('collab.basis')}: {x.basis}</small>}
+          {k === 'decisions' && x.basis && <small>{t('collab.basis')}: {t(x.basis.startsWith('assigned_by') ? 'collab.basis_assignment' : 'collab.basis_explicit')}</small>}
+          {k === 'suggestions' && <small>{x.status === 'addressed_by_decision' ? t('collab.addressed', { id: x.decision_source_id || '' }) : t('collab.not_decided')}</small>}
           {k === 'questions' && x.reason && <small>{t('collab.reason.' + x.reason)}</small>}
         </div>
       ))}

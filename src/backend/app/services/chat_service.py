@@ -18,9 +18,9 @@ LEADING_TIME = re.compile(r"^\s*(?P<ts>\d{1,2}:\d{2})\s+")
 SUGGEST = re.compile(r"(?i)要不|建议|可以考虑|不如|how about|what about|maybe we|should we|shall we|i suggest|we could|let'?s try")
 DECIDE = re.compile(r"(?i)决定|就这么定|定了|确定(?:用|采用)|确认采用|最终方案|we(?:'ve| have)? decided|final decision|we(?:'ll| will) go with|agreed to")
 ASSIGN = re.compile(r"(?P<who>[\w一-鿿]{1,12})\s*负责|(?i:(?P<who2>[A-Z][a-z]+) will (?!be\b))|@(?P<who3>[\w一-鿿]{1,20})")
-SELF = re.compile(r"(?i)我来|我负责|我会|i'?ll |i will |i can take")
+SELF = re.compile(r"(?i)我来|我负责|我会|i'?ll|i will|i can take")
 ACK = re.compile(r"(?i)^(好的|好|收到|没问题|可以|ok|okay|sure|got it|will do|on it)\b|我来做|没问题")
-QUESTION = re.compile(r"[?？]\s*$|吗[?？]?$|(?i:^(any|does|do|can|could|who|what|when|which|should)\b)")
+QUESTION = re.compile(r"[?？]|吗$|谁来|没人认领|(?i:^(any|does|do|can|could|who|what|when|which|should)\b|\bwho will\b|\bunassigned\b)")
 DUE = re.compile(r"(?i)(?:周|星期)[一二三四五六日天]\s*\d{1,2}[:：]\d{2}|(?:周|星期)[一二三四五六日天]|明天|今晚|下周[一二三四五六日天]?|"
                  r"\bby\s+(?:mon|tue|wed|thu|fri|sat|sun)\w*(?:\s+\d{1,2}(?::\d{2})?\s*(?:am|pm)?)?|\bby\s+\d{1,2}[:/]\d{2}|"
                  r"\d{4}-\d{2}-\d{2}(?:\s+\d{1,2}:\d{2})?|\d{1,2}[:：]\d{2}\s*前")
@@ -54,6 +54,21 @@ def _owner(text: str, assign, speakers: set[str]) -> str | None:
     return who if who in speakers else None
 
 
+def _addressing_decision(sugg: dict, decisions: list[dict], messages: list[dict]) -> str | None:
+    """A later decision sharing a substantial phrase (>= 4 non-space chars) with the suggestion."""
+    from difflib import SequenceMatcher
+    order = {m["source_id"]: i for i, m in enumerate(messages)}
+    a = re.sub(r"\s+", "", sugg["quote"])
+    for d in decisions:
+        if d.get("kind") != "decision" or order.get(d["source_id"], -1) < order.get(sugg["source_id"], 0):
+            continue
+        b = re.sub(r"\s+", "", d["quote"])
+        m = SequenceMatcher(None, a, b, autojunk=False).find_longest_match(0, len(a), 0, len(b))
+        if m.size >= 4:
+            return d["source_id"]
+    return None
+
+
 def _item(msg: dict, **extra) -> dict:
     return {"source_id": msg["source_id"], "speaker": msg["speaker"], "timestamp": msg["timestamp"],
             "quote": msg["text"], **extra}
@@ -73,7 +88,11 @@ def summarize(messages: list[dict]) -> dict:
             continue
         assign = ASSIGN.search(text)
         if assign or SELF.search(text):
-            owner = _owner(text, assign, speakers) if assign else m["speaker"]
+            others_named = any(sp in text for sp in speakers - {m["speaker"]})
+            if SELF.search(text) and not others_named:
+                owner = m["speaker"]  # "我负责排练计时": the speaker commits themselves
+            else:
+                owner = _owner(text, assign, speakers) if assign else m["speaker"]
             due = DUE.search(text)
             ack = None
             for later in messages[i + 1:]:
@@ -92,10 +111,12 @@ def summarize(messages: list[dict]) -> dict:
             continue
         if is_q or DEFER.search(text):
             questions.append(_item(m, reason="question" if is_q else "deferred"))
-    # Suggestions nobody explicitly decided stay open.
-    decided_text = " ".join(d["quote"] for d in decisions)
+    # Suggestions stay open unless a later explicit decision clearly addresses them.
     for s in suggestions:
-        if not any(tok in decided_text for tok in re.findall(r"[A-Z]\b|方案\s*\w", s["quote"])):
+        hit = _addressing_decision(s, decisions, messages)
+        if hit:
+            s["status"], s["decision_source_id"] = "addressed_by_decision", hit
+        else:
             questions.append({**s, "reason": "suggestion_not_confirmed"})
     return {"suggestions": suggestions, "confirmed_decisions": decisions, "action_items": actions,
             "open_questions": questions}
