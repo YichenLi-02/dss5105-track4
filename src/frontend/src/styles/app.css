@@ -1,0 +1,41 @@
+/* Additions for the React build; colours only via tokens.css variables. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.stat{cursor:pointer;min-height:76px;font:inherit;color:inherit}
+.stat[aria-pressed=true]{border-color:var(--ink)}
+.panel .panel-body pre{max-height:none}
+.decision .source-quote{margin:var(--space-2) 0}
+.box ul{margin:var(--space-2) 0;padding-left:var(--space-5);line-height:var(--leading-normal)}
+details>summary{cursor:pointer}
+.channel-entry select{border:1px solid var(--line);border-radius:var(--radius-sm);padding:var(--space-1) var(--space-2);background:var(--surface)}
+.row.between{justify-content:space-between}
+.mail-footer .link:disabled{color:var(--muted)}
+.console{max-height:260px;overflow:auto}
+main{min-height:60vh}
+.panel-toast{position:fixed;left:auto;right:24px;transform:none;bottom:24px;max-width:min(560px,calc(100vw - 48px))}
+/* The prototype hid this note in English for space; keep it visible in both languages. */
+html[lang=en] .mode.mode-note{display:inline}
+@media(max-width:950px){html[lang=en] .mode.mode-note,.mode.mode-note{display:none}}
+.account{max-width:min(560px,60vw);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ---- Refactoring UI pass (rule IDs refer to the vendored skill, see docs/UI_AUDIT.md) ---- */
+/* §2.4 / §8.5.1: "important" is carried by one cue (accent edge), not border + tint + red tag together.
+   Red is reserved for real warnings (security, date conflicts). */
+.mail-card.important{border-left:3px solid var(--danger)}
+.mail-card.attention{border-left:3px solid var(--danger);background:var(--danger-soft)}
+.tag.ink{background:var(--ink);color:var(--surface)}
+/* §4.2.3 / §4.3 / §4.5: mail bodies are prose - text face, 45-75ch measure, line-height for small text */
+.mail-body{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--soft);border-radius:var(--radius-sm);
+  padding:var(--space-4);font-size:var(--text-sm);line-height:var(--leading-normal);max-width:70ch;margin:0 0 var(--space-4)}
+/* §4.5: headings tighter than body text */
+h1,h2,h3,.brand,.stat strong,.mini strong{line-height:var(--leading-tight)}
+/* §3.6: a group's title sits closer to its content than to the previous group */
+.box h2{margin-bottom:var(--space-3)}
+.panel-body h3{margin-top:var(--space-5);margin-bottom:var(--space-2)}
+.panel-body h3:first-child{margin-top:0}
+.link.link-muted{color:var(--muted)}
+/* In-page confirmation (ConfirmButton) */
+.confirm-inline{display:inline-flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3);border:1px solid var(--danger-line);background:var(--danger-soft);border-radius:var(--radius-sm)}
+.confirm-inline .confirm-message{font-size:var(--text-xs);color:var(--danger);white-space:pre-line;max-width:60ch}
+.confirm-inline button{min-height:32px;padding:var(--space-1) var(--space-3)}
+.button-link{display:inline-flex;align-items:center;min-height:36px;padding:var(--space-2) var(--space-3);border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);color:var(--accent);text-decoration:none;font-size:var(--text-xs)}
+.button-link:hover{background:var(--soft);text-decoration:underline}

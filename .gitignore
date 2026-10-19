@@ -16,3 +16,9 @@ Thumbs.db
 data/raw/
 data/private/
 *.log
+
+# Student Work Assistant: local data (de-identified real mail, uploads, SQLite) never goes to Git
+local-data/
+*.sqlite3
+*.sqlite3-*
+src/frontend/dist/

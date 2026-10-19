@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+pypdf
+python-multipart
+httpx
+keyring
+cryptography
+tzdata
+python-dotenv
