@@ -34,7 +34,7 @@ export async function render(root, ctx, params) {
 
   root.innerHTML = `
     <div class="page-head">
-      <div><h1>Tasks</h1><p class="lede">Found in your sources. Nothing is planned until you confirm its deadline and how long it takes.</p></div>
+      <div><h1>Tasks</h1><p class="lede">Found in your messages and files. Confirm the deadline and effort, and it goes into your plan.</p></div>
       <button class="btn small" id="add-task">${icon("plus", 15)} Add a task</button>
     </div>
     <div class="tabs page-tabs" role="tablist">
@@ -47,6 +47,15 @@ export async function render(root, ctx, params) {
   const body = root.querySelector("#tab-body");
   if (tab === "check") renderCheck(body, ctx, groups, src, byTask, now, params);
   else renderTasks(body, ctx, tab === "open" ? open : done, plan, now, tab);
+
+  // confirmed work that the saved plan does not cover yet: one click to see it placed on the calendar
+  const inPlan = new Set((plan?.blocks || []).map((b) => b.task_id));
+  const unplanned = open.filter((t) => t.kind === "deliverable" && t.remaining_minutes > 0 && t.due_at > now && !inPlan.has(t.task_id));
+  if (unplanned.length) {
+    root.insertAdjacentHTML("beforeend", `<div class="plan-bar"><span class="attn-icon purple">${icon("calendar", 16)}</span>
+      <span><b>${unplanned.length} confirmed task${unplanned.length === 1 ? " isn't" : "s aren't"} in your plan yet</b><span class="tiny muted">${esc(unplanned.slice(0, 3).map((t) => t.title).join(", "))}${unplanned.length > 3 ? "…" : ""}</span></span>
+      <a class="btn small primary" href="#/plan">See them on the calendar ${icon("arrow", 14)}</a></div>`);
+  }
 
   root.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => { tab = b.dataset.tab; ctx.go("tasks"); ctx.refresh(); }));
   root.querySelector("#add-task").addEventListener("click", () => addTaskDialog(ctx));

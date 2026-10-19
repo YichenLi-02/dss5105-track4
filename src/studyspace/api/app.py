@@ -153,6 +153,11 @@ class DraftEdit(BaseModel):
     body: str
 
 
+class ComposeIn(BaseModel):
+    points: str | None = Field(default=None, max_length=2000)
+    tone: Literal["auto", "friendly", "formal", "brief"] = "auto"
+
+
 class MeetingRequest(BaseModel):
     duration_minutes: int = Field(default=30, ge=15, le=240)
     start_date: date | None = None
@@ -455,6 +460,21 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                                      "candidate_id": c.candidate_id})
             due_soon.sort(key=lambda d: d.get("due_at") or f"{d.get('due_date')}T23:59")
 
+            # the next two weeks of deadlines and exams, for the timeline on Today
+            far = now + timedelta(days=14)
+            horizon = []
+            for t in tasks_now:
+                if t.status == "open" and now <= t.due_at <= far:
+                    horizon.append({"date": t.due_at.astimezone(TZ).date().isoformat(), "at": t.due_at.isoformat(), "title": t.title,
+                                    "course_code": t.course_code, "kind": t.kind, "state": "confirmed", "task_id": t.task_id})
+            for c in pending:
+                when = c.due_at or (datetime.combine(c.due_date, time(23, 59), TZ) if c.due_date else None)
+                if when and now <= when <= far:
+                    horizon.append({"date": when.astimezone(TZ).date().isoformat(), "at": c.due_at.isoformat() if c.due_at else None,
+                                    "title": c.title, "course_code": c.course_code, "kind": c.kind, "state": "to_check",
+                                    "candidate_id": c.candidate_id})
+            horizon.sort(key=lambda h: (h["date"], h["at"] or "99"))
+
             progress = repo.list_progress(conn, ws)
             monday = day - timedelta(days=day.weekday())
             week = []
@@ -474,7 +494,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             greeting = "Good morning" if now.hour < 12 else "Good afternoon" if now.hour < 18 else "Good evening"
             return ok({
                 "now": now.isoformat(), "greeting": greeting, "name": first, "term": period.label if period else None,
-                "agenda": agenda, "next_session": next_session, "attention": attention, "due_soon": due_soon, "week": week,
+                "agenda": agenda, "next_session": next_session, "attention": attention, "due_soon": due_soon, "week": week, "horizon": horizon,
                 "has_plan": view is not None, "activity": repo.list_activity(conn, ws, 4),
                 "counts": {"to_check": len(pending), "open_tasks": len(open_work)},
                 "empty": not repo.list_sources(conn, ws) and not tasks_now,
@@ -946,6 +966,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                                 result.blocks, now),
         })
 
+    @app.get("/api/plans/version", tags=["plans"])
+    def plan_version(x_workspace: str | None = Header(default=None)) -> dict:
+        """Fingerprint of the plan inputs; a draft with a different one is out of date."""
+        ws = workspace(x_workspace)
+        with db.connect() as conn:
+            return ok({"input_version": repo.input_version(conn, ws, plan_settings(conn, ws))})
+
     @app.get("/api/plans/current", tags=["plans"])
     def current_plan(x_workspace: str | None = Header(default=None)) -> dict:
         ws = workspace(x_workspace)
@@ -1015,14 +1042,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         return ok({"recorded": recorded, "task": task.model_dump(mode="json")})
 
     # -- replies (gate 3) -------------------------------------------------------------------------
-    def make_draft(conn, ws: str, record_id: str) -> dict:
+    def make_draft(conn, ws: str, record_id: str, points: str | None = None, tone: str = "auto") -> dict:
         src = find_source(conn, ws, record_id)
         prof = profile(conn, ws)
         style = learn_style(repo.get_setting(conn, ws, "sent_samples", []), (prof.get("name") or "Student").split()[0])
         now = clock(conn, ws)
         slots = suggest_slots(busy_intervals(conn, ws), now.date(), now.date() + timedelta(days=7), 30, now,
                               window=("10:00", "18:00"), weekdays_only=True, max_results=3, per_day=1)
-        d: Draft = draft_reply(src, style, slots, domain(conn, ws), gateway(conn, ws))
+        d: Draft = draft_reply(src, style, slots, domain(conn, ws), gateway(conn, ws), points=points, tone=tone)
         return {**d.__dict__, "slots": slots}
 
     @app.get("/api/drafts/{record_id}", tags=["replies"])
@@ -1035,6 +1062,15 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 saved = {**make_draft(conn, ws, record_id), "status": "draft"}
                 repo.save_draft(conn, ws, record_id, {k: v for k, v in saved.items() if k != "status"})
         return ok(saved)
+
+    @app.post("/api/drafts/{record_id}/compose", tags=["replies"])
+    def compose_draft(record_id: str, body: ComposeIn, x_workspace: str | None = Header(default=None)) -> dict:
+        """Turn the student's quick points (optional) into a reply in the chosen tone."""
+        ws = workspace(x_workspace)
+        with db.connect() as conn:
+            saved = make_draft(conn, ws, record_id, body.points, body.tone)
+            repo.save_draft(conn, ws, record_id, saved)
+        return ok({**saved, "status": "draft"})
 
     @app.put("/api/drafts/{record_id}", tags=["replies"])
     def edit_draft(record_id: str, body: DraftEdit, x_workspace: str | None = Header(default=None)) -> dict:

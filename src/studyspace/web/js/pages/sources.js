@@ -13,7 +13,7 @@ export async function render(root, ctx) {
       <div>
         <p class="eyebrow">What Studyspace reads</p>
         <h1>Everything your plan is built on.</h1>
-        <p class="lede">Studyspace only works from the sources below. Open anything to see the original and what was found in it.</p>
+        <p class="lede">Everything your agent reads. Open any item to see the original and what was found in it.</p>
       </div>
       <span class="step-tag">STEP 01 OF 03</span>
     </div>

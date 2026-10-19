@@ -28,11 +28,11 @@ Open http://127.0.0.1:8000 and click **Try with a demo student** on the home pag
 
 | 页面 / Page | 做什么 / What it does |
 | --- | --- |
-| Today | 首页：下一段学习（可开始专注计时）、今天的时间线、“需要你处理”的事（可直接选截止时间并确认）、7 天内截止的任务、本周负荷。<br>Home: what's next (with a focus timer), today's timeline, what needs you (pick a deadline right there), what's due in 7 days, the week's load. |
+| Today | 首页：未来两周截止时间轴（按课程着色，实心已确认、空心待确认、菱形为考试）、下一段学习（可开始专注计时）、今天的时间线、“需要你处理”的事（可直接选截止时间并确认）、7 天内截止的任务、本周负荷。<br>Home: a two-week deadline timeline (by course; solid confirmed, hollow to confirm, diamond for exams), what's next (with a focus timer), today's timeline, what needs you (pick a deadline right there), what's due in 7 days, the week's load. |
 | Sources | agent 读了哪些来源、找到了什么：邮件、课表、课件三个区域，各有“+”和“Sync”（规划中）；点开看原件，产生任务的句子会高亮；活动记录。<br>What the agent reads and found: email, timetable and course files, each with + and Sync (planned); originals with task sentences highlighted; activity log. |
 | Tasks | 第一道关口：按“需要你决定 / 可以直接确认 / 没有截止日期 / 已过期”分组；工作量给出建议值，一键确认、一键全部确认、撤销、键盘操作（J/K、Enter、X）。<br>Gate 1: grouped by what each needs; suggested effort, one-click confirm, confirm all, undo, keyboard shortcuts. |
-| Study plan | 第二道关口：自动生成草稿，采用后才保存；周视图里点任意时段可开始专注、完成、锁定或“没空”（自动给出新草稿）；导出 .ics。<br>Gate 2: drafted automatically, saved only when adopted; click a session to focus, finish, lock or say "can't make it" (a new draft follows); export to your calendar. |
-| Replies | 第三道关口：按学生自己的语气起草回复，读过并勾选后才能复制或在邮件程序中打开；系统从不发送。<br>Gate 3: drafts in the student's style; copy or open in the mail app only after review. Nothing is ever sent by the app. |
+| Study plan | 第二道关口：日历每天顶部有“截止”栏，已确认的实心、待确认的虚线，点虚线即可当场确认；确认后自动给出更新的计划草稿，采用后才保存；点任意时段可开始专注、完成、锁定或“没空”；导出 .ics。<br>Gate 2: each day shows its deadlines (solid confirmed, dashed to confirm, click to confirm on the spot); the plan redrafts itself after every change and is saved only when adopted; click a session to focus, finish, lock or say "can't make it"; export to your calendar. |
+| Replies | 第三道关口：左边对方原文（需要你回应的句子高亮），右边写回复：先写几句要点（可用快捷短语），选语气（友好 / 正式 / 简短），一键写成完整回复并列出改动；读过并勾选后才能复制或在邮件程序中打开，系统从不发送。离线时用本地规则整理要点，接入大模型后由模型改写。<br>Gate 3: their message beside your reply; jot your points, pick a tone, get a full reply in your style with the changes listed; copy or open in your mail app only after review. Nothing is ever sent by the app. Offline, points are tidied with rules; with a model connected, the model rewrites them. |
 | Meeting time | 避开课程、考试、会议、锁定时段，可加入组员的 .ics 忙碌时间。<br>Free times around classes, exams, meetings, locked sessions and groupmates' busy times. |
 | Privacy & data | 并排显示“本机原文”和“模型会收到的内容”（清洗 + 脱敏），列出每次模型调用，可删除全部数据。<br>Original next to what a model would receive; every model call is listed; delete all data. |
 

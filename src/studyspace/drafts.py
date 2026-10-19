@@ -43,7 +43,70 @@ class Draft:
     intent: str
     warnings: list[dict] = field(default_factory=list)
     mode: str = "offline-template"
+    tone: str = "friendly"
+    points: str = ""                                    # what the student wanted to say, in their own words
+    changes: list[str] = field(default_factory=list)    # how their points were turned into the draft
+    asks: list[str] = field(default_factory=list)       # the sentences in their message that need an answer
     sent: bool = False  # always False: sending is the student's action
+
+
+# ---- turning quick notes into sentences (offline) ----------------------------------------------
+SHORTHAND = {
+    "tmr": "tomorrow", "tmrw": "tomorrow", "2moro": "tomorrow", "thx": "thanks", "thks": "thanks", "ty": "thank you",
+    "pls": "please", "plz": "please", "u": "you", "ur": "your", "r": "are", "cuz": "because", "coz": "because",
+    "b4": "before", "abt": "about", "asap": "as soon as possible", "idk": "I don't know", "btw": "by the way",
+    "gonna": "going to", "wanna": "want to", "w/": "with", "w/o": "without", "im": "I'm", "dont": "don't",
+    "cant": "can't", "wont": "won't", "didnt": "didn't", "ok": "OK", "i": "I", "mon": "Monday", "tue": "Tuesday",
+    "tues": "Tuesday", "wed": "Wednesday", "thu": "Thursday", "thur": "Thursday", "thurs": "Thursday", "fri": "Friday",
+    "sat": "Saturday", "sun": "Sunday", "hr": "hour", "hrs": "hours", "min": "minutes", "mins": "minutes",
+}
+_SHORT = re.compile(r"(?<![\w/])(" + "|".join(re.escape(k) for k in sorted(SHORTHAND, key=len, reverse=True)) + r")(?![\w/])", re.I)
+ASK = re.compile(r"\?|\b(let me know|could you|can you|would you|please (?:reply|confirm|let)|are you (?:free|available)|your availability)\b", re.I)
+
+
+def polish_points(points: str) -> tuple[list[str], list[str]]:
+    """Quick notes -> tidy sentences, plus a list of what was changed (shown to the student)."""
+    changes: list[str] = []
+    seen: set[str] = set()
+
+    def expand(m: re.Match) -> str:
+        word = m.group(1)
+        full = SHORTHAND[word.lower()]
+        if word.lower() == "i" and word == "I":
+            return word
+        if word != full and word.lower() not in seen:
+            seen.add(word.lower())
+            changes.append(f"{word} → {full}")
+        return full
+
+    parts = [p.strip(" -•*\t") for p in re.split(r"[\n;]+|(?<=[.!?])\s+", points) if p.strip(" -•*\t")]
+    sentences = []
+    for p in parts:
+        p = _SHORT.sub(expand, p)
+        p = re.sub(r"\s+", " ", p)
+        # notes often drop the subject: "ok will finish by Thu" -> "OK, I will finish by Thu"
+        fixed = re.sub(r"^(OK|sure|yes|yep|noted)[,!]?\s+(will|can|am|have|need|would|should)\b", lambda m: f"{m.group(1)}, I {m.group(2)}", p, flags=re.I)
+        fixed = re.sub(r"^(will|can|am|have|need|would|should)\b", lambda m: f"I {m.group(1).lower()}", fixed, flags=re.I)
+        if fixed != p and "added “I” where it was missing" not in changes:
+            changes.append("added “I” where it was missing")
+        p = fixed
+        p = p[:1].upper() + p[1:]
+        if not re.search(r"[.!?]$", p):
+            p += "."
+        sentences.append(p)
+    if sentences:
+        changes.append("written as full sentences")
+    return sentences, changes
+
+
+def asks_in(text: str) -> list[str]:
+    """Sentences that ask the student something, to highlight in the original."""
+    out = []
+    for sentence in re.split(r"(?<=[.!?])\s+|\n+", clean_text(text)):
+        sentence = sentence.strip()
+        if sentence and ASK.search(sentence) and len(sentence) < 300:
+            out.append(sentence)
+    return out[:4]
 
 
 def learn_style(sent_texts: list[str], name: str = "Jordan") -> StyleProfile:
@@ -75,13 +138,18 @@ def _fmt_slot(slot: dict) -> str:
     return f"{a:%a %d %b}, {a:%H:%M}–{b:%H:%M}"
 
 
+TONES = ("friendly", "formal", "brief")
+
+
 def draft_reply(source: Source, style: StyleProfile, slots: list[dict] | None = None,
-                student_domain: str | None = None, gateway: Gateway | None = None) -> Draft:
+                student_domain: str | None = None, gateway: Gateway | None = None,
+                points: str | None = None, tone: str = "auto") -> Draft:
     kind = sender_kind(source.sender, student_domain)
-    formal = kind in ("staff", "external")
+    if tone not in TONES:
+        tone = "formal" if kind in ("staff", "external") else "friendly"
     name = _addressee(source.sender, kind)
-    greeting = f"{style.formal_greeting if formal and kind == 'staff' else style.greeting} {name},".replace(" ,", ",")
-    sign = f"{style.formal_sign_off if formal else style.sign_off},\n{style.name}"
+    greeting = f"{style.formal_greeting if tone == 'formal' else style.greeting} {name},".replace(" ,", ",")
+    sign = f"{style.formal_sign_off if tone == 'formal' else style.sign_off},\n{style.name}"
     text = clean_text(source.body_text)
     subject = source.subject or ""
     subject = subject if subject.lower().startswith("re:") else f"Re: {subject}"
@@ -105,13 +173,27 @@ def draft_reply(source: Source, style: StyleProfile, slots: list[dict] | None = 
         intent = "acknowledge"
         core = "Thank you for the update. Noted."
 
+    changes: list[str] = []
+    if points and points.strip():
+        intent = "your points"
+        sentences, changes = polish_points(points)
+        opener = {"friendly": "Thanks for your message.", "formal": "Thank you for your email.", "brief": ""}[tone]
+        closing = {"friendly": "Let me know if you need anything else.", "formal": "Please let me know if you need anything further.",
+                   "brief": ""}[tone]
+        core = " ".join(x for x in [opener, " ".join(sentences), closing] if x)
+        changes = changes + ["added a greeting and sign-off in your style"]
+    elif tone == "brief":
+        core = re.split(r"(?<=[.!?])\s+", core)[0] if intent != "availability" else core
+
     body = f"{greeting}\n\n{core}\n\n{sign}"
     mode = "offline-template"
     if gateway is not None and gateway.online:
-        prompt = f"Write a short reply in the student's style. Greeting: {greeting} Sign-off: {sign}\n\nMessage:\n{text}"
+        ask = f"Rewrite these points as the reply: {points}" if points else "Write a short reply."
+        prompt = f"{ask} Tone: {tone}. Greeting: {greeting} Sign-off: {sign}\n\nTheir message:\n{text}"
         reply = gateway.ask("draft", "You draft short, polite email replies for a university student.", prompt)
         if reply:
             body, mode = reply, "model"
+            changes = ["rewritten by the language model from cleaned, redacted text"]
 
     warnings = []
     if kind == "staff":
@@ -119,4 +201,5 @@ def draft_reply(source: Source, style: StyleProfile, slots: list[dict] | None = 
     elif kind == "external":
         warnings.append({"code": SENSITIVE_RECIPIENT, "message": "This goes outside the university. Share only what you are comfortable with."})
     _, address = parseaddr(source.sender or "")
-    return Draft(record_id=source.record_id, to=address, subject=subject, body=body, intent=intent, warnings=warnings, mode=mode)
+    return Draft(record_id=source.record_id, to=address, subject=subject, body=body, intent=intent, warnings=warnings, mode=mode,
+                 tone=tone, points=points or "", changes=changes, asks=asks_in(source.body_text))

@@ -351,3 +351,32 @@ def test_finishing_early_frees_the_rest(client):
     assert any(b["task_done"] for b in current["blocks"])
     assert any(r.startswith("finished early") for r in current["replan_reasons"])
     assert data(client.get("/api/today"))["next_session"]["task_id"] != tid
+
+
+def test_reply_written_from_the_students_points(client):
+    client.post("/api/demo/load")
+    d = data(client.post("/api/drafts/SYN-019/compose", json={"points": "ok will finish the cleaning by thu night\nwill push to github tmr", "tone": "friendly"}))
+    assert "OK, I will finish the cleaning by Thursday night." in d["body"]
+    assert "I will push to github tomorrow." in d["body"]
+    assert "tmr → tomorrow" in d["changes"] and d["body"].startswith("Hi Priya,")
+    assert d["asks"] and "data cleaning section" in d["asks"][0]
+    formal = data(client.post("/api/drafts/SYN-019/compose", json={"points": "yes", "tone": "formal"}))
+    assert formal["body"].startswith("Dear Priya,") and "Best regards" in formal["body"]
+    assert data(client.get("/api/drafts/SYN-019"))["tone"] == "formal"  # the latest draft is kept
+
+
+def test_plan_version_moves_when_inputs_change(client):
+    client.post("/api/demo/load")
+    v1 = data(client.get("/api/plans/version"))["input_version"]
+    quiz = candidate(client, "Quiz 1")
+    data(client.post(f"/api/candidates/{quiz['candidate_id']}/confirm", json={"remaining_minutes": 60}))
+    assert data(client.get("/api/plans/version"))["input_version"] != v1
+
+
+def test_today_horizon_shows_two_weeks_of_deadlines(client):
+    client.post("/api/demo/load")
+    h = data(client.get("/api/today"))["horizon"]
+    dates = [x["date"] for x in h]
+    assert dates == sorted(dates) and dates[0] >= "2026-10-12" and dates[-1] <= "2026-10-26"
+    assert {x["state"] for x in h} == {"to_check"}
+    assert any(x["kind"] == "event" for x in h)  # the midterm on 22 Oct

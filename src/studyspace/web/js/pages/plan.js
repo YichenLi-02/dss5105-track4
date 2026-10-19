@@ -1,22 +1,25 @@
 // Study plan (gate 2): a draft replaces nothing until the student adopts it.
 import { api } from "../api.js";
-import { cantMakeIt, recordDone } from "../actions.js";
+import { cantMakeIt, quickConfirm, recordDone } from "../actions.js";
 import { openFocus } from "../focus.js";
 import { icon } from "../icons.js";
 import {
-  WARNING_TEXT, addDays, busy, courseIndex, courseTag, dueLabel, esc, fmtDate, fmtDateTime, fmtMinutes, fmtRange, hours, menu,
+  WARNING_TEXT, addDays, busy, courseIndex, courseTag, dueLabel, esc, fmtDate, fmtDateTime, fmtMinutes, fmtRange, fmtTime, hours, menu,
   minutesBetween, modal, mondayOf, sgDate, sgParts, showError, toast,
 } from "../util.js";
 
 const DAY_START = 8, DAY_END = 22, PX_PER_HOUR = 40;
 let draft = null;     // POST /api/plans/draft response, kept until adopted or discarded
+let dismissedFor = null;  // input version of a draft the student discarded: don't propose the same one again
 let weekStart = null;
 let view = null;
 
 export async function render(root, ctx, params) {
-  const [current, tasks, slots, settings] = await Promise.all([
+  const [current, tasks, slots, settings, cands, version] = await Promise.all([
     api.get("/api/plans/current"), api.get("/api/tasks"), api.get("/api/calendar"), api.get("/api/settings"),
+    api.get("/api/candidates?status=pending"), api.get("/api/plans/version"),
   ]);
+  const inputs = version.input_version;
   const now = ctx.workspace.now;
   if (!weekStart) weekStart = mondayOf(sgDate(now));
   if (!view) view = window.matchMedia("(max-width: 820px)").matches ? "list" : "week";
@@ -24,11 +27,16 @@ export async function render(root, ctx, params) {
   const openTasks = tasks.filter((t) => t.status === "open");
   const plannable = openTasks.filter((t) => t.kind === "deliverable" && t.remaining_minutes > 0 && t.due_at > now);
 
-  // one less click: a first plan (or an update the student asked for) is drafted straight away
+  // the plan follows the student's changes: a stale draft is redrafted, and a saved plan that no longer fits
+  // gets a proposed update straight away (still only saved when adopted)
   const wantsUpdate = params?.get("replan") === "1";
   if (wantsUpdate) history.replaceState(null, "", "#/plan");
-  if ((wantsUpdate || (!current && !draft && plannable.length)) && !draft) {
-    try { draft = await api.post("/api/plans/draft", {}); } catch (err) { showError(err); }
+  let refreshed = false;
+  if (draft && draft.based_on !== inputs) { draft = null; refreshed = true; }
+  const behind = current && current.replan_reasons.length;
+  const firstPlan = !current && plannable.length;
+  if (!draft && (wantsUpdate || ((firstPlan || behind || refreshed) && dismissedFor !== inputs))) {
+    try { draft = await api.post("/api/plans/draft", {}); } catch (err) { showError(err); }  // the banner says what changed
   }
 
   const showing = draft ? "draft" : current ? "saved" : "none";
@@ -59,6 +67,7 @@ export async function render(root, ctx, params) {
         ${weekStart !== mondayOf(sgDate(now)) ? `<button class="btn tiny ghost" data-week="0">This week</button>` : ""}
       </div>
       <div class="row">
+        ${pendingThisWeek(cands, weekStart) ? `<span class="chip outline dashed" title="Dashed deadlines on the calendar are found but not confirmed; click one to confirm it">${pendingThisWeek(cands, weekStart)} to confirm</span>` : ""}
         ${statusPill(showing, current)}
         <div class="tabs"><button data-view="week" class="${view === "week" ? "active" : ""}">Week</button><button data-view="list" class="${view === "list" ? "active" : ""}">List</button></div>
       </div>
@@ -66,9 +75,9 @@ export async function render(root, ctx, params) {
     <div class="grid">
       <div class="stack">
         <section class="card plan-card">
-          ${showing === "none" && !plannable.length ? `<div class="calm big">${icon("calendar", 28)}<div><b>Nothing to plan yet</b><span>Confirm a few tasks and your week appears here.</span></div><a class="btn primary" href="#/tasks">Check tasks</a></div>` : ""}
-          ${view === "week" ? weekGrid(weekBlocks, slots, tasks, taskById, now, showing, settings) : listView(weekBlocks, slots, tasks, taskById, now, showing)}
-          <div class="legend plan-legend"><span><i class="lg-study"></i>Study</span><span><i class="lg-busy"></i>Class or meeting</span><span><i class="lg-event"></i>Exam or event</span><span><i class="lg-free"></i>Your free hours</span><span><i class="lg-due"></i>Deadline</span>${showing === "saved" ? `<span class="muted">Click a session for actions</span>` : ""}</div>
+          ${showing === "none" && !plannable.length ? `<div class="plan-hint">${icon("clock", 18)}<span>${cands.length ? `<b>Click a dashed deadline to confirm it.</b> Studyspace then fits the work into your free hours.` : `<b>Nothing to plan yet.</b> Confirmed tasks appear here as study sessions.`}</span><a class="btn small" href="#/tasks">All tasks</a></div>` : ""}
+          ${view === "week" ? weekGrid(weekBlocks, slots, tasks, taskById, now, showing, settings, cands) : listView(weekBlocks, slots, tasks, taskById, now, showing, cands)}
+          <div class="legend plan-legend"><span><i class="lg-study"></i>Study</span><span><i class="lg-busy"></i>Class or meeting</span><span><i class="lg-event"></i>Exam or event</span><span><i class="lg-free"></i>Free hours</span><span><i class="lg-due"></i>Deadline</span><span><i class="lg-check"></i>Deadline to confirm</span></div>
         </section>
       </div>
       <aside class="stack">${sidePanel(result, blocks, weekBlocks, openTasks, taskById, settings, showing)}</aside>
@@ -126,7 +135,33 @@ function fixedItems(slots, tasks, start, end) {
   return [...busyItems, ...events];
 }
 
-function weekGrid(blocks, slots, tasks, taskById, now, showing, settings) {
+function candDue(c) {
+  return c.due_at || (c.due_date ? `${c.due_date}T23:59:00+08:00` : null);
+}
+
+function pendingThisWeek(cands, start) {
+  const end = addDays(start, 6);
+  return cands.filter((c) => { const d = candDue(c); return d && sgDate(d) >= start && sgDate(d) <= end; }).length;
+}
+
+/** Everything due on a day: confirmed deadlines (solid) and found-but-unconfirmed ones (dashed, clickable). */
+function deadlinesOn(day, tasks, cands) {
+  const confirmed = tasks.filter((t) => t.kind === "deliverable" && t.status === "open" && sgDate(t.due_at) === day)
+    .map((t) => ({ kind: "task", id: t.task_id, title: t.title, course: t.course_code, at: t.due_at, timed: true }));
+  const found = cands.filter((c) => { const d = candDue(c); return d && sgDate(d) === day; })
+    .map((c) => ({ kind: "cand", id: c.candidate_id, title: c.title, course: c.course_code, at: candDue(c), timed: Boolean(c.due_at) && !c.flags.includes("MIDNIGHT_AMBIGUITY") }));
+  return [...confirmed, ...found].sort((a, b) => a.at.localeCompare(b.at));
+}
+
+function dueChip(d) {
+  const label = d.timed ? fmtTime(d.at) : "time?";
+  if (d.kind === "cand") {
+    return `<button class="due-chip k${courseIndex(d.course)} pending" data-cand="${esc(d.id)}" title="Found in your messages, not confirmed yet: ${esc(d.title)}. Click to confirm.">${icon("clock", 11)}<span>${esc(d.title)}</span><b>${esc(label)}</b></button>`;
+  }
+  return `<span class="due-chip k${courseIndex(d.course)}" title="Due ${esc(fmtDateTime(d.at))}: ${esc(d.title)}">${icon("flag", 11)}<span>${esc(d.title)}</span><b>${esc(label)}</b></span>`;
+}
+
+function weekGrid(blocks, slots, tasks, taskById, now, showing, settings, cands = []) {
   const days = [...Array(7)].map((_, i) => addDays(weekStart, i));
   const startIso = `${weekStart}T00:00:00+08:00`, endIso = `${addDays(weekStart, 7)}T00:00:00+08:00`;
   const fixed = fixedItems(slots, tasks, startIso, endIso);
@@ -149,7 +184,8 @@ function weekGrid(blocks, slots, tasks, taskById, now, showing, settings) {
           data-block='${esc(JSON.stringify({ task_id: b.task_id, start: b.start, end: b.end, locked: b.locked, done: b.done || b.task_done }))}' title="${esc(t?.title || b.task_id)} · ${esc(fmtRange(b.start, b.end))}">
           <span class="wb-title">${b.locked ? icon("lock", 10) + " " : ""}${b.done ? "✓ " : ""}${esc(t?.title || b.task_id)}</span>${h >= 34 ? `<span class="wb-time">${esc(fmtRange(b.start, b.end))}</span>` : ""}</button>`;
       }),
-      ...dues.filter((t) => on(t.due_at)).map((t) => `<div class="wg-due" style="top:${Math.min(colH - 2, top(t.due_at))}px" title="Due: ${esc(t.title)} ${esc(fmtDateTime(t.due_at))}"><span>Due: ${esc(t.title)}</span></div>`),
+      ...dues.filter((t) => on(t.due_at)).map((t) => `<div class="wg-due" style="top:${Math.min(colH - 2, top(t.due_at))}px" title="Due: ${esc(t.title)} ${esc(fmtDateTime(t.due_at))}"><span>${esc(t.title)}</span></div>`),
+      ...cands.filter((c) => c.due_at && !c.flags.includes("MIDNIGHT_AMBIGUITY") && on(c.due_at)).map((c) => `<div class="wg-due pending" style="top:${Math.min(colH - 2, top(c.due_at))}px" title="To confirm: ${esc(c.title)}"></div>`),
       d === today ? `<div class="wg-now" style="top:${top(now)}px"></div>` : "",
     ].join("");
     return `<div class="wg-col ${d < today ? "past" : ""}" style="height:${colH}px">${inner}</div>`;
@@ -163,12 +199,14 @@ function weekGrid(blocks, slots, tasks, taskById, now, showing, settings) {
       return `<div class="wg-head ${d === today ? "today" : ""}">${p.weekday}<b>${p.d}</b>
         <span class="day-meter" title="${esc(fmtMinutes(load) || "0 min")} of ${esc(fmtMinutes(limit))}"><span style="width:${Math.min(100, (load / limit) * 100)}%"></span></span></div>`;
     }).join("")}
+    <div class="wg-lane-label">Due</div>
+    ${days.map((d) => `<div class="wg-lane ${d === today ? "today" : ""}">${deadlinesOn(d, tasks, cands).map(dueChip).join("")}</div>`).join("")}
     <div class="wg-hours">${hourLabels}</div>
     ${cols.join("")}
   </div></div>`;
 }
 
-function listView(blocks, slots, tasks, taskById, now, showing) {
+function listView(blocks, slots, tasks, taskById, now, showing, cands = []) {
   const days = [...Array(7)].map((_, i) => addDays(weekStart, i));
   const startIso = `${weekStart}T00:00:00+08:00`, endIso = `${addDays(weekStart, 7)}T00:00:00+08:00`;
   const fixed = fixedItems(slots, tasks, startIso, endIso);
@@ -178,11 +216,12 @@ function listView(blocks, slots, tasks, taskById, now, showing) {
       ...blocks.filter((b) => sgDate(b.start) === d).map((b) => ({ kind: "study", ...b })),
       ...fixed.filter((f) => sgDate(f.start) === d).map((f) => ({ kind: f.type, ...f })),
     ].sort((a, b) => a.start.localeCompare(b.start));
-    if (!items.length) return "";
+    const dueToday = deadlinesOn(d, tasks, cands);
+    if (!items.length && !dueToday.length) return "";
     const p = sgParts(d + "T12:00:00+08:00");
     const load = items.filter((i) => i.kind === "study").reduce((n, b) => n + minutesBetween(b.start, b.end), 0);
     return `<div class="day-group ${d < today ? "past" : ""}"><div class="day-label ${d === today ? "today" : ""}">${p.weekday}<small>${esc(fmtDate(d + "T12:00:00+08:00"))}${d === today ? " · today" : ""}</small>${load ? `<small>${esc(fmtMinutes(load))} study</small>` : ""}</div>
-      <div class="sessions">${items.map((it) => it.kind === "study" ? sessionRow(it, taskById, showing, now) : `
+      <div class="sessions">${dueToday.length ? `<div class="due-row">${dueToday.map(dueChip).join("")}</div>` : ""}${items.map((it) => it.kind === "study" ? sessionRow(it, taskById, showing, now) : `
         <div class="session ${it.kind === "event" ? "event" : "fixed"}"><span class="s-time">${esc(fmtRange(it.start, it.end))}</span><span><span class="s-title">${esc(it.title)}</span><div class="s-sub">${it.kind === "event" ? "exam or event" : "fixed"}</div></span><span></span></div>`).join("")}</div></div>`;
   }).join("");
   return groups || `<div class="empty">No sessions or classes this week.</div>`;
@@ -277,7 +316,7 @@ function bind(root, ctx, { current, taskById, settings, slots, now, blocks }) {
       } else showError(err);
     }
   }));
-  root.querySelector("#discard")?.addEventListener("click", () => { draft = null; toast("Draft discarded. Your saved plan is unchanged."); ctx.refresh(); });
+  root.querySelector("#discard")?.addEventListener("click", () => { dismissedFor = draft?.based_on || null; draft = null; toast("Draft discarded. Your saved plan is unchanged."); ctx.refresh(); });
   root.querySelector("#export")?.addEventListener("click", async () => {
     try { await api.download("/api/plans/current/ics", "studyspace-plan.ics"); toast("Calendar file downloaded. Open it to add the sessions to Outlook, Google or Apple Calendar."); }
     catch (err) { showError(err); }
@@ -300,6 +339,11 @@ function bind(root, ctx, { current, taskById, settings, slots, now, blocks }) {
       { label: "Can't make it", hint: "find another time", icon: "ban", onClick: () => cantMakeIt(ctx, block) },
     ]);
   };
+  root.querySelectorAll("[data-cand]").forEach((el) => el.addEventListener("click", async () => {
+    const cands = await api.get("/api/candidates?status=pending");
+    const c = cands.find((x) => x.candidate_id === el.dataset.cand);
+    if (c) quickConfirm(ctx, c);
+  }));
   root.querySelectorAll("[data-block]").forEach((el) => el.addEventListener("click", () => actionsFor(JSON.parse(el.dataset.block), el)));
   root.querySelectorAll("[data-more]").forEach((el) => el.addEventListener("click", () => actionsFor(JSON.parse(el.dataset.more), el)));
   root.querySelectorAll("[data-done-block]").forEach((el) => el.addEventListener("click", () => {

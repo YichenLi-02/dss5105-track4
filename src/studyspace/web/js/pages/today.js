@@ -1,11 +1,12 @@
 // Today: the student's daily home. What's next, what needs them, what's due, how the week is loaded.
 import { api } from "../api.js";
-import { EFFORT_CHOICES, cantMakeIt, confirmCandidate, recordDone } from "../actions.js";
+import { EFFORT_CHOICES, cantMakeIt, confirmCandidate, quickConfirm, recordDone } from "../actions.js";
 import { openFocus } from "../focus.js";
 import { icon } from "../icons.js";
 import { addDialog } from "../sources-common.js";
 import {
-  courseTag, dueLabel, esc, fmtDayLong, fmtMinutes, fmtRange, fmtTime, fromNow, minutesBetween, sgParts, showError, toast, urgency,
+  addDays, courseIndex, courseTag, dueLabel, esc, fmtDayLong, fmtMinutes, fmtRange, fmtTime, fromNow, minutesBetween, sgParts, showError, toast,
+  urgency,
 } from "../util.js";
 
 export async function render(root, ctx) {
@@ -29,6 +30,7 @@ export async function render(root, ctx) {
         <p class="lede">${esc(summary)}.</p>
       </div>
     </div>
+    ${horizonCard(t)}
     <div class="grid today-grid">
       <div class="stack">
         ${nextUp(t)}
@@ -43,6 +45,60 @@ export async function render(root, ctx) {
     </div>`;
 
   bind(root, ctx, t);
+}
+
+// ---- next 14 days: one marker per deadline, coloured by course (validated palette, legend below) ----
+function horizonCard(t) {
+  const items = t.horizon || [];
+  const start = t.now.slice(0, 10);
+  const days = [...Array(14)].map((_, i) => addDays(start, i));
+  const W = 980, colW = W / 14, axis = 92, H = 128;
+  const byDay = Object.fromEntries(days.map((d) => [d, items.filter((x) => x.date === d)]));
+  const maxCount = Math.max(1, ...days.map((d) => byDay[d].length));
+  const courses = [...new Set(items.map((x) => x.course_code).filter(Boolean))];
+  const cols = days.map((d, i) => {
+    const list = byDay[d];
+    const p = sgParts(`${d}T12:00:00+08:00`);
+    const cx = i * colW + colW / 2;
+    const weekend = p.weekday === "Sat" || p.weekday === "Sun";
+    const tint = list.length ? 0.05 + 0.11 * (list.length / maxCount) : 0;
+    const shown = list.slice(0, 4);
+    const marks = shown.map((x, k) => {
+      const cy = axis - 16 - k * 17;
+      const cls = `hz-mark k${courseIndex(x.course_code)} ${x.state === "to_check" ? "open" : ""}`;
+      const tip = `${x.title}${x.course_code ? ` · ${x.course_code}` : ""} · ${x.at ? dueLabel(x.at, t.now) : "day only"}${x.state === "to_check" ? " · to confirm" : ""}`;
+      const data = x.candidate_id ? `data-hz-cand="${esc(x.candidate_id)}"` : `data-hz-task="${esc(x.task_id)}"`;
+      const shape = x.kind === "event"
+        ? `<rect x="${cx - 6}" y="${cy - 6}" width="12" height="12" rx="2" transform="rotate(45 ${cx} ${cy})" class="${cls}"/>`
+        : `<circle cx="${cx}" cy="${cy}" r="6.5" class="${cls}"/>`;
+      return `<g class="hz-item" ${data} tabindex="0" role="button" aria-label="${esc(tip)}"><title>${esc(tip)}</title>${shape}<circle cx="${cx}" cy="${cy}" r="11" class="hz-hit"/></g>`;
+    }).join("");
+    const more = list.length > 4 ? `<text x="${cx}" y="${axis - 16 - 4 * 17 + 4}" class="hz-more">+${list.length - 4}</text>` : "";
+    return `<g class="hz-day ${i === 0 ? "today" : ""}">
+      ${tint ? `<rect x="${i * colW + 3}" y="6" width="${colW - 6}" height="${axis - 6}" rx="8" class="hz-tint" style="opacity:${tint.toFixed(2)}"/>` : ""}
+      ${weekend ? `<rect x="${i * colW}" y="${axis}" width="${colW}" height="${H - axis}" class="hz-weekend"/>` : ""}
+      ${marks}${more}
+      <text x="${cx}" y="${axis + 17}" class="hz-wd">${esc(p.weekday.slice(0, 2))}</text>
+      <text x="${cx}" y="${axis + 31}" class="hz-d">${p.d}</text>
+    </g>`;
+  }).join("");
+  const crunch = days.filter((d) => byDay[d].length >= 3);
+  return `<section class="card horizon">
+    <div class="card-head"><h2>Next two weeks</h2>
+      <span class="small muted">${items.length ? `${items.length} deadline${items.length === 1 ? "" : "s"} and exams${crunch.length ? ` · busiest: ${esc(crunch.map((d) => sgParts(`${d}T12:00:00+08:00`).weekday + " " + sgParts(`${d}T12:00:00+08:00`).d).join(", "))}` : ""}` : "nothing due"}</span></div>
+    <div class="horizon-body">
+      <svg viewBox="0 0 ${W} ${H}" class="hz-chart" role="img" aria-label="Deadlines over the next 14 days">
+        <line x1="0" x2="${W}" y1="${axis}" y2="${axis}" class="hz-axis"/>${cols}
+      </svg>
+      <div class="hz-legend">
+        ${courses.map((c) => `<span>${courseTag(c)}</span>`).join("")}
+        <span class="hz-key"><svg width="12" height="12"><circle cx="6" cy="6" r="5" class="hz-mark k0"/></svg>confirmed</span>
+        <span class="hz-key"><svg width="12" height="12"><circle cx="6" cy="6" r="4.5" class="hz-mark k0 open"/></svg>to confirm</span>
+        <span class="hz-key"><svg width="12" height="12"><rect x="2" y="2" width="8" height="8" transform="rotate(45 6 6)" class="hz-mark k0"/></svg>exam / event</span>
+      </div>
+      <table class="sr-only"><caption>Deadlines in the next 14 days</caption>${items.map((x) => `<tr><td>${esc(x.date)}</td><td>${esc(x.title)}</td><td>${esc(x.course_code || "")}</td><td>${x.state === "to_check" ? "to confirm" : "confirmed"}</td></tr>`).join("")}</table>
+    </div>
+  </section>`;
 }
 
 // ---- next up ---------------------------------------------------------------------------------
@@ -245,6 +301,15 @@ function renderEmpty(root, ctx, t) {
 
 // ---- events -------------------------------------------------------------------------------------
 function bind(root, ctx, t) {
+  root.querySelectorAll("[data-hz-cand]").forEach((g) => {
+    const open = async () => {
+      const c = (await api.get("/api/candidates?status=pending")).find((x) => x.candidate_id === g.dataset.hzCand);
+      if (c) quickConfirm(ctx, c);
+    };
+    g.addEventListener("click", open);
+    g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+  });
+  root.querySelectorAll("[data-hz-task]").forEach((g) => g.addEventListener("click", () => ctx.go("plan")));
   const s = t.next_session;
   if (s) {
     const block = { ...s };
