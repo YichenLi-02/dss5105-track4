@@ -22,9 +22,9 @@ async def lifespan(_: FastAPI):
     settings.data_dir.mkdir(parents=True, exist_ok=True)
     settings.upload_dir.mkdir(parents=True, exist_ok=True)
     init_db()
-    print(f"[student-work-assistant] mode={settings.app_mode} db={settings.database_path}")
+    print(f"[student-work-assistant] mode={settings.app_mode} db={settings.database_path}", flush=True)
     if settings.app_mode == "live":
-        print(f"[student-work-assistant] one-time local session code: {BOOTSTRAP_CODE}")
+        print(f"[student-work-assistant] one-time local session code: {BOOTSTRAP_CODE}", flush=True)
     yield
 
 

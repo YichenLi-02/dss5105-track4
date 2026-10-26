@@ -144,3 +144,65 @@ def test_minimized_payload_never_contains_annotation(api, imported):
     p = minimized(row)
     assert set(p) == {"source_id", "subject", "body", "sent_at", "source_timezone"}
     assert "holdout" not in json.dumps(p) and "AI_assisted" not in json.dumps(p)
+
+
+def test_old_model_output_gets_english_copy(api, imported, monkeypatch):
+    from app.db import connect, dumps, loads
+    from app.llm import adapter
+    from app.services import analysis_service
+    sent = []
+
+    def fake(system, payload, schema, name, **kw):
+        sent.append(payload)
+        en = {"金融产品推广": "Financial product promotion", "提交申诉": "Submit an appeal"}
+        return {"items": [{"id": x["id"], "zh": x["text"], "en": en[x["text"]]} for x in payload["items"]]}, {}
+    monkeypatch.setattr(adapter, "structured_call", fake)
+    monkeypatch.setattr(adapter, "require_enabled", lambda conn: None)
+    with connect() as conn:
+        row = conn.execute("SELECT * FROM messages WHERE direction='inbound' LIMIT 1").fetchone()
+        old = (row["analysis_json"], row["analysis_origin"])
+        conn.execute("UPDATE messages SET analysis_json=?, analysis_origin='model' WHERE id=?",
+                     (dumps({"summary": "s", "attention_flags": ["金融产品推广"]}), row["id"]))
+        conn.execute("""INSERT INTO tasks(id,entity_key,title,status,created_at,updated_at)
+                        VALUES('task_tr','model_X_0','提交申诉','needs_review','t','t')""")
+        conn.commit()
+        try:
+            assert analysis_service.translate_pending(conn) == {"flags": 1, "titles": 1}
+            a = loads(conn.execute("SELECT analysis_json FROM messages WHERE id=?", (row["id"],)).fetchone()[0], {})
+            assert a["attention_flags_en"] == ["Financial product promotion"]
+            assert api.get("/api/tasks/task_tr").json()["title_en"] == "Submit an appeal"
+            assert all(set(x) == {"id", "text"} for x in sent[0]["items"])  # only notes/titles, no mail text
+            assert analysis_service.translate_pending(conn) == {"flags": 0, "titles": 0}  # done once
+            t = api.get("/api/tasks/task_tr").json()
+            api.patch("/api/tasks/task_tr", {"expected_revision": t["revision"], "title": "My own title"})
+            assert api.get("/api/tasks/task_tr").json()["title_en"] is None  # user's title shown as typed
+        finally:
+            conn.execute("UPDATE messages SET analysis_json=?, analysis_origin=? WHERE id=?", (*old, row["id"]))
+            conn.execute("DELETE FROM tasks WHERE id='task_tr'")
+            conn.commit()
+
+
+def test_real_gmail_reply_stays_in_thread(monkeypatch):
+    from email import message_from_bytes
+    from app.providers import writers
+    monkeypatch.setattr(oauth, "access_token", lambda conn, provider: "at")
+    sent = []
+
+    def handler(req: httpx.Request):
+        if req.method == "GET" and req.url.path == "/gmail/v1/users/me/messages/g1":
+            return httpx.Response(200, json={"payload": {"headers": [{"name": "Message-ID", "value": "<orig@mail.uni.edu>"}]}})
+        if req.url.path == "/gmail/v1/users/me/messages/send":
+            sent.append(json.loads(req.content))
+            return httpx.Response(200, json={"id": "s1"})
+        return httpx.Response(404)
+    net.set_transport(httpx.MockTransport(handler))
+    try:
+        status, res = writers.execute("send_email", {
+            "connection_id": "conn_google", "to": ["ta@uni.edu"], "cc": [], "bcc": [], "subject": "Re: Lab",
+            "body": "Thanks, noted.", "attachments": [], "thread_id": "t1", "reply_to_provider_message_id": "g1"}, "op1")
+    finally:
+        net.set_transport(None)
+    assert status == "executed" and res["provider_id"] == "s1"
+    assert sent[0]["threadId"] == "t1"
+    mime = message_from_bytes(base64.urlsafe_b64decode(sent[0]["raw"]))
+    assert mime["In-Reply-To"] == "<orig@mail.uni.edu>" and mime["To"] == "ta@uni.edu"

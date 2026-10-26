@@ -64,7 +64,7 @@ def _draft_payload(conn: sqlite3.Connection, draft_id: str, mode: str) -> tuple[
     blocking = [f for f in d["missing_fields"]]
     src = None
     if d["source_message_id"]:
-        src = conn.execute("SELECT source_id, connection_id, thread_id FROM messages WHERE id=?",
+        src = conn.execute("SELECT source_id, connection_id, thread_id, provider_message_id FROM messages WHERE id=?",
                            (d["source_message_id"],)).fetchone()
     attachments = []
     for a in d["attachments"]:
@@ -81,6 +81,9 @@ def _draft_payload(conn: sqlite3.Connection, draft_id: str, mode: str) -> tuple[
         payload = {"operation": op, "mode": mode, "connection_id": d["connection_id"] or (src["connection_id"] if src else None),
                    "to": d["to"], "cc": d["cc"], "bcc": d["bcc"], "subject": d["subject"], "body": d["body"],
                    "attachments": attachments, "reply_to_source_id": src["source_id"] if src else None,
+                   # Keep a real reply in the original conversation (Gmail threadId + RFC 5322 reply headers).
+                   "thread_id": src["thread_id"] if src else None,
+                   "reply_to_provider_message_id": src["provider_message_id"] if src else None,
                    "style_reference_ids": d["style_reference_ids"]}
     if mode == "live":
         for a in d["to"] + d["cc"] + d["bcc"]:

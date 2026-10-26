@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
-import { get, patch } from '../api/client'
+import { get, patch, post, waitJob } from '../api/client'
 import { Panel } from '../components/Panel'
 import { MailPage } from '../pages/MailPage'
 import { TasksPage } from '../pages/TasksPage'
@@ -29,6 +29,7 @@ export function App() {
   const [dataVersion, setDataVersion] = useState(0)
   const [reviewCount, setReviewCount] = useState(0)
   const [bootError, setBootError] = useState<string | null>(null)
+  const [needCode, setNeedCode] = useState(false)
   const toastTimer = useRef<number>(0)
 
   useEffect(() => {
@@ -45,7 +46,7 @@ export function App() {
 
   useEffect(() => {
     get<Health>('/api/health').then(setHealth).catch((e) => setBootError(String(e.message || e)))
-    reloadPrefs().catch((e) => setBootError(String(e.message || e)))
+    reloadPrefs().catch((e) => (e.code === 'BOOTSTRAP_CODE_INVALID' ? setNeedCode(true) : setBootError(String(e.message || e))))
   }, [reloadPrefs])
 
   useEffect(() => {
@@ -65,6 +66,16 @@ export function App() {
       }))
       .catch(() => undefined)
   }, [dataVersion, prefs?.revision])
+  // Older model output (flag notes, task titles) may exist in one language only: add English once, quietly.
+  const translationSent = useRef(false)
+  useEffect(() => {
+    if (translationSent.current) return
+    get('/api/model/status').then((m) => {
+      if (!m.enabled || !m.pending_translations || translationSent.current) return
+      translationSent.current = true
+      return post('/api/translation-jobs', {}).then((j) => waitJob(j.id, () => undefined)).then(() => setDataVersion((v) => v + 1))
+    }).catch(() => undefined)
+  }, [prefs?.revision])
   // Tell an open tab when the server has a newer UI build (otherwise old code keeps running until a hard refresh).
   const [staleUi, setStaleUi] = useState(false)
   useEffect(() => {
@@ -116,6 +127,8 @@ export function App() {
     [health, prefs, reloadPrefs, toast, reviewCount, dataVersion],
   )
   const t = (k: string, p?: Record<string, string | number>) => translate(locale, k, p)
+
+  if (needCode) return <BootstrapCode />
 
   return (
     <I18nProvider locale={locale} setLocale={setLocale}>
@@ -174,5 +187,31 @@ export function App() {
         </div>
       </AppContext.Provider>
     </I18nProvider>
+  )
+}
+
+// Live mode: the server prints a one-time code at start-up; only someone at this computer can open a session.
+function BootstrapCode() {
+  const [code, setCode] = useState('')
+  const tried = !!sessionStorage.getItem('swa_bootstrap')
+  const both = (k: string) => `${translate('zh-CN', k)} / ${translate('en', k)}`
+  function submit(e: React.FormEvent) {
+    e.preventDefault()
+    sessionStorage.setItem('swa_bootstrap', code.trim())
+    window.location.reload()
+  }
+  return (
+    <main className="boot-code">
+      <form className="box" onSubmit={submit}>
+        <h1>{both('boot.title')}</h1>
+        <p className="description">{translate('zh-CN', 'boot.hint')}<br />{translate('en', 'boot.hint')}</p>
+        {tried && <div className="banner red" role="alert">{both('boot.wrong')}</div>}
+        <div className="field">
+          <label htmlFor="boot-code">{both('boot.label')}</label>
+          <input id="boot-code" value={code} onChange={(e) => setCode(e.target.value)} autoFocus autoComplete="off" spellCheck={false} />
+        </div>
+        <button className="primary" type="submit" disabled={!code.trim()}>{both('boot.submit')}</button>
+      </form>
+    </main>
   )
 }

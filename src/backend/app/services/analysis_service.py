@@ -102,6 +102,8 @@ def run(ctx, payload: dict) -> dict:
                 conn.execute("UPDATE jobs SET failed_count=failed_count+1 WHERE id=?", (ctx.job_id,))
             ctx.progress(i + 1, len(ids))
             continue
+        if len(result.get("attention_flags_en") or []) != len(result.get("attention_flags") or []):
+            result["attention_flags_en"] = []
         prev = loads(row["analysis_json"], None)
         result.update({"model": settings.openai_model,
                        "prompt_version": adapter.PROMPT_VERSION, "schema_version": adapter.SCHEMA_VERSION,
@@ -121,7 +123,54 @@ def run(ctx, payload: dict) -> dict:
                     "official_date_candidate": c["date"], "official_time_candidate": c["time"], "timezone": c["timezone"],
                     "status": "model_candidate", "origin": "model", "interpretation_note": "model candidate; needs review",
                     "evidence": {"quote": ev["quote"], "field": ev["field"]}}],
-                    title=c["title"], course=c["course"], term=None, origin="model")
+                    title=c["title"], title_en=c.get("title_en"), course=c["course"], term=None, origin="model")
         done += 1
         ctx.progress(i + 1, len(ids))
     return {"analysed": done, "failed": failed, "cached": cached}
+
+
+def needs_flag_translation(a: dict | None, origin: str | None) -> bool:
+    flags = (a or {}).get("attention_flags") or []
+    return origin == "model" and bool(flags) and len((a or {}).get("attention_flags_en") or []) != len(flags)
+
+
+def pending_translations(conn) -> tuple[list, list]:
+    """Older model output that is in one language only: flag notes on mail, titles of model-made tasks."""
+    msgs = [r for r in conn.execute("SELECT * FROM messages WHERE analysis_origin='model'")
+            if needs_flag_translation(loads(r["analysis_json"], None), r["analysis_origin"])]
+    tasks = conn.execute("SELECT id, title FROM tasks WHERE substr(entity_key, 1, 6)='model_' AND title_en IS NULL").fetchall()
+    return msgs, list(tasks)
+
+
+def translate_pending(ctx, payload: dict | None = None) -> dict:
+    """Job body: give older model output an English copy. Only the short notes/titles are sent, never mail text."""
+    conn = ctx.conn if hasattr(ctx, "conn") else ctx
+    adapter.require_enabled(conn)
+    msgs, tasks = pending_translations(conn)
+    msgs, tasks = msgs[:100], tasks[:100]
+    items = [{"id": f"m{n}:{k}", "text": f} for n, r in enumerate(msgs)
+             for k, f in enumerate(loads(r["analysis_json"], {})["attention_flags"])]
+    items += [{"id": f"t{n}", "text": t["title"]} for n, t in enumerate(tasks)]
+    if not items:
+        return {"flags": 0, "titles": 0}
+    out, _ = adapter.structured_call(adapter.FLAG_BOUNDARY, {"items": items}, adapter.FLAG_TRANSLATION, "label_translation")
+    got = {x["id"]: x for x in out.get("items", []) if x.get("zh", "").strip() and x.get("en", "").strip()}
+    n_flags = n_titles = 0
+    with transaction(conn):
+        for n, r in enumerate(msgs):
+            a = loads(r["analysis_json"], {})
+            pairs = [got.get(f"m{n}:{k}") for k in range(len(a["attention_flags"]))]
+            if not all(pairs):  # partial answers are not mixed in
+                continue
+            a["attention_flags_original"] = a["attention_flags"]
+            a["attention_flags"] = [p["zh"] for p in pairs]
+            a["attention_flags_en"] = [p["en"] for p in pairs]
+            conn.execute("UPDATE messages SET analysis_json=?, revision=revision+1, updated_at=? WHERE id=?",
+                         (dumps(a), now_iso(), r["id"]))
+            n_flags += 1
+        for n, t in enumerate(tasks):  # the stored title stays as it was; only the English copy is added
+            if got.get(f"t{n}"):
+                conn.execute("UPDATE tasks SET title_en=? WHERE id=? AND title=?",
+                             (got[f"t{n}"]["en"][:200], t["id"], t["title"]))
+                n_titles += 1
+    return {"flags": n_flags, "titles": n_titles}

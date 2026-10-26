@@ -1,6 +1,6 @@
 // Course documents. The backend parses real PDF text with page numbers; scans, encrypted and broken
 // files are reported as such and the user can paste the original text instead.
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ConfirmButton } from './ConfirmButton'
 import { del, get, patch, post, upload } from '../api/client'
 import type { DocumentRec } from '../api/types'
@@ -18,6 +18,7 @@ export function DocumentLibrary() {
   const [form, setForm] = useState({ kind: 'syllabus', course: '', term: '', source_timezone: app.prefs?.display_timezone || 'Asia/Singapore',
     title: '', page: '', excerpt: '', permission: false })
   const [file, setFile] = useState<File | null>(null)
+  const fileInput = useRef<HTMLInputElement>(null)
   const [fileNote, setFileNote] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)
@@ -112,8 +113,12 @@ export function DocumentLibrary() {
           </div>
           <div className="field">
             <label htmlFor="doc-file">{t('docs.file')}</label>
-            <input id="doc-file" type="file" accept="application/pdf,.pdf" onChange={(e) => pick(e.target.files?.[0] || null)} />
-            {fileNote && <small>{fileNote}</small>}
+            <input id="doc-file" ref={fileInput} className="sr-only" tabIndex={-1} type="file" accept="application/pdf,.pdf"
+              onChange={(e) => { pick(e.target.files?.[0] || null); e.target.value = '' }} />
+            <div className="row">
+              <button type="button" onClick={() => fileInput.current?.click()}>{t('docs.choose_file')}</button>
+              <small>{fileNote ?? t('docs.no_file_chosen')}</small>
+            </div>
           </div>
           <div className="fields">
             <div className="field"><label htmlFor="doc-title">{t('docs.title_f')}</label><input id="doc-title" value={form.title} onChange={(e) => set('title', e.target.value)} /></div>

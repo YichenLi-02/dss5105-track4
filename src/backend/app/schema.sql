@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS tasks (
   parent_task_id TEXT REFERENCES tasks(id),
   entity_key TEXT NOT NULL,
   title TEXT NOT NULL,
+  title_en TEXT,
   course TEXT,
   term TEXT,
   deliverable TEXT,

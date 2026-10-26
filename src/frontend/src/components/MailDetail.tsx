@@ -7,6 +7,15 @@ import { fmtDateTime, mailSummary, pick, useI18n } from '../app/i18n'
 import { DraftEditor } from './DraftEditor'
 import { OriginTag, StatusTag } from './Tags'
 
+// Flags follow the UI language: known codes use the interface dictionary, model notes their English copy.
+function flagLabels(a: Record<string, any>, locale: string, t: (k: string) => string): string[] {
+  const en: string[] = a.attention_flags_en || []
+  return (a.attention_flags as string[]).map((f, i) => {
+    if (/^[a-z_]+$/.test(f)) return t('mflag.' + f) !== 'mflag.' + f ? t('mflag.' + f) : f.replace(/_/g, ' ')
+    return locale === 'en' && en[i] ? en[i] : f
+  })
+}
+
 // Plain-text body only - never inject provider HTML.
 // Display-only tidy-up (stored text and evidence offsets are untouched): drop CRs and stray leading spaces,
 // and undo 'blank line after every line' exports so the measure reads as prose.
@@ -98,7 +107,7 @@ export function MailDetail({ id }: { id: string }) {
           <div><b>{t('mail.summary')}:</b> {mailSummary(locale, { ...m, summary: m.analysis.summary })}</div>
           {m.analysis.uncertainty && <div><b>{t('mail.to_check')}:</b> {pick(locale, m.analysis.uncertainty, m.uncertainty_en)}</div>}
           {m.analysis.expected_behavior && <div><b>{t('mail.expected')}:</b> {pick(locale, m.analysis.expected_behavior, m.expected_en)}</div>}
-          {m.analysis.attention_flags?.length > 0 && <div><b>{t('mail.flags')}:</b> {m.analysis.attention_flags.join(', ')}</div>}
+          {m.analysis.attention_flags?.length > 0 && <div><b>{t('mail.flags')}:</b> {flagLabels(m.analysis, locale, t).join(locale === 'en' ? '; ' : '；')}</div>}
         </div>
       )}
       <div className="fields">

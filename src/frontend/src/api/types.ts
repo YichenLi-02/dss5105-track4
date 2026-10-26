@@ -23,6 +23,7 @@ export interface MessageSummary {
   important_reason: string | null
   important_params: Record<string, string> | null
   attention_flags: string[]
+  attention_flags_en: string[] | null
   attention_label: string | null
   attention_label_en: string | null
   summary_en: string | null

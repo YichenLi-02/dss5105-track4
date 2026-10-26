@@ -6,6 +6,7 @@ import type { Proposal } from '../api/types'
 import { useApp } from '../app/context'
 import { fmtDateTime, useI18n } from '../app/i18n'
 import { uuid } from '../app/time'
+import { CopyButton } from './CopyButton'
 import { DraftEditor } from './DraftEditor'
 import { StatusTag } from './Tags'
 
@@ -90,6 +91,13 @@ export function ReviewDialog({ id }: { id: string }) {
       {p.result && p.status !== 'invalidated' && (
         <div className={`banner ${p.status === 'simulated' || p.status === 'executed' ? 'green' : 'warning'}`} aria-live="polite">
           {t('review.outcome.' + p.status)}
+          {p.status === 'simulated' && (p.operation === 'send_email' || p.operation === 'send_chat') && (
+            <div className="row" style={{ marginTop: 8 }}>
+              <CopyButton primary text={p.payload.body || ''} label={t('copy.body')} />
+              {p.operation === 'send_email' && <CopyButton text={p.payload.subject || ''} label={t('copy.subject')} />}
+              <small>{t('copy.after_simulated')}</small>
+            </div>
+          )}
         </div>
       )}
       <p className="footnote">

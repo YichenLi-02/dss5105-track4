@@ -50,6 +50,10 @@ def init_db(path: Path | None = None) -> None:
         version = conn.execute("PRAGMA user_version").fetchone()[0]
         if version < SCHEMA_VERSION:
             conn.executescript(SCHEMA_PATH.read_text(encoding="utf-8"))
+        # Additive column migrations for databases created by earlier builds.
+        cols = {r[1] for r in conn.execute("PRAGMA table_info(tasks)")}
+        if cols and "title_en" not in cols:
+            conn.execute("ALTER TABLE tasks ADD COLUMN title_en TEXT")
         # Startup recovery: anything mid-flight when the process died is not "done".
         ts = now_iso()
         conn.execute("UPDATE jobs SET status='interrupted', updated_at=? WHERE status IN ('queued','running')", (ts,))

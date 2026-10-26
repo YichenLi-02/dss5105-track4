@@ -184,6 +184,7 @@ def message_summary(row: sqlite3.Row, threshold: float = importance.DEFAULT_THRE
         "ignore": None if reply is None or action is None else (not reply and not action),
         "important": imp, "important_reason": imp_reason, "important_params": imp_params,
         "attention_flags": a.get("attention_flags", []),
+        "attention_flags_en": a.get("attention_flags_en") or None,
         "attention_label": a.get("attention_label"), "uncertainty": a.get("uncertainty", ""),
         "summary_en": en.get("summary") or a.get("summary_en"), "uncertainty_en": en.get("uncertainty"),
         "attention_label_en": en.get("label") or None,

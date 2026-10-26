@@ -2,6 +2,7 @@
 // placeholder and recipient is filled. Saving never sends; sending needs a separate final review.
 import { useEffect, useRef, useState } from 'react'
 import { ConfirmButton } from './ConfirmButton'
+import { CopyButton } from './CopyButton'
 import { get, patch, post } from '../api/client'
 import type { Draft, DocumentRec } from '../api/types'
 import { useApp } from '../app/context'
@@ -35,6 +36,7 @@ export function DraftEditor({ create, draftId }: { create?: Create; draftId?: st
   const [dirty, setDirty] = useState(false)
   const [docs, setDocs] = useState<DocumentRec[]>([])
   const [modelOn, setModelOn] = useState(false)
+  const [openUrl, setOpenUrl] = useState<string | null>(null)
   const started = useRef(false)
 
   function load(x: Draft) {
@@ -66,11 +68,24 @@ export function DraftEditor({ create, draftId }: { create?: Create; draftId?: st
     get('/api/model/status').then((s) => setModelOn(s.enabled)).catch(() => undefined)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Link back to the original mail in Gmail/Outlook, so a copied reply can be pasted there by hand.
+  useEffect(() => {
+    if (!d?.source_message_id || d.channel !== 'email') return
+    get(`/api/messages/${d.source_message_id}`).then((m) => setOpenUrl(m.source?.open_url || null)).catch(() => undefined)
+  }, [d?.source_message_id, d?.channel])
+
   if (err && !d) return <div className="banner red">{err}</div>
   if (!d) return <p>{t('common.loading')}</p>
 
   const split = (s: string) => s.split(/[,;\n]/).map((x) => x.trim()).filter(Boolean)
   const placeholdersNow = Array.from(new Set((form.subject + '\n' + form.body).match(/\[\[[^\]\n]{1,120}\]\]/g) || []))
+
+  // Live, from what is on screen now (not from the last save), mirroring the server's draft check.
+  const fieldsNow = d.channel !== 'email' ? [] : [
+    ...(split(form.to).length ? [] : ['recipients']),
+    ...(form.subject.trim() ? [] : ['subject']),
+  ]
+  const readyNow = placeholdersNow.length === 0 && fieldsNow.length === 0
 
   async function save(extra: Record<string, any> = {}): Promise<Draft | null> {
     setErr(null)
@@ -173,6 +188,14 @@ export function DraftEditor({ create, draftId }: { create?: Create; draftId?: st
         <label htmlFor="d-body">{t('draft.body')}</label>
         <textarea id="d-body" rows={12} value={form.body} onChange={(e) => up('body', e.target.value)} />
       </div>
+      <div className="field">
+      <div className="row">
+        <CopyButton text={form.body} label={t('copy.body')} />
+        {d.channel === 'email' && <CopyButton text={form.subject} label={t('copy.subject')} />}
+        {openUrl && <a className="button-link" href={openUrl} target="_blank" rel="noopener noreferrer">{t('copy.open_original')} ↗</a>}
+      </div>
+      <small>{t(placeholdersNow.length ? 'copy.hint_placeholders' : 'copy.hint')}</small>
+      </div>
       {d.channel === 'email' && (
         <div className="field">
           <label>{t('draft.attachments')}</label>
@@ -186,22 +209,22 @@ export function DraftEditor({ create, draftId }: { create?: Create; draftId?: st
           <small>{t('draft.attachments_hint')}</small>
         </div>
       )}
-      {(placeholdersNow.length > 0 || d.missing_fields.length > 0) && (
+      {!readyNow && (
         <div className="banner warning">
           <b>{t('draft.missing')}</b>
           <ul>
             {placeholdersNow.map((p) => <li key={p}>{p}</li>)}
-            {d.missing_fields.filter((m) => !m.includes('[[')).map((m) => <li key={m}>{t('missing.' + m.split(':')[0])}</li>)}
+            {fieldsNow.map((m) => <li key={m}>{t('missing.' + m)}</li>)}
           </ul>
         </div>
       )}
       {err && <div className="banner red" role="alert">{err}</div>}
       <div className="panel-actions">
         <button onClick={() => save()} disabled={!dirty}>{t('draft.save')}</button>
-        <button className="primary" onClick={() => review('demo')} disabled={dirty ? placeholdersNow.length > 0 : !d.ready_for_review}>
+        <button className="primary" onClick={() => review('demo')} disabled={!readyNow}>
           {t('draft.review_demo')}
         </button>
-        {app.health?.mode === 'live' && <button onClick={() => review('live')} disabled={!d.ready_for_review || dirty}>{t('draft.review_live')}</button>}
+        {app.health?.mode === 'live' && <button onClick={() => review('live')} disabled={!readyNow}>{t('draft.review_live')}</button>}
       </div>
       <p className="footnote">{t('draft.footnote')}</p>
     </>

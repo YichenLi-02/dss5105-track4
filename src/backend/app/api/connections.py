@@ -104,7 +104,10 @@ def ms_chat_import(body: ChatImportIn, _: Session = Depends(require_mutation)):
 @router.get("/model/status")
 def model_status(_: Session = Depends(require_session)):
     with connect() as conn:
-        return adapter.status(conn)
+        st = adapter.status(conn)
+        msgs, tasks = analysis_service.pending_translations(conn)
+        st["pending_translations"] = len(msgs) + len(tasks)
+        return st
 
 
 class AnalysisIn(Strict):
@@ -118,4 +121,14 @@ def analysis(body: AnalysisIn, background: BackgroundTasks, _: Session = Depends
         adapter.require_enabled(conn)
         job = create_job(conn, "analysis", body.model_dump())
     background.add_task(run_job, job["id"], analysis_service.run, False)
+    return job
+
+
+@router.post("/translation-jobs", status_code=202)
+def translation(background: BackgroundTasks, _: Session = Depends(require_mutation)):
+    """English copies for older one-language model output (flag notes, model task titles)."""
+    with connect() as conn:
+        adapter.require_enabled(conn)
+        job = create_job(conn, "analysis", {"kind": "translation"})
+    background.add_task(run_job, job["id"], analysis_service.translate_pending, False)
     return job

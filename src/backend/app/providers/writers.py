@@ -67,8 +67,10 @@ def _classify(r: httpx.Response) -> str:
     return "unknown"
 
 
-def _mime(payload: dict) -> bytes:
+def _mime(payload: dict, reply_headers: dict | None = None) -> bytes:
     msg = EmailMessage()
+    for k, v in (reply_headers or {}).items():
+        msg[k] = v
     msg["To"] = ", ".join(payload["to"])
     if payload.get("cc"):
         msg["Cc"] = ", ".join(payload["cc"])
@@ -84,6 +86,24 @@ def _mime(payload: dict) -> bytes:
     return msg.as_bytes()
 
 
+def _gmail_reply_headers(auth: dict, payload: dict) -> dict:
+    """In-Reply-To/References of the original mail (read-only lookup). Missing headers only lose threading."""
+    mid = payload.get("reply_to_provider_message_id")
+    if not mid:
+        return {}
+    try:
+        r = net.request("GET", f"https://gmail.googleapis.com/gmail/v1/users/me/messages/{mid}", headers=auth,
+                        params={"format": "metadata", "metadataHeaders": ["Message-ID", "References"]})
+        if r.status_code != 200:
+            return {}
+        h = {x["name"].lower(): x["value"] for x in r.json().get("payload", {}).get("headers", [])}
+    except (httpx.HTTPError, ValueError):
+        return {}
+    if not h.get("message-id"):
+        return {}
+    return {"In-Reply-To": h["message-id"], "References": (h.get("references", "") + " " + h["message-id"]).strip()}
+
+
 def execute(op: str, payload: dict, operation_id: str) -> tuple[str, dict]:
     with connect() as conn:
         provider = _provider_for(payload, op)
@@ -94,9 +114,12 @@ def execute(op: str, payload: dict, operation_id: str) -> tuple[str, dict]:
         auth = {"Authorization": f"Bearer {token}"}
         try:
             if op == "send_email" and provider == "google":
-                raw = base64.urlsafe_b64encode(_mime(payload)).decode()
+                raw = base64.urlsafe_b64encode(_mime(payload, _gmail_reply_headers(auth, payload))).decode()
+                body = {"raw": raw}
+                if payload.get("thread_id"):
+                    body["threadId"] = payload["thread_id"]
                 r = net.request("POST", "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
-                                headers=auth, json={"raw": raw})
+                                headers=auth, json=body)
                 status = _classify(r)
                 return status, {"http_status": r.status_code, "provider_id": r.json().get("id") if status == "executed" else None,
                                 "operation_id": operation_id}

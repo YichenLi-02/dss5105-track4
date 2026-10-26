@@ -103,12 +103,12 @@ def get_message(message_id: str, _: Session = Depends(require_session)):
         detail = message_detail(row, _threshold(conn))
         detail["source"] = _source_info(conn, row)
         detail["linked_tasks"] = [dict(r) for r in conn.execute(
-            """SELECT DISTINCT t.id, t.title, t.status, e.relation FROM task_evidence e JOIN tasks t ON t.id=e.task_id
+            """SELECT DISTINCT t.id, t.title, t.title_en, t.status, e.relation FROM task_evidence e JOIN tasks t ON t.id=e.task_id
                WHERE e.message_id=?""", (row["id"],)).fetchall()]
         from ..services import ref_i18n
         for lt in detail["linked_tasks"]:
             key = conn.execute("SELECT entity_key FROM tasks WHERE id=?", (lt["id"],)).fetchone()[0]
-            lt["title_en"] = ref_i18n.task_title(key)
+            lt["title_en"] = lt["title_en"] or ref_i18n.task_title(key)
         return detail
 
 

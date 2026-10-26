@@ -98,7 +98,7 @@ def row_to_task(conn: sqlite3.Connection, row: sqlite3.Row) -> dict:
     } for e in ev]
     return {
         "id": t["id"], "entity_key": t["entity_key"], "title": t["title"], "course": t["course"],
-        "title_en": _title_en(t["entity_key"]),
+        "title_en": t.get("title_en") or _title_en(t["entity_key"]),
         "term": t["term"], "deliverable": t["deliverable"], "required": bool(t["required"]),
         "status": t["status"], "official_date": t["official_date"], "official_time": t["official_time"],
         "source_timezone": t["source_timezone"], "deadline_status": t["deadline_status"],
@@ -111,7 +111,7 @@ def row_to_task(conn: sqlite3.Connection, row: sqlite3.Row) -> dict:
     }
 
 
-def _title_en(entity_key: str) -> str | None:
+def _title_en(entity_key: str) -> str | None:  # reference/fixture tasks only
     from . import ref_i18n
     return ref_i18n.task_title(entity_key)
 
@@ -150,7 +150,7 @@ def _humanize(key: str) -> str:
 
 
 def merge_candidates(conn: sqlite3.Connection, entity_key: str, cands: list[dict], *, title: str | None,
-                     course: str | None, term: str | None, origin: str) -> str:
+                     course: str | None, term: str | None, origin: str, title_en: str | None = None) -> str:
     """Create or extend one task from candidate records. Existing user edits are never overwritten."""
     existing = conn.execute("SELECT * FROM tasks WHERE entity_key=? AND owner_id='local_user'", (entity_key,)).fetchone()
     ts = now_iso()
@@ -206,10 +206,10 @@ def merge_candidates(conn: sqlite3.Connection, entity_key: str, cands: list[dict
 
     task_id = new_id("task")
     conn.execute(
-        """INSERT INTO tasks(id,entity_key,title,course,term,deliverable,required,status,official_date,official_time,
+        """INSERT INTO tasks(id,entity_key,title,title_en,course,term,deliverable,required,status,official_date,official_time,
            source_timezone,deadline_status,date_candidates_json,estimated_minutes,missing_fields_json,created_at,updated_at)
-           VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-        (task_id, entity_key, title or _humanize(entity_key), course or _course_from_key(entity_key), term,
+           VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+        (task_id, entity_key, title or _humanize(entity_key), (title_en or None) if title else None, course or _course_from_key(entity_key), term,
          deliverable, required, status, official_date, official_time, source_tz, deadline_status,
          dumps([_cand_view(c) for c in cands]), None, "[]", ts, ts),
     )
@@ -309,6 +309,8 @@ def update_task(conn: sqlite3.Connection, task_id: str, patch: dict) -> dict:
             raise AppError(422, "CUTOFF_NEEDS_OFFSET", "user_planning_cutoff must include a UTC offset")
     if "required" in changes:
         changes["required"] = 1 if changes["required"] else 0
+    if "title" in changes and changes["title"] != row["title"]:
+        changes["title_en"] = None  # the user's own title is shown as typed
     t.update(changes)
     if {"official_date", "official_time"} & changes.keys() and t["deadline_status"] in {"conflict", "time_conflict", "relative_unresolved", "missing", "date_only"}:
         t["deadline_status"] = "user_confirmed" if t["official_date"] and t["official_time"] else t["deadline_status"]
