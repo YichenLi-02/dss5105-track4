@@ -1,0 +1,97 @@
+{
+  "package": "Track4_AI_project_source_materials_pseudonymised",
+  "derived_from": "AI项目数据源",
+  "pseudonymised": true,
+  "counts": {
+    "real_email_samples": 50,
+    "time_expressions": 32
+  },
+  "annotation_status": "AI_assisted_proposal_pending_user_review",
+  "files": [
+    {
+      "name": "00_AI读取入口.md",
+      "bytes": 6704,
+      "sha256": "1e075e7fa50d184ccc4342ed1d1ea390097cbd2ab052cfa35f5c1969317336a9"
+    },
+    {
+      "name": "annotation_en.json",
+      "bytes": 15359,
+      "sha256": "c2755ce53c73225223e8864be2d656728f9b02c10a85d5e7029133649eba9b0f"
+    },
+    {
+      "name": "date_candidates.jsonl",
+      "bytes": 23538,
+      "sha256": "397173efb833cd18668f76b5389016497b10a7e0b9f4d6ac6345bd998eeda702"
+    },
+    {
+      "name": "draft_examples.json",
+      "bytes": 5214,
+      "sha256": "429e8a99c6f6ded7bc05b692a037cf1d90ad03bda1b73cbac24f54163d90efbe"
+    },
+    {
+      "name": "prepare_eval.py",
+      "bytes": 4963,
+      "sha256": "a04a25a7891eda39df6af09a78332924d4ae8ee290965659bb4d9892b912aa7a"
+    },
+    {
+      "name": "prompts.md",
+      "bytes": 21106,
+      "sha256": "ef24aecaa33f8f2288e35cb7db4b9694fc69a551773f35940e248cf08848d0db"
+    },
+    {
+      "name": "reference_view.json",
+      "bytes": 13557,
+      "sha256": "072153641bcd5f61750b0c7aaaada862331725b7619301b7d2fc42591e7d584b"
+    },
+    {
+      "name": "selected_50.jsonl",
+      "bytes": 110714,
+      "sha256": "89d6295990bc7118f1413ced05a8118fc47caae389a3266ca311cc54a454f369"
+    },
+    {
+      "name": "style_profile.json",
+      "bytes": 3853,
+      "sha256": "db53c7e98c829134a3dcd412fa84289347b85f501823ca8d71ca8a9c08bde3be"
+    },
+    {
+      "name": "synthetic_safety_tests.jsonl",
+      "bytes": 7463,
+      "sha256": "1b4f2224685b9ebd6789db160c08311878eb6dd4dcf307d41bff895d6a92976a"
+    },
+    {
+      "name": "Track4_AI项目数据源_汇总.md",
+      "bytes": 198567,
+      "sha256": "a8b19795fe848d5574627db318fbb26506034c37ad520479fb8ad0cdcb9075e8"
+    },
+    {
+      "name": "你的邮件风格.md",
+      "bytes": 2300,
+      "sha256": "b820c0156efa4ff4d69e23d3da3069792543485c672855398c4043c98337fcab"
+    },
+    {
+      "name": "去隐私说明.md",
+      "bytes": 1217,
+      "sha256": "9a7545864b2cf5b58ab6758de0a1ca2bee8a202c6f58a327becd759be59f0198"
+    },
+    {
+      "name": "开始使用.md",
+      "bytes": 9504,
+      "sha256": "80a7b747c2fe6c7cbafc2e74ed614c3f1a04224048dee6331fa461bdcfcb41a1"
+    },
+    {
+      "name": "邮件样本浏览.html",
+      "bytes": 101828,
+      "sha256": "c9bae434f8a78fee6b045d5eaeb011a7c628c0bba21a9a115c0dd180fec0a9f7"
+    },
+    {
+      "name": "邮箱筛选50封.xlsx",
+      "bytes": 23066,
+      "sha256": "078ab9f2ef4a90e5600f01878687c88bb90558aff5aa41806b38f34a7e80beeb"
+    },
+    {
+      "name": "验证说明.md",
+      "bytes": 1658,
+      "sha256": "2003b24dc2fe468e45e04a6b8c3d90b035ae387c9073f4bcf4a438d422fd0011"
+    }
+  ]
+}

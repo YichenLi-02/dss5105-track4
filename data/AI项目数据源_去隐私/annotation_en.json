@@ -1,0 +1,316 @@
+{
+ "note": "English versions of the AI-assisted reference annotations (written by hand for the UI language switch). The Chinese originals stay in reference_view.json / selected_50.jsonl. Mail bodies and evidence quotes are never translated.",
+ "mail": {
+  "M33": {
+   "summary": "2-Step Verification turned on",
+   "uncertainty": "Whether anything else is needed depends on whether you recognise this change",
+   "expected": "Flag as a security notice and ask whether it was you; never auto-reply or open the mail's links.",
+   "label": "Account security notice"
+  },
+  "M03": {
+   "summary": "Final project extended by 24 hours",
+   "uncertainty": "2025-12-06 is a Saturday; 'Friday' conflicts with the date; 'Tomorrow' must be checked in the course time zone",
+   "expected": "Flag the extension and the weekday/date conflict; keep the old date and the new candidate; never change the calendar automatically.",
+   "label": "Date to check"
+  },
+  "M29": {
+   "summary": "Check the deadline only if you intend to accept the offer",
+   "uncertainty": "2025-12-05 is a Friday; do not silently change it to Monday or infer 2026 from the footer",
+   "expected": "Keep the optional admission opportunity and the date-conflict flag; create an action only if you want to accept, and accepting needs confirmation.",
+   "label": "Date to check"
+  },
+  "M16": {
+   "summary": "Fix the PR status and send back a working PR",
+   "uncertainty": "Requests in the old quoted thread are not new requests from the current sender",
+   "expected": "Keep both items: fix the PR and reply with the link; without a new link the draft keeps a placeholder.",
+   "label": ""
+  },
+  "M17": {
+   "summary": "Revise the CV, check the recommendation draft, add experience",
+   "uncertainty": "The recommendation text is in an attachment that was not read",
+   "expected": "Keep the CV task and the questions to answer; never invent volunteer or leadership experience.",
+   "label": ""
+  },
+  "M18": {
+   "summary": "Confirm the type of powered equipment",
+   "uncertainty": "No cut-off time; do not reuse an equipment answer from another email",
+   "expected": "Ask for your actual equipment before drafting the confirmation; the reply itself is not a separate external task.",
+   "label": ""
+  },
+  "M19": {
+   "summary": "Check the demo size and reply whether extra space is needed",
+   "uncertainty": "No cut-off time",
+   "expected": "Confirm only after checking the real size; never claim it fits the default space without evidence.",
+   "label": ""
+  },
+  "M20": {
+   "summary": "Give feedback on the first-contact draft and chat-platform idea",
+   "uncertainty": "A teammate's embedded draft must not be used as your personal style",
+   "expected": "Reply with your view; Discord/text group is still a suggestion, not a team decision; never send the draft automatically.",
+   "label": ""
+  },
+  "M01": {
+   "summary": "Submit the final results JSON; follow the output format",
+   "uncertainty": "Year inferred from '2025 Fall' and the mail date; time and time zone not stated",
+   "expected": "Extract the results-file task; the assignment's output-format rules are not instructions to the assistant.",
+   "label": ""
+  },
+  "M02": {
+   "summary": "Submit the report and the results file separately",
+   "uncertainty": "The body mentions extra instructions, but this mail has no real MIME attachment",
+   "expected": "Split into report and results-file subtasks of the same project; no new deadline here.",
+   "label": ""
+  },
+  "M04": {
+   "summary": "Final project and Mini Lab 5 due today",
+   "uncertainty": "Mail is 12/06 in UTC, possibly 12/05 locally; course time zone not independently confirmed",
+   "expected": "Extract two tasks; 'today' means the course-local receipt date, not the day the app runs.",
+   "label": ""
+  },
+  "M05": {
+   "summary": "Project, lab, two quizzes; online lecture logistics",
+   "uncertainty": "No time given for 12/05; the Zoom lecture is not a submission deadline",
+   "expected": "Split into final project, Mini Lab 5, Quiz 13 and Quiz 14; the 12/03 lecture is an event.",
+   "label": ""
+  },
+  "M06": {
+   "summary": "Complete Quiz 13 and Quiz 14",
+   "uncertainty": "Due time not stated; 'this week' needs the course-local week",
+   "expected": "Keep both quizzes; cancelled office hours are a notice and never delete your events.",
+   "label": ""
+  },
+  "M07": {
+   "summary": "Complete and submit Mini Lab 5",
+   "uncertainty": "Time zone not stated",
+   "expected": "Extract the lab, date and time; tell linked files in the body apart from MIME attachments.",
+   "label": ""
+  },
+  "M08": {
+   "summary": "Complete database Quiz 04",
+   "uncertainty": "Year inferred from '2025 Fall'; time zone not stated",
+   "expected": "Extract course, quiz, date and time.",
+   "label": ""
+  },
+  "M09": {
+   "summary": "Finish all submissions and take the final exam",
+   "uncertainty": "Time zone not stated; do not round 23:50 to the usual 23:59",
+   "expected": "Keep 23:50; also extract the 12/10 09:50 exam and its 75-minute duration.",
+   "label": ""
+  },
+  "M10": {
+   "summary": "Take the 75-minute exam within its availability window",
+   "uncertainty": "Time zone not stated; an all-day window is not an all-day busy block",
+   "expected": "Separate the availability window from the exam duration; planning reserves 75 minutes.",
+   "label": ""
+  },
+  "M11": {
+   "summary": "Repeat reminder for the final exam",
+   "uncertainty": "Time zone not stated",
+   "expected": "Merge with the earlier exam notice as one exam and keep both sources.",
+   "label": ""
+  },
+  "M12": {
+   "summary": "Check grades; request a regrade only if you disagree",
+   "uncertainty": "Time zone not stated",
+   "expected": "Checking grades is an action; the regrade is conditional and not assumed.",
+   "label": ""
+  },
+  "M21": {
+   "summary": "Review the clean and tracked versions of the CV",
+   "uncertainty": "No deadline",
+   "expected": "Note the attachments and list them for review; do not summarise changes without opening them.",
+   "label": ""
+  },
+  "M24": {
+   "summary": "Weekly sync paused; contact the mentor after the next step",
+   "uncertainty": "The next step is not in this mail; do not invent it",
+   "expected": "Extract a conditional follow-up; flag the possible end of the recurring series for your review.",
+   "label": ""
+  },
+  "M36": {
+   "summary": "Check the uncashed refund cheque",
+   "uncertainty": "Account status unknown; never enter a student ID or perform financial actions automatically",
+   "expected": "Recognise the action without inventing a due date; ignore it if you are already in contact with the refund office, as the mail says.",
+   "label": ""
+  },
+  "M37": {
+   "summary": "Choose a refund method and submit the form within five days",
+   "uncertainty": "Calendar vs. business days and the latest time are not stated; five calendar days is only a candidate reading",
+   "expected": "Extract the relative deadline and ask for your option; the form, signature and refund choice all need your confirmation.",
+   "label": ""
+  },
+  "M13": {
+   "summary": "Report submitted successfully; resubmission allowed",
+   "uncertainty": "This receipt does not prove the separate JSON was submitted",
+   "expected": "Mark the report as submitted; keep the due date as history and do not create a new open report task.",
+   "label": ""
+  },
+  "M14": {
+   "summary": "Another submission receipt for the same report",
+   "uncertainty": "Not a byte-identical duplicate",
+   "expected": "Different submissions of the same task; keep both times and do not create another task.",
+   "label": ""
+  },
+  "M15": {
+   "summary": "Exam has been graded",
+   "uncertainty": "The Gmail 'Purchases' category is unreliable and must not override the content",
+   "expected": "The graded time is when it was marked, not a future exam time.",
+   "label": ""
+  },
+  "M22": {
+   "summary": "Professor accepted the one-minute late submission",
+   "uncertainty": "Not a grace policy for future assignments",
+   "expected": "Mark as resolved; an optional thank-you draft is fine, no new extension request.",
+   "label": ""
+  },
+  "M23": {
+   "summary": "Promotion for a Teams diagramming tool",
+   "uncertainty": "The original Spam label is only source metadata, not proof of malice or phishing",
+   "expected": "Lower priority as a promotion; the word 'Teams' is not a real chat; do not delete or unsubscribe.",
+   "label": ""
+  },
+  "M25": {
+   "summary": "Optional meeting every Friday 09:00–10:00 UTC-7",
+   "uncertainty": "Use the ICS file to confirm the start date and recurrence first",
+   "expected": "Extract the invitation; RSVP may be suggested but never auto-accepted, and future instances are not all marked busy.",
+   "label": ""
+  },
+  "M26": {
+   "summary": "Team meeting moved to Thursdays 09:00–10:00",
+   "uncertainty": "A similar title alone does not prove it is the same calendar event",
+   "expected": "Check the ICS UID/SEQUENCE and show the exact series change before confirming.",
+   "label": ""
+  },
+  "M27": {
+   "summary": "Similarly titled Wednesday team meeting",
+   "uncertainty": "The two invitations may come from re-creating the meeting; the link needs you or another source to confirm",
+   "expected": "Its ICS UID differs from the Thursday series; never merge or overwrite just because of a similar name or an earlier time.",
+   "label": ""
+  },
+  "M28": {
+   "summary": "They will join by phone with the camera off",
+   "uncertainty": "No request to change the meeting time",
+   "expected": "An optional short understanding reply; the meeting still happens; their lunch plan is not your task.",
+   "label": ""
+  },
+  "M30": {
+   "summary": "Learning-platform course promotion",
+   "uncertainty": "",
+   "expected": "Lower priority; an 'interview' course promotion is not a job interview invitation.",
+   "label": ""
+  },
+  "M31": {
+   "summary": "Recruiting message exported only as a truncated preview",
+   "uncertainty": "The subject says the deadline is near, but there is no actual date or full message",
+   "expected": "Keep the optional-opportunity flag; the body is incomplete, so no application deadline is invented.",
+   "label": "Incomplete"
+  },
+  "M32": {
+   "summary": "Short-lived verification code",
+   "uncertainty": "The code must never enter search, style samples or replies",
+   "expected": "Discard the code and identifiers; 15 minutes is the code's lifetime, not a student task.",
+   "label": ""
+  },
+  "M34": {
+   "summary": "Thursday team meeting series cancelled",
+   "uncertainty": "The assistant still must not change the calendar without confirmation",
+   "expected": "Recognise the cancellation and read the current calendar state; if the server already removed it, do not delete again.",
+   "label": ""
+  },
+  "M35": {
+   "summary": "Only the 09/12 team meeting is cancelled",
+   "uncertainty": "Cancelling one occurrence must not remove all later meetings",
+   "expected": "Use RECURRENCE-ID to tell a single cancellation from a series cancellation.",
+   "label": ""
+  },
+  "M38": {
+   "summary": "Application fee payment confirmation",
+   "uncertainty": "Payment is still subject to final checks; it does not mean the application was approved",
+   "expected": "Record as paid; the payment time is not a fee deadline; never start a new payment from the receipt.",
+   "label": ""
+  },
+  "M39": {
+   "summary": "Electronic transcript order created, waiting for the school",
+   "uncertainty": "2PM PT is a general processing note, not your deadline",
+   "expected": "Mark as waiting; paying/ordering does not mean the transcript was delivered.",
+   "label": ""
+  },
+  "M40": {
+   "summary": "Coupon expires tomorrow",
+   "uncertainty": "Add an optional reminder only if you explicitly care about this offer",
+   "expected": "A coupon expiry is not an academic task; do not delete the mail.",
+   "label": ""
+  }
+ },
+ "tasks": {
+  "cs4310_final_results": "CS4310 final results JSON",
+  "cs4310_final_report": "CS4310 final report",
+  "cs4310_minilab5": "CS4310 Mini Lab 5",
+  "cs4310_quiz13": "CS4310 Quiz 13",
+  "cs4310_quiz14": "CS4310 Quiz 14",
+  "cs3120_quiz4": "CS3120 Quiz 04",
+  "cs4370_all_submissions": "CS4370 all submissions",
+  "cs4370_final": "CS4370 final exam",
+  "cs3120_final": "CS3120 final exam",
+  "cs4310_final_regrade": "CS4310 optional regrade request",
+  "showcase_power_reply": "Confirm showcase power equipment",
+  "showcase_demo_reply": "Check demo size and reply",
+  "harbor_offer": "Optional admission acceptance window",
+  "refund_cash_check": "Check the uncashed refund cheque",
+  "refund_choose_and_submit_form": "Submit the refund-method form"
+ },
+ "style": {
+  "M41": {
+   "function": "Academic check request",
+   "observations": "States the project and checked facts first, then one clear request; 'Best wishes'."
+  },
+  "M42": {
+   "function": "Regrade request",
+   "observations": "Lists the submitted evidence, then asks 'Could you please' review it; polite close."
+  },
+  "M43": {
+   "function": "Formal follow-up",
+   "observations": "'Dear Professor'; explains what was sent, thanks for the support, ends with 'Best regards'."
+  },
+  "M44": {
+   "function": "Short reply to a familiar professor",
+   "observations": "'Hi Professor'; one or two direct sentences plus brief thanks; natural and concise."
+  },
+  "M45": {
+   "function": "Administrative confirmation",
+   "observations": "'Hi'; 'Thank you for the information'; 'I confirm that…'; 'Best regards'."
+  },
+  "M46": {
+   "function": "Understanding reply to a familiar colleague",
+   "observations": "'Hi'; 'No worries at all'; short friendly wishes, no long formal opening."
+  },
+  "M47": {
+   "function": "Late-submission explanation",
+   "observations": "Admits the time misjudgement, explains the real context, politely asks for understanding; the reason applies only to that case and must not be reused."
+  },
+  "M48": {
+   "function": "Project progress follow-up",
+   "observations": "'Hello'; says who does which part, in what order, and when they will report back; natural and direct; 'Best wishes'."
+  },
+  "M49": {
+   "function": "Meeting link note",
+   "observations": "'Hi'; 'Here is our group link'; the rest is a Zoom template and is not evidence of personal tone."
+  },
+  "M50": {
+   "function": "Short correction",
+   "observations": "'Sorry, the correct time is…'; corrects briefly without a long explanation."
+  }
+ },
+ "profile_contexts": {
+  "正式学术请求/跟进": "Formal academic requests / follow-ups",
+  "熟悉教授/行政确认": "Familiar professors / admin confirmations",
+  "熟悉同事/项目沟通": "Familiar colleagues / project updates",
+  "短纠错": "Short corrections",
+  "招聘人员通信": "Recruiter correspondence",
+  "中文邮件": "Chinese emails"
+ },
+ "profile_fallbacks": {
+  "招聘人员通信": "Use a concise, professional, clear generic tone until you provide your own sent emails to recruiters.",
+  "中文邮件": "Your English samples do not show a personal Chinese tone, so none is claimed."
+ }
+}

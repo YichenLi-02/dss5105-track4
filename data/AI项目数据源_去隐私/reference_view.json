@@ -1,0 +1,489 @@
+{
+ "note": "Reference grouping from the offline prototype; AI-assisted suggestions pending human review.",
+ "mail": [
+  {
+   "id": "M33",
+   "category": "other",
+   "important": true,
+   "attention": true,
+   "attentionLabel": "安全提醒",
+   "summary": "两步验证已启用",
+   "uncertainty": "是否需要进一步处理取决于用户是否认识此操作"
+  },
+  {
+   "id": "M03",
+   "category": "academic",
+   "important": true,
+   "attention": true,
+   "attentionLabel": "日期待核对",
+   "summary": "最终项目延期 24 小时",
+   "uncertainty": "2025-12-06 是周六；Friday 与日期冲突；Tomorrow 须按课程时区核对"
+  },
+  {
+   "id": "M29",
+   "category": "academic",
+   "important": true,
+   "attention": true,
+   "attentionLabel": "日期待核对",
+   "summary": "若有意接受录取则核对截止日期",
+   "uncertainty": "2025-12-05 是周五；不能擅改成星期一或据页脚推成 2026 年"
+  },
+  {
+   "id": "M16",
+   "category": "academic",
+   "important": true,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "修复 PR 状态并发回可用 PR",
+   "uncertainty": "旧引用中的请求不属于当前发件人的新要求"
+  },
+  {
+   "id": "M17",
+   "category": "academic",
+   "important": true,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "修改 CV，核对推荐信草稿，补充经历",
+   "uncertainty": "推荐信正文在附件中，本次未读取"
+  },
+  {
+   "id": "M18",
+   "category": "academic",
+   "important": true,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "确认用电设备类型",
+   "uncertainty": "没有截止时刻；不能沿用其他邮件中的设备答案"
+  },
+  {
+   "id": "M19",
+   "category": "academic",
+   "important": true,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "核实展示尺寸并回复是否需要额外空间",
+   "uncertainty": "没有截止时刻"
+  },
+  {
+   "id": "M20",
+   "category": "academic",
+   "important": true,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "评价初次联系草稿与聊天平台建议",
+   "uncertainty": "组员写的嵌入草稿不得用作用户个人风格"
+  },
+  {
+   "id": "M01",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "提交最终结果 JSON；遵守输出格式",
+   "uncertainty": "年份由 2025 Fall 与邮件时间补足；截止时间和时区未注明"
+  },
+  {
+   "id": "M02",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "分别提交报告和结果文件",
+   "uncertainty": "正文提及附加说明，但本邮件没有实际 MIME 附件"
+  },
+  {
+   "id": "M04",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "最终项目、Mini Lab 5 当天截止",
+   "uncertainty": "邮件 UTC 为 12/06，本地可能是 12/05；课程时区未获独立确认"
+  },
+  {
+   "id": "M05",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "项目、实验、两个 Quiz；线上课安排",
+   "uncertainty": "12/05 未注明时刻；Zoom 讲课不能当作提交截止"
+  },
+  {
+   "id": "M06",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "完成 Quiz 13 和 Quiz 14",
+   "uncertainty": "截止时间未注明；this week 需要课程本地周界"
+  },
+  {
+   "id": "M07",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "完成并提交 Mini Lab 5",
+   "uncertainty": "时区未注明"
+  },
+  {
+   "id": "M08",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "完成数据库 Quiz 04",
+   "uncertainty": "年份由 2025 Fall 补足；时区未注明"
+  },
+  {
+   "id": "M09",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "完成全部提交并参加期末考试",
+   "uncertainty": "时区未注明；不能把 23:50 改写成惯例 23:59"
+  },
+  {
+   "id": "M10",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "在考试开放窗内完成 75 分钟考试",
+   "uncertainty": "时区未注明；全日开放不等于整日忙碌"
+  },
+  {
+   "id": "M11",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "期末考试重复提醒",
+   "uncertainty": "时区未注明"
+  },
+  {
+   "id": "M12",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "查看成绩；有异议才申请复核",
+   "uncertainty": "时区未注明"
+  },
+  {
+   "id": "M21",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "审阅 CV 的清洁版和修订版",
+   "uncertainty": "无截止日期"
+  },
+  {
+   "id": "M24",
+   "category": "events",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "例会暂停，完成下一步后联系导师",
+   "uncertainty": "下一步内容不在此邮件；不能编造"
+  },
+  {
+   "id": "M36",
+   "category": "other",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "核实未兑现退款支票",
+   "uncertainty": "账户状态未知；不自动输入学号或执行财务操作"
+  },
+  {
+   "id": "M37",
+   "category": "other",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "五天内选择退款方式并填表",
+   "uncertainty": "日历日/工作日及最迟时刻未说明；五个日历日仅为候选解释"
+  },
+  {
+   "id": "M13",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "报告已成功提交；可重交",
+   "uncertainty": "此回执不能证明另一份 JSON 已提交"
+  },
+  {
+   "id": "M14",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "同一报告的另一次提交回执",
+   "uncertainty": "不是字节级重复邮件"
+  },
+  {
+   "id": "M15",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "考试已评分",
+   "uncertainty": "Gmail Category Purchases 不可靠，不应覆盖内容语义"
+  },
+  {
+   "id": "M22",
+   "category": "academic",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "教授已谅解迟交一分钟",
+   "uncertainty": "不是适用于未来所有作业的宽限政策"
+  },
+  {
+   "id": "M23",
+   "category": "promotions",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "Teams 绘图软件宣传",
+   "uncertainty": "原 Gmail Spam 标签只作来源元数据，不证明恶意或钓鱼"
+  },
+  {
+   "id": "M25",
+   "category": "events",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "每周五 09:00–10:00 UTC-7 可选会议",
+   "uncertainty": "先用 ICS 确定开始日期和重复规则"
+  },
+  {
+   "id": "M26",
+   "category": "events",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "团队例会改为每周四 09:00–10:00",
+   "uncertainty": "仅凭同标题不能判定同一日历事件"
+  },
+  {
+   "id": "M27",
+   "category": "events",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "标题相近的周三团队例会",
+   "uncertainty": "两个邀请可能源于重新建会；需用户或更多来源确认关联"
+  },
+  {
+   "id": "M28",
+   "category": "events",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "对方手机参会，关闭摄像头",
+   "uncertainty": "无变更会议时间的请求"
+  },
+  {
+   "id": "M30",
+   "category": "promotions",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "学习平台课程宣传",
+   "uncertainty": ""
+  },
+  {
+   "id": "M31",
+   "category": "career",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "信息不足",
+   "summary": "招聘消息只导出截断预览",
+   "uncertainty": "标题说临近截止，但没有实际日期或完整招聘消息"
+  },
+  {
+   "id": "M32",
+   "category": "other",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "短时有效验证码",
+   "uncertainty": "不应将验证码加入检索、风格样本或回复"
+  },
+  {
+   "id": "M34",
+   "category": "events",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "团队周四例会系列已取消",
+   "uncertainty": "本助手仍不得未经确认修改日历"
+  },
+  {
+   "id": "M35",
+   "category": "events",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "仅取消 09/12 当次团队会议",
+   "uncertainty": "不能因为取消一场就移除所有后续会议"
+  },
+  {
+   "id": "M38",
+   "category": "other",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "申请费支付成功通知",
+   "uncertainty": "支付仍受最终核验，不能说大学已批准申请"
+  },
+  {
+   "id": "M39",
+   "category": "other",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "电子成绩单订单已创建，等待学校处理",
+   "uncertainty": "2PM PT 是一般处理说明，不是用户提交截止"
+  },
+  {
+   "id": "M40",
+   "category": "promotions",
+   "important": false,
+   "attention": false,
+   "attentionLabel": "",
+   "summary": "促销券次日到期",
+   "uncertainty": "只有用户明确关注此优惠才加入可选提醒"
+  }
+ ],
+ "candidates": [
+  {
+   "key": "cs4310_final_results",
+   "title": "CS4310 最终结果 JSON"
+  },
+  {
+   "key": "cs4310_final_report",
+   "title": "CS4310 最终报告"
+  },
+  {
+   "key": "cs4310_minilab5",
+   "title": "CS4310 Mini Lab 5"
+  },
+  {
+   "key": "cs4310_quiz13",
+   "title": "CS4310 Quiz 13"
+  },
+  {
+   "key": "cs4310_quiz14",
+   "title": "CS4310 Quiz 14"
+  },
+  {
+   "key": "cs3120_quiz4",
+   "title": "CS3120 Quiz 04"
+  },
+  {
+   "key": "cs4370_all_submissions",
+   "title": "CS4370 全部提交"
+  },
+  {
+   "key": "cs4370_final",
+   "title": "CS4370 期末考试"
+  },
+  {
+   "key": "cs3120_final",
+   "title": "CS3120 期末考试"
+  },
+  {
+   "key": "cs4310_final_regrade",
+   "title": "CS4310 可选成绩复核"
+  },
+  {
+   "key": "showcase_power_reply",
+   "title": "确认展示供电设备"
+  },
+  {
+   "key": "showcase_demo_reply",
+   "title": "核实展示尺寸并回复"
+  },
+  {
+   "key": "harbor_offer",
+   "title": "可选录取接受窗口"
+  },
+  {
+   "key": "refund_cash_check",
+   "title": "核实未兑现退款支票"
+  },
+  {
+   "key": "refund_choose_and_submit_form",
+   "title": "填写退款方式表单"
+  }
+ ],
+ "styleReferences": [
+  {
+   "id": "M41",
+   "context": "academic",
+   "function": "学术核查请求",
+   "observations": "先交代项目和已核实事实，再提出一个明确检查请求；Best wishes。"
+  },
+  {
+   "id": "M42",
+   "context": "academic",
+   "function": "评分复核请求",
+   "observations": "列出现有提交证据，再用 Could you please 请求复核；礼貌结束。"
+  },
+  {
+   "id": "M43",
+   "context": "academic",
+   "function": "正式跟进",
+   "observations": "Dear Professor；说明已发送的资料，感谢支持，以 Best regards 收尾。"
+  },
+  {
+   "id": "M44",
+   "context": "academic",
+   "function": "熟悉教授的短回复",
+   "observations": "Hi Professor；一两句直接请求，加简短感谢；自然简洁。"
+  },
+  {
+   "id": "M45",
+   "context": "academic",
+   "function": "行政确认",
+   "observations": "Hi；Thank you for the information；I confirm that…；Best regards。"
+  },
+  {
+   "id": "M46",
+   "context": "peer",
+   "function": "熟悉同事的体谅回复",
+   "observations": "Hi；No worries at all；简短友好祝语，不加长篇正式开场。"
+  },
+  {
+   "id": "M47",
+   "context": "academic",
+   "function": "迟交说明",
+   "observations": "承认时间估计问题并说明实际背景，礼貌请求理解；原因仅限本次事实，不可迁移。"
+  },
+  {
+   "id": "M48",
+   "context": "peer",
+   "function": "项目进度跟进",
+   "observations": "Hello；说明谁负责哪部分、顺序和回报承诺；自然直接；Best wishes。"
+  },
+  {
+   "id": "M49",
+   "context": "academic",
+   "function": "会议邀请说明",
+   "observations": "Hi；Here is our group link；其余为 Zoom 模板，不作为个人语气证据。"
+  },
+  {
+   "id": "M50",
+   "context": "correction",
+   "function": "纠错短回复",
+   "observations": "Sorry, the correct time is…；简洁纠正错误，不写冗长解释。"
+  }
+ ]
+}

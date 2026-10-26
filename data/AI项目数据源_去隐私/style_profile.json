@@ -1,0 +1,126 @@
+{
+  "version": "1.0",
+  "status": "provisional_user_review_required",
+  "basis": {
+    "total_sent_label_messages": 181,
+    "selected_style_examples": 10,
+    "identity_basis": "Selected sender matches the single address in Sent-labelled messages; not a claim of forensic authorship verification"
+  },
+  "profiles": [
+    {
+      "context": "正式学术请求/跟进",
+      "language": "English",
+      "evidence_level": "supported",
+      "source_ids": [
+        "M41",
+        "M42",
+        "M43",
+        "M47"
+      ],
+      "greetings": [
+        "Dear Professor [NAME],",
+        "Hi [NAME],"
+      ],
+      "structure": [
+        "说明课程/项目与事实背景",
+        "清楚提出一个请求",
+        "感谢时间与帮助",
+        "Best regards / Best wishes + 用户签名"
+      ],
+      "request_phrases": [
+        "Could you please…",
+        "I wanted to follow up regarding…"
+      ],
+      "length": "根据事项完整程度决定；正式说明可有数段，不要求所有邮件同样长度"
+    },
+    {
+      "context": "熟悉教授/行政确认",
+      "language": "English",
+      "evidence_level": "supported",
+      "source_ids": [
+        "M44",
+        "M45"
+      ],
+      "greetings": [
+        "Hi Professor [NAME],",
+        "Hi [NAME],"
+      ],
+      "structure": [
+        "简短感谢或直接说明",
+        "明确确认或问题",
+        "简短结尾"
+      ],
+      "request_phrases": [
+        "I confirm that…",
+        "Thank you for the information."
+      ],
+      "length": "通常一至三个短段"
+    },
+    {
+      "context": "熟悉同事/项目沟通",
+      "language": "English",
+      "evidence_level": "limited",
+      "source_ids": [
+        "M46",
+        "M48"
+      ],
+      "greetings": [
+        "Hi [NAME],",
+        "Hello [NAME],"
+      ],
+      "structure": [
+        "自然回应",
+        "具体进展、负责人、下一步",
+        "适度友好的结尾"
+      ],
+      "request_phrases": [
+        "No worries at all!",
+        "Once I’ve completed…"
+      ],
+      "length": "简短，进展复杂时可用完整一段；仅两份样本，不泛化为所有团队交流"
+    },
+    {
+      "context": "短纠错",
+      "language": "English",
+      "evidence_level": "limited",
+      "source_ids": [
+        "M50"
+      ],
+      "greetings": [],
+      "structure": [
+        "Sorry, the correct time is…"
+      ],
+      "length": "一两句"
+    },
+    {
+      "context": "招聘人员通信",
+      "language": "English",
+      "evidence_level": "unsupported",
+      "source_ids": [],
+      "fallback": "先用简洁、专业、明确的通用语气，待用户提供本人给招聘人员的已发送邮件后再个性化"
+    },
+    {
+      "context": "中文邮件",
+      "language": "Chinese",
+      "evidence_level": "unsupported",
+      "source_ids": [],
+      "fallback": "不能从英文样本宣称学会中文个人语气"
+    }
+  ],
+  "exclude_from_style": [
+    "引用/转发的教授或组员正文",
+    "M49 的 Zoom 会议模板、电话和凭证",
+    "同学在来信中写的草稿",
+    "验证码、附件正文、签名和账号标识"
+  ],
+  "do_not_transfer_facts": [
+    "历史迟交原因",
+    "历史成绩、课程表现和学校列表",
+    "已修复 PR 或已完成工作",
+    "曾确认的供电设备与展示尺寸",
+    "历史会议时间或承诺",
+    "附件存在与已阅读状态"
+  ],
+  "grammar_policy": "保留自然、礼貌、直接的表达，修正明显语法与拼写错误；不刻意复制错误或添加绝对保证",
+  "retrieval_policy": "按关系/任务从获授权 style_reference 选最多 2–3 例；不检索 holdout；只传本人撰写区段"
+}

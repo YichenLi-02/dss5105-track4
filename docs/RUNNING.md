@@ -3,7 +3,7 @@
 ## 前提
 
 - Python 3.12 及以上（本机实测 3.14.7），Node.js 20 及以上（实测 24.21）。
-- 样本数据放在仓库外，默认使用**去隐私副本** `D:/DSS5105-track4/AI项目数据源_去隐私`（学校、课程号、人名、项目名均已替换为虚构内容，见其中的 `去隐私说明.md`）。读取 `selected_50.jsonl`、`date_candidates.jsonl`、`style_profile.json`、`reference_view.json`。原始文件夹 `AI项目数据源` 不被应用读取，也未被修改。
+- 样本数据默认使用仓库内的**去隐私副本** `data/AI项目数据源_去隐私`（学校、课程号、人名、项目名均已替换为虚构内容，见其中的 `去隐私说明.md`）。读取 `selected_50.jsonl`、`date_candidates.jsonl`、`style_profile.json`、`reference_view.json`。原始文件夹 `AI项目数据源` 不被应用读取，也未被修改。
 - 参考分组（主题类别、“重要”标记、摘要）来自副本中的 `reference_view.json`，记为“建议标注”。只有副本里缺这个文件时，才回退读取设计包 `软件设计与AI工作流/ui/index.html`。
 - 两个路径都可以在 `.env` 里用 `SAMPLE_DATA_DIR` / `DESIGN_DIR` 修改。
 

@@ -1,0 +1,146 @@
+[
+  {
+    "example_id": "D01",
+    "name": "供电确认：未知事实先留空",
+    "provenance": "new_draft_based_on_selected_real_mail",
+    "source_ids": [
+      "M18"
+    ],
+    "split_use": "development_example_only",
+    "verified_user_facts": {},
+    "output": {
+      "to_contact_ids": [],
+      "subject": "Re: Action Needed: Fall 2025 SoC Senior Capstone Showcase Power Access",
+      "body": "Hi Hannah,\n\nThank you for the information.\n\nI confirm that we need power access for [EQUIPMENT_DETAILS_TO_CONFIRM].\n\nBest regards,\nSam",
+      "attachment_ids": [],
+      "missing_fields": [
+        "verified_recipient_contact_id",
+        "equipment_details"
+      ],
+      "ready_for_review": false,
+      "requires_confirmation": true,
+      "execution_authorized": false
+    }
+  },
+  {
+    "example_id": "D02",
+    "name": "展示尺寸：不复制旧邮件答案",
+    "provenance": "new_draft_based_on_selected_real_mail",
+    "source_ids": [
+      "M19"
+    ],
+    "split_use": "development_example_only",
+    "verified_user_facts": {},
+    "output": {
+      "to_contact_ids": [],
+      "subject": "Re: Action Needed: Fall 2025 SoC Senior Capstone Showcase Demo Size",
+      "body": "Hi Hannah,\n\nThank you for the reminder.\n\nOur demo [WILL_FIT_OR_REQUIRES_ADDITIONAL_SPACE_TO_CONFIRM]. [CONFIRMED_SPACE_DETAILS]\n\nBest regards,\nSam",
+      "attachment_ids": [],
+      "missing_fields": [
+        "verified_recipient_contact_id",
+        "confirmed_demo_dimensions",
+        "additional_space_requirement"
+      ],
+      "ready_for_review": false,
+      "requires_confirmation": true,
+      "execution_authorized": false
+    }
+  },
+  {
+    "example_id": "D03",
+    "name": "教授已谅解迟交：可选简短致谢",
+    "provenance": "new_draft_based_on_selected_real_mail",
+    "source_ids": [
+      "M22"
+    ],
+    "split_use": "development_example_only",
+    "verified_user_facts": {
+      "professor_has_forgiven_this_late_submission": true
+    },
+    "output": {
+      "to_contact_ids": [],
+      "subject": "Re: Re: ACC3300: Apology for Late Submission of Project 2",
+      "body": "Thank you for your understanding.",
+      "attachment_ids": [],
+      "missing_fields": [
+        "verified_recipient_contact_id"
+      ],
+      "ready_for_review": false,
+      "requires_confirmation": true,
+      "execution_authorized": false
+    }
+  },
+  {
+    "example_id": "D04",
+    "name": "审阅附件来信：可选确认收到，不声称已阅读",
+    "provenance": "new_draft_based_on_selected_real_mail",
+    "source_ids": [
+      "M21"
+    ],
+    "split_use": "development_example_only",
+    "verified_user_facts": {
+      "message_includes_cv_edit_attachments": true
+    },
+    "output": {
+      "to_contact_ids": [],
+      "subject": "Re: RE: Request for a Letter of Recommendation",
+      "body": "Hi Professor Okafor,\n\nThank you very much for your time and help. I have received the files and will review the edits.\n\nBest regards,\nSam",
+      "attachment_ids": [],
+      "missing_fields": [
+        "verified_recipient_contact_id"
+      ],
+      "ready_for_review": false,
+      "requires_confirmation": true,
+      "execution_authorized": false
+    }
+  },
+  {
+    "example_id": "D05",
+    "name": "延期通知日期冲突：请求澄清",
+    "provenance": "new_draft_based_on_selected_real_mail",
+    "source_ids": [
+      "M03"
+    ],
+    "split_use": "development_example_only",
+    "verified_user_facts": {
+      "weekday_date_conflict": "Friday versus Dec 6 in 2025"
+    },
+    "output": {
+      "to_contact_ids": [],
+      "subject": "Clarification on Final Project Deadline",
+      "body": "Dear Professor [NAME],\n\nThank you for the update. Could you please confirm the final project deadline and time zone? The announcement lists “Friday, Dec 6, 11:59 PM,” and I wanted to check the date before updating my plan.\n\nThank you for your time and help.\n\nBest regards,\nSam",
+      "attachment_ids": [],
+      "missing_fields": [
+        "verified_recipient_contact_id",
+        "professor_name"
+      ],
+      "ready_for_review": false,
+      "requires_confirmation": true,
+      "execution_authorized": false
+    }
+  },
+  {
+    "example_id": "D06",
+    "name": "延期申请：没有原因时禁止编造",
+    "provenance": "synthetic_scenario",
+    "source_ids": [],
+    "split_use": "development_example_only",
+    "verified_user_facts": {},
+    "output": {
+      "to_contact_ids": [],
+      "subject": "Request for an Extension",
+      "body": "Dear Professor [NAME],\n\nI am writing to ask whether it would be possible to extend the deadline for [ASSIGNMENT] to [REQUESTED_DATE].\n\n[REASON_TO_FILL]\n\nThank you very much for your time and consideration.\n\nBest regards,\nSam",
+      "attachment_ids": [],
+      "missing_fields": [
+        "verified_recipient_contact_id",
+        "professor_name",
+        "assignment",
+        "requested_extension_date",
+        "reason"
+      ],
+      "ready_for_review": false,
+      "requires_confirmation": true,
+      "execution_authorized": false
+    }
+  }
+]

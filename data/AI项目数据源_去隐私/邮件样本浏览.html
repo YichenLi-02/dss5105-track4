@@ -1,0 +1,1609 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'none'; img-src 'none'"><title>Track 4 邮件样本</title><style>
+:root{color-scheme:light;font-family:'Microsoft YaHei',Arial,sans-serif;color:#202638;background:#f3f5f9}*{box-sizing:border-box}body{margin:0}main{max-width:1140px;margin:40px auto;padding:0 24px}h1{font-size:30px;line-height:1.3;margin:0 0 14px}p{line-height:1.75}header{margin-bottom:28px}.lead{color:#59647a;max-width:900px}.stats{display:flex;gap:14px;flex-wrap:wrap;margin:22px 0}.stat{background:white;padding:15px 22px;border:1px solid #dde3ee;border-radius:10px;min-width:165px}.stat strong{font-size:26px;color:#344b84;margin-right:10px}.tools{position:sticky;top:0;z-index:2;padding:16px 0;background:#f3f5f9;display:flex;gap:10px;flex-wrap:wrap}input,select,button{font:inherit;font-size:14px;border:1px solid #cbd3e3;border-radius:6px;padding:10px;background:white;color:#263047}input{flex:1;min-width:230px}button{cursor:pointer}article{background:#fff;border:1px solid #dde3ee;border-radius:8px;margin:10px 0;overflow:hidden}summary{display:flex;gap:14px;align-items:center;padding:17px 18px;cursor:pointer;font-size:14px;line-height:1.55;list-style:none}summary>span:nth-child(2){flex:1}.id{font-weight:bold;color:#344b84}.pill{font-size:12px;white-space:nowrap;background:#eef1f8;padding:5px 9px;border-radius:5px}.inside{padding:0 22px 24px;border-top:1px solid #e9edf5}.meta{font-size:12px;color:#647086}.warning{background:#fff5dc;border-left:3px solid #ba8728;padding:10px 14px}h4{font-size:14px;margin:23px 0 10px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f7f8fb;font:13px/1.8 Consolas,'Microsoft YaHei',monospace;padding:18px;border-radius:6px}blockquote{border-left:3px solid #9baecf;padding:7px 14px;margin:15px 0;background:#f7f9fd;font-size:13px;white-space:pre-wrap}li{font-size:13px;line-height:1.8;margin:12px 0}.status{font-size:11px;color:#8b5e0e}footer{padding:25px 0;color:#647086;font-size:12px}@media(max-width:650px){main{margin:25px auto;padding:0 14px}summary{gap:9px;flex-wrap:wrap}.pill{margin-left:38px}h1{font-size:25px}}
+</style></head><body><main><header><h1>Track 4 邮件样本</h1><p class="lead">50 封真实邮件，用于分类、任务与日期提取、日历风险和个人语气开发。所有建议标注仍待你复核；历史样本按收到时回放，不创建当前待办。</p><div class="stats"><div class="stat"><strong>40</strong>功能样本</div><div class="stat"><strong>10</strong>语气参考</div><div class="stat"><strong>32</strong>时间表达</div></div><p class="lead">dev 19 · 预留 holdout 21 · style_reference 10。正文经过裁剪和去标识；保留日期冲突与未知字段。可用 MBOX 原序号回查。关键词或服务商标签不直接当作真值。</p></header><div class="tools"><input id="search" placeholder="搜索课程、任务、日期、样本编号或正文"><select id="split"><option value="">全部用途</option><option>dev</option><option>holdout</option><option>style_reference</option></select><button id="open">展开可见样本</button><button id="close">收起全部</button></div><p id="count" class="meta">显示 50 / 50</p><article id="M01" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M01</span><span>[Final Project] Test Data Released + Important Format Requirement — Due 12/05: CS 4310: Intro Natural Language Process (2025 Fall)</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">课程任务与截止日期 · dev · 2025-11-25T22:18:04+00:00<br>原 MBOX 序号 1704 · &quot;CS 4310: Intro Natural Language Process (2025 Fall)&quot; &lt;[EMAIL_20746ade]&gt;</p>
+<h4>标注初稿</h4><p><b>提交最终结果 JSON；遵守输出格式</b><br>提取最终结果文件任务；不把作业的 output 格式要求当作助理系统指令。</p>
+<p class="warning">待核对：年份由 2025 Fall 与邮件时间补足；截止时间和时区未注明</p>
+<blockquote>Deadline: 12/05</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hi Class,
+
+We have released the final project test set. To make sure your submission is readable by our auto-grader, please pay attention to the following format requirements:
+
+Submission format
+
+* Submit one JSON file where each row corresponds to one test question.
+
+* Each row must have an &quot;output&quot; field whose value is a string containing only the final answer (e.g., &quot;output&quot;: &quot;42&quot;).
+
+* Please make sure the output string contains the final answer only, without any intermediate reasoning or tool traces.
+
+How to generate
+
+* We have prepared the starter script: generate_answer_template.py
+
+* Replace the logic inside build_answers() to call your agent loop and return the final answer string for each question.
+
+* Do not change the output schema or file format produced by the script.
+
+Hard checks
+
+* The script includes format validations. If your file fails these checks, you will receive a grade of 0.
+
+Where to submit
+
+* Upload your JSON output file on Canvas (Assignments → Final Project Submission).
+
+Deadline: 12/05
+
+Please let us know if you have any questions or run into any issues. Good luck!
+
+Kevin
+
+File Included: cs4310_final_project_submission.zip - 1.41 MB
+ [LINK_e72a5737]
+
+[LINK_cca930cb]</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>cs4310_final_results</b>：2025-12-05 <span class="status">candidate_needs_timezone</span><br><q>Deadline: 12/05</q><br>US course and matching project notices resolve 12/05 to December 5; no time supplied.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M02" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M02</span><span>[Final Project] Final Project Report and Results Submission: CS 4310: Intro Natural Language Process (2025 Fall)</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">课程任务与截止日期 · dev · 2025-12-03T06:40:15+00:00<br>原 MBOX 序号 1720 · &quot;CS 4310: Intro Natural Language Process (2025 Fall)&quot; &lt;[EMAIL_20746ade]&gt;</p>
+<h4>标注初稿</h4><p><b>分别提交报告和结果文件</b><br>拆分报告、结果文件两个子任务并关联同一项目；本文无新截止日期。</p>
+<p class="warning">待核对：正文提及附加说明，但本邮件没有实际 MIME 附件</p>
+<blockquote>Please make sure you complete both submissions</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hi everyone,
+
+The submission portal for the Final Project Report on Gradescope is now open.
+
+As a reminder, for the final project you need to submit:
+
+*
+
+Final Project Report (on Gradescope)
+
+*
+
+Please upload a report (see attached instructions) that:
+
+*
+
+Describes how your agent works
+
+*
+
+Points to the key implementation details in your code (e.g., specific files, functions, or code blocks)
+
+*
+
+Includes a GitHub link to your repository
+
+*
+
+Ensures the repo and the final report has a README with enough detail for someone else to reproduce your results
+
+*
+
+Final Results File (on Canvas)
+As mentioned in our [previous announcement] ([LINK_25b9c5af] your final results file (JSON) should be submitted on Canvas.
+
+Please make sure you complete both submissions (report on Gradescope and JSON results on Canvas). Please let us know if you have any questions. Good luck!
+
+Kevin
+
+[LINK_cca930cb]</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M03" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M03</span><span>Final Project Deadline Extended to Dec 6 (Tomorrow): CS 4310: Intro Natural Language Process (2025 Fall)</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">日期冲突与延期 · dev · 2025-12-06T04:37:05+00:00<br>原 MBOX 序号 1679 · &quot;CS 4310: Intro Natural Language Process (2025 Fall)&quot; &lt;[EMAIL_20746ade]&gt;</p>
+<h4>标注初稿</h4><p><b>最终项目延期 24 小时</b><br>标记延期声明及日期/星期矛盾；保留旧日期与新候选，不自动改日历。</p>
+<p class="warning">待核对：2025-12-06 是周六；Friday 与日期冲突；Tomorrow 须按课程时区核对</p>
+<blockquote>New deadline: Friday, Dec 6, 11:59 PM</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hi everyone,
+
+We are granting a 24-hour extension for the final project submission (both the results JSON file and the final report).
+
+*
+
+New deadline: Friday, Dec 6, 11:59 PM
+
+*
+
+What to submit:
+
+*
+
+Results JSON file on Canvas
+
+*
+
+Final project report on Gradescope
+
+To recognize those who submitted by the original deadline (Dec 5), anyone who turned in both components on time will receive 0.5% extra credit toward their final course grade.
+
+If you have any questions about the submission formats or logistics, please let us know.
+
+Good luck!
+Kevin
+
+[LINK_cca930cb]</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>cs4310_final_results</b>：2025-12-06 23:59 <span class="status">conflict_weekday_date</span><br><q>New deadline: Friday, Dec 6, 11:59 PM</q><br>2025-12-06 is Saturday; date is a candidate, not a resolved deadline. Applies to results and report.</li><li><b>cs4310_final_report</b>：2025-12-06 23:59 <span class="status">conflict_weekday_date</span><br><q>New deadline: Friday, Dec 6, 11:59 PM</q><br>Same announcement as results file; retain separate deliverable completion states.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M04" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M04</span><span>Reminder of final submissions: CS 4310: Intro Natural Language Process (2025 Fall)</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">相对日期与多任务 · dev · 2025-12-06T01:08:15+00:00<br>原 MBOX 序号 1688 · &quot;CS 4310: Intro Natural Language Process (2025 Fall)&quot; &lt;[EMAIL_20746ade]&gt;</p>
+<h4>标注初稿</h4><p><b>最终项目、Mini Lab 5 当天截止</b><br>提取两个任务；today 使用课程本地的邮件到达日期，不用运行当天。</p>
+<p class="warning">待核对：邮件 UTC 为 12/06，本地可能是 12/05；课程时区未获独立确认</p>
+<blockquote>both the final project and mini lab 5 are due today</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hi all, 
+
+this is a friendly reminder that both the final project and mini lab 5 are due today. Per the course policy, you must request extensions before the deadline. Any late submissions without prior approval of extensions or valid causes will not be accepted and will result in a zero.
+
+Prof. Duarte
+
+[LINK_cca930cb]</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>cs4310_final_results</b>：未解析为确定日期 <span class="status">unresolved_source_timezone</span><br><q>both the final project and mini lab 5 are due today</q><br>UTC receipt is Dec 6. If course timezone is Etc/GMT+7, local receipt is Dec 5. Do not use current date.</li><li><b>cs4310_minilab5</b>：未解析为确定日期 <span class="status">unresolved_source_timezone</span><br><q>both the final project and mini lab 5 are due today</q><br>UTC receipt is Dec 6. If course timezone is Etc/GMT+7, local receipt is Dec 5. Do not use current date.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M05" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M05</span><span>End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">相对日期与多任务 · dev · 2025-12-02T04:11:20+00:00<br>原 MBOX 序号 1726 · &quot;CS 4310: Intro Natural Language Process (2025 Fall)&quot; &lt;[EMAIL_20746ade]&gt;</p>
+<h4>标注初稿</h4><p><b>项目、实验、两个 Quiz；线上课安排</b><br>拆分最终项目、Mini Lab 5、Quiz 13、Quiz 14；12/03 讲课是事件。</p>
+<p class="warning">待核对：12/05 未注明时刻；Zoom 讲课不能当作提交截止</p>
+<blockquote>Final submissions:</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hello everyone, 
+
+Thank you all for sticking with the course, and we are now almost ready for an end-of-semester celebration! Here are some logistics: 
+
+Final submissions: 
+1. The final project (Due 12/05) should contain a final test data output JSON file and a GitHub repo link for your code. In your GitHub repo, there should be a clear README file on how your agent works (e.g., what are the three (minimal) components, and what are some additional highlights? How did you develop/evaluate your agent along the way?), as well as instructions on how we can run your agent on a new test case. The TA will make a separate annoucement on the submission portal soon. 
+2. Mini Lab 5 (Due 12/05)
+3. Quiz 13 and 14 will later be released and remain open until 12/05. 
+
+The Wednesday (12/03) lecture will be held solely on Zoom ([[LINK_faa04edb] ([LINK_74e1b6f3] We will continue to discuss LLM trustworthiness. Please reach out to me or the TA with any potential questions. 
+
+Thanks, Prof. Duarte
+
+[LINK_cca930cb]</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>cs4310_final_results</b>：2025-12-05 <span class="status">candidate_needs_timezone</span><br><q>The final project (Due 12/05)</q><br>No time supplied; report/result component details must be reconciled with other project messages.</li><li><b>cs4310_minilab5</b>：2025-12-05 <span class="status">candidate_needs_timezone</span><br><q>Mini Lab 5 (Due 12/05)</q><br>No time supplied; report/result component details must be reconciled with other project messages.</li><li><b>cs4310_quiz13</b>：2025-12-05 <span class="status">candidate_needs_timezone</span><br><q>Quiz 13 and 14 will later be released and remain open until 12/05.</q><br>No time supplied; report/result component details must be reconciled with other project messages.</li><li><b>cs4310_quiz14</b>：2025-12-05 <span class="status">candidate_needs_timezone</span><br><q>Quiz 13 and 14 will later be released and remain open until 12/05.</q><br>No time supplied; report/result component details must be reconciled with other project messages.</li><li><b>cs4310_lecture_1203</b>：2025-12-03 <span class="status">candidate_needs_timezone</span><br><q>The Wednesday (12/03) lecture will be held solely on Zoom</q><br>Event, not a task deadline; start time absent.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M06" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M06</span><span>TA Updates: Office Hours, Midterm 2 Solution, Quizzes 13 &amp; 14: CS 4310: Intro Natural Language Process (2025 Fall)</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">相对日期与多任务 · dev · 2025-12-02T05:47:04+00:00<br>原 MBOX 序号 1767 · &quot;CS 4310: Intro Natural Language Process (2025 Fall)&quot; &lt;[EMAIL_20746ade]&gt;</p>
+<h4>标注初稿</h4><p><b>完成 Quiz 13 和 Quiz 14</b><br>保留两个 Quiz；office hours 停开是通知，不据此删除用户事件。</p>
+<p class="warning">待核对：截止时间未注明；this week 需要课程本地周界</p>
+<blockquote>Both quizzes are due on 12/05.</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hi everyone,
+
+A few quick updates:
+
+*
+
+TA office hours: I’ll be traveling for a conference and will not be able to host my regular office hours this week. If you have any questions, please feel free to email me. If I accidentally miss your email, don’t hesitate to send me a short reminder so I can follow up.
+
+*
+
+Midterm 2 solution: The solution for Midterm 2 has been released and is attached to this announcement. Please let us know if you have any questions.
+
+*
+
+Quizzes 13 and 14: Quiz 13 and Quiz 14 are now published on Canvas. Both quizzes are due on 12/05. Please make sure to complete them before the deadline.
+
+Thanks!
+
+Kevin
+
+File Included: CS 4310 Fall 2025 Exam 2 Solutions.pdf - 162 KB
+ [LINK_e72a5737]
+
+[LINK_cca930cb]</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>cs4310_quiz13</b>：2025-12-05 <span class="status">candidate_needs_timezone</span><br><q>Both quizzes are due on 12/05.</q><br>No time supplied; deduplicate against end-of-semester logistics.</li><li><b>cs4310_quiz14</b>：2025-12-05 <span class="status">candidate_needs_timezone</span><br><q>Both quizzes are due on 12/05.</q><br>No time supplied; deduplicate against end-of-semester logistics.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M07" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M07</span><span>Mini Lab 5 Released: CS 4310: Intro Natural Language Process (2025 Fall)</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">课程任务与截止日期 · dev · 2025-11-19T17:39:29+00:00<br>原 MBOX 序号 1866 · &quot;CS 4310: Intro Natural Language Process (2025 Fall)&quot; &lt;[EMAIL_20746ade]&gt;</p>
+<h4>标注初稿</h4><p><b>完成并提交 Mini Lab 5</b><br>提取实验、日期、时刻；正文链接文件与 MIME 附件区分。</p>
+<p class="warning">待核对：时区未注明</p>
+<blockquote>Due: 12/05 11:59 PM.</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hi class,
+
+Mini Lab 5 is now available. Please download the attached file, get started, and submit your work on Gradescope. Due: 12/05 11:59 PM.
+
+Kevin
+
+File Included: mini_lab5.ipynb - 36.2 KB
+ [LINK_e72a5737] 
+
+[LINK_cca930cb]</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>cs4310_minilab5</b>：2025-12-05 23:59 <span class="status">candidate_needs_timezone</span><br><q>Due: 12/05 11:59 PM.</q><br>Due time given here, missing from later logistics; keep evidence from both.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M08" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M08</span><span>Quiz 04 Available: CS 3120: Database Management (2025 Fall)</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">课程任务与截止日期 · holdout · 2025-12-01T23:21:52+00:00<br>原 MBOX 序号 1737 · &quot;CS 3120: Database Management (2025 Fall)&quot; &lt;[EMAIL_20746ade]&gt;</p>
+<h4>标注初稿</h4><p><b>完成数据库 Quiz 04</b><br>提取课程、Quiz、日期、时间。</p>
+<p class="warning">待核对：年份由 2025 Fall 补足；时区未注明</p>
+<blockquote>due on December 3 at 11:59 PM</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Dear Students,
+
+Quiz 04 is now available and will be due on December 3 at 11:59 PM. It covers the topics from Weeks 12 and 13, including Transactions and Query Optimization.
+
+Best,
+
+Dr. Lam
+
+[LINK_cca930cb]</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>cs3120_quiz4</b>：2025-12-03 23:59 <span class="status">candidate_needs_timezone</span><br><q>due on December 3 at 11:59 PM</q><br></li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M09" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M09</span><span>Course Wrap-up and Final Exam: CS 4370: Intro Computer-Aided Geom Desg (2025 Fall)</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">课程任务与截止日期 · holdout · 2025-12-02T21:44:34+00:00<br>原 MBOX 序号 1637 · &quot;CS 4370: Intro Computer-Aided Geom Desg (2025 Fall)&quot; &lt;[EMAIL_20746ade]&gt;</p>
+<h4>标注初稿</h4><p><b>完成全部提交并参加期末考试</b><br>保留 23:50；另提取 12/10 09:50 考试及 75 分钟时长。</p>
+<p class="warning">待核对：时区未注明；不能把 23:50 改写成惯例 23:59</p>
+<blockquote>All submissions must be uploaded to Canvas by Friday, Dec 5 at 11:50pm.</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hello CS 4370ers,
+
+On Wednesday we will review the mock final document and I am happy to discuss any material that is not clear.
+
+All submissions must be uploaded to Canvas by Friday, Dec 5 at 11:50pm.
+
+The final exam is on Wednesday, Dec 10 at 9:50am. It is a canvas quiz that requires Respondus Lockdown browser with a webcam.
+
+Final exam instructions:
+
+You have 75 minutes to complete this final exam. There are 40 questions.
+
+If you see &quot;^&quot; in a question, this is indicates a superscript; for example &quot;M^T&quot;, meaning M transpose. A subscript will be denoted by &quot;_&quot;, as in a_1.
+Questions will use the notation from the class slides, not MM notation (for array access).
+
+This is a closed-book exam. You may have a blank piece of paper and pencil/pen with you during the exam.
+
+If you have a question about the exam, answer the question as best as you can, and then email me afterwards.
+
+Take your time and review your answers.
+
+Elena Hart, PhD
+
+[LINK_cca930cb]</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>cs4370_all_submissions</b>：2025-12-05 23:50 <span class="status">candidate_needs_timezone</span><br><q>All submissions must be uploaded to Canvas by Friday, Dec 5 at 11:50pm.</q><br>Do not round to 23:59. Imported email evidence only; no LMS request.</li><li><b>cs4370_final</b>：2025-12-10 09:50 <span class="status">candidate_needs_timezone</span><br><q>The final exam is on Wednesday, Dec 10 at 9:50am.</q><br>75 minutes provided later in the same message.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M10" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M10</span><span>Final Exam (December 8, 12:00 am - 11:59 pm) Instructions - Online: CS 3120: Database Management (2025 Fall)</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">考试时间窗与重复 · holdout · 2025-12-01T23:35:13+00:00<br>原 MBOX 序号 1727 · &quot;CS 3120: Database Management (2025 Fall)&quot; &lt;[EMAIL_20746ade]&gt;</p>
+<h4>标注初稿</h4><p><b>在考试开放窗内完成 75 分钟考试</b><br>区分可参加时间窗与实际考试时长；规划占用 75 分钟。</p>
+<p class="warning">待核对：时区未注明；全日开放不等于整日忙碌</p>
+<blockquote>Availability Window: December 8 (12:00 AM) – December 8 (11:59 PM)</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Dear Students, 
+
+Please carefully review the instructions for the final exam below:
+
+Exam Details:
+
+Mode: Online (LockDown Browser required)
+Availability Window: December 8 (12:00 AM) – December 8 (11:59 PM)
+Coverage: Topics from Week 01 to Week 13 Modules
+Format: 35 Multiple Choice Questions (MCQs) – 35 points total (No Query Writing)
+Duration: 75 minutes
+Attempts: One attempt only
+
+Browser Requirement
+
+* Respondus LockDown Browser (with Camera and Screen Recording enabled) is mandatory.
+
+* Ensure it is installed and tested before starting the exam.
+
+* Questions will be presented one at a time. You will be able to navigate back to previous questions.
+
+Topics Covered
+
+Refer to the Final Exam Study Topics in the document [here] ([LINK_9abd7947]
+
+Additional Instructions
+
+* The exam is closed book, however, a cheat sheet up to 5 pages (double-sided, Handwritten only)
+
+* Academic integrity policies strictly apply.
+
+Best, 
+
+Dr. Lam
+
+[LINK_cca930cb]</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>cs3120_final</b>：2025-12-08 00:00 <span class="status">candidate_needs_timezone</span><br><q>Availability Window: December 8 (12:00 AM) – December 8 (11:59 PM)</q><br>Open window is not busy duration; same exam in two messages.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M11" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M11</span><span>Final Exam Reminder -  December 8: CS 3120: Database Management (2025 Fall)</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">考试时间窗与重复 · holdout · 2025-12-08T01:57:20+00:00<br>原 MBOX 序号 1515 · &quot;CS 3120: Database Management (2025 Fall)&quot; &lt;[EMAIL_20746ade]&gt;</p>
+<h4>标注初稿</h4><p><b>期末考试重复提醒</b><br>与早前期末通知合并为同一考试，保留两个来源。</p>
+<p class="warning">待核对：时区未注明</p>
+<blockquote>Duration: 75 minutes</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Dear Students, 
+
+Please carefully review the instructions for the final exam below:
+
+Exam Details:
+
+Mode: Online (LockDown Browser required)
+Availability Window: December 8 (12:00 AM) – December 8 (11:59 PM)
+Coverage: Topics from Week 01 to Week 13 Modules
+Format: 35 Multiple Choice Questions (MCQs) – 35 points total (No Query Writing)
+Duration: 75 minutes
+Attempts: One attempt only
+
+Browser Requirement
+
+* Respondus LockDown Browser (with Camera and Screen Recording enabled) is mandatory.
+
+* Ensure it is installed and tested before starting the exam.
+
+* Questions will be presented one at a time. You will be able to navigate back to previous questions.
+
+Topics Covered
+
+Refer to the Final Exam Study Topics in the document [here] ([LINK_883fc119]
+
+Additional Instructions
+
+* The exam is closed book, however, a cheat sheet up to 5 pages (double-sided, Handwritten only)
+
+* Academic integrity policies strictly apply.
+
+[LINK_cca930cb]</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>cs3120_final</b>：2025-12-08 00:00 <span class="status">candidate_needs_timezone</span><br><q>Availability Window: December 8 (12:00 AM) – December 8 (11:59 PM)</q><br>Open window is not busy duration; same exam in two messages.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M12" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M12</span><span>Final Project Grades and Regrade Window: CS 4310: Intro Natural Language Process (2025 Fall)</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">可选行动与复核窗口 · dev · 2025-12-10T05:02:55+00:00<br>原 MBOX 序号 1538 · &quot;CS 4310: Intro Natural Language Process (2025 Fall)&quot; &lt;[EMAIL_20746ade]&gt;</p>
+<h4>标注初稿</h4><p><b>查看成绩；有异议才申请复核</b><br>查看成绩是行动；复核有条件，不默认用户要申诉。</p>
+<p class="warning">待核对：时区未注明</p>
+<blockquote>if you have any concerns, submit a regrade request by 11:59 PM on December 11, 2025.</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hi Class, 
+The grades for the Final Project are now posted on Gradescope. Please review your grades, and if you have any concerns, submit a regrade request by 11:59 PM on December 11, 2025.
+
+Thanks,
+
+Omar
+
+[LINK_cca930cb]</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>cs4310_final_regrade</b>：2025-12-11 23:59 <span class="status">candidate_needs_timezone</span><br><q>if you have any concerns, submit a regrade request by 11:59 PM on December 11, 2025.</q><br>Only if user wants to challenge final project grades.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M13" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M13</span><span>[CS 4310 on Gradescope] Successfully submitted to Final Project Report</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">已完成回执与去重 · dev · 2025-12-06T06:54:30+00:00<br>原 MBOX 序号 1652 · Gradescope &lt;[EMAIL_af789e2f]&gt;</p>
+<h4>标注初稿</h4><p><b>报告已成功提交；可重交</b><br>记录报告提交完成；保留 due date 作为历史元数据，不能新增未完成报告。</p>
+<p class="warning">待核对：此回执不能证明另一份 JSON 已提交</p>
+<blockquote>You’ve successfully submitted Final Project Report</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hello Sam,
+
+You’ve successfully submitted Final Project Report, Introduction to Natural Language Processing. You may be able to resubmit until the due date (Dec 06, 2025 at 11:59:00 PM MST). You will be notified if your grades are made available.
+
+Submitted At:
+Dec 05, 2025 at 11:54:30 PM MST
+
+Due Date:
+Dec 06, 2025 at 11:59:00 PM MST
+
+Link to submission:
+[LINK_c9ae413f]
+
+- The Gradescope Team</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>cs4310_final_report</b>：2025-12-06 23:59 UTC-07:00 <span class="status">explicit_but_task_completed</span><br><q>Due Date:
+Dec 06, 2025 at 11:59:00 PM MST</q><br>Can corroborate deadline metadata; does not reopen report or prove results JSON submission.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M14" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M14</span><span>[CS 4310 on Gradescope] Successfully submitted to Final Project Report</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">已完成回执与去重 · dev · 2025-12-06T06:46:02+00:00<br>原 MBOX 序号 1653 · Gradescope &lt;[EMAIL_af789e2f]&gt;</p>
+<h4>标注初稿</h4><p><b>同一报告的另一次提交回执</b><br>同一任务不同提交版本，保留两次提交时间；不重复创建任务。</p>
+<p class="warning">待核对：不是字节级重复邮件</p>
+<blockquote>Submitted At:</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hello Sam,
+
+You’ve successfully submitted Final Project Report, Introduction to Natural Language Processing. You may be able to resubmit until the due date (Dec 06, 2025 at 11:59:00 PM MST). You will be notified if your grades are made available.
+
+Submitted At:
+Dec 05, 2025 at 11:46:02 PM MST
+
+Due Date:
+Dec 06, 2025 at 11:59:00 PM MST
+
+Link to submission:
+[LINK_c9ae413f]
+
+- The Gradescope Team</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>cs4310_final_report</b>：2025-12-06 23:59 UTC-07:00 <span class="status">explicit_but_task_completed</span><br><q>Due Date:
+Dec 06, 2025 at 11:59:00 PM MST</q><br>Can corroborate deadline metadata; does not reopen report or prove results JSON submission.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M15" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M15</span><span>Assignment Graded: Final - Requires Respondus LockDown Browser + Webcam, CS 4370: Intro Computer-Aided Geom Desg (2025 Fall)</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">已完成回执与去重 · holdout · 2025-12-10T18:09:11+00:00<br>原 MBOX 序号 1508 · &quot;CS 4370: Intro Computer-Aided Geom Desg (2025 Fall)&quot; &lt;[EMAIL_20746ade]&gt;</p>
+<h4>标注初稿</h4><p><b>考试已评分</b><br>graded 时间是评分时间，不是未来考试时间。</p>
+<p class="warning">待核对：Gmail Category Purchases 不可靠，不应覆盖内容语义</p>
+<blockquote>has been graded.</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Your assignment Final - Requires Respondus LockDown Browser + Webcam has been graded.
+
+graded: Dec 10 at 10:09am
+
+You can review the assignment here:
+[LINK_[LONG_NUMBER_REMOVED]]</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>cs4370_final</b>：2025-12-10 10:09 <span class="status">non_deadline</span><br><q>graded: Dec 10 at 10:09am</q><br>Grading time, not a new exam.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M16" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M16</span><span>Re: CS 4640 Project Part 3 Code Review Request -Sam</span><span class="pill">需回复 + 需行动</span></summary>
+<div class="inside"><p class="meta">回复与行动并存 · holdout · 2025-11-30T19:52:58-07:00<br>原 MBOX 序号 1709 · Lena &lt;[EMAIL_[LONG_NUMBER_REMOVED]]&gt;</p>
+<h4>标注初稿</h4><p><b>修复 PR 状态并发回可用 PR</b><br>保留修复 PR、回复链接两项；未提供新链接时草稿保留占位。</p>
+<p class="warning">待核对：旧引用中的请求不属于当前发件人的新要求</p>
+<blockquote>provide
+me a pull request which is not closed</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hello Sam,
+
+I reviewed the link you provided in the sheet and I see the
+pull request has been closed already. Can you please recheck it and provide
+me a pull request which is not closed so that I can merge it. Thank you
+in advance.
+
+Best,
+Lena.</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M17" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M17</span><span>Re: Request for a Letter of Recommendation</span><span class="pill">需回复 + 需行动</span></summary>
+<div class="inside"><p class="meta">回复与行动并存 · dev · 2025-11-18T04:50:46+00:00<br>原 MBOX 序号 1857 · &quot;Okafor&quot; &lt;[EMAIL_c1760c87]&gt;</p>
+<h4>标注初稿</h4><p><b>修改 CV，核对推荐信草稿，补充经历</b><br>保留 CV 修改任务和回复问题；不编造志愿或领导经历。</p>
+<p class="warning">待核对：推荐信正文在附件中，本次未读取</p>
+<blockquote>Any volunteering or leadership experience?</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>This is the draft of the letter. Let me know if I missed anything.
+
+Also, I noticed on your resume,
+
+ 1.
+8.2022- 2025.12(Expected), keep the format consistent for the time
+ 2.
+Core course: should be Core courses:
+ 3.
+Predictive Model Analysis..., here use past tense for the activities in bullet points, to be consistent with other roles.
+ 4.
+For Skills, you left &quot; Tools/Technologies:&quot; blank, maybe you delete this line.
+ 5.
+Any volunteering or leadership experience?</pre>
+<p class="meta">附件元数据：Outlook-Eastfield Uni, Outlook-Eastfield Uni, GradRecLetter_Sam.docx。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M18" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M18</span><span>Action Needed: Fall 2025 SoC Senior Capstone Showcase Power Access</span><span class="pill">需回复</span></summary>
+<div class="inside"><p class="meta">需要回复 · dev · 2025-11-24T17:44:07+00:00<br>原 MBOX 序号 1874 · Hannah &lt;[EMAIL_6ecc131e]&gt;</p>
+<h4>标注初稿</h4><p><b>确认用电设备类型</b><br>起草确认前询问用户实际设备；仅回复本身不重复建立外部任务。</p>
+<p class="warning">待核对：没有截止时刻；不能沿用其他邮件中的设备答案</p>
+<blockquote>Please confirm by Tuesday, November 25</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hello,
+
+You indicated that you will need power access at the Capstone Showcase.
+
+Please confirm by Tuesday, November 25, whether the power is needed for laptops only or for other equipment as well, so we can do our best to accommodate your needs. If we do not hear from you, we will assume that only laptop power access is required.</pre>
+<p class="meta">附件元数据：image001.png。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>showcase_power_reply</b>：2025-11-25 <span class="status">candidate_needs_timezone</span><br><q>Please confirm by Tuesday, November 25</q><br>No cutoff time. RSVP/device facts must come from the user.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M19" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M19</span><span>Action Needed: Fall 2025 SoC Senior Capstone Showcase Demo Size</span><span class="pill">需回复 + 需行动</span></summary>
+<div class="inside"><p class="meta">回复与行动并存 · dev · 2025-11-24T17:38:47+00:00<br>原 MBOX 序号 1902 · Hannah &lt;[EMAIL_6ecc131e]&gt;</p>
+<h4>标注初稿</h4><p><b>核实展示尺寸并回复是否需要额外空间</b><br>核实实际尺寸后确认；不可无依据声称符合默认空间。</p>
+<p class="warning">待核对：没有截止时刻</p>
+<blockquote>Each project is allocated a default table space of 3′ × 2.5′.</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hello,
+
+You indicated that you will have a demo at the Capstone Showcase.
+
+Each project is allocated a default table space of 3′ × 2.5′. Please confirm by Tuesday, November 25, whether your demo will fit within this space. If it does not, please specify the additional space you will require.
+
+If I do not hear from you, we will not be able to provide space beyond the default allocation on the day of the event.</pre>
+<p class="meta">附件元数据：image001.png。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>showcase_demo_reply</b>：2025-11-25 <span class="status">candidate_needs_timezone</span><br><q>Please confirm by Tuesday, November 25</q><br>No cutoff time. RSVP/device facts must come from the user.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M20" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M20</span><span>Hello I&#x27;m your teammate in capstone</span><span class="pill">需回复</span></summary>
+<div class="inside"><p class="meta">需要回复 · holdout · 2025-01-21T10:21:30-07:00<br>原 MBOX 序号 5211 · Diego &lt;[EMAIL_aa5023af]&gt;</p>
+<h4>标注初稿</h4><p><b>评价初次联系草稿与聊天平台建议</b><br>回复看法；Discord/短信仍是建议，不能写成团队决定；不自动发草稿。</p>
+<p class="warning">待核对：组员写的嵌入草稿不得用作用户个人风格</p>
+<blockquote>For the initial email,
+how does this draft look?</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Let&#x27;s make a chatroom on a platform where everyone is available, like
+Discord or a text group; either one works for me. For the initial email,
+how does this draft look?
+This is my discord handle: [HANDLE_REMOVED] and phone number: [LONG_NUMBER_REMOVED]. If
+this doesn&#x27;t work for everyone we can do something else as well.
+Let me know what you guys think about the draft.
+
+Draft Email:
+
+*Subject:* Initial Contact: Lyrebird AI Capstone Project Team Introduction
+
+Hello Priya,
+
+My name is Diego, and I am reaching out on behalf of our team for
+the Lyrebird AI Capstone Project. We are excited to collaborate with you
+on this project. Here is a brief introduction to our team:
+
+*Mei* ([EMAIL_7a0e28db])
+
+*Sam* ([EMAIL_42022df7])
+
+*Diego* ([EMAIL_aa5023af])
+
+We have reviewed the project description and kickoff materials and are
+eager to contribute our skills to this project. We would like to schedule
+an initial meeting to discuss the project in more detail, review
+deliverables, and align expectations. Please let us know your availability
+or any preferred times for a virtual meeting.
+
+Thank you for this opportunity, and we look forward to working with you to
+make Lyrebird AI even more impactful.
+
+Best regards,
+Diego</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M21" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M21</span><span>RE: Request for a Letter of Recommendation</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">附件审阅 · dev · 2025-11-19T16:18:43+00:00<br>原 MBOX 序号 1854 · &quot;Okafor&quot; &lt;[EMAIL_c1760c87]&gt;</p>
+<h4>标注初稿</h4><p><b>审阅 CV 的清洁版和修订版</b><br>识别附件存在并列为审阅事项；未打开就不能总结修改细节。</p>
+<p class="warning">待核对：无截止日期</p>
+<blockquote>Attached you will find my edits, one clean file and another with tracked changes.</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Attached you will find my edits, one clean file and another with tracked changes. Let me know if you have any questions.</pre>
+<p class="meta">附件元数据：image001.jpg, CV-SR_Clean.docx, CV-SR.docx。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M22" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M22</span><span>Re: ACC3300: Apology for Late Submission of Project 2</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">已解决与简短致谢 · dev · 2025-04-17T11:39:16-07:00<br>原 MBOX 序号 4016 · Lindqvist &lt;[EMAIL_8da3cd79]&gt;</p>
+<h4>标注初稿</h4><p><b>教授已谅解迟交一分钟</b><br>标记该问题已解决；可以提供可选致谢草稿，不再次申请延期。</p>
+<p class="warning">待核对：不是适用于未来所有作业的宽限政策</p>
+<blockquote>1 minute late could be forgiven this time.</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Sam,
+
+Thanks for letting me know! 1 minute late could be forgiven this time. You don’t have to worry!
+
+Best,
+Prof. Lindqvist</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M23" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M23</span><span>Add Editable Diagrams to Your Teams Conversations</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">垃圾箱中的宣传邮件 · holdout · 2026-09-22T01:47:51-05:00<br>原 MBOX 序号 109 · SmartDraw Software &lt;[EMAIL_705f290c]&gt;</p>
+<h4>标注初稿</h4><p><b>Teams 绘图软件宣传</b><br>按宣传语义降低优先级；Teams 一词不表示真实聊天；不删除、不点退订。</p>
+<p class="warning">待核对：原 Gmail Spam 标签只作来源元数据，不证明恶意或钓鱼</p>
+<blockquote>Get feedback and build consensus with diagrams created</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>***********************************************************
+Collaborate Using Live Visuals, not Static Images in Teams
+***********************************************************
+
+No longer want to receive emails like this? Unsubscribe.
+[LINK_d1b1f0b1]
+
+Get feedback and build consensus with diagrams created 
+right inside Microsoft Teams. Instead of sharing a static 
+image, your team can work together to edit and comment on 
+visuals as you define technical plans and processes.
+
+Learn More:
+[LINK_9631b854]
+
+---------------------------------------------------------------------
+
+Now that you&#x27;re part of the SmartDraw community we invite
+you to keep in touch with us on your favorite social networks.
+
+- Connect with SmartDraw Software on Twitter
+ [LINK_[LONG_NUMBER_REMOVED]c4]
+
+- Connect with SmartDraw Software on Facebook
+ [LINK_e[LONG_NUMBER_REMOVED]b]
+
+- Connect with SmartDraw Software on LinkedIn
+ [LINK_3ec4ce57]
+
+- SmartDraw on YouTube
+ [LINK_7455a0c0]
+
+- SmartDraw on Instagram
+ [LINK_29f894c0]
+
+- SmartDraw on TikTok
+ [LINK_10a852d0]
+
+SmartDraw Software, LLC
+1780 Hughes Landing Blvd. Suite 1100 The Woodlands, TX 77380
+
+All Rights Reserved. (c) 1994-2026 SmartDraw, LLC</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M24" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M24</span><span>Updated invitation with note: Sam &amp; Priya - Internship Sync Progress @ Weekly from 9am to 10am on Friday from Fri Jan 9 to Thu Jan 15 (MST) ([EMAIL_42022df7])</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">日历更新与取消 · holdout · 2026-01-16T15:45:53+00:00<br>原 MBOX 序号 1314 · Priya &lt;[EMAIL_f148b5c4]&gt;</p>
+<h4>标注初稿</h4><p><b>例会暂停，完成下一步后联系导师</b><br>提取有条件的联络行动；识别终止重复系列的候选变更，待用户审核。</p>
+<p class="warning">待核对：下一步内容不在此邮件；不能编造</p>
+<blockquote>removing this reoccurring meeting until you complete your</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>This event has been updated with a note:
+&quot;Hi Sam, removing this reoccurring meeting until you complete your 
+discussed next steps.🙂 Message me on WhatApp once it is complete. Have a 
+great weekend!&quot;
+Changed: time
+
+Sam &amp; Priya - Internship Sync Progress
+Weekly from 9am to 10am on Friday from Friday Jan 9 to Thursday Jan 15
+Mountain Standard Time
+
+Join with Google Meet
+[LINK_47f023e8]
+
+Hi Sam,
+
+We will regroup January 9th on your progress.
+
+Keep me posted on your progress. Let me know if you hear back from any of 
+the schools.
+
+Have a wonderful holiday season.
+
+Organizer
+Priya
+[EMAIL_f148b5c4]
+
+Guests
+Priya - organizer
+[EMAIL_42022df7]
+View all guest info 
+[LINK_d1043c1c]
+
+Reply for [EMAIL_42022df7] and view more details 
+[LINK_d1043c1c]
+Your attendance is optional.</pre>
+<p class="meta">附件元数据：invite.ics。ICS scheduling metadata only; other attachments not opened</p>
+<h4>ICS 排会字段</h4><pre>[
+  {
+    &quot;METHOD&quot;: &quot;REQUEST&quot;,
+    &quot;DTSTART;TZID=America/New_York&quot;: &quot;20260109T110000&quot;,
+    &quot;DTEND;TZID=America/New_York&quot;: &quot;20260109T120000&quot;,
+    &quot;RRULE&quot;: &quot;FREQ=WEEKLY;UNTIL=20260116T045959Z;BYDAY=FR&quot;,
+    &quot;UID&quot;: &quot;UID_1c98e3f05bfa4f0c&quot;,
+    &quot;SEQUENCE&quot;: &quot;0&quot;,
+    &quot;STATUS&quot;: &quot;CONFIRMED&quot;
+  }
+]</pre>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M25" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M25</span><span>Invitation: Sam &amp; Priya - Internship Sync Progress @ Weekly from 9am to 10am on Friday (MST) ([EMAIL_42022df7])</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">日历邀请 · holdout · 2025-12-13T13:36:26+00:00<br>原 MBOX 序号 1572 · Priya &lt;[EMAIL_f148b5c4]&gt;</p>
+<h4>标注初稿</h4><p><b>每周五 09:00–10:00 UTC-7 可选会议</b><br>提取邀请；可建议 RSVP，不能自动接受或将所有未来实例设为忙碌。</p>
+<p class="warning">待核对：先用 ICS 确定开始日期和重复规则</p>
+<blockquote>Your attendance is optional.</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Sam &amp; Priya - Internship Sync Progress
+Weekly from 9am to 10am on Friday
+Mountain Standard Time
+
+Join with Google Meet
+[LINK_47f023e8]
+
+Hi Sam,
+
+We will regroup January 9th on your progress.
+
+Keep me posted on your progress. Let me know if you hear back from any of 
+the schools.
+
+Have a wonderful holiday season.
+
+Organizer
+Priya
+[EMAIL_f148b5c4]
+
+Guests
+Priya - organizer
+[EMAIL_42022df7]
+View all guest info 
+[LINK_d1043c1c]
+
+Reply for [EMAIL_42022df7] and view more details 
+[LINK_d1043c1c]
+Your attendance is optional.</pre>
+<p class="meta">附件元数据：invite.ics。ICS scheduling metadata only; other attachments not opened</p>
+<h4>ICS 排会字段</h4><pre>[
+  {
+    &quot;METHOD&quot;: &quot;REQUEST&quot;,
+    &quot;DTSTART;TZID=America/New_York&quot;: &quot;20260109T110000&quot;,
+    &quot;DTEND;TZID=America/New_York&quot;: &quot;20260109T120000&quot;,
+    &quot;RRULE&quot;: &quot;FREQ=WEEKLY;BYDAY=FR&quot;,
+    &quot;UID&quot;: &quot;UID_1c98e3f05bfa4f0c&quot;,
+    &quot;SEQUENCE&quot;: &quot;0&quot;,
+    &quot;STATUS&quot;: &quot;CONFIRMED&quot;
+  }
+]</pre>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M26" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M26</span><span>Updated invitation: Team - Lyrebird AI Meeting @ Weekly from 9am to 10am on Thursday (MST) ([EMAIL_42022df7])</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">日历更新与取消 · holdout · 2025-12-04T16:36:58+00:00<br>原 MBOX 序号 1661 · Priya &lt;[EMAIL_f148b5c4]&gt;</p>
+<h4>标注初稿</h4><p><b>团队例会改为每周四 09:00–10:00</b><br>核对 ICS UID/SEQUENCE，显示具体系列变更后再确认。</p>
+<p class="warning">待核对：仅凭同标题不能判定同一日历事件</p>
+<blockquote>Changed: time, conferencing</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>This event has been updated
+Changed: time, conferencing
+
+Team - Lyrebird AI Meeting
+Weekly from 9am to 10am on Thursday
+Mountain Standard Time
+
+Join with Google Meet
+[LINK_360c574d]
+
+Team regroup
+
+Organizer
+Priya
+[EMAIL_f148b5c4]
+
+Guests
+Priya - organizer
+[EMAIL_65f5c133]
+[EMAIL_42022df7]
+[EMAIL_916dab83]
+View all guest info 
+[LINK_59cc118e]
+
+Reply for [EMAIL_42022df7] and view more details 
+[LINK_59cc118e]
+Your attendance is optional.</pre>
+<p class="meta">附件元数据：invite.ics。ICS scheduling metadata only; other attachments not opened</p>
+<h4>ICS 排会字段</h4><pre>[
+  {
+    &quot;METHOD&quot;: &quot;REQUEST&quot;,
+    &quot;DTSTART;TZID=America/New_York&quot;: &quot;20251211T110000&quot;,
+    &quot;DTEND;TZID=America/New_York&quot;: &quot;20251211T120000&quot;,
+    &quot;RRULE&quot;: &quot;FREQ=WEEKLY&quot;,
+    &quot;UID&quot;: &quot;UID_a30bb625fd799de8&quot;,
+    &quot;SEQUENCE&quot;: &quot;5&quot;,
+    &quot;STATUS&quot;: &quot;CONFIRMED&quot;
+  }
+]</pre>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M27" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M27</span><span>Updated invitation: Team - Lyrebird AI Meeting @ Weekly from 9am to 10am on Wednesday (MST) ([EMAIL_42022df7])</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">日历更新与取消 · holdout · 2025-11-24T08:50:05+00:00<br>原 MBOX 序号 1886 · Priya &lt;[EMAIL_f148b5c4]&gt;</p>
+<h4>标注初稿</h4><p><b>标题相近的周三团队例会</b><br>ICS UID 与周四系列不同，不能仅凭同名或时间较早自动合并、覆盖。</p>
+<p class="warning">待核对：两个邀请可能源于重新建会；需用户或更多来源确认关联</p>
+<blockquote>Weekly from 9am to 10am on Wednesday</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>This event has been updated
+Changed: time, conferencing
+
+Team - Lyrebird AI Meeting
+Weekly from 9am to 10am on Wednesday
+Mountain Standard Time
+
+Join with Google Meet
+[LINK_b[LONG_NUMBER_REMOVED]] 
+
+Team regroup
+
+Organizer
+Priya
+[EMAIL_f148b5c4]
+
+Guests
+Priya - organizer
+[EMAIL_65f5c133]
+[EMAIL_aa5023af]
+rocky[LONG_NUMBER_REMOVED]@gmail.com
+[EMAIL_7a0e28db]
+[EMAIL_42022df7]
+[EMAIL_916dab83]
+View all guest info 
+[LINK_68cb29c7] 
+
+Reply for [EMAIL_42022df7] and view more details 
+[LINK_68cb29c7] 
+Your attendance is optional.</pre>
+<p class="meta">附件元数据：invite.ics。ICS scheduling metadata only; other attachments not opened</p>
+<h4>ICS 排会字段</h4><pre>[
+  {
+    &quot;METHOD&quot;: &quot;REQUEST&quot;,
+    &quot;DTSTART;TZID=America/New_York&quot;: &quot;20251126T110000&quot;,
+    &quot;DTEND;TZID=America/New_York&quot;: &quot;20251126T120000&quot;,
+    &quot;RRULE&quot;: &quot;FREQ=WEEKLY&quot;,
+    &quot;UID&quot;: &quot;UID_e1b23a853c643d44&quot;,
+    &quot;SEQUENCE&quot;: &quot;4&quot;,
+    &quot;STATUS&quot;: &quot;CONFIRMED&quot;
+  }
+]</pre>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M28" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M28</span><span>Re: CS4860: 3rd Instructor Meeting- Lyrebird AI 11/21 1:00pm-1:30pm</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">会议上下文通知 · dev · 2025-11-21T12:52:49-07:00<br>原 MBOX 序号 1907 · Marcus &lt;[EMAIL_a1864ac3]&gt;</p>
+<h4>标注初稿</h4><p><b>对方手机参会，关闭摄像头</b><br>可选简短体谅回复；会议仍举行；不把对方午餐安排成用户任务。</p>
+<p class="warning">待核对：无变更会议时间的请求</p>
+<blockquote>I&#x27;ll be able to attend our meeting on my phone</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hey, Sam.
+
+I&#x27;ve had a bit of a weird day, and I&#x27;m currently cooking a very late lunch.
+I&#x27;ll be able to attend our meeting on my phone, but I&#x27;ll have my camera off
+and I might be a bit distracted. Sorry for any inconvenience.
+
+Thanks,
+Marcus</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M29" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M29</span><span>CORRECTED DEADLINE: You’ve been admitted to Harbor | Accept your offer today!</span><span class="pill">可选机会</span></summary>
+<div class="inside"><p class="meta">日期冲突与延期 · holdout · 2025-12-02T16:45:06-06:00<br>原 MBOX 序号 1650 · Harbor School of Global Management &lt;[EMAIL_cdaee178]&gt;</p>
+<h4>标注初稿</h4><p><b>若有意接受录取则核对截止日期</b><br>保留可选录取机会和日期冲突提示；用户有意接受后再建立行动，接受操作须确认。</p>
+<p class="warning">待核对：2025-12-05 是周五；不能擅改成星期一或据页脚推成 2026 年</p>
+<blockquote>Monday, December 5, at 12 p.m. Mountain Standard Time</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>You have been specially selected to join Harbor’s community of global leaders.
+
+[LINK_60fa5e61]
+
+Dear Sam,
+
+Congratulations on your acceptance to Harbor School of Global Management at Northbridge University! Through Northbridge Personalized Graduate Admissions, you have been specially selected to join Harbor’s community of global leaders who thrive across sectors, including business, government, NGOs, and international organizations. Your global journey — and your global legacy — begins here. 
+
+We invite you to learn more about Harbor&#x27;s Master of Global Management degree, and our Master of Leadership and Management degree in the following videos:
+
+Master of Global Management
+
+[LINK_96a9b21d]
+
+ | Master of Leadership and Management
+
+[LINK_177a5ed6]
+
+Scholarships are available for students applying to Harbor&#x27;s Master of Global Management program for spring and fall 2026. There are many opportunities to help fund your global education. We encourage you to contact us here
+
+mailto:[EMAIL_cdaee178]?subject=Scholarship%20opportunities%20for%20spring%[LONG_NUMBER_REMOVED]
+
+ with any questions. 
+
+To accept your offer: Log into your MyNorthbridge portal. On the right hand side of your homepage under Priority Tasks, expand the section titled Personalized Admissions Offer. Select View my Personalized Graduate Admissions offer, and you will be redirected to a new window, where you can view a short video and proceed to viewing your program options available to accept. To accept your Harbor offer, ensure you are selecting the program labeled either Leadership and Management, MLM or Global Management, MGM (All Concentrations) from Harbor School of Global Management.
+
+Programs are listed alphabetically by program name. Please reach out to our admissions team
+
+mailto:[EMAIL_cdaee178]?subject=PGA%20Assistance
+
+ or reply to this email with any questions on this process. Your admissions offer will be available until Monday, December 5, at 12 p.m. Mountain Standard Time. Please accept your offer any time before this deadline.
+
+Welcome to Harbor at Northbridge — the world is waiting!
+
+Accept offer
+
+[LINK_f762f896]
+
+[LINK_333e1c94]
+
+[LINK_[LONG_NUMBER_REMOVED]ad]
+
+[LINK_4d6f6612]
+
+[LINK_37059a9a]
+
+[LINK_b6b2a450]
+
+Harbor School of Global Management at Northbridge University
+
+ 100 Harbor Way | Lakeview, ST 00000
+
+ W: harbor.northbridge.example
+
+[LINK_db[LONG_NUMBER_REMOVED]]
+
+ | E: [EMAIL_cdaee178]
+
+mailto:[EMAIL_cdaee178]
+
+ Unsubscribe from all emails
+
+[LINK_aabbca30]
+
+ | Privacy Policy
+
+[LINK_d00e6ca7]
+
+ Email not displaying correctly? View it in your browser
+
+[LINK_7d67ab10]
+
+.
+
+ Copyright © 2026, All rights reserved.</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>harbor_offer</b>：2025-12-05 12:00 Etc/GMT+7 <span class="status">conflict_weekday_date</span><br><q>Monday, December 5, at 12 p.m. Mountain Standard Time</q><br>Mail year 2025 makes Dec 5 Friday. Footer 2026 is not authoritative. Acceptance requires user decision.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M30" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M30</span><span>New: Grokking the Data Science Interview</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">宣传与信息订阅 · holdout · 2026-10-14T11:49:13-07:00<br>原 MBOX 序号 32 · The Educative Team &lt;[EMAIL_c3300b59]&gt;</p>
+<h4>标注初稿</h4><p><b>学习平台课程宣传</b><br>降低优先级；interview 课程宣传不是招聘面试邀请。</p>
+
+<blockquote>We have two exciting new updates for you this week.</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Plus Fenzo SAT Prep for the teen in your life
+
+*Note: You are receiving this platform-related update because you have an active Educative account. If you wish to unsubscribe from product or other updates related to your account, you can do so anytime.
+
+Sam,
+
+We have two exciting new updates for you this week.
+
+On Educative, there’s a new Grokking course for data science interviews, built around the mistakes that trip up even the strongest candidates. And if there’s a high schooler in your life — Fenzo now has a full preparation program for the digital SAT.
+
+New on Educative
+
+Grokking the Data Science Interview ([LINK_b01bd59d] )
+
+Data science interviews reward the candidate who spots what’s wrong with an answer, like a join that double-counts revenue or a significant result that came from checking a test too often. Each lesson takes a real interview question, shows a common answer that falls short, then works through a stronger one along with the follow-ups an interviewer would ask. It runs from SQL and A/B testing through take-home assignments and product case questions, authored by our very own VP of Technical Content: Jordan Avery.
+
+New on Fenzo
+
+SAT Prep ([LINK_0840a696] )
+
+Fenzo’s digital SAT program starts with a free diagnostic, which is like a shorter version of the real test. It then gives you a projected score on the 400 to 1600 scale and shows which content areas are costing points. From there, a study plan covers every skill on the test with short lessons and interactive practice. Once you&#x27;ve closed the gaps, you can progress to full-length mocks which mimic the digital SAT test environment.
+
+Let us know what you think!
+
+The Educative Team
+
+educative.io ([LINK_5d551ea7] ) | fenzo.ai ([LINK_[LONG_NUMBER_REMOVED]a4] )</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M31" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M31</span><span>Deloitte Application Deadline Approaching! Apply Now!</span><span class="pill">可选机会</span></summary>
+<div class="inside"><p class="meta">招聘信息缺失 · holdout · 2026-02-21T21:07:39+00:00<br>原 MBOX 序号 1025 · Rachel via Handshake &lt;[EMAIL_fa28a70f]&gt;</p>
+<h4>标注初稿</h4><p><b>招聘消息只导出截断预览</b><br>保留 optional opportunity 标记；正文不完整，不能推造具体申请截止日。</p>
+<p class="warning">待核对：标题说临近截止，但没有实际日期或完整招聘消息</p>
+<blockquote>wanted to sen...</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Rachel just messaged you about a job
+
+Hi Sam, My name is Rachel, Campus Recruiting Specialist at Deloitte. I reached out to you regarding our Software Engineering Solutions Analyst role at our US Delivery Centers and wanted to sen...
+
+Read more
+
+View message
+
+Mute
+
+Deloitte
+
+Management Consulting
+
+Deloitte Consulting LLP - Government &amp; Public Services, US Delivery Center - Solution Analyst - Software Engineering Solutions
+
+Full time
+
+Mechanicsburg, PA and 2 more</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M32" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M32</span><span>[LONG_NUMBER_REMOVED] is your Microsoft OneDrive verification code.</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">验证码与敏感内容 · holdout · 2025-07-25T17:27:47+00:00<br>原 MBOX 序号 3120 · Microsoft Notifications &lt;[EMAIL_01dfe722]&gt;</p>
+<h4>标注初稿</h4><p><b>短时有效验证码</b><br>丢弃验证码和识别串；15 分钟是验证码寿命，不是学生待办。</p>
+<p class="warning">待核对：不应将验证码加入检索、风格样本或回复</p>
+<blockquote>The code will only work for 15 minutes</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hello,
+
+For security purposes, you must enter the code below to verify your account to access the shared document. The code will only work for 15 minutes and if you request a new code, this code will stop working. 
+[SECRET_REMOVED]
+
+ [LONG_NUMBER_REMOVED]
+
+ Having problems with the code?
+
+ View the error and make sure that the email identifier is [IDENTIFIER_REMOVED]. If it&#x27;s not, look for an updated email or try requesting a new code.
+
+Privacy Statement
+
+This email is generated through Eastfield University&#x27;s use of Microsoft 365.</pre>
+<p class="meta">附件元数据：70bf3514-3117-44b3-b4e6-6aa47a9e67c8, a861d461-ef87-43e7-8dc9-0de6fd3b91b9。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>onedrive_code</b>：未解析为确定日期 <span class="status">non_task_expiry</span><br><q>The code will only work for 15 minutes</q><br>Security token lifetime; code itself removed. No student task.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M33" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M33</span><span>2-Step Verification turned on</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">账号安全通知 · holdout · 2025-04-29T06:48:11+00:00<br>原 MBOX 序号 3800 · Google &lt;[EMAIL_e94b2ad7]&gt;</p>
+<h4>标注初稿</h4><p><b>两步验证已启用</b><br>单独标记安全通知并询问是否本人操作；不自动回复或访问邮件链接。</p>
+<p class="warning">待核对：是否需要进一步处理取决于用户是否认识此操作</p>
+<blockquote>2-Step Verification turned on</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>[image: Google]
+2-Step Verification turned on
+
+[EMAIL_42022df7]
+
+Your Google Account [EMAIL_42022df7] is now protected with 2-Step
+Verification. When you sign in on a new or untrusted device, you’ll need
+your second factor to verify your identity.
+
+*Don&#x27;t get locked out!*
+You can add a backup phone or get backup codes to use when you don’t have
+your second factor with you.
+You can review your 2SV settings
+&lt;[LINK_be8727f2] &gt;
+to make changes.
+You can also see security activity at
+[LINK_cdd6a5e5] 
+You received this email to let you know about important changes to your
+Google Account and services.
+© 2025 Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M34" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M34</span><span>Canceled event with note: Team - Lyrebird AI Meeting @ Weekly from 9am to 10am on Thursday (MST) ([EMAIL_42022df7])</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">日历更新与取消 · holdout · 2025-12-13T13:32:55+00:00<br>原 MBOX 序号 1518 · Priya &lt;[EMAIL_f148b5c4]&gt;</p>
+<h4>标注初稿</h4><p><b>团队周四例会系列已取消</b><br>识别取消通知并读取当前日历状态；已被服务端移除时不再删除一次。</p>
+<p class="warning">待核对：本助手仍不得未经确认修改日历</p>
+<blockquote>This event has been canceled and removed from your calendar</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>This event has been canceled and removed from your calendar with a note:
+&quot;Rescheduling series after holidays with Sam. Happy holidays!&quot;
+
+Team - Lyrebird AI Meeting
+Weekly from 9am to 10am on Thursday
+Mountain Standard Time
+
+Join with Google Meet
+[LINK_360c574d]
+
+Team regroup
+
+Organizer
+Priya
+[EMAIL_f148b5c4]
+
+Guests
+Priya - organizer
+[EMAIL_65f5c133]
+[EMAIL_42022df7]
+[EMAIL_916dab83]</pre>
+<p class="meta">附件元数据：invite.ics。ICS scheduling metadata only; other attachments not opened</p>
+<h4>ICS 排会字段</h4><pre>[
+  {
+    &quot;METHOD&quot;: &quot;CANCEL&quot;,
+    &quot;DTSTART;TZID=America/New_York&quot;: &quot;20251211T110000&quot;,
+    &quot;DTEND;TZID=America/New_York&quot;: &quot;20251211T120000&quot;,
+    &quot;RRULE&quot;: &quot;FREQ=WEEKLY&quot;,
+    &quot;UID&quot;: &quot;UID_a30bb625fd799de8&quot;,
+    &quot;SEQUENCE&quot;: &quot;6&quot;,
+    &quot;STATUS&quot;: &quot;CANCELLED&quot;
+  }
+]</pre>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M35" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M35</span><span>Canceled event with note: Team - Lyrebird AI Meeting @ Fri Sep 12, 2025 10am - 11am (MST) ([EMAIL_42022df7])</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">日历更新与取消 · holdout · 2025-08-29T17:32:06+00:00<br>原 MBOX 序号 2880 · Priya &lt;[EMAIL_f148b5c4]&gt;</p>
+<h4>标注初稿</h4><p><b>仅取消 09/12 当次团队会议</b><br>使用 RECURRENCE-ID 区分单次取消与整个系列取消。</p>
+<p class="warning">待核对：不能因为取消一场就移除所有后续会议</p>
+<blockquote>Canceling our Sep 12th call.</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>This event has been canceled and removed from your calendar with a note:
+&quot;I am on vacation. Canceling our Sep 12th call. &quot;
+
+Team - Lyrebird AI Meeting
+Friday Sep 12, 2025 ⋅ 10am – 11am
+Mountain Standard Time
+
+Join with Google Meet
+[LINK_d34a6e32] 
+
+Team regroup
+
+Organizer
+Priya
+[EMAIL_f148b5c4]
+
+Guests
+Priya - organizer
+[EMAIL_65f5c133]
+[EMAIL_aa5023af]
+rocky[LONG_NUMBER_REMOVED]@gmail.com
+[EMAIL_7a0e28db]
+[EMAIL_42022df7]
+[EMAIL_916dab83]</pre>
+<p class="meta">附件元数据：invite.ics。ICS scheduling metadata only; other attachments not opened</p>
+<h4>ICS 排会字段</h4><pre>[
+  {
+    &quot;METHOD&quot;: &quot;CANCEL&quot;,
+    &quot;DTSTART;TZID=America/New_York&quot;: &quot;20250912T130000&quot;,
+    &quot;DTEND;TZID=America/New_York&quot;: &quot;20250912T140000&quot;,
+    &quot;UID&quot;: &quot;UID_bed13fa96df279c2&quot;,
+    &quot;RECURRENCE-ID;TZID=America/New_York&quot;: &quot;20250912T130000&quot;,
+    &quot;SEQUENCE&quot;: &quot;3&quot;,
+    &quot;STATUS&quot;: &quot;CANCELLED&quot;
+  }
+]</pre>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M36" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M36</span><span>Uncashed Student Account Refund Check [LONG_NUMBER_REMOVED]</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">财务行政行动 · dev · 2025-07-15T16:14:36-06:00<br>原 MBOX 序号 3097 · Northbridge Student Refunds &lt;[EMAIL_d4e8d767]&gt;</p>
+<h4>标注初稿</h4><p><b>核实未兑现退款支票</b><br>识别行动但不给立即指定日期；若已联系退款处则按原文条件忽略。</p>
+<p class="warning">待核对：账户状态未知；不自动输入学号或执行财务操作</p>
+<blockquote>Please cash this check immediately.</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>To view this email as a web page, go to the link below, or copy and paste it into your browser&#x27;s address window.
+[LINK_cdfb2074]
+
+ Dear Sam,
+
+This email is being sent as a courtesy reminder by Northbridge Student Business Services. As of July 15th, your student account refund check issued between June 1 and June 30, 2025 has not been cashed. Please cash this check immediately.
+
+Check Number: #[LONG_NUMBER_REMOVED]
+Date Issued: 6/9/2025
+Amount: [AMOUNT_REMOVED]
+
+If you need a replacement check, please visit the website 
+[LINK_3a14ba45] 
+Reissuing a Student Account Check for further instructions.
+
+ - 
+[LINK_0dabec65] 
+Student Indemnity Agreement form 
+ If you have been working with Northbridge Student Refunds regarding your uncashed student account refund check, please disregard this email.
+
+Contact our office with any other questions regarding this email, please forward the email along with your 10-digit Northbridge ID to 
+mailto:[EMAIL_da2244c7]?subject=Uncashed%20Refund%20Check 
+[EMAIL_da2244c7] . 
+
+Sincerely,
+
+Student Business Service 
+
+ Questions? 
+Email [EMAIL_dc4ab0d4] 
+call [PHONE_REMOVED]
+or visit students.northbridge.example/tuitionandbilling
+
+Video Tutorials - [LINK_e47411d5]
+Activation Code and Password Reset Instructions - [LINK_c9aef69c]
+
+This email was sent to: [EMAIL_42022df7]
+ 
+Northbridge University - Student Business Services
+1151 S Forest Ave
+Lakeview, ST, 85281</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>refund_cash_check</b>：未解析为确定日期 <span class="status">no_exact_date</span><br><q>Please cash this check immediately.</q><br>Immediately is urgency; Date Issued is not a due date. If already in contact with office, follow conditional exception.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M37" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M37</span><span>Northbridge Student Refund - student response needed</span><span class="pill">需行动</span></summary>
+<div class="inside"><p class="meta">财务行政行动 · dev · 2025-05-30T16:23:34-06:00<br>原 MBOX 序号 3583 · Northbridge Student Refunds &lt;[EMAIL_d4e8d767]&gt;</p>
+<h4>标注初稿</h4><p><b>五天内选择退款方式并填表</b><br>提取相对期限并询问选项；提交表单、签名和退款选项均需用户确认。</p>
+<p class="warning">待核对：日历日/工作日及最迟时刻未说明；五个日历日仅为候选解释</p>
+<blockquote>Within 5 days of this email</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>To view this email as a web page, go to the link below, or copy and paste it into your browser&#x27;s address window.
+[LINK_4ac9dab1] 
+
+Dear Sam,
+
+If you have a United States bank account you can enroll in direct deposit to receive future student account refunds. Please contact our office at 
+mailto:[EMAIL_6fb24108]?subject=Student%20Indemnity%20-%20International%20form 
+[EMAIL_6fb24108] for further details.
+
+An Northbridge student refund check has been issued to you with an international mailing address, but not mailed. Please follow the below instructions for disbursement.
+
+You can also request to have the refund applied towards charges on your account.
+
+Within 5 days of this email
+
+[LINK_414fc783] 
+Click here to begin this form 
+[LINK_414fc783] 
+Student Indemnity - International form 
+ - Complete #1 on above form - using the details below of your Northbridge issued refund check:Check Number: #[LONG_NUMBER_REMOVED]Date Issued: 5/28/2025Amount: [AMOUNT_REMOVED]
+ - Complete #2 on above form - Select your Northbridge student refund option (choose only ONE A,B or C).Choose option A on the above if you would like your student refund mailed. If you are located in the United States, update your MAIL address in 
+[LINK_[LONG_NUMBER_REMOVED]] 
+my.northbridge.example and select Profile.
+
+Choose option B or C on the above form, to receive your refund via Flywire if you are not located in the United States or unable to cash a US dollar check. 
+ - Complete #3 on above form - Required - signature, name, date and Northbridge ID number
+ - Once the form is signed and submitted the form is automatically emailed to 
+mailto:[EMAIL_6fb24108]?subject=Student%20Indemnity%20-%20International%20form 
+[EMAIL_6fb24108] Other helpful student resources:
+
+Although you have been issued a refund check, you may still have a balance due to Northbridge. Details of your refund check can be found on 
+[LINK_[LONG_NUMBER_REMOVED]] 
+my.northbridge.example by selecting Finances at the top of the page, then select Refunds within the Charge Summary section.
+
+NOTE: All student correspondence must include the students full name and Northbridge ID#.
+
+Sincerely,
+
+Student Business Services
+
+mailto:[EMAIL_6fb24108]?subject=Student%20Indemnity%20-%20International%20form 
+[EMAIL_6fb24108] 
+
+[PHONE_REMOVED]
+
+ Questions? 
+Email [EMAIL_dc4ab0d4] 
+call [PHONE_REMOVED]
+or visit students.northbridge.example/tuitionandbilling
+
+Video Tutorials - [LINK_36bd6c5b] 
+Activation Code and Password Reset Instructions - [LINK_c9c57fce] 
+
+This email was sent to: [EMAIL_42022df7]
+ 
+Northbridge University - Student Business Services
+1151 S Forest Ave
+Lakeview, ST, 85281</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>refund_choose_and_submit_form</b>：2025-06-04 <span class="status">relative_semantics_need_confirmation</span><br><q>Within 5 days of this email</q><br>Candidate assumes five calendar days after May 30 local receipt; business days and exact time unspecified. No automatic finance/form submission.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M38" data-split="dev" data-direction="inbound">
+<details><summary><span class="id">M38</span><span>Notification of Payment</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">交易回执 · dev · 2025-11-28T00:32:19-06:00<br>原 MBOX 序号 1781 · [EMAIL_bc2f5c4c]</p>
+<h4>标注初稿</h4><p><b>申请费支付成功通知</b><br>记录已付款；不将支付时间当成缴费截止；不从回执发起新支付。</p>
+<p class="warning">待核对：支付仍受最终核验，不能说大学已批准申请</p>
+<blockquote>your payment has been completed successfully.</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>CC_PAYMENT_TEMPLATE
+
+ You have received this email from [EMAIL_bc2f5c4c] in response to payment processing.
+
+Notification of Payment
+
+This message is an automated notification to inform you that your payment has been completed successfully. Please note that all payments are subject to approval and final verification.
+
+[BILLING_DETAILS_REMOVED]
+
+Payment Information:
+
+Payment Type:Credit Card
+
+[PAYMENT_IDENTIFIER_REMOVED]
+
+Card Type:Visa
+
+[PAYMENT_IDENTIFIER_REMOVED]
+
+Additional Amount:---
+
+[PAYMENT_IDENTIFIER_REMOVED]
+
+[PAYMENT_IDENTIFIER_REMOVED]
+
+[PAYMENT_IDENTIFIER_REMOVED]
+
+[PAYMENT_IDENTIFIER_REMOVED]
+
+[PAYMENT_IDENTIFIER_REMOVED]
+
+ *** Card Not Present ***
+
+[PAYMENT_IDENTIFIER_REMOVED]
+
+Date/Time:November 27, 2025 at 10:32:19 PM PST
+
+[PAYMENT_IDENTIFIER_REMOVED]
+
+[PAYMENT_IDENTIFIER_REMOVED]
+
+ Payment Amount:[AMOUNT_REMOVED]
+
+ Total Paid:[AMOUNT_REMOVED]
+
+UBC Terms &amp; Conditions Agreement:
+
+UBC Terms &amp; Conditions
+
+Please note that any information that you have provided is stored outside of UBC.
+
+Please ensure that you enter the billing address that appears on your credit card statement.
+
+Thank you for your order.
+
+Thank You
+
+UBC Graduate Program Application Fee</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M39" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M39</span><span>Order Confirmation</span><span class="pill">暂不处理</span></summary>
+<div class="inside"><p class="meta">交易回执 · holdout · 2025-12-18T05:38:15+00:00<br>原 MBOX 序号 1401 · Parchment &lt;[EMAIL_[LONG_NUMBER_REMOVED]b]&gt;</p>
+<h4>标注初稿</h4><p><b>电子成绩单订单已创建，等待学校处理</b><br>标记等待处理；付款/下单不代表成绩单已交付。</p>
+<p class="warning">待核对：2PM PT 是一般处理说明，不是用户提交截止</p>
+<blockquote>Your order was placed successfully on 12/18/2025.</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>parchment.com ( [LINK_aa76f260] )
+
+Thank you for your order!
+
+Hi Sam,
+
+Your order was placed successfully on 12/18/2025.
+
+Hi Sam,
+
+Your order was placed successfully on 12/18/2025:
+
+ *Total*
+
+ *[AMOUNT_REMOVED]*
+
+Here is your order summary:
+
+*Item Ordered:* Electronic Transcript *For:* Sam *Document ID:* [DOCUMENT_ID_REMOVED] *Delivery Method:* electronic
+*Note:* Documents selected for expedited delivery will be sent the same day when the order is processed by Northbridge University before 2PM PT weekdays. FedEx does not pick-up or deliver on Saturdays and Sundays, nor on holidays.
+*Note:* You requested that you would like to wait until grades are out before we send your document. Once the new grades are posted, *Northbridge University* will process your order, and we will send your document to its destination.
+*Note:* You requested that you would like to wait until the degree is posted before we send your document. Once the degree is posted, *Northbridge University* will process your order, and we will send your document to its destination.
+*Note:* **
+*Note:* **
+
+*FROM:*
+Northbridge University
+*TO:*
+Sam
+ [EMAIL_42022df7]
+
+ Once your order has been processed, we will send the official document to its destination. 
+
+Thank you,
+The Parchment Team
+Turn Credentials into Opportunities
+
+Parchment&#x27;s Privacy Policy ( [LINK_9b705d9c] ) and Terms of Use ( [LINK_a5d12a3b] )</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>transcript_order</b>：2025-12-18 <span class="status">completed_record</span><br><q>Your order was placed successfully on 12/18/2025.</q><br>Order placed, not delivered and not a new submission deadline.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M40" data-split="holdout" data-direction="inbound">
+<details><summary><span class="id">M40</span><span>Exclusive Offer Ends Tomorrow – Extra $10 off Your Purchase of $75+</span><span class="pill">可选机会</span></summary>
+<div class="inside"><p class="meta">宣传与信息订阅 · holdout · 2026-02-07T17:02:10-06:00<br>原 MBOX 序号 1146 · Calvin Klein &lt;[EMAIL_3fc56c57]&gt;</p>
+<h4>标注初稿</h4><p><b>促销券次日到期</b><br>不把优惠券到期建成学业任务，不删除原邮件。</p>
+<p class="warning">待核对：只有用户明确关注此优惠才加入可选提醒</p>
+<blockquote>Exclusive Offer Ends Tomorrow</blockquote>
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>CK 
+
+Exclusive Offer Ends Tomorrow – Extra $10 off Your Purchase of $75+ | 
+[LINK_faad050c] 
+Shop Now 
+
+[LINK_0aa6af62] 
+
+[LINK_58de1b59] 
+
+[LINK_f[LONG_NUMBER_REMOVED]] 
+
+ Shop Online with code [COUPON_REMOVED]
+
+ or show the barcode below in stores.
+
+ In addition to online and in-store offers.
+
+[LINK_3235c0c7] 
+Find Your Store
+
+[LINK_853c22bf] 
+Shop Now
+
+ Exclusive Offer
+
+ Enjoy $10 off $75+ purchase
+
+ In store only. 
+
+ Valid 01.26.26 through 02.08.26.
+
+ Please present this barcode in store.
+
+[LINK_0b[LONG_NUMBER_REMOVED]] 
+
+[LONG_NUMBER_REMOVED]
+
+[LINK_14e4cea6] 
+
+[LONG_NUMBER_REMOVED]
+
+[LINK_ade87efe] 
+
+[LINK_36e3157c] 
+
+ Follow us to discover new offers.
+
+[LINK_f04accde] 
+
+[LINK_7ea8c6d9] 
+
+[LINK_477cff7a] 
+
+[LINK_b1ebcbee] 
+
+[LINK_a47e71b0] 
+
+[LINK_bd3f811e] 
+
+[LINK_8427d9b7] 
+Find a store 
+
+[LINK_95975dc3] 
+
+ Shop online
+
+[LINK_c8b61cd8] 
+
+ My Calvin Rewards
+
+[LINK_06e09d5c] 
+Unsubscribe 
+ 
+[LINK_baa1845d] 
+View in Browser 
+
+ * $10 off your $75+ purchase with code. Valid 01.26.26 through 02.08.26 at 11:59 PM PT. Discount in cart. Cannot be combined with any other offer. Only valid at 
+[LINK_46a2a860] 
+calvinklein.us . Not valid on gift cards or previous purchases.
+
+*$10 off your purchase of $75+ in store with barcode. Valid 01.26.26 through 02.08.26 at 11:59 PM PT. Offer valid in all US Calvin Klein Company Stores and US Calvin Klein Underwear Stores, excluding US Calvin Klein Clearance Store locations. This offer can be combined with one additional discount offer. One redemption per household, per store, per day. If above discount is presented with a reward within the transaction, discount above will apply to the balance due AFTER the value of rewards has been deducted. This offer is not valid on gift cards, or previous purchases, and is not redeemable for store credit or cash. Certain restrictions may apply. Excludes watches, jewelry, eyewear and fragrance. Please see store for details. PVH Corp associates are not eligible.
+
+ Please view our 
+[LINK_32895f09] 
+My Calvin Rewards Program Terms , 
+[LINK_187fe5d3] 
+Privacy Policy and our 
+[LINK_b[LONG_NUMBER_REMOVED]a] 
+Terms and Conditions which contains information about our dispute resolution process including a mandatory individual arbitration clause.
+
+ Calvin Klein, 205 West 39th Street, New York, NY 10018
+
+PVH Corp. 1001 Frontier Rd. Bridgewater Township NJ 08807 US
+
+[LINK_e60b2c40] 
+Update Profile</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>retail_offer</b>：2026-02-08 <span class="status">non_task_expiry</span><br><q>Valid 01.26.26 through 02.08.26.</q><br>Coupon validity, not student deadline; do not create work by default.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M41" data-split="style_reference" data-direction="outbound">
+<details><summary><span class="id">M41</span><span>CS4860:  Sponsor Evaluation Submitted (Lyrebird AI)</span><span class="pill">风格参考</span></summary>
+<div class="inside"><p class="meta">本人已发送语气样本 · style_reference · 2025-12-08T11:44:44-07:00<br>原 MBOX 序号 1525 · Sam &lt;[EMAIL_42022df7]&gt;</p>
+<h4>标注初稿</h4><p><b>学术核查请求</b><br>先交代项目和已核实事实，再提出一个明确检查请求；Best wishes。</p>
+
+
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hi Nadia,
+
+I am in the project Lyrebird AI. I noticed that I received a -1 for
+Sponsor Evaluation 1, so I checked with my sponsor. She has confirmed that
+the evaluation has now been submitted. Could you please check whether it
+was received correctly?
+
+Best wishes,
+Sam</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M42" data-split="style_reference" data-direction="outbound">
+<details><summary><span class="id">M42</span><span>CS4860: Clarification on Project Deployment credit — sponsor signature included</span><span class="pill">风格参考</span></summary>
+<div class="inside"><p class="meta">本人已发送语气样本 · style_reference · 2025-12-03T20:01:20-07:00<br>原 MBOX 序号 1698 · Sam &lt;[EMAIL_42022df7]&gt;</p>
+<h4>标注初稿</h4><p><b>评分复核请求</b><br>列出现有提交证据，再用 Could you please 请求复核；礼貌结束。</p>
+
+
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hi Nadia,
+
+In our Project Deployment submission, we included the sponsor authorization
+page with the handwritten signature and the platform-generated electronic
+timestamp.
+
+However, our rubric shows a deduction for “missing sponsor signature.”
+Could you please review our file and check it again?
+
+Thank you for your time and help!
+
+Best regards,
+Sam</pre>
+<p class="meta">附件元数据：Screenshot 2025-12-03 [LONG_NUMBER_REMOVED].png, Screenshot 2025-12-03 [LONG_NUMBER_REMOVED].png。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M43" data-split="style_reference" data-direction="outbound">
+<details><summary><span class="id">M43</span><span>Follow-up on Recommendation Letters</span><span class="pill">风格参考</span></summary>
+<div class="inside"><p class="meta">本人已发送语气样本 · style_reference · 2025-11-26T21:51:13-07:00<br>原 MBOX 序号 1734 · Sam &lt;[EMAIL_42022df7]&gt;</p>
+<h4>标注初稿</h4><p><b>正式跟进</b><br>Dear Professor；说明已发送的资料，感谢支持，以 Best regards 收尾。</p>
+
+
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Dear Professor Reyes,
+
+I hope you are doing well.
+
+I wanted to follow up regarding my graduate school applications. I have now
+sent all of the recommendation submission links to your email. For your
+convenience, I have also attached a table listing each school, the specific
+program, and the corresponding deadline.
+
+Thank you again for your willingness to support my applications during this
+busy time.
+
+Wishing you a wonderful and relaxing Thanksgiving holiday!
+
+Best regards,
+Sam</pre>
+<p class="meta">附件元数据：University Lists.pdf。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M44" data-split="style_reference" data-direction="outbound">
+<details><summary><span class="id">M44</span><span>Re: Request for a Letter of Recommendation</span><span class="pill">风格参考</span></summary>
+<div class="inside"><p class="meta">本人已发送语气样本 · style_reference · 2025-11-18T23:55:47-07:00<br>原 MBOX 序号 1855 · Sam &lt;[EMAIL_42022df7]&gt;</p>
+<h4>标注初稿</h4><p><b>熟悉教授的短回复</b><br>Hi Professor；一两句直接请求，加简短感谢；自然简洁。</p>
+
+
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hi Professor Okafor,
+I just updated my CV and simplified some parts, can you check it?
+Thank you for your help!
+Best,
+Sam</pre>
+<p class="meta">附件元数据：Outlook-Eastfield, CV-SR.docx。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M45" data-split="style_reference" data-direction="outbound">
+<details><summary><span class="id">M45</span><span>Re: Action Needed: Fall 2025 SoC Senior Capstone Showcase Power Access</span><span class="pill">风格参考</span></summary>
+<div class="inside"><p class="meta">本人已发送语气样本 · style_reference · 2025-11-24T10:47:59-07:00<br>原 MBOX 序号 1873 · Sam &lt;[EMAIL_42022df7]&gt;</p>
+<h4>标注初稿</h4><p><b>行政确认</b><br>Hi；Thank you for the information；I confirm that…；Best regards。</p>
+
+
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hi Hannah,
+
+Thank you for the information.
+
+I confirm that I only need power access for my laptop. No additional
+equipment requires power.
+
+Best regards,
+
+Sam</pre>
+<p class="meta">附件元数据：image001.png。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M46" data-split="style_reference" data-direction="outbound">
+<details><summary><span class="id">M46</span><span>Re: CS4860: 3rd Instructor Meeting- Lyrebird AI 11/21 1:00pm-1:30pm</span><span class="pill">风格参考</span></summary>
+<div class="inside"><p class="meta">本人已发送语气样本 · style_reference · 2025-11-21T14:03:11-07:00<br>原 MBOX 序号 1906 · Sam &lt;[EMAIL_42022df7]&gt;</p>
+<h4>标注初稿</h4><p><b>熟悉同事的体谅回复</b><br>Hi；No worries at all；简短友好祝语，不加长篇正式开场。</p>
+
+
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hi Marcus,
+
+No worries at all! I just saw your message.
+
+Hope you enjoy your lunch.</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M47" data-split="style_reference" data-direction="outbound">
+<details><summary><span class="id">M47</span><span>ACC3300: Apology for Late Submission of Project 2</span><span class="pill">风格参考</span></summary>
+<div class="inside"><p class="meta">本人已发送语气样本 · style_reference · 2025-04-17T11:37:30-07:00<br>原 MBOX 序号 4017 · Sam &lt;[EMAIL_42022df7]&gt;</p>
+<h4>标注初稿</h4><p><b>迟交说明</b><br>承认时间估计问题并说明实际背景，礼貌请求理解；原因仅限本次事实，不可迁移。</p>
+
+
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Dear Professor Lindqvist,
+
+My name is Sam, and I’m currently taking your ACC3300 course. I’m
+writing to apologize for the late submission of my project 2. I submitted
+it right around the deadline, but it was marked as being submitted at 12:00
+rather than 11:59.
+
+I have been managing multiple tight deadlines across different courses
+recently, and I underestimated the time required to complete this project.
+Although the delay was brief, I fully understand if it causes any issues and
+I truly hope it won&#x27;t affect the grading.
+
+Thank you for your understanding, and I’ll make sure late submission will
+never happen again.
+
+Best wishes,
+Sam</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M48" data-split="style_reference" data-direction="outbound">
+<details><summary><span class="id">M48</span><span>Today&#x27;s metting follow-up with Tom</span><span class="pill">风格参考</span></summary>
+<div class="inside"><p class="meta">本人已发送语气样本 · style_reference · 2025-02-19T15:07:25-07:00<br>原 MBOX 序号 4719 · Sam &lt;[EMAIL_42022df7]&gt;</p>
+<h4>标注初稿</h4><p><b>项目进度跟进</b><br>Hello；说明谁负责哪部分、顺序和回报承诺；自然直接；Best wishes。</p>
+
+
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hello Priya,
+ We reviewed the current progress of the UI and outlined our next steps.
+This week, I’ll complete the Queue section before assisting Tom with the
+Settings section, while Tom focuses on finishing the Quick AI Grader
+section first. We both prefer to write the code ourselves rather than use
+Builder.io—it’s a useful tool, but not the best fit for our needs. Once
+I’ve completed the Queue section, I’ll share a report with you.
+
+Best wishes，
+Sam</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M49" data-split="style_reference" data-direction="outbound">
+<details><summary><span class="id">M49</span><span>CS4850: 2nd Instructor Meeting- Lyrebird AI MAR24 11:30pm-12:00pm</span><span class="pill">风格参考</span></summary>
+<div class="inside"><p class="meta">本人已发送语气样本 · style_reference · 2025-03-22T13:42:43-07:00<br>原 MBOX 序号 4386 · Sam &lt;[EMAIL_42022df7]&gt;</p>
+<h4>标注初稿</h4><p><b>会议邀请说明</b><br>Hi；Here is our group link；其余为 Zoom 模板，不作为个人语气证据。</p>
+
+
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Hi Marcus,
+
+Here is our group link for next Monday&#x27;s meeting.
+
+Topic: Lyrebird AI instructor meeting 2
+Time: Mar 24, 2025 11:30 AM Mountain Time
+
+Join from PC, Mac, Linux, iOS or Android:
+[LINK_f78b9b2f]
+[SECRET_REMOVED]</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>instructor_meeting_march24</b>：2025-03-24 11:30 Etc/GMT+7 <span class="status">subject_body_conflict</span><br><q>Time: Mar 24, 2025 11:30 AM Mountain Time</q><br>Subject says 11:30pm-12:00pm; body says AM. The sent correction supports AM but is not send authorization.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><article id="M50" data-split="style_reference" data-direction="outbound">
+<details><summary><span class="id">M50</span><span>Re: CS4850: 2nd Instructor Meeting- Lyrebird AI MAR24 11:30pm-12:00pm</span><span class="pill">风格参考</span></summary>
+<div class="inside"><p class="meta">本人已发送语气样本 · style_reference · 2025-03-22T13:44:56-07:00<br>原 MBOX 序号 4385 · Sam &lt;[EMAIL_42022df7]&gt;</p>
+<h4>标注初稿</h4><p><b>纠错短回复</b><br>Sorry, the correct time is…；简洁纠正错误，不写冗长解释。</p>
+
+
+<h4>正文视图（已去标识、去引用和页脚）</h4><pre>Sorry, the correct time is 11:30 AM–12:00 PM.</pre>
+<p class="meta">附件元数据：无 MIME 附件。未读取附件正文</p>
+<h4>时间角色与候选</h4><ul><li><b>instructor_meeting_march24</b>：2025-03-24 11:30 Etc/GMT+7 <span class="status">explicit_linked_correction</span><br><q>Sorry, the correct time is 11:30 AM–12:00 PM.</q><br>Date inherited from linked original, not standalone correction text. Outbound reference, not inbound test.</li></ul>
+<p class="meta">所有标签/日期均待用户复核；此页仅浏览，不提供发送或日历写入。</p></div></details></article><footer>本页面完全离线，无外部资源、无数据上传、无真实操作按钮。输出包仍可能通过课程和日期间接识别人，分享前请复核。</footer></main><script>
+const cards=[...document.querySelectorAll('article')];function filter(){const q=document.querySelector('#search').value.toLowerCase(),s=document.querySelector('#split').value;let n=0;cards.forEach(c=>{const show=(!q||c.textContent.toLowerCase().includes(q))&&(!s||c.dataset.split===s);c.hidden=!show;if(show)n++});document.querySelector('#count').textContent=`显示 ${n} / 50`;};document.querySelector('#search').addEventListener('input',filter);document.querySelector('#split').addEventListener('change',filter);document.querySelector('#open').onclick=()=>cards.filter(c=>!c.hidden).forEach(c=>c.querySelector('details').open=true);document.querySelector('#close').onclick=()=>cards.forEach(c=>c.querySelector('details').open=false);
+</script></body></html>
