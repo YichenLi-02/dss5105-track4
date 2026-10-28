@@ -1,0 +1,63 @@
+/* Design tokens. Colours are the offline prototype's palette (软件设计与AI工作流/ui/index.html), unchanged;
+   the scales below were added in the Refactoring UI pass (docs/UI_AUDIT.md). Components use only these. */
+:root{
+  /* colour - neutrals: light steps blue-grey (hue ~215, chosen 2026-10-20); dark text greys unchanged */
+  --bg:#eef2f7;
+  --surface:#fff;
+  --soft:#f6f8fb;
+  --line:#dde3ec;
+  --grey-400:#a5afb4;
+  --muted:#626d72;
+  --ink-soft:#3b464b;
+  --ink:#20282b;
+  --on-ink:#d5dcde;
+  /* colour - semantic */
+  --accent:#26685d;
+  --accent-soft:#eaf4f0;
+  --accent-line:#c5ded3;
+  --danger:#a82e2e;
+  --danger-soft:#fff2f0;
+  --danger-line:#e9c4c1;
+  --warning:#7c5b17;
+  --warning-soft:#fff8e9;
+  --warning-line:#e7d7ac;
+  --warning-strong:#b28b3e;
+  --info:#425680;
+  --info-soft:#edf0f8;
+  --slate:#526674;
+  --slate-soft:#edf1f3;
+
+  /* type scale (§4.1) - five sizes */
+  --text-xs:12px;
+  --text-sm:14px;
+  --text-base:16px;
+  --text-lg:20px;
+  --text-xl:24px;
+  /* two weights (§2.2.b) */
+  --weight-normal:400;
+  --weight-bold:600;
+  /* line-height falls as size grows (§4.5) */
+  --leading-tight:1.25;
+  --leading-snug:1.45;
+  --leading-normal:1.6;
+
+  /* spacing scale (§3.2) - every step at least 25% from its neighbour */
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:24px;
+  --space-6:32px;
+  --space-7:48px;
+
+  /* radius (§1.4.3) - one for controls, one for containers */
+  --radius-sm:6px;
+  --radius:12px;
+  --radius-pill:999px;
+
+  font-family:Inter,'Segoe UI','Microsoft YaHei',Arial,sans-serif;
+  color:var(--ink);
+  background:var(--bg);
+  font-size:var(--text-sm);
+  line-height:var(--leading-normal);
+}

@@ -1,55 +1,131 @@
-# DSS5105 Track 4：学生效率助手 / Student Productivity Agent
+# Student Work Assistant
 
-六人小组项目，目前处于准备阶段。  
-A six-person team project, currently in preparation.
+A local-first assistant that turns a student's inbox, course documents and group chats into reviewed tasks, a realistic study plan and ready-to-send drafts. Nothing is sent or written to a calendar until the user has checked it.
 
-## 大概要做什么 / What we are building
+Built by Li Yichen for the DSS5105 capstone (Track 4).
 
-整理 Outlook / Teams 消息 → 提取待办和截止日期 → 生成每周计划。先把这条流程做通，不接 Canvas / LMS。  
-Organise Outlook / Teams messages → extract tasks and deadlines → generate a weekly plan. Get this workflow working first; Canvas / LMS integration is excluded.
+---
 
-最终要有可用界面、完整代码、演示视频和 PPT、项目文档及效果评估。可评估节省的时间和提取准确率，并逐个分析至少 10 个失败案例。  
-Deliver a usable interface, complete code, demo video and slides, documentation, and evaluation. Possible measures include time saved and extraction accuracy; analyse at least 10 failure cases individually.
+## What it does
 
-## 什么时候干什么 / Timeline
-
-| 时间 / Date (2026) | 要完成什么 / What to finish |
+| Area | What the user gets |
 | --- | --- |
-| 现在至 10 月上旬 / Now–early Oct（建议 / suggested） | 定分工、选技术和数据来源，做出“消息 → 待办”初版。<br>Assign roles, choose the stack and data sources, and prototype message-to-task extraction. |
-| **10 月 16 日 / 16 Oct — Sprint 1** | 讲清问题、价值、架构、风险和后续计划。15:00 前交 PPT/PDF；19:00 开始展示，现场讲解 5 分钟 + 问答 2 分钟。<br>Explain the problem, value, architecture, risks and roadmap. Submit slides by 15:00; session starts at 19:00, with a 5-minute live presentation + 2-minute Q&A. |
-| **10 月 30 日 / 30 Oct — Sprint 2** | 展示能跑的初版，说明分工、进度和测试计划。15:00 前交 5 分钟视频和幻灯片；19:00 展示与问答。<br>Demo a working prototype; show ownership, progress and the validation plan. Submit a 5-minute video and slides by 15:00; presentation and Q&A at 19:00. |
-| **11 月 13 日 / 13 Nov — Sprint 3** | 展示最终系统、测试结果和不足。15:00 前交 5 分钟视频和幻灯片；19:00 展示与问答。<br>Show the final system, evaluation results and limitations. Submit a 5-minute video and slides by 15:00; presentation and Q&A at 19:00. |
-| **11 月 15 日 / 15 Nov — 23:59** | 交最终 `GroupNN.zip`，检查代码能按说明运行、材料齐全。<br>Submit the final `GroupNN.zip`; check that setup instructions work and all deliverables are included. |
+| **Mail** | Imported mail is grouped by topic (academic, career, events, promotions, other) and filtered by *needs reply*, *needs action* or *important*. Each summary links to the exact quote in the original, and there is a one-click link to open the original in Gmail. |
+| **Tasks** | Deadlines are extracted with their evidence. Conflicting dates stay as separate candidates, and an unstated time stays empty; it is never guessed as 23:59. A task can only be confirmed once its date, time zone and effort are known. |
+| **Study plan** | A deterministic earliest-deadline-first planner, checked by an independent validator. It respects the daily cap, session lengths, breaks, the deadline buffer and calendar busy time. If the plan cannot fit, it says so and shows the shortfall in minutes. |
+| **Group work** | A pasted chat is sorted into suggestions, decisions, action items and open questions. A suggestion is never promoted to a decision, and an unknown owner stays unknown. |
+| **To confirm** | Every outgoing action waits here as a proposal: the exact payload, its SHA-256 hash, an expiry time and one-time execution. Editing anything invalidates the earlier approval. |
+| **Sources & connections** | PDF syllabi with page numbers (scanned, encrypted or broken files are reported, and the text can be pasted instead). The user's own writing samples set the tone of drafts. Gmail, Google Calendar, Outlook and Teams connect with read-only access. |
 
-三次展示全员到场。Sprint 2 起，幻灯片首页放组号、成员及学号、公开 GitHub 链接和 demo 链接。  
-Everyone attends all three reviews. From Sprint 2, the first slide must show the group number, members and student IDs, public GitHub link, and demo link.
+The interface switches between English and Chinese. Mail bodies, quotes and the user's own text are never machine-translated.
 
-## 六人分工 / Six-person roles
+### Design principles
 
-建议分工，可调整；每人补充自己负责部分的文档。  
-Suggested roles, open to adjustment; everyone documents their own work.
+- **Evidence over guesses.** Every extracted date and task keeps a verbatim quote and its position in the source. Unknown facts stay `null` or `[[placeholder]]`.
+- **Content is data, not instructions.** Text inside mail, PDFs and chats can never trigger an action, so prompt-injection lines are shown as plain data.
+- **The model is optional.** All features work offline with local rules. Turning on an OpenAI model improves classification and drafting, and its output is checked locally before use: the quotes must exist in the source, and dates and times must be well-formed.
+- **Writes are gated.** Real sending requires four things: live mode, a server flag, a user setting and a separate write permission on the account. Each send is still reviewed one by one. By default every send is only simulated.
+- **Secrets stay on the server.** OAuth tokens live in the OS credential store (Windows Credential Manager through `keyring`). The model key lives only in `.env`. Neither reaches the browser.
 
-1. 使用步骤与页面 / Usage steps and pages.
-2. 资料与数据准备 / Materials and data preparation.
-3. 信息整理规则 / Information organisation rules (task and deadline extraction).
-4. 学习安排规则 / Study scheduling rules (weekly planning).
-5. 程序实现与连接 / Program implementation and integration.
-6. 检查效果与演示 / Evaluation, testing and demo.
+---
 
-## 最后交什么 / Final submission
+## Tech stack
 
-`GroupNN.zip` 包含以下文件 / Include these files in `GroupNN.zip`:
+- **Backend:** Python, FastAPI and SQLite (one process, 11 tables), with `pypdf` for documents, `httpx` for providers and `keyring` for tokens.
+- **Frontend:** React, TypeScript and Vite with plain CSS and a small design-token scale. There is no UI framework.
+- **Model (optional):** the OpenAI Responses API with strict JSON schemas and `store=false`.
 
-- `Readme.pdf` — 运行说明 / Setup and run instructions.
-- `Slide.pdf` 或 / or `Slide.pptx` — 最终幻灯片 / Final slides.
-- `Video.mp4` — 系统 demo / System demo.
-- `Documentation.pdf` — 项目文档，最多 15 页 / Project documentation, maximum 15 pages.
-- `Evaluation.pdf` — 效果评估 / Evaluation report.
-- `Teams.pdf` — 分工与贡献 / Roles and contributions.
-- `Strategic_Recommendations.pdf` — 战略建议 / Strategic recommendations.
+There is no Redis, no vector database and no agent framework.
 
-展示文件名依次为 `Presentation_GroupNN_Sprint1`、`Presentation_GroupNN_Sprint2`、`Presentation_GroupNN`，加对应扩展名；NN 是两位组号，例如 01。  
-Use these presentation filenames respectively, with the appropriate extension: `Presentation_GroupNN_Sprint1`, `Presentation_GroupNN_Sprint2`, `Presentation_GroupNN`. NN is the two-digit group number, e.g. 01.
+## Quick start
 
-日期及要求依据课程说明 v4，更新以老师通知为准。代码放 `src/`，测试放 `tests/`，示例数据放 `data/synthetic/`；不要上传密钥或真实私人邮件。  
-Dates and requirements follow the course specification v4; later instructor announcements take precedence. Use `src/` for code, `tests/` for tests and `data/synthetic/` for sample data. Do not upload secrets or real private emails.
+Requirements: **Python 3.11+** and **Node.js 20.19+** (or 22.12+).
+
+```bash
+git clone https://github.com/YichenLi-02/dss5105-track4.git
+cd dss5105-track4
+cp .env.example .env        # Windows: Copy-Item .env.example .env
+```
+
+**Windows (one command)** creates the virtual environment, installs dependencies, builds the frontend and starts the server:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run.ps1
+```
+
+**macOS / Linux:**
+
+```bash
+cd src/backend
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements-dev.txt
+cd ../frontend && npm ci && npm run build
+cd ../backend && python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+Open **<http://127.0.0.1:8000>**.
+
+> **About the sample data.** Development used 50 real mails, de-identified with fictional schools, courses, names and addresses. That sample is **not published**, because de-identified is not the same as anonymous. Without it the Mail page stays empty until you connect a mailbox. The built-in synthetic demos still work: the study-plan scenario, the course documents and the group chat.
+
+### Development mode
+
+```bash
+# terminal 1
+cd src/backend && .venv/bin/python -m uvicorn app.main:app --reload --port 8000
+# terminal 2 (Vite proxies /api to port 8000)
+cd src/frontend && npm run dev     # http://127.0.0.1:5173
+```
+
+### Tests
+
+```bash
+cd src/backend && .venv/bin/python -m pytest -q    # uses a temporary database
+cd src/frontend && npm run build                   # type-check and production build
+```
+
+Tests that need the private sample are skipped when it is absent. Provider and model paths are tested against mocked HTTP; no real account is contacted.
+
+---
+
+## Optional integrations
+
+Every value goes in `.env`. A missing value only switches that feature off.
+
+| Feature | Settings | Notes |
+| --- | --- | --- |
+| Smart classification and drafting | `LLM_PROVIDER=openai`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `ALLOW_MODEL_PROCESSING=true` | Also needs to be switched on in *Settings → Data processing*. Only the subject, the de-identified body and the time are sent. |
+| Gmail and Google Calendar (read-only) | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Create an OAuth client in Google Cloud with the redirect URI `http://127.0.0.1:8000/api/connections/google/callback`. Scopes: `gmail.readonly`, `calendar.events.freebusy`. |
+| Outlook and Teams (read-only) | `MICROSOFT_CLIENT_ID`, `MICROSOFT_TENANT_ID` (plus a secret) | Scopes: `Mail.Read`, `Calendars.ReadBasic`, `Chat.Read`. School tenants may require admin consent. |
+| Real sending | `APP_MODE=live`, `ENABLE_EXTERNAL_WRITES=true` | On start-up the server prints a one-time session code, which the browser asks for. Then enable *Allow real writes* in Settings and grant the send permission under *Account connections*. Gmail replies stay in the original thread. |
+
+Without real sending, any draft can still be copied with one click and pasted into your own mail client.
+
+## Project layout
+
+```text
+src/backend/app/
+  api/         HTTP routes: messages, tasks, documents, drafts, plans, connections
+  services/    import, tasks, planner and validator, documents, drafts, proposals, chat, importance
+  providers/   outbound allow-list, OAuth (PKCE), token store, mail and calendar readers, writers
+  llm/         model adapter (structured output only, no tools)
+src/backend/tests/        pytest suite (54 tests)
+src/frontend/src/
+  pages/       Mail, Tasks, Study plan, Group work, To confirm, Sources & connections
+  components/  side panel, mail detail, draft editor, review dialog, …
+  locales/     en.json, zh-CN.json
+docs/          implementation notes, run guide, UI audit
+scripts/       run.ps1 (one-command start), smoke.py
+```
+
+## Known limitations
+
+- Group-chat organising uses keyword rules; complex phrasing can be missed.
+- PDFs are not OCR'd.
+- Calendar writes only create new study blocks; existing events are never moved or deleted.
+- The mail categories in the development sample came from AI-assisted reference labels that were not reviewed by hand, so no accuracy figure is claimed.
+
+## More documentation
+
+- [docs/RUNNING.md](docs/RUNNING.md): running, testing and configuration in detail
+- [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md): what is implemented, where it differs from the original design contract, and what is still simulated
+- [docs/UI_AUDIT.md](docs/UI_AUDIT.md): the interface audit against the vendored [`refactoring-ui`](.claude/skills/refactoring-ui) skill (MIT)
