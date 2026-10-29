@@ -2,7 +2,6 @@
 
 A local-first assistant that turns a student's inbox, course documents and group chats into reviewed tasks, a realistic study plan and ready-to-send drafts. Nothing is sent or written to a calendar until the user has checked it.
 
-Built by Li Yichen for the DSS5105 capstone (Track 4).
 
 ---
 
