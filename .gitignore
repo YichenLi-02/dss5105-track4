@@ -23,5 +23,10 @@ local-data/
 *.sqlite3-*
 src/frontend/dist/
 
-# De-identified development sample (kept private, never published)
+# Build caches and personal tool settings
+*.tsbuildinfo
+.claude/settings.local.json
+*.zip
+
+# De-identified real-mail samples remain private; do not publish them.
 data/AI项目数据源_去隐私/

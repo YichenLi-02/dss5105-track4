@@ -1,8 +1,8 @@
-# Implementation notes
+# 实施记录（liyichen-deployment）
 
-The build follows the project's software design pack v1.1 (product brief, workflows, `openapi.json` and `database.sql`) and the implementation requirements set on 2026-10-19.
+依据：`软件设计与AI工作流` v1.1（00–06、11、openapi.json、database.sql），以及用户在 2026-10-19 提出的实现要求。
 
-## Structure
+## 结构
 
 ```text
 src/backend/app/
@@ -10,109 +10,121 @@ src/backend/app/
   api/        core messages tasks documents drafts plans connections
   services/   import_service task_service reference_view document_service doc_rules
               style_service draft_service proposal_service planner plan_service chat_service
-              analysis_service importance removal preferences privacy jobs
-  providers/  net (outbound allow-list), tokens (keyring), oauth, mail_readers, calendars, teams, writers
-  llm/        adapter (Responses API, strict JSON schema, no tool calls)
+              analysis_service preferences privacy jobs
+  providers/  net(出站白名单) tokens(keyring) oauth mail_readers calendars teams writers
+  llm/        adapter（Responses API，严格 JSON schema，无工具调用）
 src/frontend/src/
-  app/ (App, i18n, context, time)   api/ (client, types)   pages/ (six main areas + settings)
-  components/ (Panel, MailDetail, DraftEditor, ReviewDialog, DocumentLibrary, StyleReferences,
-               AccountConnections, Tags, ConfirmButton, CopyButton)
-  locales/ zh-CN.json en.json   styles/ (tokens.css, prototype.css, app.css)
+  app/(App, i18n, context, time)  api/(client, types)  pages/(6 个主入口 + 设置)
+  components/(Panel, MailDetail, DraftEditor, ReviewDialog, DocumentLibrary, StyleReferences, AccountConnections, Tags)
+  locales/zh-CN.json en.json  styles/(tokens.css, prototype.css, app.css)
 ```
 
-**Stack:**
+技术栈：单个 FastAPI 进程 + SQLite，共 11 张表，沿用设计中的 `database.sql`；前端为 React + TypeScript + Vite + 普通 CSS。没有引入 Redis、向量库、微服务或代理框架。
 
-- One FastAPI process with SQLite: 11 tables, taken from the design's `database.sql`.
-- React, TypeScript and Vite with plain CSS.
-- No Redis, vector database, microservices or agent framework.
+## 已实现（离线、无需任何 key）
 
-## Implemented and working offline (no keys)
+- **样本导入**：40 封收件和 10 封语气参考分开存放；按 `(connection_id, provider_message_id)` 去重，重复导入不会增加记录。分类标签记为 `reference_annotation`（建议标注），不当作模型结果展示。
+- **邮件页**：统计卡、主题类别、需回复 / 需行动 / 仅重要三个筛选（同时选中时取交集）、搜索、原文、来源与依据位置、人工纠正（记为 `user`）、处理记录。
+- **任务**：按 `entity_key` 合并 32 条时间表达，每条都保留证据并逐字核对原文位置。日期冲突时保留所有候选，正式日期留空；未注明的时刻保持 null。提交回执只把对应的交付物标为完成；非任务时间（验证码有效期、促销到期等）不会生成任务。确认任务需要日期、时刻、时区或规划停止时刻，以及工作量，并带修订号防止旧页面覆盖。实际进度用幂等事件记录。
+- **课程资料**：真实上传 PDF，后端用 pypdf 逐页解析并保留页码。扫描件、加密文件和解析失败分别标为 `needs_ocr`、`encrypted`、`failed`，并支持改为粘贴原文。粘贴文本单独记为 `user_pasted`，不会当成 PDF 解析结果。本地规则提取明确日期和时刻；“reading week 之后的周五”“Week N”这类相对日期，只用同一学期的学年日历解析，日历本身不生成任务。排除资料会让相关任务回到待核对、依赖它的计划过期；也可以删除本地数据。
+- **学习计划**：确定性的“最早截止优先”规划，带独立校验器，检查每日上限、单段最短 / 最长、休息、截止缓冲、每周弹性和可用时段。只有在容量上界已经小于需求时才判为 `infeasible`；否则报 `needs_adjustment`。已完成的进度会扣减剩余量并计入当日上限。重新规划会给出前后差异，旧计划标为过期。日历读取失败不会被当作空闲时间。
+- **小组协作**：粘贴讨论后按规则整理为建议、决定、行动项和未解决问题。只有明确的决定语句或被负责人确认的分工才算决定；负责人或日期未知时保持 null。可以从结果起草 Teams 跟进消息。
+- **个人语气**：只使用本人撰写的部分（M49 只保留第一句，不含 Zoom 模板）。每份样本可以选用或排除；修改后，依赖它的待发送提案会失效，草稿正文不会被替换，需要用户重新核对。招聘场景和中文没有本人样本，明确改用通用语气。
+- **草稿与审批**：没有核实的事实一律保留为 `[[待填]]`，不编造。提案保存不可变的载荷、SHA-256 哈希、修订号、过期时间，并绑定会话。确认时须提交相同的哈希和 Idempotency-Key，后端用条件 UPDATE 保证只执行一次。任何修改都会让旧批准失效。离线版只记为 `simulated`。
+- **安全**：会话 cookie（HttpOnly、SameSite=Strict）、写请求校验 CSRF、Origin 白名单；出站请求只允许固定的官方域名，Canvas / instructure 一律拒绝；入库前去除邮件地址、链接、电话、验证码和长数字。
+- **中英切换**：界面语言保存在偏好设置里；邮件、证据、样本和用户正文保持原语言。
 
-- **Sample import.**
-  - Inbound mail and tone references are stored separately and de-duplicated by `(connection_id, provider_message_id)`, so re-importing adds nothing.
-  - Reference categories are labelled `reference_annotation`, never shown as model output.
-- **Mail.**
-  - Count cards, topic categories, and the filters *needs reply*, *needs action* and *important* (combined filters intersect). There is also search.
-  - Each mail shows its original text, its source, and evidence positions. User corrections are recorded as `user`.
-  - Important mail is decided by a deterministic rule: academic or career mail that needs a reply or action, payments above a threshold, and account-security notices that need action. The user's override always wins.
-- **Tasks.**
-  - Date expressions are merged per `entity_key`. Each keeps its evidence, checked character by character against the source.
-  - When dates conflict, every candidate is kept and the official date stays empty. An unstated time stays `null`.
-  - A submission receipt only completes its own deliverable. Non-task times, such as code expiry or promotion end dates, never create tasks.
-  - Confirming a task needs a date, a time and time zone (or a planning cut-off), and an effort estimate. Revision numbers stop a stale page from overwriting newer data.
-  - Progress is recorded as idempotent events.
-- **Course documents.**
-  - Real PDF uploads are parsed page by page with `pypdf`, keeping page numbers.
-  - Scanned, encrypted and broken files are marked `needs_ocr`, `encrypted` or `failed`, and the user can paste the text instead. Pasted text is a separate `user_pasted` source and is never presented as parsed PDF text.
-  - Local rules extract explicit dates and times. Relative dates ("the Friday after reading week", "Week N") are resolved only against an academic calendar for the same term; the calendar itself never creates tasks.
-  - Excluding a document sends related tasks back to review and marks dependent plans stale.
-- **Study plan.**
-  - Deterministic earliest-deadline-first planning.
-  - An independent validator checks the daily cap, minimum and maximum session length, breaks, the deadline buffer, weekly flex time and the available windows.
-  - `infeasible` is reported only when the capacity upper bound is already below demand; otherwise the status is `needs_adjustment`.
-  - Logged progress reduces the remaining work and counts toward that day's cap.
-  - Re-planning reports the differences and marks the old plan stale. A failed calendar read is never treated as free time.
-- **Group work.**
-  - A pasted chat is organised by rules into suggestions, decisions, action items and open questions.
-  - Only an explicit decision statement, or an assignment acknowledged by its owner, counts as a decision. A suggestion that is later decided is marked *decided in Lxx*.
-  - Unknown owners or dates stay `null`. A Teams follow-up can be drafted from the result.
-- **Personal tone.**
-  - Only text the user wrote is used. Each sample can be included or excluded; changing a sample invalidates pending proposals that relied on it.
-  - Where no own sample exists (recruiting, Chinese), a generic tone is used and labelled as such.
-- **Drafts and approval.**
-  - Unverified facts always stay as `[[placeholders]]`.
-  - A proposal stores an immutable payload, its SHA-256 hash, a revision, an expiry time and the session that created it.
-  - Confirming requires the same hash and an `Idempotency-Key`; a single conditional UPDATE guarantees one execution. Any edit invalidates the earlier approval.
-  - Offline, results are recorded as `simulated`. Drafts and simulated results can be copied with one click.
-- **Security.**
-  - The session cookie is HttpOnly and SameSite=Strict. Mutations require a CSRF token, and the Origin is checked against an allow-list.
-  - Outbound requests may only go to fixed provider domains; Canvas and Instructure are always refused.
-  - Addresses, links, phone numbers, one-time codes and long numbers are removed before storage.
-- **Interface language.**
-  - Switches between English and Chinese and is saved in preferences.
-  - Model output (summaries, flags, task titles) is stored in both languages.
-  - Mail, evidence, samples and user text keep their original language.
+## 排程规则补充（2026-11-05 组内评审后）
 
-## Written and tested against mocked HTTP; real use needs your own OAuth app
+- **每日上限按全天计算**：当天所有任务已记录的进度，加上已经写入日历、还没开始或正在进行的学习块，都占用当天额度。只勾选部分任务、切换任务或重新生成，用的都是同一份额度。
+- **已写入的学习块不会重复安排**：生成计划时同时读取主日历和本应用的专属学习日历。凡是本应用实际写入过的未来学习块（不论来自哪份计划），都会保留、占用额度，并从对应任务的待排量中扣除；保存时只提交新增部分。如果某块已不在专属日历里（多半是你删了），就当作未安排；专属日历读不到时，按写入记录保留，宁可少排，不重复排。
+- **记录进度要先选任务**：规划页的“记录进度”需要明确选择任务、填写实际分钟数，保存前会提示“为哪个任务增加多少分钟”，保存后显示剩余量。同一次请求重复提交只计一次。
+- **写入前再查一次忙闲**：确认写入学习日历时，后端会重新读取相关日历。发现新冲突、或重新读取失败，都会停止写入、列出冲突时间，并让原计划过期；审核页可以直接进入“冲突与修复”查看修复建议，选好后再重新审阅。这样能缩短冲突窗口，但仍不能保证跨系统绝对同步。
+- **校验修正**：已写入块扣除之后，剩余不足 30 分钟的部分允许排成一段短时段（此前校验器按扣除前的量判断，会误判为违规）。贪心排程遇到比休息还短的会议时，第二段曾只隔会议时长就开始，现在会等满休息时间。
+- **排不满时改为精确搜索**：每个任务先按原来的贪心方式排（单段目标 60 分钟、尽早开始），能全部排下时结果与原来完全相同。排不满时，对这个任务在所有可行的分段方式中精确搜索，取能排下最多分钟的方案（同样多时：前面的天多排，单段尽量接近 60 分钟）。整体结果不会比原来的贪心差。多个任务按截止顺序排不下时，会再试其他安排顺序；只要有一种顺序能全部排下就采用（每个任务仍须在自己的截止缓冲前完成），都排不下就保留截止早的优先。
+- **单个任务每日上限**：除了“每日学习总上限”（所有任务加起来），还有一条独立规则：同一个任务一天最多排多少分钟（设置里的“单个任务每日上限”，默认 120，填 0 表示不单独限制，不能小于单段最短）。当天在这个任务上已记录的进度、已写入的这个任务的学习块都计入；排程（贪心和精确搜索）、校验、容量证明、冲突修复和手动编辑都遵守它。总上限调高到 4 小时时，一个任务仍然最多 2 小时，剩下的时间留给别的任务。如果正是这条规则让某个任务在截止前排不下，计划会明确说明“受单个任务每日上限限制，截止前最多只能排 X 分钟”；手动编辑超过它时作为软性规则，需要学生明确接受；修复建议里可以看到“单任务每日上限 +30 分钟”能多排多少（标注为放宽，不推荐）。
+- **评测**：`src/backend/evaluation/` 包含 27 个手工写好预期的固定场景（`scenarios.json`，待组内复核，S25–S27 针对单个任务每日上限）和 200 组固定种子的随机场景（部分随机设置了单个任务每日上限）；运行 `scripts/eval-planner.py` 会在 `local-data/planner-eval/` 生成 `report.json` 和 `report.md`。指标由评测代码独立计算，不依赖排程器自带的校验器；除违规数外，同时报告覆盖率、未排分钟数，以及单任务场景与评测代码独立穷举出的最优解之间的差距（目前全部为 0）。多任务场景的整体最优没有做穷举证明。
+- **日期和时间输入**：浏览器原生的日期控件跟随系统语言、不受界面语言控制，所以改用自绘的日期/时间输入框，格式与原生控件一致，并随中英文切换。
 
-- **Model adapter:** OpenAI Responses API with `store=false` and a strict schema. Source IDs, verbatim quotes and date formats are checked locally. Results are cached by content hash, prompt, schema and model version. When the model is off, the endpoint returns 409 and offline features are unaffected.
-- **Google:** OAuth with PKCE and state, plus incremental consent. Gmail read-only sync with paging, bounded retries, `Retry-After`, and a single failing message counted as a partial result. Google free/busy.
-- **Microsoft:** OAuth plus Graph mail, `calendarView`, and Teams chat reads (only the chats the user selects).
-- **Real writers:** Gmail send (replies stay in the original thread through `threadId` and `In-Reply-To`/`References`), Graph `sendMail`, Teams chat messages, and a dedicated Google study calendar with its events.
-  - A timeout is recorded as `unknown` and never retried automatically.
-  - A 202 response is `accepted`, which does not mean delivered.
-  - Event IDs are deterministic, and partial success is recorded item by item.
-- **Use with a real account:** Gmail read-only sync, model analysis and Google free/busy have been used with a real test account. Real sending needs live mode and is off by default.
+## 计划冲突处理（第二次答辩后补充）
 
-## Differences from the design contract (`openapi.json`)
+思路：**发现冲突 → 说明原因 → 给出 2–3 个改动最少的建议（附代价）→ 学生选择或手动编辑 → 照常审核确认后才写入**。系统不会自己悄悄改计划，也不会自己放宽学生设定的规则。
 
-| Place | Difference | Reason |
-| --- | --- | --- |
-| `GET /api/messages` | Adds `counts` to the response | Count cards need totals that ignore filters |
-| MessageSummary | Adds `source_type`, `attention_label`, `uncertainty`, `analysis_status`, `excluded`, `attachment_count`, `split`, `summary_en`, `attention_flags_en` | Cards show review items, sources and both languages |
-| `analysis_origin` | Adds `rule` | Local rule results must not be labelled `model` or `none` |
-| Document upload | `POST /api/uploads` plus `POST /api/documents` (JSON metadata) instead of `/api/imports` | Metadata and the permission statement are validated together; `/api/imports` is only for the sample |
-| Document | Adds `pages`, `page_count`, `user_excerpt`, `parsed_text`, `extraction_error`, `upload_id`, `synthetic`, `candidates` | Traceable page numbers; pasted and parsed text kept apart |
-| `/documents/{id}/extract` | Returns synchronously; `use_model=true` returns 422 | Local rules are fast; model extraction of documents is out of scope |
-| Draft | Adds `purpose`, `placeholders`, `style_mode`, `style_note`, `relationship`, `language`, `stale_style`, `generation`, `recipients_deidentified`; requests may pass `relationship`, `language`, `use_model` | Tone fallback and open placeholders need explicit state |
-| Task | Adds `title_en` | Model-made titles are shown in the interface language |
-| Plan | Adds `per_task`, `busy`, `days`, `stale_reasons`, `synthetic`, `computed_status` | The UI shows each day and why a plan went stale |
-| ChatSummary | `analysis_origin` may be `rule`; adds `followup_points`, `messages`; requests may pass `raw_text` | Pasted text is parsed on the server |
-| New endpoints | `/api/plans/latest`, `/api/demo/planning-scenario`, `/api/demo/documents`, `/api/demo/chat`, `/api/model/status`, `/api/translation-jobs`, `/api/messages/remove`, `/api/audit`, `/api/connections/microsoft/chats[/import]`, `/api/drafts` (list), `/api/tasks/{id}` | Synthetic demos, removal, background translation, Teams chat selection |
-| Session | `bootstrap_code` may be omitted in demo mode | One-command start; live mode requires the code |
+- **发现冲突**（打开规划页时自动检查一次；也可以点“冲突与修复 → 检查冲突”，或审核写入时被拦下后点“为这个冲突找修复方案”）：检查、修复建议和手动编辑都用这份计划原来的日历来源、账号和日期范围重新读取，不会混入页面上为下一份计划选的其他日历；计划日期已经过去时不再读取，提示重新生成；界面显示“上次检查”的时间和方式。重新读取日历，列出哪些学习块（建议的、已锁定的、已写入学习日历的）与哪段日程重叠；没有时间冲突但截止前排不下时，说明还差多少分钟。只读，不改任何东西。
+- **修复建议**（`app/services/repair.py`，纯函数，不碰数据库和网络）：每个建议都是用不同的“哪些块保持不动”重新运行同一个排程器和校验器得到的完整候选计划：
+  - 只移动受影响的学习块：其他块全部原位不动；先尝试把冲突块整块挪走，不行再拆分；
+  - 让截止较晚的任务让位：截止晚的任务让出时间给最先截止的任务；
+  - 整周重新规划：只保留学生锁定的块；
+  - 使用本周弹性时间 / 当天多学 30 分钟：会放宽学生的规则，所以明确标注“放宽”，只在比所有守规则的方案多排下工作时才出现，并且永远不会被标为“推荐”。
+  - 排序：先守规则的方案，再按未排分钟数最少、改动块数最少、离截止缓冲最远；在这几项上都不比前面更好的方案不显示；最多 3 个。即使最好的方案仍排不下，会同时给出“申请延期”的草稿入口（发送前由学生审核）。
+- **学生选择**：候选计划先保存为“未被选择的建议”，不能直接保存到日历；选中一个后它才成为当前计划，其余候选随即作废（原计划已被替换时会提示重新检查；日历、任务或设置在此期间变化时也会拒绝并要求重新检查）。
+- **手动编辑**：每个学习块都可以改开始时间、时长、删除或解除锁定。硬性限制直接拒绝并说明原因：与日历日程重叠、与其他学习块重叠、超过截止、已经过去、跨午夜、超出规划日期、时长不在 5–240 分钟。软性规则（单段时长、休息、每日上限、截止缓冲、学习时段、弹性时间）会先列出来，学生明确点“仍然保存”后才保存，接受的例外只对这个块生效、随计划一起显示。编辑过的块会被锁定，之后重新规划和修复都保持不动；加长一个块时，多出来的时间从这个任务后面的未锁定建议里扣，不会多排。
+- **已写入的块也能移动**：只在本应用自己的学习日历里移动，而且只移动所属任务在本次计划中的块。审核页会同时列出“新建”和“删除（已移动）”；确认后先创建新事件，再删除旧事件；旧事件删除结果单独记录，已经不存在算作完成，网络不确定时提示学生到日历里检查。写入前复查忙闲时，会排除正在被移动的旧块，不会把它误判为冲突。主日历和其他日历从不改动。
+- **完成了吗？**：已经写入、并且在过去一周内结束的学习块，会在规划页询问“完成了 / 完成了一部分（填分钟）/ 没完成”。回答会记入对应任务的进度（同一个块只记一次），然后提示重新规划；“没完成”不计入进度，剩余工作会在重新规划时再排。
+- **离线演示**：示例模式下可以“模拟一个新会议”（只影响示例日历，存在本地 `demo_busy` 表，可一键移除），添加后自动检查冲突，不需要真实日历就能演示完整流程。
+- **评测**：`scripts/eval-planner.py` 的报告新增“冲突修复”一节：在 200 组随机场景中，给每个有计划的场景加一个压在学习块上的新会议（部分压在已写入块上），用和排程评测同一套独立指标检查推荐方案。当前结果：191 组，硬性规则违规 0（含单个任务每日上限）；未排分钟从不多于“整周从头重排”；排进同样多工作的 189 组中，推荐方案平均改动 1.29 个块，从头重排 1.67 个，且没有一组改动更多；推荐方案放宽规则 0 组；新会议碰到已写入学习块的 4 组都给出了移动方案。
+- 新接口：`POST /api/plans/{id}/conflicts`、`/repair-options`、`/adopt`、`/edit-block`，`GET/POST /api/study-checkins`，`GET/POST/DELETE /api/demo/busy`。测试：`tests/test_conflict_repair.py`，评测断言在 `tests/test_planner_eval.py`。
 
-FastAPI generates the actual API description at `/docs` and `/openapi.json`.
+## 根据打卡校准估计（第二次答辩后补充）
 
-## Still simulated or synthetic
+思路：**用学生自己的历史数据给出估计建议，学生接受之前不改任何东西**。规则在 `app/services/calibration.py`（纯函数），读写在 `calibration_service.py`，界面是规划页的“根据你的历史校准估计”。
 
-- **Study plan inputs:** without a connected calendar, busy times come from a synthetic timetable (`provider=mock`). The demo report task is synthetic (DEMO5105, 2026-10-23 17:00).
-- **Synthetic demos:** the syllabus, the academic calendar ("Demo Term A", not an official calendar) and the group chat.
-- **Sends offline:** all sends and calendar writes are recorded as `simulated` unless live mode is enabled.
-- **Reference labels:** the mail categories and date candidates in the development sample are AI-assisted reference labels, not reviewed by hand. They are not a gold standard, and no accuracy figure is reported.
+- **数据来源**：任务第一次填写的预计用时会单独保存，之后修改也不覆盖，校准比较的始终是学生最初的估计。标记完成时会问“实际大概用了多少分钟？”（可以选“不确定”，这时用已记录的进度时间，界面会标注）。每次“完成了吗？”的回答会连同这个学习块原本计划的时长一起保存。
+- **估计偏差**：至少 3 个已完成任务才会给建议。先找同一门课；同课不足 3 个时用同类任务（提交、考试、回复）；再不足时用全部任务。取“实际用时 / 最初估计”的中位数，单个任务的比值限制在 0.25–4 倍，避免一个极端任务主导结果。偏差小于 15% 时不提示。只对还停留在最初估计的未完成任务提示，已经自己改过估计的任务不提示。建议按 15 分钟取整，最多加倍或减半，并且不低于已经花掉的时间。
+- **缩短更谨慎**：建议减少时间需要至少 5 个已完成任务，并且只缩一半差距。估少了会赶不上截止，估多了只是浪费一点时间，所以两个方向的代价不对称。
+- **用完估计还没做完**：已记录的时间达到估计时，计划里已经没有剩余工作可排，这个任务会悄悄从计划里消失。所以系统会主动问“完成了吗？”：答“已完成”就标记完成，答“还没有，还需要 N 分钟”就把估计改成已用时间加 N。
+- **完成率**：统计最近 28 天回答过的学习块，计算计划时间中实际完成了多少。至少 5 次回答、并且完成率低于 85% 时，建议把每周弹性时间增加到大致能补上每周没完成的时间（按 30 分钟取整，最多 +180）。
+- **学生决定**：每条建议都有“改为 X 分钟 / 保持 Y 分钟 / 查看依据”，依据会列出用到的任务和它们的估计与实际用时。采用后只通过正常的任务修改流程改估计（会检查版本号），已有计划因此过期，界面直接提供“重新规划”。同一个任务答过一次就不再提示。服务器采用的是自己重新计算的建议值，不信任前端传来的数字。
+- **示例数据**：显示示例数据时，可以“加载示例历史”（4 个合成的已完成任务和 8 个合成的打卡记录），演示时会对示例报告给出 360 → 465 分钟的建议，并提示增加弹性时间；可以一键移除。示例数据关闭时，这些合成记录不会进入真实的校准。
+- **评测（模拟，不是真实学生数据）**：`scripts/eval-planner.py` 的报告新增“估计校准”一节。模拟 200 个学生（估计准确、习惯低估、习惯高估各三分之一，每个任务再加随机波动），每人依次完成 8 个任务，每次只用之前完成的任务给建议。在可以给建议的任务中，估计误差中位数从 24.2% 降到 17.8%；其中习惯低估的学生从 26.4% 降到 15.7%，“估计不到实际 80%”的任务从 226 个降到 60 个；习惯高估的学生从 38.3% 降到 28.0%，因为缩短只缩一半，新增的明显低估只有 3 → 6 个；估计准确的学生误差基本不变。这些参数是假设，只能说明规则的方向和安全性，不能当作真实的准确率。“缩短只缩一半”就是根据这个模拟选定的：如果一次缩到位，高估型学生的误差会更低，但明显低估会从 3 个增加到约 40 个。
+- 新接口：`GET /api/calibration`、`POST /api/calibration/decide`、`POST /api/calibration/overrun`，示例数据用 `POST/DELETE /api/demo/calibration-history`；任务修改接口新增 `actual_minutes`。测试：`tests/test_calibration.py`，模拟评测的断言在 `tests/test_planner_eval.py`。
 
-## Known limitations
+## Outlook 专属学习日历（第二次答辩后补充）
 
-- Group-chat organising uses keyword rules, so complex Chinese or English phrasing can be missed. With the model enabled, only mail analysis and drafting use it; chat organising would need its own structured call.
-- PDFs are not OCR'd.
-- Calendar writes only create new study blocks; events are never moved or deleted.
-- Asia/Singapore has no daylight saving time; DST edge cases are not tested.
+- **能做什么**：和 Google 一样，Outlook 账号可以授权“专属学习日历”，由应用在 Outlook 里新建一个专属日历（审阅确认后才创建，同一账号不会建第二个）。之后学习块的写入、移动（先建新的、再删旧的）、写入前复查忙闲、下次规划时读回已写入的块、“完成了吗？”都同样适用。
+- **写到哪里**：计划用哪个账号的忙闲生成，就写进那个账号的学习日历；那个账号没有学习日历时，写进已有学习日历的另一个账号。审阅页明确显示“写入：Outlook 中本应用的学习日历”或“Google 日历中本应用的学习日历”。每个已写入的块都记录它所在的账号；移动时旧块在它原来的账号里删除，所以 Google 里写过的块也能被移到 Outlook。
+- **只写自己的日历**：Graph 的所有写入都经过同一个路径函数，只能是 `/me/calendars/{本应用日历 ID}/events`；删除也只在这个日历里删。不知道旧日历 ID 时不会去猜，也不会把没删掉的块报告成已删除。Outlook 主日历（`/me/calendarView`）只读，学习日历通过 `/me/calendars/{id}/calendarView` 单独读回。
+- **请求细节**：事件没有参与人（不会发邀请），状态为忙碌，时间统一换成 UTC 再传给 Graph，避免 Windows 与 IANA 时区名称不一致；每个事件带由提案和序号生成的 `transactionId`，网络重试时 Graph 不会重复创建。
+- **权限说明**：微软没有和 Google `calendar.app.created` 对应的窄权限，所以需要 `Calendars.ReadWrite`，它本身可以修改所有日历。答辩时应如实说明：只写自己的学习日历是代码限制，不是微软授权层面的限制；不想授予这项权限的学生可以只用 Google 学习日历。
+- 测试：`tests/test_outlook_study_calendar.py`，在模拟的 Graph 上走完授权、创建日历、写入、读回、移动全过程，并断言除学习日历外没有任何写请求。真实账号用 `scripts/check-outlook.py --live` 只读检查学习日历是否存在、能否编辑。
+
+## 已写代码、只用模拟 HTTP 验证（没有真实账号或 key）
+
+- 模型适配器：OpenAI Responses 接口，`store=false`，严格 schema；本地校验来源 ID、逐字引文和日期格式，按内容哈希、prompt、schema 和模型版本缓存。未启用时返回 409，离线功能不受影响。
+- Google OAuth（PKCE + state，增量授权）；Gmail 只读同步（分页、有界重试、Retry-After、单封失败计入部分完成）；Google freeBusy。
+- Microsoft OAuth（PKCE，默认 `common` 租户，个人 Outlook 与学校账号都可登录），以及 Graph 邮件、calendarView、Teams 聊天的读取（只读用户选中的聊天）。Outlook 同步：按时间范围过滤收件箱（可选“垃圾邮件”和“已删除邮件”），自动翻页，使用不可变 ID 去重，只记录附件名和大小，“打开原邮件”使用 Graph 返回的 webLink。微软的错误码（AADSTS）会显示在连接卡片上并附修改办法。配置步骤和真实账号检查见 `docs/OUTLOOK_SETUP.md`、`scripts/check-outlook.py`。
+- 真实写入执行器：Gmail send、Graph sendMail（含附件，总大小 ≤ 3 MB）、Teams 聊天消息、Google 专属学习日历和事件。超时记为 `unknown`，不自动重发；202 记为 `accepted`，不等于已送达；事件 ID 确定性生成，部分成功逐项记录。
+
+以上都没有对真实服务做过调用，需要在你自己的 OAuth 应用和测试账号上实测。
+
+## 与设计契约（openapi.json）的差异
+
+| 位置 | 差异 | 原因 |
+|---|---|---|
+| `GET /api/messages` | 响应增加 `counts` | 统计卡需要不受筛选影响的计数 |
+| MessageSummary | 增加 `source_type`、`attention_label`、`uncertainty`、`analysis_status`、`excluded`、`attachment_count`、`split` | 卡片显示待核对项和来源 |
+| `analysis_origin` | 增加 `rule` | 本地规则结果不能标成 model 或 none |
+| 资料上传 | 改为 `POST /api/uploads` 加 `POST /api/documents`（JSON 元数据），不走 `/api/imports` | 元数据和权限声明需要一并校验；`/api/imports` 只用于样本 |
+| Document | 增加 `pages`、`page_count`、`user_excerpt`、`parsed_text`、`extraction_error`、`upload_id`、`synthetic`、`candidates` | 页码可追溯，粘贴文本与解析文本分开 |
+| `/documents/{id}/extract` | 同步返回结果；`use_model=true` 返回 422 | 本地规则很快；资料的模型提取不在本版范围 |
+| Draft | 增加 `purpose`、`placeholders`、`style_mode`、`style_note`、`relationship`、`language`、`stale_style`、`generation`、`recipients_deidentified`；请求可带 `relationship`、`language`、`use_model` | 语气降级和待填项需要显式状态 |
+| Plan | 增加 `per_task`、`busy`、`days`、`stale_reasons`、`synthetic`、`computed_status` | 界面需要展示每天的安排和过期原因 |
+| ChatSummary | `analysis_origin` 可为 `rule`；增加 `followup_points`、`messages`；请求可传 `raw_text` | 粘贴文本由后端解析 |
+| 新增接口 | `/api/plans/latest`、`/api/demo/planning-scenario`、`/api/demo/documents`、`/api/demo/chat`、`/api/model/status`、`/api/audit`、`/api/connections/microsoft/chats[/import]`、`/api/drafts`（列表）、`/api/tasks/{id}` | 演示用的合成数据、处理记录、Teams 选择聊天 |
+| 会话 | demo 模式下 `bootstrap_code` 可省略 | 单机演示也能一条命令启动；live 模式必须提供 |
+
+FastAPI 会在 `/docs` 和 `/openapi.json` 自动生成实际接口说明。
+
+## 仍为模拟或合成的部分
+
+- 学习计划使用的忙闲时间来自合成课表（`provider=mock`），报告任务也是合成的（DEMO5105，2026-10-23 17:00）。
+- 合成课程大纲和学年日历（Demo Term A，不是 NUS 官方日历），以及合成的小组讨论。
+- 所有发送和日历写入在离线版中都只记为 `simulated`。
+- 邮件分类和日期候选来自 AI 辅助建议标注，没有经过人工复核，不是金标准，也没有计算任何准确率。
+
+## 已知限制
+
+- 小组讨论是关键词规则整理，复杂的中英文表述可能漏判；接入模型后，聊天整理仍需另外实现 P07 的结构化调用（本版只有邮件分析和起草接入了模型）。
+- PDF 不做 OCR。
+- 日历写入只会在本应用的专属学习日历（Google 或 Outlook）里新建学习块，或在学生审核确认后移动（新建 + 删除）其中的学习块；其他日历从不修改。Outlook 的写入权限 `Calendars.ReadWrite` 范围比实际用到的大，“只写自己的学习日历”是代码层面的限制。
+- Asia/Singapore 没有夏令时；涉及夏令时的边界情况尚未测试。

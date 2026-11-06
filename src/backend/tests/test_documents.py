@@ -131,3 +131,43 @@ def test_delete_local_data(api):
     out = api.delete(f"/api/documents/{doc['id']}", {"expected_revision": d["revision"]}).json()
     assert out["extraction_status"] == "deleted" and out["affected_tasks"] == 1
     assert all(x["id"] != doc["id"] for x in api.get("/api/documents").json())
+
+
+def test_reextract_refreshes_relative_date_without_overwriting_student_edit(api):
+    term = "Acceptance refresh 2026"
+    doc = _doc(api, term=term, user_excerpt="The review memo is due the Friday after reading week.").json()
+    def extract(calendars):
+        current = api.get(f"/api/documents/{doc['id']}").json()
+        response = api.post(f"/api/documents/{doc['id']}/extract", {
+            "expected_revision": current["revision"], "calendar_document_ids": calendars, "use_model": False})
+        assert response.status_code == 200, response.text
+        return response.json()["document"]["candidates"][0]
+    unresolved = extract([])
+    assert unresolved["official_date"] is None
+    cal = _doc(api, kind="academic_calendar", term=term,
+               user_excerpt="Reading week: 2026-10-26 to 2026-11-01").json()
+    resolved = extract([cal["id"]])
+    assert resolved["id"] == unresolved["id"] and resolved["official_date"] == "2026-11-06"
+    assert resolved["official_time"] is None and resolved["status"] == "needs_review"
+    assert resolved["revision"] > unresolved["revision"] and len(resolved["evidence"]) == 1
+    assert cal["id"] in resolved["evidence"][0]["locator"]["note"]
+    assert extract([cal["id"]])["revision"] == resolved["revision"]
+    edited = api.patch(f"/api/tasks/{resolved['id']}", {"expected_revision": resolved["revision"],
+                       "official_date": "2026-12-17", "official_time": "17:30"}).json()
+    refreshed = extract([])
+    assert refreshed["official_date"] == "2026-12-17" and refreshed["official_time"] == "17:30"
+    assert refreshed["date_candidates"][0]["official_date_candidate"] is None
+    assert refreshed["revision"] > edited["revision"] and len(refreshed["evidence"]) == 1
+
+
+def test_named_deliverable_with_unagreed_deadline_stays_for_review(api):
+    doc = _doc(api, term="Acceptance missing 2026", user_excerpt=(
+        "The acceptance presentation deadline has not been agreed.\n"
+        "Ask the student to confirm the deadline.\nSubmission time is not stated.")).json()
+    result = api.post(f"/api/documents/{doc['id']}/extract", {"expected_revision": doc["revision"],
+                     "calendar_document_ids": [], "use_model": False}).json()
+    assert result["result"]["candidates"] == 1
+    task = result["document"]["candidates"][0]
+    assert "presentation" in task["title"] and task["status"] == "needs_review"
+    assert task["official_date"] is None and task["official_time"] is None and not task["can_confirm"]
+    assert "deadline_date" in task["missing_fields"]

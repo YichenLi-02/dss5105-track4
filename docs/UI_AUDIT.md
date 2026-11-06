@@ -1,63 +1,51 @@
-# UI audit: Student Work Assistant
+# 界面设计审查：学生工作助手
 
-This audit applies the `refactoring-ui` skill vendored in this repository ([.claude/skills/refactoring-ui](../.claude/skills/refactoring-ui), MIT licence, from edisonmbli/refactoring-ui-skill @ 4459662c). Section numbers (§) refer to that skill's references.
+依据：项目内安装的 `refactoring-ui` skill（[.claude/skills/refactoring-ui](../.claude/skills/refactoring-ui)，MIT 许可，来源 edisonmbli/refactoring-ui-skill @ 4459662c）。规则编号（§）对应该 skill 的 references。
 
-**Stack.** React and Vite with plain CSS: no Tailwind, no component library and no dark mode. The CSS variables inherited from the prototype are the existing design system, so the rules were mapped onto them. Brand colours were kept and no dependencies were added.
+**技术栈**：React + Vite，普通 CSS，**没有 Tailwind**，没有组件库，没有暗色模式。原型带来的 CSS 变量是现有设计系统，所以本次只把规则映射到这些变量上：配色不变，不引入 Tailwind，不新增依赖。
+**验证方式**：在 1280 和 375 两种宽度下实际渲染截图检查。对比度用 `scripts/check_contrast.py` 测量。
 
-**Method.** Rendered screenshots were checked at 1280 px and 375 px widths, and contrast was measured with a small script.
+## 结论
 
-## Summary
+没有 P0 问题：14 组文字和背景配色全部达到 4.5:1，各页面都有空状态，375 宽度下没有横向溢出。问题集中在下面的"系统性"一节：间距、字号、字重、圆角、颜色都没有刻度，数值是逐个手调的。
 
-There were no P0 issues:
+## 系统性问题（已修复）
 
-- All 14 text and background pairs reach 4.5:1.
-- Every page has an empty state.
-- Nothing overflows horizontally at 375 px.
+| # | 维度 | 规则 | 修改前 | 修改后 |
+|---|---|---|---|---|
+| S1 | 字号 | §4.1 | 10 种字号（10/11/12/13/14/17/19/20/22/23px），相邻只差约 8% | 5 级：`--text-xs/sm/base/lg/xl` = 12/14/16/20/24 |
+| S2 | 字重 | §2.2.b | 5 种（400/500/600/650/750） | 2 种：`--weight-normal` 400、`--weight-bold` 600 |
+| S3 | 间距 | §3.2 §3.2.1 | gap 有 14 种取值，包括 7/9/13/15/17/21px | 7 级 `--space-1…7` = 4/8/12/16/24/32/48，相邻级差都 ≥ 25% |
+| S4 | 圆角 | §1.4.3 | 8 种（4/5/6/7/8/10/12/99px） | 控件 6、容器 12、胶囊 999 |
+| S5 | 颜色 | §1.5 §5.2.1 | 16 个颜色值写死在变量之外 | 全部收进 `tokens.css` 并命名，数值不变，2 组几乎相同的灰色合并 |
+| S6 | 行高 | §4.5 | 所有小字统一 1.7–1.9 | 正文 1.6，标题 1.25 |
 
-The problems were systemic: spacing, type size, weight, radius and colour had no scale and had been tuned value by value.
+## 局部问题（已修复）
 
-## Systemic issues (fixed)
+| # | 维度 | 级别 | 位置 | 规则 | 修改前 | 修改后 |
+|---|---|---|---|---|---|---|
+| 1 | 层级 | P1 | 邮件页状态栏 | §2.8 | "刷新邮件"和"智能分类"都是深色主按钮 | 只保留"智能分类"为主按钮，"刷新邮件"改为次级按钮 |
+| 2 | 层级 | P1 | 邮件卡片 | §2.4 §8.5.1 | 重要邮件同时有红色左边框、粉红底色和红色实心标签，8 张卡片一片红 | 重要：只有一条深色左边线加深色标签；红色只留给账号安全提醒和日期冲突 |
+| 3 | 层级 | P1 | 邮件卡片和详情 | §2.5 | 真实邮件显示一串内部编号，时间同时显示 ISO 原文和本地时间两种格式 | 内部编号只在样本邮件上显示；时间只显示一种本地格式，ISO 原文放到悬停提示里 |
+| 4 | 排版 | P1 | 邮件详情原文 | §4.2.3 §4.3 §4.5 | 等宽字体，行宽不限，行高 1.85，"每行后面都空一行"的导出格式原样显示 | 正文字体，最大行宽 70ch，行高 1.6。显示时去掉 `\r`，合并多余空行，存储的原文和证据位置不变 |
 
-| # | Dimension | Rule | Before | After |
-| --- | --- | --- | --- | --- |
-| S1 | Type size | §4.1 | 10 sizes (10–23 px), neighbours about 8% apart | 5 steps: `--text-xs/sm/base/lg/xl` = 12/14/16/20/24 |
-| S2 | Weight | §2.2.b | 5 weights (400/500/600/650/750) | 2: `--weight-normal` 400, `--weight-bold` 600 |
-| S3 | Spacing | §3.2, §3.2.1 | 14 gap values, including 7/9/13/15/17/21 px | 7 steps `--space-1…7` = 4/8/12/16/24/32/48, each at least 25% apart |
-| S4 | Radius | §1.4.3 | 8 values (4–99 px) | Controls 6, containers 12, pills 999 |
-| S5 | Colour | §1.5, §5.2.1 | 16 hard-coded colours outside the variables | All named in `tokens.css`, values unchanged, 2 near-identical greys merged |
-| S6 | Line height | §4.5 | All small text 1.7–1.9 | Body 1.6, headings 1.25 |
+修改的文件：`src/frontend/src/styles/{tokens,prototype,app}.css`、`pages/MailPage.tsx`、`components/MailDetail.tsx`、`api/types.ts`；另外后端 `providers/mail_readers.py` 在同步入库时统一换行符。
 
-## Local issues (fixed)
+## 未修改，记录供后续决定
 
-| # | Dimension | Level | Where | Rule | Before | After |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | Hierarchy | P1 | Mail status bar | §2.8 | *Refresh mail* and *Smart classification* were both dark primary buttons | Only *Smart classification* is primary; *Refresh mail* is secondary |
-| 2 | Hierarchy | P1 | Mail cards | §2.4, §8.5.1 | Important mail had a red border, a pink background and a solid red tag, so 8 cards were all red | Important mail gets one red left edge only; the pink background is reserved for account-security notices and date conflicts |
-| 3 | Hierarchy | P1 | Mail cards and detail | §2.5 | Real mail showed internal IDs, and times appeared in both ISO and local format | Internal IDs only on sample mail; one local time format, with ISO in a tooltip |
-| 4 | Typography | P1 | Original mail text | §4.2.3, §4.3, §4.5 | Monospace, unlimited line length, line height 1.85, "blank line after every line" exports shown as is | Body font, 70ch measure, line height 1.6; `\r` removed and extra blank lines merged for display only (stored text and evidence offsets unchanged) |
+| # | 维度 | 级别 | 位置 | 规则 | 现状 | 建议 |
+|---|---|---|---|---|---|---|
+| a | 层级 | P2 | 邮件统计卡 | §2.1 | 学业、职业、活动显示 0，和非 0 的卡片同样醒目 | 数值为 0 时用浅灰色，或者隐藏 |
+| b | 颜色 | P2 | 统计卡"重要" | §2.4 | 数字用危险红；卡片上的"重要"已经改成中性色 | 改为 `--ink`，和卡片保持一致 |
+| c | 层级 | P2 | 任务行 | §2.4 | "待核对"和"无日期"两个标签都是黄色 | 状态保持黄色，日期类标签改为中性色 |
+| d | 收尾 | P2 | 账号连接 | §8.1 | 已授权的权限显示为禁用按钮加 ✓，看起来像不可用 | 改为显示"已授权"的状态标签 |
 
-Files changed: `src/frontend/src/styles/{tokens,prototype,app}.css`, `pages/MailPage.tsx`, `components/MailDetail.tsx` and `api/types.ts`. In the backend, `providers/mail_readers.py` now normalises line endings when storing synced mail.
+## 复核
 
-## Not changed (left for later)
+在 1280 和 375 宽度下重新截图：主按钮只剩一个，重要和警告区分开了，原文可以正常阅读，375 宽度下没有横向溢出。后端测试 50 项全部通过，前端类型检查和构建通过。
 
-| # | Dimension | Level | Where | Rule | Now | Suggestion |
-| --- | --- | --- | --- | --- | --- | --- |
-| a | Hierarchy | P2 | Mail count cards | §2.1 | Academic, career and events showing 0 are as prominent as non-zero cards | Grey out or hide zero values |
-| b | Colour | P2 | "Important" count card | §2.4 | The number uses danger red, while the card tag is neutral | Use `--ink` to match |
-| c | Hierarchy | P2 | Task rows | §2.4 | "To check" and "No date" tags are both yellow | Keep status yellow; make date tags neutral |
-| d | Finish | P2 | Account connections | §8.1 | Granted permissions show as a disabled button with ✓, which looks unavailable | Show a "Granted" status tag instead |
+## 后续调整（2026-10-20）
 
-## Re-check
-
-New screenshots at 1280 px and 375 px confirmed the result:
-
-- Only one primary button remains.
-- Important and warning states are now distinct.
-- The original mail text is readable.
-- Nothing overflows at 375 px.
-
-## Later adjustments (2026-10-20)
-
-- **Background:** changed to a light blue-grey (`--bg` #EEF2F7, `--soft` #F6F8FB, `--line` #DDE3EC). All light tints now share one blue-grey hue, so warm and cool greys are not mixed (§5.5.1). Dark text greys are unchanged.
-- **Contrast re-measured:** grey text is 4.73:1 on the new background and 5.00:1 on the light surface, still above the 4.5:1 required by §5.6.
-- **Important mail:** all important mail uses the red left edge (`.mail-card.important`) without a pink background. Pink stays reserved for account-security notices and date conflicts, so the list does not turn red (§2.4).
+- 应用户选择，背景改为淡蓝灰：`--bg` #EEF2F7，`--soft` #F6F8FB，`--line` #DDE3EC。浅色几档统一为同一蓝灰色调，避免冷暖不同的两种灰混用（§5.5.1）；深色文字的灰色不变。
+- 重新测量对比度：灰色文字在新背景上为 4.73:1，在浅灰面上为 5.00:1，仍达到 §5.6 的 4.5:1。
+- 应用户要求，所有重要邮件改回红色左边线（`.mail-card.important`），但不加粉红底色；粉红底色仍只用于账号安全提醒和日期冲突，避免整片发红（§2.4）。

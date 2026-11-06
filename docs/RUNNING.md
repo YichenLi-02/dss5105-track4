@@ -1,62 +1,58 @@
-# Running, testing and configuration
+# 学生工作助手 · 启动、测试与配置
 
-## Requirements
+## 前提
 
-- **Python:** 3.11 or newer; tested on 3.14.
-- **Node.js:** 20.19+ or 22.12+; tested on 24.
-- **Sample data (optional):** `SAMPLE_DATA_DIR` points to the de-identified development sample. It defaults to `data/AI项目数据源_去隐私` and is **not** part of the public repository. The app reads `selected_50.jsonl`, `date_candidates.jsonl`, `style_profile.json` and `reference_view.json` from it. Without the sample the app still starts; the Mail page then only shows mail from a connected account.
-- **Design pack (optional):** reference groupings come from `reference_view.json` in the sample. Only if that file is missing does the app fall back to the original design pack, at the path set by `DESIGN_DIR`.
+- Python 3.12 及以上（本机实测 3.14.7），Node.js 20 及以上（实测 24.21）。
+- 样本数据默认从本机 `data/AI项目数据源_去隐私/` 读取 `selected_50.jsonl`、`date_candidates.jsonl`、`style_profile.json`、`reference_view.json`。**公开分支不包含这批私有样本**，需通过组内私有渠道另行准备，或用 `SAMPLE_DATA_DIR` 指定其他本机目录。缺少样本不影响启动；本地样本导入及依赖样本的测试需要先准备数据。去标识数据仍有间接识别风险，该目录已被 Git 忽略。原始文件夹 `AI项目数据源` 不被应用读取。
+- 参考分组（主题类别、“重要”标记、摘要）来自副本中的 `reference_view.json`，记为“建议标注”。只有副本里缺这个文件时，才回退读取设计包 `软件设计与AI工作流/ui/index.html`。
+- 两个路径都可以在 `.env` 里用 `SAMPLE_DATA_DIR` / `DESIGN_DIR` 修改。
 
-## One-command start (offline, no keys needed)
+## 一条命令启动（离线版，不需要任何 key）
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/run.ps1
 ```
 
-Open <http://127.0.0.1:8000>. If the sample is present, click **Refresh mail** on the Mail page to import its 40 inbound mails and 10 tone references.
+浏览器打开 http://127.0.0.1:8000 ，到“邮件”页点“刷新邮件”，导入 40 封收件和 10 封语气参考。
 
-## Development mode (two terminals)
+## 开发模式（两个终端）
 
 ```powershell
-# terminal 1: backend
+# 终端 1：后端
 cd src/backend
 python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements-dev.txt   # pinned versions: requirements.lock
+.venv\Scripts\python -m pip install -r requirements-dev.txt   # 锁定版本见 requirements.lock
 .venv\Scripts\python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 
-# terminal 2: frontend (Vite proxies /api to port 8000)
+# 终端 2：前端（Vite 把 /api 代理到 8000）
 cd src/frontend
 npm ci
 npm run dev        # http://127.0.0.1:5173
 ```
 
-## Tests
+## 测试
 
 ```powershell
 cd src/backend
-.venv\Scripts\python -m pytest -q          # 54 tests on a temporary database; never touches local-data
+.venv\Scripts\python -m pytest -q          # 后端 43 项，用临时数据库，不碰 local-data
 cd ../frontend
-npm run build                              # TypeScript type-check + production build
+npm run build                              # TypeScript 类型检查 + 生产构建
 cd ../..
-src/backend/.venv/Scripts/python scripts/smoke.py   # smoke check against a running server
+src/backend/.venv/Scripts/python scripts/smoke.py   # 对正在运行的服务做冒烟检查
 ```
 
-Tests that need the private sample are skipped when it is not available.
+## 本地数据
 
-## Local data
+- `local-data/` 存放 SQLite 数据库和上传的 PDF 副本，已在 `.gitignore` 中，不要提交。
+- 重置演示数据：停止服务，删除 `local-data/app.sqlite3*`。
 
-- `local-data/` holds the SQLite database and copies of uploaded PDFs. It is git-ignored; do not commit it.
-- To reset: stop the server and delete `local-data/app.sqlite3*`.
+## 接入真实服务（可选，缺配置时离线功能照常可用）
 
-## Real services (optional; offline features keep working without them)
+| 能力 | 需要配置 | 说明 |
+|---|---|---|
+| 模型分析 / 起草 | `LLM_PROVIDER=openai`、`OPENAI_API_KEY`、`OPENAI_MODEL`、`ALLOW_MODEL_PROCESSING=true`，并在“设置”里勾选允许 | 使用 Responses API 的严格 JSON schema，设置 `store=false`；只发送主题、去标识正文、时间和时区 |
+| Gmail 只读、Google 忙闲 | `GOOGLE_CLIENT_ID/SECRET`；在 Google Cloud 注册回调 `http://127.0.0.1:8000/api/connections/google/callback` | 只读权限 scope 为 `gmail.readonly` 和 `calendar.events.freebusy` |
+| Outlook 邮件 / 日历只读、Teams 聊天只读 | `MICROSOFT_CLIENT_ID`、`MICROSOFT_CLIENT_SECRET`、`MICROSOFT_TENANT_ID=common`；在 Entra 的 Web 平台注册回调 `http://localhost:8000/api/connections/microsoft/callback` | 权限为 `Mail.Read`、`Calendars.Read`（只读）、`Chat.Read`（Teams 仅限学校/工作账号），可选 `Mail.Send` 和 `Calendars.ReadWrite`（只写本应用创建的 Outlook 学习日历）；学校租户可能要求管理员同意。完整步骤见 `docs/OUTLOOK_SETUP.md`，检查用 `scripts/check-outlook.py [--live]` |
+| 真实发送 / 写日历 | `APP_MODE=live`、`ENABLE_EXTERNAL_WRITES=true`、设置里打开真实写入、账号额外授权写入权限 | 每次操作仍需单独审阅确认；去标识的样本地址永远不能用于真实发送 |
 
-| Capability | Configuration | Notes |
-| --- | --- | --- |
-| Model analysis and drafting | `LLM_PROVIDER=openai`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `ALLOW_MODEL_PROCESSING=true`, plus the switch in Settings | Responses API with strict JSON schemas and `store=false`. Only the subject, the de-identified body, the time and the time zone are sent. |
-| Gmail and Google free/busy (read-only) | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`; register the redirect URI `http://127.0.0.1:8000/api/connections/google/callback` | Read scopes: `gmail.readonly`, `calendar.events.freebusy`. While the OAuth app is in *Testing*, add each user under *Audience → Test users*. |
-| Outlook and Teams chat (read-only) | `MICROSOFT_CLIENT_ID` (with a secret, or as a public client), `MICROSOFT_TENANT_ID` | Scopes: `Mail.Read`, `Calendars.ReadBasic`, `Chat.Read`. School tenants may require admin consent. |
-| Real sending and calendar writes | `APP_MODE=live`, `ENABLE_EXTERNAL_WRITES=true`, *Allow real writes* in Settings, and the extra write scope on the account | Every operation is still reviewed one by one. De-identified sample addresses can never receive a real message. |
-
-OAuth tokens are stored in the OS credential store through `keyring`; the database only keeps a reference. Tokens never appear in the browser, in URLs or in logs.
-
-With `APP_MODE=live` the server prints a one-time local session code at start-up, and the browser asks for it before opening a session. Each restart prints a new code.
+OAuth token 保存在 Windows 凭据管理器（通过 keyring），数据库里只存引用，不会出现在浏览器、URL 或日志中。`APP_MODE=live` 时，服务启动会在控制台打印一次性本地会话码。

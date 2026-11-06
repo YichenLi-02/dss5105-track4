@@ -41,9 +41,15 @@ class Settings:
     google_client_secret: str = ""
     google_redirect_uri: str = "http://127.0.0.1:8000/api/connections/google/callback"
     microsoft_client_id: str = ""
-    microsoft_tenant_id: str = "organizations"
+    # common = personal Outlook.com/Hotmail + work/school accounts; must match the app registration's
+    # "supported account types" (organizations = work/school only, consumers = personal only, or a tenant GUID).
+    microsoft_tenant_id: str = "common"
     microsoft_client_secret: str = ""
-    microsoft_redirect_uri: str = "http://127.0.0.1:8000/api/connections/microsoft/callback"
+    # The Entra portal accepts http://localhost but not http://127.0.0.1 for Web redirect URIs.
+    microsoft_redirect_uri: str = "http://localhost:8000/api/connections/microsoft/callback"
+    # Where the UI is opened. An OAuth callback that lands on another host (localhost) is sent back here
+    # so the browser keeps its session cookie.
+    app_origin: str = "http://127.0.0.1:8000"
     frontend_origin: str = "http://127.0.0.1:5173"
     allowed_origins: list[str] = field(default_factory=list)
     max_upload_bytes: int = 20 * 1024 * 1024
@@ -83,17 +89,19 @@ def load_settings() -> Settings:
         google_redirect_uri=os.environ.get(
             "GOOGLE_REDIRECT_URI", "http://127.0.0.1:8000/api/connections/google/callback"),
         microsoft_client_id=os.environ.get("MICROSOFT_CLIENT_ID", "").strip(),
-        microsoft_tenant_id=os.environ.get("MICROSOFT_TENANT_ID", "organizations").strip() or "organizations",
+        microsoft_tenant_id=os.environ.get("MICROSOFT_TENANT_ID", "common").strip() or "common",
         microsoft_client_secret=os.environ.get("MICROSOFT_CLIENT_SECRET", "").strip(),
         microsoft_redirect_uri=os.environ.get(
-            "MICROSOFT_REDIRECT_URI", "http://127.0.0.1:8000/api/connections/microsoft/callback"),
+            "MICROSOFT_REDIRECT_URI", "http://localhost:8000/api/connections/microsoft/callback").strip()
+        or "http://localhost:8000/api/connections/microsoft/callback",
+        app_origin=(os.environ.get("APP_ORIGIN", "http://127.0.0.1:8000").strip() or "http://127.0.0.1:8000").rstrip("/"),
         frontend_origin=os.environ.get("FRONTEND_ORIGIN", "http://127.0.0.1:5173"),
     )
     s.database_path = _path("DATABASE_PATH", s.data_dir / "app.sqlite3")
     if s.app_mode not in {"demo", "live"}:
         s.app_mode = "demo"
     s.allowed_origins = sorted({
-        s.frontend_origin, "http://127.0.0.1:5173", "http://localhost:5173",
+        s.frontend_origin, s.app_origin, "http://127.0.0.1:5173", "http://localhost:5173",
         "http://127.0.0.1:8000", "http://localhost:8000",
     })
     return s

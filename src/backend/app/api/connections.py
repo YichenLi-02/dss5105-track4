@@ -2,9 +2,9 @@
 from __future__ import annotations
 
 from typing import Literal
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
 
-from fastapi import APIRouter, BackgroundTasks, Depends
+from fastapi import APIRouter, BackgroundTasks, Depends, Request
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, ConfigDict
 
@@ -42,13 +42,19 @@ def authorize(provider: str, body: AuthorizeIn, session: Session = Depends(requi
 
 
 @router.get("/connections/{provider}/callback", include_in_schema=True)
-def callback(provider: str, code: str | None = None, state: str | None = None, error: str | None = None,
-             error_description: str | None = None):
+def callback(request: Request, provider: str, code: str | None = None, state: str | None = None,
+             error: str | None = None, error_description: str | None = None):
     with connect() as conn, transaction(conn):
         outcome = oauth.callback(conn, provider, code, state, error, error_description)
     # Token never travels in the URL; only an outcome keyword does. Same-origin redirect: the callback
     # is served by this process, which also serves the built UI (in Vite dev the cookie is host-scoped).
-    return RedirectResponse(f"/#/sources/connections?oauth={quote(provider)}:{quote(outcome)}", status_code=303)
+    target = f"/#/sources/connections?oauth={quote(provider)}:{quote(outcome)}"
+    # Microsoft's portal only accepts http://localhost redirect URIs, while the UI (and its session cookie)
+    # lives on APP_ORIGIN (127.0.0.1). Send the browser back to the host that holds the session.
+    app = urlparse(settings.app_origin)
+    if app.netloc and request.url.netloc != app.netloc and request.url.hostname in ("localhost", "127.0.0.1"):
+        target = f"{app.scheme}://{app.netloc}{target}"
+    return RedirectResponse(target, status_code=303)
 
 
 @router.post("/connections/{connection_id}/disconnect")

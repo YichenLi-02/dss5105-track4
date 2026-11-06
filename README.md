@@ -1,130 +1,163 @@
-# Student Work Assistant
+# 学生工作助手 · Student Work Assistant（zhaozichen 分支）
 
-A local-first assistant that turns a student's inbox, course documents and group chats into reviewed tasks, a realistic study plan and ready-to-send drafts. Nothing is sent or written to a calendar until the user has checked it.
+DSS5105 Track 4 小组项目的可运行版本。
 
+- **功能**：整理邮件、提取任务和截止日期、生成学习计划、整理小组讨论、起草回复。所有发送和写入日历的操作都要先审阅确认；离线版只做模拟。
+- **组成**：后端 FastAPI + SQLite，前端 React + TypeScript + Vite，单机运行，不需要服务器。
 
----
-
-## What it does
-
-| Area | What the user gets |
-| --- | --- |
-| **Mail** | Imported mail is grouped by topic (academic, career, events, promotions, other) and filtered by *needs reply*, *needs action* or *important*. Each summary links to the exact quote in the original, and there is a one-click link to open the original in Gmail. |
-| **Tasks** | Deadlines are extracted with their evidence. Conflicting dates stay as separate candidates, and an unstated time stays empty; it is never guessed as 23:59. A task can only be confirmed once its date, time zone and effort are known. |
-| **Study plan** | A deterministic earliest-deadline-first planner, checked by an independent validator. It respects the daily cap, session lengths, breaks, the deadline buffer and calendar busy time. If the plan cannot fit, it says so and shows the shortfall in minutes. |
-| **Group work** | A pasted chat is sorted into suggestions, decisions, action items and open questions. A suggestion is never promoted to a decision, and an unknown owner stays unknown. |
-| **To confirm** | Every outgoing action waits here as a proposal: the exact payload, its SHA-256 hash, an expiry time and one-time execution. Editing anything invalidates the earlier approval. |
-| **Sources & connections** | PDF syllabi with page numbers (scanned, encrypted or broken files are reported, and the text can be pasted instead). The user's own writing samples set the tone of drafts. Gmail, Google Calendar, Outlook and Teams connect with read-only access. |
-
-The interface switches between English and Chinese. Mail bodies, quotes and the user's own text are never machine-translated.
-
-### Design principles
-
-- **Evidence over guesses.** Every extracted date and task keeps a verbatim quote and its position in the source. Unknown facts stay `null` or `[[placeholder]]`.
-- **Content is data, not instructions.** Text inside mail, PDFs and chats can never trigger an action, so prompt-injection lines are shown as plain data.
-- **The model is optional.** All features work offline with local rules. Turning on an OpenAI model improves classification and drafting, and its output is checked locally before use: the quotes must exist in the source, and dates and times must be well-formed.
-- **Writes are gated.** Real sending requires four things: live mode, a server flag, a user setting and a separate write permission on the account. Each send is still reviewed one by one. By default every send is only simulated.
-- **Secrets stay on the server.** OAuth tokens live in the OS credential store (Windows Credential Manager through `keyring`). The model key lives only in `.env`. Neither reaches the browser.
+本文档写给组员：照着做，约 15 分钟就能在自己电脑上跑起来。
 
 ---
 
-## Tech stack
+## 1. 准备环境
 
-- **Backend:** Python, FastAPI and SQLite (one process, 11 tables), with `pypdf` for documents, `httpx` for providers and `keyring` for tokens.
-- **Frontend:** React, TypeScript and Vite with plain CSS and a small design-token scale. There is no UI framework.
-- **Model (optional):** the OpenAI Responses API with strict JSON schemas and `store=false`.
+| 软件 | 版本 | 检查命令 |
+|---|---|---|
+| Python | 3.11 或以上（已在 3.14 上测试） | `python --version` |
+| Node.js | 20.19 以上，或 22.12 以上 | `node --version` |
+| Git | 任意较新版本 | `git --version` |
 
-There is no Redis, no vector database and no agent framework.
+没装的话：Python 从 python.org 安装，Windows 安装时勾选 "Add Python to PATH"；Node.js 从 nodejs.org 安装 LTS 版。
 
-## Quick start
-
-Requirements: **Python 3.11+** and **Node.js 20.19+** (or 22.12+).
+## 2. 获取代码
 
 ```bash
 git clone https://github.com/YichenLi-02/dss5105-track4.git
 cd dss5105-track4
-cp .env.example .env        # Windows: Copy-Item .env.example .env
+git checkout zhaozichen
 ```
 
-**Windows (one command)** creates the virtual environment, installs dependencies, builds the frontend and starts the server:
+## 3. 样本数据（组内私有分享）
+
+本公开分支不包含真实邮件或其去标识副本。组员可通过组内私有渠道获得样本，放到 `data/AI项目数据源_去隐私/`，或用 `.env` 的 `SAMPLE_DATA_DIR` 指向自己的样本目录。该目录已被 `.gitignore` 排除。
+
+没有样本也可以启动系统；本地邮件样本导入需要先准备数据，也可以连接自己的 Gmail / Outlook。依赖私有样本的自动测试在数据缺失时会跳过。
+
+> 去标识不等于完全匿名：课程内容和日期组合仍可能间接识别个人，因此这批样本仅保留在本机或组内私有渠道，不随公开代码发布。
+
+## 4. 配置 `.env`
+
+在项目根目录复制模板：
+
+```bash
+# Windows PowerShell
+Copy-Item .env.example .env
+# macOS / Linux
+cp .env.example .env
+```
+
+默认值就能启动系统：`SAMPLE_DATA_DIR` 留空时，程序在本机 `data/AI项目数据源_去隐私/` 查找样本。样本需通过组内私有渠道另行准备；放到其他位置时，再填写对应路径。
+
+其他项保持默认即可。`.env` 已被 git 忽略，**不要提交、不要发到群里**。
+
+## 5. 启动
+
+### Windows（一条命令）
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/run.ps1
 ```
 
-**macOS / Linux:**
+第一次运行会自动创建 Python 虚拟环境、安装依赖、构建前端，需要几分钟。完成后会显示 `Uvicorn running on http://127.0.0.1:8000`。
+
+### macOS / Linux（手动）
+
+```bash
+# 后端依赖
+cd src/backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements-dev.txt
+
+# 前端构建
+cd ../frontend
+npm ci
+npm run build
+
+# 启动（在 src/backend 目录）
+cd ../backend
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+### 打开应用
+
+浏览器访问 **http://127.0.0.1:8000**。本机已准备私有样本时，可在"邮件"页点 **刷新邮件** 导入；使用真实邮箱时，在"资料与连接"中授权并同步。
+
+建议用 Chrome 或 Edge 正常打开；VS Code 内置预览浏览器的部分功能可能不完整。
+
+## 6. 开发时（改代码实时生效）
+
+开两个终端：
+
+```bash
+# 终端 1：后端（自动重载）
+cd src/backend
+.venv\Scripts\python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload   # Windows
+# .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload    # macOS / Linux
+
+# 终端 2：前端（热更新）
+cd src/frontend
+npm run dev
+```
+
+开发时访问 **http://127.0.0.1:5173** 。
+
+## 7. 运行测试
 
 ```bash
 cd src/backend
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements-dev.txt
-cd ../frontend && npm ci && npm run build
-cd ../backend && python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+.venv\Scripts\python -m pytest -q     # macOS / Linux: .venv/bin/python -m pytest -q
+cd ../frontend
+npm run build                          # 同时做 TypeScript 类型检查
 ```
 
-Open **<http://127.0.0.1:8000>**.
+后端测试应全部通过。没有样本数据时，依赖样本的测试会自动跳过。
 
-> **About the sample data.** Development used 50 real mails, de-identified with fictional schools, courses, names and addresses. That sample is **not published**, because de-identified is not the same as anonymous. Without it the Mail page stays empty until you connect a mailbox. The built-in synthetic demos still work: the study-plan scenario, the course documents and the group chat.
-
-### Development mode
+排程评测（27 个固定场景 + 200 组固定种子随机场景 + 冲突修复评测，报告写到 `local-data/planner-eval/`）：
 
 ```bash
-# terminal 1
-cd src/backend && .venv/bin/python -m uvicorn app.main:app --reload --port 8000
-# terminal 2 (Vite proxies /api to port 8000)
-cd src/frontend && npm run dev     # http://127.0.0.1:5173
+src/backend/.venv/Scripts/python scripts/eval-planner.py      # macOS / Linux: src/backend/.venv/bin/python
 ```
 
-### Tests
+演示冲突处理（不需要真实日历）：示例模式下在“学习计划”页生成计划，展开“模拟一个新会议”，把会议放在某个学习块上并点“添加会议并检查”，会列出冲突；点“查看修复建议”比较各方案，选一个后照常审核保存。学习块上的“编辑”可以手动改时间或时长。细节见 `docs/IMPLEMENTATION.md`“计划冲突处理”。
 
-```bash
-cd src/backend && .venv/bin/python -m pytest -q    # uses a temporary database
-cd src/frontend && npm run build                   # type-check and production build
-```
+演示估计校准：在同一页点“根据你的历史校准估计 → 加载示例历史”（合成数据），会看到示例报告的估计建议（依据可展开）和完成率提示；采用后点“重新规划”。真实使用时，标记任务完成时填写实际用时即可积累数据。细节见 `docs/IMPLEMENTATION.md`“根据打卡校准估计”。
 
-Tests that need the private sample are skipped when it is absent. Provider and model paths are tested against mocked HTTP; no real account is contacted.
+## 8. 可选：接入真实服务
 
----
+**不配置也能完整演示离线版。** 需要时再看下面几项：
 
-## Optional integrations
+| 功能 | 需要什么 | 说明 |
+|---|---|---|
+| 智能分类（AI 模型） | 自己的 OpenAI API key | 在 `.env` 填 `LLM_PROVIDER=openai`、`OPENAI_API_KEY`、`OPENAI_MODEL`，并设 `ALLOW_MODEL_PROCESSING=true`；然后在应用的 **设置 → 数据处理** 里勾选开启。分析 50 封邮件通常不到 1 美元，建议先在 OpenAI 后台设消费上限 |
+| 读取 Gmail / Google 日历（只读） | Google OAuth 客户端 ID 和密钥 | 二选一：① 请 Yichen 把你的 Gmail 加为 Cloud 项目 `dss5105-student` 的**测试用户**，再私下拿客户端 ID 和密钥；② 用自己的 Google Cloud 项目创建，步骤见 `docs/RUNNING.md`。回调地址必须是 `http://127.0.0.1:8000/api/connections/google/callback` |
+| 读取 Outlook 邮件 / 日历（只读；可选真实发送、写入本应用的 Outlook 学习日历） | Microsoft Entra 应用注册的客户端 ID 和密码 | 步骤见 `docs/OUTLOOK_SETUP.md`。回调地址为 `http://localhost:8000/api/connections/microsoft/callback`，演示推荐用个人 Outlook 账号（学校账号通常需要管理员同意）。配置后可用 `scripts/check-outlook.py` 检查 |
+| Teams 聊天 | 同上，仅限工作 / 学校账号 | 非必需 |
 
-Every value goes in `.env`. A missing value only switches that feature off.
+key 和密钥只能放在自己电脑的 `.env` 里，不要写进代码、不要截图、不要上传。连接后的登录凭证保存在系统凭据库（Windows 凭据管理器），不在项目文件里。
 
-| Feature | Settings | Notes |
-| --- | --- | --- |
-| Smart classification and drafting | `LLM_PROVIDER=openai`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `ALLOW_MODEL_PROCESSING=true` | Also needs to be switched on in *Settings → Data processing*. Only the subject, the de-identified body and the time are sent. |
-| Gmail and Google Calendar (read-only) | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Create an OAuth client in Google Cloud with the redirect URI `http://127.0.0.1:8000/api/connections/google/callback`. Scopes: `gmail.readonly`, `calendar.events.freebusy`. |
-| Outlook and Teams (read-only) | `MICROSOFT_CLIENT_ID`, `MICROSOFT_TENANT_ID` (plus a secret) | Scopes: `Mail.Read`, `Calendars.ReadBasic`, `Chat.Read`. School tenants may require admin consent. |
-| Real sending | `APP_MODE=live`, `ENABLE_EXTERNAL_WRITES=true` | On start-up the server prints a one-time session code, which the browser asks for. Then enable *Allow real writes* in Settings and grant the send permission under *Account connections*. Gmail replies stay in the original thread. |
+## 9. 注意事项
 
-Without real sending, any draft can still be copied with one click and pasted into your own mail client.
+- **不要提交这些内容**：`.env`、`local-data/`（本地数据库和上传文件）、原始邮件及 `data/AI项目数据源_去隐私/` 中的私有样本。它们都已在 `.gitignore` 中，提交前用 `git status` 再确认一次。
+- **真实写入默认关闭**：发送邮件、Teams 消息和写入日历在离线版里都只是模拟，界面会写明"未实际发送"。
+- **重置本地数据**：停止服务后删除 `local-data/app.sqlite3*`，重新启动即可。
+- **想看演示样本**：如果连接了真实邮箱，样本会自动隐藏。可以在 **设置 → 演示数据** 里改为"显示"。
 
-## Project layout
+## 10. 常见问题
 
-```text
-src/backend/app/
-  api/         HTTP routes: messages, tasks, documents, drafts, plans, connections
-  services/    import, tasks, planner and validator, documents, drafts, proposals, chat, importance
-  providers/   outbound allow-list, OAuth (PKCE), token store, mail and calendar readers, writers
-  llm/         model adapter (structured output only, no tools)
-src/backend/tests/        pytest suite (54 tests)
-src/frontend/src/
-  pages/       Mail, Tasks, Study plan, Group work, To confirm, Sources & connections
-  components/  side panel, mail detail, draft editor, review dialog, …
-  locales/     en.json, zh-CN.json
-docs/          implementation notes, run guide, UI audit
-scripts/       run.ps1 (one-command start), smoke.py
-```
+| 现象 | 解决 |
+|---|---|
+| `python` 不是内部或外部命令 | 重新安装 Python 并勾选 Add to PATH，或改用 `py` 命令 |
+| PowerShell 提示禁止运行脚本 | 按第 5 步原样使用 `-ExecutionPolicy Bypass` |
+| 端口 8000 被占用 | 关掉之前启动的服务（终端里按 Ctrl+C），或换端口启动 |
+| 页面还是旧样子 | 顶部出现"界面已更新"时点 **刷新**，或按 Ctrl+F5 |
+| "刷新邮件"提示找不到样本数据 | 确认 `data/AI项目数据源_去隐私/` 存在；`.env` 里的 `SAMPLE_DATA_DIR` 留空，或填正确路径（Windows 用 `/`） |
+| Google 授权页显示"此应用未经验证" | 测试模式下的正常提示，点"继续"即可；如果提示无权访问，说明你还不是测试用户 |
+| `npm ci` 报 Node 版本错误 | 升级到 Node 20.19+ 或 22.12+ |
 
-## Known limitations
+## 更多文档
 
-- Group-chat organising uses keyword rules; complex phrasing can be missed.
-- PDFs are not OCR'd.
-- Calendar writes only create new study blocks; existing events are never moved or deleted.
-- The mail categories in the development sample came from AI-assisted reference labels that were not reviewed by hand, so no accuracy figure is claimed.
-
-## More documentation
-
-- [docs/RUNNING.md](docs/RUNNING.md): running, testing and configuration in detail
-- [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md): what is implemented, where it differs from the original design contract, and what is still simulated
-- [docs/UI_AUDIT.md](docs/UI_AUDIT.md): the interface audit against the vendored [`refactoring-ui`](.claude/skills/refactoring-ui) skill (MIT)
+- `docs/RUNNING.md`：启动、测试和外部服务配置的细节
+- `docs/OUTLOOK_SETUP.md`：接入真实 Outlook 邮箱的步骤和常见错误
+- `docs/IMPLEMENTATION.md`：已实现的功能、与设计接口的差异、仍为模拟的部分
+- `docs/UI_AUDIT.md`：界面设计审查记录（依据 `.claude/skills/refactoring-ui`）

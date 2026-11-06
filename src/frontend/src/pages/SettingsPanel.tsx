@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react'
 import { patch } from '../api/client'
 import { useApp } from '../app/context'
 import { useI18n } from '../app/i18n'
+import { TimeInput } from '../components/DateTimeInputs'
 
-const NUMS = ['daily_cap_minutes', 'session_min_minutes', 'session_target_minutes', 'session_max_minutes', 'break_minutes',
+const NUMS = ['daily_cap_minutes', 'task_daily_cap_minutes', 'session_min_minutes', 'session_target_minutes', 'session_max_minutes', 'break_minutes',
   'deadline_buffer_minutes', 'weekly_flex_minutes'] as const
 
 export function SettingsPanel() {
@@ -46,14 +47,14 @@ export function SettingsPanel() {
       <h3>{t('settings.planning')}</h3>
       <div className="fields">
         <div className="field"><label htmlFor="s-tz">{t('settings.display_timezone')}</label><input id="s-tz" value={f.display_timezone} onChange={(e) => set('display_timezone', e.target.value)} /></div>
-        <div className="field"><label htmlFor="s-ds">{t('settings.day_start')}</label><input id="s-ds" type="time" value={f.day_start} onChange={(e) => set('day_start', e.target.value)} /></div>
-        <div className="field"><label htmlFor="s-de">{t('settings.day_end')}</label><input id="s-de" type="time" value={f.day_end} onChange={(e) => set('day_end', e.target.value)} /></div>
+        <div className="field"><label htmlFor="s-ds">{t('settings.day_start')}</label><TimeInput id="s-ds" value={f.day_start} onChange={(v) => set('day_start', v)} /></div>
+        <div className="field"><label htmlFor="s-de">{t('settings.day_end')}</label><TimeInput id="s-de" value={f.day_end} onChange={(v) => set('day_end', v)} /></div>
         {NUMS.map((k) => (
           <div className="field" key={k}><label htmlFor={'s-' + k}>{t('settings.' + k)}</label>
             <input id={'s-' + k} type="number" min={0} step={5} value={f[k]} onChange={(e) => set(k, e.target.value)} /></div>
         ))}
       </div>
-      <p className="footnote">{t('settings.stale_note')}</p>
+      <p className="footnote">{t('settings.task_cap_note')} {t('settings.stale_note')}</p>
       <h3>{t('settings.demo_data')}</h3>
       <div className="field"><label htmlFor="s-demo">{t('settings.demo_data_label')}</label>
         <select id="s-demo" value={f.show_demo_data === null || f.show_demo_data === undefined ? 'auto' : f.show_demo_data ? 'show' : 'hide'}

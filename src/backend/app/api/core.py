@@ -70,6 +70,7 @@ class PreferencesPatch(Strict):
     day_start: str | None = None
     day_end: str | None = None
     daily_cap_minutes: int | None = None
+    task_daily_cap_minutes: int | None = None
     session_min_minutes: int | None = None
     session_target_minutes: int | None = None
     session_max_minutes: int | None = None

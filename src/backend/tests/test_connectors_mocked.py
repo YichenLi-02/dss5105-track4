@@ -100,6 +100,39 @@ def test_oauth_denied_keeps_existing_access(api, fake_google):
     assert "google:denied" in cb.headers["location"]
 
 
+def test_gmail_sent_mail_is_not_incoming_work_and_drafts_are_not_imported(tmp_path, monkeypatch):
+    from app.db import connect, init_db, now_iso
+    from app.providers import mail_readers
+    monkeypatch.setattr(settings, "database_path", tmp_path / "gmail-direction.sqlite3")
+    init_db()
+    monkeypatch.setattr(oauth, "has_scope", lambda *a: True)
+    monkeypatch.setattr(oauth, "access_token", lambda *a: "unit-token")
+    labels = {"incoming": [], "sent": ["SENT"], "self": ["SENT", "INBOX"], "unfinished": ["DRAFT"]}
+    def handler(req):
+        assert req.method == "GET"
+        if req.url.path.endswith("/messages"):
+            return httpx.Response(200, json={"messages": [{"id": key} for key in labels]})
+        key = req.url.path.rsplit("/", 1)[1]
+        return httpx.Response(200, json={"id": key, "labelIds": labels[key], "payload": {
+            "mimeType": "text/plain", "headers": [{"name": "Subject", "value": "Controlled " + key}],
+            "body": {"data": base64.urlsafe_b64encode(b"A synthetic mail.").decode()}}})
+    class Context:
+        def __init__(self, conn): self.conn = conn
+        def progress(self, *args): pass
+        def error(self, message): raise AssertionError(message)
+    net.set_transport(httpx.MockTransport(handler))
+    try:
+        with connect() as conn:
+            conn.execute("INSERT INTO connections(id,provider,account_label,status,created_at,updated_at) VALUES('conn_google','google','test','connected',?,?)", (now_iso(), now_iso()))
+            args = {"connection_id": "conn_google", "lookback_days": 1, "max_messages": 10, "include_spam_trash": False}
+            assert mail_readers.sync(Context(conn), args)["created"] == 3
+            got = {r["provider_message_id"]: r["direction"] for r in conn.execute("SELECT provider_message_id,direction FROM messages")}
+            assert got == {"incoming": "inbound", "sent": "outbound", "self": "inbound"}
+            assert mail_readers.sync(Context(conn), args)["created"] == 0
+    finally:
+        net.set_transport(None)
+
+
 def test_model_adapter_validates_evidence(api, monkeypatch):
     from app.llm import adapter
     from app.services import analysis_service

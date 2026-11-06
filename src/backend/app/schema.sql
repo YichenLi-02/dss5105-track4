@@ -106,7 +106,26 @@ CREATE TABLE IF NOT EXISTS calendar_snapshots (
   errors_json TEXT NOT NULL DEFAULT '[]',
   status TEXT NOT NULL CHECK(status IN ('complete','partial','failed','expired')),
   fetched_at TEXT NOT NULL,
-  expires_at TEXT NOT NULL
+  expires_at TEXT NOT NULL,
+  extras_json TEXT NOT NULL DEFAULT '{}'
+);
+
+-- Answers to "did you do this study block?" (one per written block).
+CREATE TABLE IF NOT EXISTS study_checkins (
+  block_key TEXT PRIMARY KEY,
+  task_id TEXT NOT NULL,
+  outcome TEXT NOT NULL CHECK(outcome IN ('done','partial','missed')),
+  minutes INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL
+);
+
+-- Meetings added to the offline sample timetable, to try conflict handling without a real calendar.
+CREATE TABLE IF NOT EXISTS demo_busy (
+  id TEXT PRIMARY KEY,
+  start_at TEXT NOT NULL,
+  end_at TEXT NOT NULL,
+  label TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS preferences (

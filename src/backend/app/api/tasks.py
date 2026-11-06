@@ -26,7 +26,8 @@ def list_tasks(status: str | None = None, _: Session = Depends(require_session))
             real = {r[0] for r in conn.execute(
                 "SELECT DISTINCT e.task_id FROM task_evidence e JOIN messages m ON m.id=e.message_id "
                 "WHERE m.connection_id NOT IN ('conn_local_jsonl')").fetchall()}
-            items = [t for t in items if t["id"] in real and not t["entity_key"].startswith("synthetic_")]
+            items = [t for t in items if not t["entity_key"].startswith("synthetic_") and
+                     (t["id"] in real or (t["entity_key"].startswith("manual_") and not t["evidence"]))]
         if status:
             wanted = set(status.split(","))
             items = [t for t in items if t["status"] in wanted]
@@ -64,6 +65,7 @@ class TaskPatch(Strict):
     source_timezone: str | None = None
     user_planning_cutoff: str | None = None
     estimated_minutes: int | None = None
+    actual_minutes: int | None = None  # when finishing: how long it really took
     status: Literal["needs_review", "confirmed", "in_progress", "completed", "ignored"] | None = None
     title: str | None = None
     course: str | None = None

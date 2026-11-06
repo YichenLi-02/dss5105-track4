@@ -131,6 +131,16 @@ def test_unknown_owner_stays_null(api):
     assert None in owners or owners == []
 
 
+def test_english_owner_question_is_open_not_an_assigned_action(api):
+    summary = api.post("/api/chat-summaries", {"raw_text": (
+        "Alice: Who will prepare the slides?\nBob: I will check the dates by Friday.\n"
+        "Alice: Bob will send the report?"), "synthetic": True}).json()
+    assert len(summary["action_items"]) == 1 and summary["action_items"][0]["owner"] == "Bob"
+    assert {q["quote"] for q in summary["open_questions"]} == {
+        "Who will prepare the slides?", "Bob will send the report?"}
+    assert summary["confirmed_decisions"] == []
+
+
 def test_connections_not_configured_and_model_disabled(api):
     conns = api.get("/api/connections").json()["items"]
     assert {c["provider"]: c["status"] for c in conns if c["provider"] != "local_jsonl"} == {

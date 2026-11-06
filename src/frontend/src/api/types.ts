@@ -86,6 +86,8 @@ export interface Task {
   planning_cutoff_utc: string | null
   estimated_minutes: number | null
   completed_minutes: number
+  first_estimate_minutes?: number | null // the student's own first estimate (kept for calibration)
+  actual_minutes?: number | null // what a finished task really took, as the student said
   progress: { client_event_id: string; minutes: number; occurred_at: string }[]
   missing_fields: string[]
   can_confirm: boolean
@@ -144,12 +146,15 @@ export interface SessionBlock {
   start: string
   end: string
   minutes: number
-  kept?: boolean
+  kept?: boolean // already written to the study calendar
+  locked?: boolean // placed or edited by the student; re-planning keeps it
+  manual?: boolean
 }
 
 export interface Plan {
   id: string
   status: 'feasible' | 'infeasible' | 'needs_information' | 'needs_adjustment' | 'stale'
+  computed_status?: Plan['status'] // status before staleness is taken into account
   revision: number
   sessions: SessionBlock[]
   reserved_flex: { start: string; end: string; kind: string; source_id: string }[]
@@ -163,7 +168,7 @@ export interface Plan {
   inputs: Record<string, any>
   per_task: { task_id: string; title: string; remaining: number; planned: number; unmet: number; cutoff: string | null }[]
   busy: { start: string; end: string; kind: string; source_id: string; label?: string; label_key?: string }[]
-  days: { date: string; planned: number; completed: number; cap: number }[]
+  days: { date: string; planned: number; completed: number; committed?: number; cap: number }[]
   stale_reasons: string[]
   previous_plan_id: string | null
   synthetic: boolean
