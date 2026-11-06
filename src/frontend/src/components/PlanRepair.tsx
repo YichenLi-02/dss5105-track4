@@ -286,7 +286,7 @@ export function BlockEditor({ plan, block, tz, onPlan, onClose, titleOf }: {
         {block.locked && <> · {t('plan.locked')}</>}</p>
       {block.kept && <div className="banner warning">{t('edit.written_note')}</div>}
       <div className="fields">
-        <div className="field">
+        <div className="field field-wide">
           <label htmlFor="be-start">{t('edit.start')}</label>
           <DateTimeInput id="be-start" value={start} onChange={(v) => { if (v) { setStart(v); setSoft(null); setHard(null) } }} />
         </div>
@@ -416,7 +416,7 @@ export function DemoMeeting({ tz, defaultStart, onAdded }: { tz: string; default
     <details className="box demo-meeting">
       <summary><b>{t('demo_meeting.title')}</b> <small className="footnote">{t('demo_meeting.hint')}</small></summary>
       <div className="fields" style={{ marginTop: 10 }}>
-        <div className="field">
+        <div className="field field-wide">
           <label htmlFor="dm-start">{t('demo_meeting.start')}</label>
           <DateTimeInput id="dm-start" value={start} onChange={(v) => { if (v) setStart(v) }} />
         </div>

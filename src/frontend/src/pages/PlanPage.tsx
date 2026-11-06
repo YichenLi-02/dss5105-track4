@@ -194,7 +194,7 @@ export function PlanPage() {
             </select>
             <small>{synthetic ? t('plan.scenario_active', { n: synthetic.estimated_minutes ?? 0, done: totalCompleted }) : t('plan.scenario_hint')}</small>
           </div>}
-          <div className="field">
+          <div className="field field-wide">
             <label htmlFor="p-start">{t('plan.start')}</label>
             <DateTimeInput id="p-start" value={start} onChange={(v) => { if (v) setStart(v) }} />
           </div>

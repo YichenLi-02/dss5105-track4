@@ -46,13 +46,15 @@ h1,h2,h3,.brand,.stat strong,.mini strong{line-height:var(--leading-tight)}
 /* Date / time fields (components/DateTimeInputs.tsx): follow the UI language instead of the OS locale. */
 .dt-input{position:relative;display:flex;flex-direction:column;gap:var(--space-1);min-width:0}
 .dt-row{display:flex;gap:var(--space-1);align-items:stretch}
-.dt-row input{flex:1}
+.dt-row input{flex:1;min-width:0}
 .dt-toggle{flex:none;display:inline-flex;align-items:center;justify-content:center;width:40px;border:1px solid var(--line);
   border-radius:var(--radius-sm);background:var(--surface);color:var(--ink-soft);cursor:pointer;padding:0}
 .dt-toggle:hover{background:var(--soft)}
 .dt-input input[aria-invalid="true"]{border-color:var(--danger)}
 .dt-error{color:var(--danger)!important}
-.dt-pair{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:var(--space-2)}
+.dt-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(170px,100%),1fr));gap:var(--space-2)}
+.field-wide{grid-column:span 2}
+@media(max-width:600px){.field-wide{grid-column:auto}}
 .dt-pop{position:absolute;top:calc(100% + var(--space-1));left:0;z-index:30;width:272px;padding:var(--space-3);
   background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 8px 24px rgba(32,40,43,.14)}
 .dt-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-2);font-size:var(--text-sm)}

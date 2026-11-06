@@ -217,7 +217,7 @@ export function TaskDetail({ id }: { id: string }) {
             <div className="field"><label htmlFor="t-time">{t('task.f_time')}</label><TimeInput id="t-time" value={f.official_time} onChange={(v) => set('official_time', v)} /><small>{t('task.f_time_hint')}</small></div>
             <div className="field"><label htmlFor="t-tz">{t('task.f_tz')}</label><input id="t-tz" list="tz-list" value={f.source_timezone} onChange={(e) => set('source_timezone', e.target.value)} placeholder="Asia/Singapore" />
               {!f.source_timezone && <button type="button" className="link" onClick={() => set('source_timezone', tz)}>{t('task.use_my_tz', { tz })}</button>}</div>
-            <div className="field"><label htmlFor="t-cut">{t('task.f_cutoff')}</label><DateTimeInput id="t-cut" value={f.cutoff_local} defaultTime="23:59" onChange={(v) => set('cutoff_local', v)} /><small>{t('task.f_cutoff_hint', { tz: f.cutoff_tz })}</small>
+            <div className="field field-wide"><label htmlFor="t-cut">{t('task.f_cutoff')}</label><DateTimeInput id="t-cut" value={f.cutoff_local} defaultTime="23:59" onChange={(v) => set('cutoff_local', v)} /><small>{t('task.f_cutoff_hint', { tz: f.cutoff_tz })}</small>
               {f.official_date && !f.official_time && !f.cutoff_local && (
                 <button type="button" className="link" onClick={() => setF({ ...f, cutoff_local: f.official_date + 'T23:59', cutoff_tz: f.source_timezone || tz })}>{t('task.use_end_of_day')}</button>
               )}</div>
