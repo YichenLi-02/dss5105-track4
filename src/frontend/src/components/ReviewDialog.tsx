@@ -72,7 +72,7 @@ export function ReviewDialog({ id }: { id: string }) {
       {p.operation === 'create_study_events' && (
         <>
           <dl className="kv">
-            <dt>{t('review.calendar')}</dt><dd>{p.payload.calendar} · {tz}</dd>
+            <dt>{t('review.calendar')}</dt><dd>{t('review.study_calendar_of.' + (p.payload.calendar_provider || 'google'))} · {tz}</dd>
             <dt>{t('review.attendees')}</dt><dd>{t('review.no_attendees')}</dd>
           </dl>
           {p.payload.events.map((ev: any, i: number) => (
@@ -81,16 +81,49 @@ export function ReviewDialog({ id }: { id: string }) {
               <span>{ev.title} · {t('review.new_event')}</span>
             </div>
           ))}
+          {(p.payload.remove_events || []).map((ev: any, i: number) => (
+            <div key={'rm' + i} className="event">
+              <b>{fmtDateTime(locale, ev.start, tz)} – {fmtDateTime(locale, ev.end, tz).slice(-5)}</b>
+              <span>{t('review.remove_event')}</span>
+            </div>
+          ))}
+          {(p.payload.remove_events || []).length > 0 && <p className="footnote">{t('review.remove_note')}</p>}
         </>
       )}
-      {p.operation === 'create_study_calendar' && <dl className="kv"><dt>{t('review.calendar')}</dt><dd>{p.payload.summary} · {p.payload.timezone}</dd></dl>}
+      {p.operation === 'create_study_calendar' && <dl className="kv"><dt>{t('review.calendar')}</dt><dd>{p.payload.summary} · {p.payload.timezone}</dd>
+        <dt>{t('review.account')}</dt><dd>{t('review.account_of.' + String(p.payload.connection_id || 'conn_google').replace('conn_', ''))}</dd></dl>}
       {p.blocking_fields.length > 0 && (
         <div className="banner red" role="alert"><b>{t('review.blocked')}</b><ul>{p.blocking_fields.map((b) => <li key={b}>{t('block.' + b.split(':')[0])}{b.includes(':') ? ` — ${b.split(':').slice(1).join(':')}` : ''}</li>)}</ul></div>
       )}
-      {p.status === 'invalidated' && <div className="banner red">{t('review.invalidated')} {p.result?.reason ? `(${t('reason.' + p.result.reason)})` : ''}</div>}
+      {p.status === 'invalidated' && (
+        <div className="banner red" role="alert">
+          {p.result?.reason === 'calendar_conflict' || p.result?.reason === 'busy_recheck_failed'
+            ? t('reason.' + p.result.reason)
+            : <>{t('review.invalidated')} {p.result?.reason ? `(${t('reason.' + p.result.reason)})` : ''}</>}
+          {p.result?.reason === 'calendar_conflict' && (
+            <ul>
+              {(p.result.conflicts || []).map((c: any, i: number) => (
+                <li key={i}>{t('review.conflict_line', {
+                  study: `${fmtDateTime(locale, c.event_start, tz)}–${fmtDateTime(locale, c.event_end, tz).slice(-5)}`,
+                  busy: `${fmtDateTime(locale, c.busy_start, tz)}–${fmtDateTime(locale, c.busy_end, tz).slice(-5)}` })}</li>
+              ))}
+            </ul>
+          )}
+          {p.result?.reason === 'calendar_conflict' && (
+            <div className="row" style={{ marginTop: 8 }}>
+              <button onClick={() => { app.closePanel(); app.go('plan/repair') }}>{t('review.find_fix')}</button>
+            </div>
+          )}
+        </div>
+      )}
+      {p.result && p.status !== 'invalidated' && (p.result.removed || []).some((r: any) => !['executed', 'already_gone'].includes(r.status)) && (
+        <div className="banner warning" role="alert">{t('review.old_not_removed')}</div>
+      )}
       {p.result && p.status !== 'invalidated' && (
         <div className={`banner ${p.status === 'simulated' || p.status === 'executed' ? 'green' : 'warning'}`} aria-live="polite">
           {t('review.outcome.' + p.status)}
+          {p.status !== 'executed' && p.status !== 'simulated' && p.result.reason && t('reason.' + p.result.reason) !== 'reason.' + p.result.reason
+            && <> ({t('reason.' + p.result.reason)})</>}
           {p.status === 'simulated' && (p.operation === 'send_email' || p.operation === 'send_chat') && (
             <div className="row" style={{ marginTop: 8 }}>
               <CopyButton primary text={p.payload.body || ''} label={t('copy.body')} />

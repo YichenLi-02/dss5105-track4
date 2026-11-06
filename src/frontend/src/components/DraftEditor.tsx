@@ -221,10 +221,9 @@ export function DraftEditor({ create, draftId }: { create?: Create; draftId?: st
       {err && <div className="banner red" role="alert">{err}</div>}
       <div className="panel-actions">
         <button onClick={() => save()} disabled={!dirty}>{t('draft.save')}</button>
-        <button className="primary" onClick={() => review('demo')} disabled={!readyNow}>
-          {t('draft.review_demo')}
+        <button className="primary" onClick={() => app.health && review(app.health.mode)} disabled={!readyNow || !app.health}>
+          {t(app.health?.mode === 'live' ? 'draft.review_live' : 'draft.review_demo')}
         </button>
-        {app.health?.mode === 'live' && <button onClick={() => review('live')} disabled={!readyNow}>{t('draft.review_live')}</button>}
       </div>
       <p className="footnote">{t('draft.footnote')}</p>
     </>

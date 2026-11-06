@@ -8,7 +8,18 @@ import { useI18n } from '../app/i18n'
 import { ReviewDialog } from './ReviewDialog'
 
 const READ = { google: ['read_mail', 'read_busy'], microsoft: ['read_mail', 'read_busy', 'read_chat'] } as const
-const WRITE = { google: ['send_mail', 'study_calendar'], microsoft: ['send_mail', 'send_chat', 'study_calendar'] } as const
+// Study blocks are only ever written to a dedicated study calendar the app creates (Google or Outlook);
+// the person's other calendars are only read for free/busy.
+const WRITE = { google: ['send_mail', 'study_calendar'], microsoft: ['send_mail', 'study_calendar', 'send_chat'] } as const
+
+// Microsoft Entra reports setup problems as AADSTS codes; map the common ones to a plain-language fix.
+function errorHint(t: (k: string, p?: Record<string, string | number>) => string, lastError: string | null): string | null {
+  const code = lastError?.match(/AADSTS\d+/)?.[0]
+  if (!code) return null
+  const key = 'conn.aadsts.' + code
+  const text = t(key)
+  return text !== key ? text : t('conn.aadsts.other', { code })
+}
 
 export function AccountConnections() {
   const { t } = useI18n()
@@ -49,9 +60,9 @@ export function AccountConnections() {
     }
   }
 
-  async function createCalendar() {
-    const c = conns!.find((x) => x.id === 'conn_google')
-    const p = await post('/api/proposals', { source_kind: 'connection', source_object_id: 'conn_google', expected_source_revision: c.revision,
+  async function createCalendar(connectionId: string) {
+    const c = conns!.find((x) => x.id === connectionId)
+    const p = await post('/api/proposals', { source_kind: 'connection', source_object_id: connectionId, expected_source_revision: c.revision,
       mode: app.health?.mode === 'live' ? 'live' : 'demo' })
     app.openPanel(t('review.title'), () => <ReviewDialog id={p.id} />)
   }
@@ -70,11 +81,14 @@ export function AccountConnections() {
               <span className={`tag ${c.status === 'connected' ? 'green' : ['denied', 'needs_admin', 'expired', 'error'].includes(c.status) ? 'red' : 'warn'}`}>{t('conn.status.' + c.status)}</span>
             </div>
             <p className="footnote">{t('conn.status_hint.' + c.status)}{c.account_label ? ` · ${c.account_label}` : ''}{c.last_error ? ` · ${c.last_error}` : ''}</p>
+            {c.status === 'expired' && <button className="primary" onClick={() => authorize(c.provider, 'read_mail')}>{t('conn.reconnect')}</button>}
+            {errorHint(t, c.last_error) && <div className="banner red" role="note">{errorHint(t, c.last_error)}</div>}
+            {c.provider === 'microsoft' && c.status === 'not_configured' && <p className="footnote">{t('conn.ms_setup_hint')}</p>}
             <h3>{t('conn.read_caps')}</h3>
             <div className="row">
               {READ[c.provider as 'google' | 'microsoft'].map((cap) => (
-                <button key={cap} disabled={c.status === 'not_configured' || c.capabilities[cap]} onClick={() => authorize(c.provider, cap)}>
-                  {c.capabilities[cap] ? '✓ ' : ''}{t('cap.' + cap)}
+                <button key={cap} disabled={c.status === 'not_configured' || (c.status === 'connected' && c.capabilities[cap])} onClick={() => authorize(c.provider, cap)}>
+                  {c.status === 'connected' && c.capabilities[cap] ? '✓ ' : ''}{t('cap.' + cap)}
                 </button>
               ))}
             </div>
@@ -83,14 +97,15 @@ export function AccountConnections() {
               <p className="footnote">{t('conn.write_hint')}</p>
               <div className="row">
                 {WRITE[c.provider as 'google' | 'microsoft'].map((cap) => (
-                  <button key={cap} disabled={c.status === 'not_configured' || c.capabilities[cap]} onClick={() => authorize(c.provider, cap)}>
-                    {c.capabilities[cap] ? '✓ ' : ''}{t('cap.' + cap)}
+                  <button key={cap} disabled={c.status === 'not_configured' || (c.status === 'connected' && c.capabilities[cap])} onClick={() => authorize(c.provider, cap)}>
+                    {c.status === 'connected' && c.capabilities[cap] ? '✓ ' : ''}{t('cap.' + cap)}
                   </button>
                 ))}
-                {c.provider === 'google' && c.capabilities.study_calendar && <button onClick={createCalendar}>{t('conn.create_calendar')}</button>}
+                {c.status === 'connected' && c.capabilities.study_calendar && <button onClick={() => createCalendar(c.id)}>{t('conn.create_calendar')}</button>}
               </div>
+              {c.provider === 'microsoft' && <p className="footnote">{t('conn.ms_study_calendar_note')}</p>}
             </details>
-            {c.capabilities.read_mail && (
+            {c.status === 'connected' && c.capabilities.read_mail && (
               <div className="box" style={{ marginTop: 12 }}>
                 <h3>{t('conn.sync')}</h3>
                 <div className="fields">

@@ -90,7 +90,10 @@ def _source_info(conn, row) -> dict:
         if cid == "conn_google" and pid.isalnum():
             info["open_url"] = (f"https://mail.google.com/mail/?authuser={quote(info['account'] or '')}#all/{pid}")
         elif cid == "conn_microsoft":
-            info["open_url"] = f"https://outlook.office.com/mail/deeplink/read/{quote(pid, safe='')}"
+            # Graph's own webLink opens the right web app (outlook.live.com for personal accounts,
+            # Outlook on the web for Microsoft 365); it was checked against a fixed host list at sync time.
+            web_link = loads(row["locator_json"], {}).get("web_link")
+            info["open_url"] = web_link or f"https://outlook.office.com/mail/deeplink/read/{quote(pid, safe='')}"
     return info
 
 

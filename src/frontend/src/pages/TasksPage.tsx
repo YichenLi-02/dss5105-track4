@@ -4,6 +4,7 @@ import type { Task } from '../api/types'
 import { useApp } from '../app/context'
 import { fmtDateTime, pick, useI18n } from '../app/i18n'
 import { nowIso, uuid, zonedToIso } from '../app/time'
+import { DateInput, DateTimeInput, TimeInput } from '../components/DateTimeInputs'
 import { StatusTag } from '../components/Tags'
 
 export function deadlineText(t: (k: string, p?: any) => string, x: Task): string {
@@ -108,6 +109,7 @@ export function TaskDetail({ id }: { id: string }) {
   const [x, setX] = useState<Task | null>(null)
   const [f, setF] = useState<Record<string, any>>({})
   const [err, setErr] = useState<string | null>(null)
+  const [finishing, setFinishing] = useState<number | null>(null) // "how long did it really take?" when marking done
   const tz = app.prefs?.display_timezone || 'Asia/Singapore'
 
   function load(task: Task) {
@@ -211,11 +213,11 @@ export function TaskDetail({ id }: { id: string }) {
           <h3 style={{ marginTop: 18 }}>{t('task.confirm_inputs')}</h3>
           <p className="footnote">{t('task.confirm_hint')}</p>
           <div className="fields">
-            <div className="field"><label htmlFor="t-date">{t('task.f_date')}</label><input id="t-date" type="date" value={f.official_date} onChange={(e) => set('official_date', e.target.value)} /></div>
-            <div className="field"><label htmlFor="t-time">{t('task.f_time')}</label><input id="t-time" type="time" value={f.official_time} onChange={(e) => set('official_time', e.target.value)} /><small>{t('task.f_time_hint')}</small></div>
+            <div className="field"><label htmlFor="t-date">{t('task.f_date')}</label><DateInput id="t-date" value={f.official_date} onChange={(v) => set('official_date', v)} /></div>
+            <div className="field"><label htmlFor="t-time">{t('task.f_time')}</label><TimeInput id="t-time" value={f.official_time} onChange={(v) => set('official_time', v)} /><small>{t('task.f_time_hint')}</small></div>
             <div className="field"><label htmlFor="t-tz">{t('task.f_tz')}</label><input id="t-tz" list="tz-list" value={f.source_timezone} onChange={(e) => set('source_timezone', e.target.value)} placeholder="Asia/Singapore" />
               {!f.source_timezone && <button type="button" className="link" onClick={() => set('source_timezone', tz)}>{t('task.use_my_tz', { tz })}</button>}</div>
-            <div className="field"><label htmlFor="t-cut">{t('task.f_cutoff')}</label><input id="t-cut" type="datetime-local" value={f.cutoff_local} onChange={(e) => set('cutoff_local', e.target.value)} /><small>{t('task.f_cutoff_hint', { tz: f.cutoff_tz })}</small>
+            <div className="field"><label htmlFor="t-cut">{t('task.f_cutoff')}</label><DateTimeInput id="t-cut" value={f.cutoff_local} defaultTime="23:59" onChange={(v) => set('cutoff_local', v)} /><small>{t('task.f_cutoff_hint', { tz: f.cutoff_tz })}</small>
               {f.official_date && !f.official_time && !f.cutoff_local && (
                 <button type="button" className="link" onClick={() => setF({ ...f, cutoff_local: f.official_date + 'T23:59', cutoff_tz: f.source_timezone || tz })}>{t('task.use_end_of_day')}</button>
               )}</div>
@@ -238,7 +240,21 @@ export function TaskDetail({ id }: { id: string }) {
         <div className="panel-actions">
           <button onClick={() => progress(30)}>{t('task.add30')}</button>
           <button onClick={() => progress(60)}>{t('task.add60')}</button>
-          <button onClick={() => save({ status: 'completed' })}>{t('task.mark_done')}</button>
+          <button onClick={() => setFinishing(x.completed_minutes || x.estimated_minutes || 60)}>{t('task.mark_done')}</button>
+        </div>
+      )}
+      {finishing !== null && (x.status === 'confirmed' || x.status === 'in_progress') && (
+        <div className="box finish-task">
+          <label htmlFor="actual-min">{t('task.actual_question')}</label>
+          <input id="actual-min" type="number" min={1} max={100000} step={15} value={Number.isNaN(finishing) ? '' : finishing}
+            onChange={(e) => setFinishing(e.target.valueAsNumber)} />
+          <small className="footnote">{t('task.actual_hint', { logged: x.completed_minutes, est: x.estimated_minutes ?? '—' })}</small>
+          <div className="panel-actions">
+            <button className="primary" disabled={!Number.isInteger(finishing) || finishing < 1}
+              onClick={async () => { if (await save({ status: 'completed', actual_minutes: finishing })) setFinishing(null) }}>{t('task.finish_confirm')}</button>
+            <button onClick={async () => { if (await save({ status: 'completed' })) setFinishing(null) }}>{t('task.finish_unsure')}</button>
+            <button onClick={() => setFinishing(null)}>{t('common.cancel')}</button>
+          </div>
         </div>
       )}
       {x.status === 'ignored' && <div className="panel-actions"><button onClick={() => save({ status: 'needs_review' })}>{t('task.restore')}</button></div>}

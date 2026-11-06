@@ -343,14 +343,52 @@ def extract_candidates(conn: sqlite3.Connection, doc_id: str, expected_revision:
             c["source_id"] = row["source_id"]
             c["excerpt_origin"] = "user_pasted" if field == "user_excerpt" else "parsed_pdf"
             key = f"doc_{doc_id}_{hashlib.sha256((field + c['evidence']['quote']).encode()).hexdigest()[:10]}"
-            before = conn.execute("SELECT 1 FROM tasks WHERE entity_key=?", (key,)).fetchone()
+            before = conn.execute("SELECT * FROM tasks WHERE entity_key=?", (key,)).fetchone()
             merge_candidates(conn, key, [c], title=c["title"], course=loc.get("course"), term=loc.get("term"),
                              origin="rule")
+            if before:
+                _refresh_document_candidate(conn, before, c)
             created += 0 if before else 1
     conn.execute("UPDATE messages SET analysis_status='complete', analysis_origin='rule', updated_at=? WHERE id=?",
                  (now_iso(), doc_id))
     audit(conn, "document_extracted", "document", doc_id, {"new_candidates": created, "calendars": len(calendars)})
     return {"candidates": created, "calendars_used": [c.document_id for c in calendars]}
+
+
+def _refresh_document_candidate(conn: sqlite3.Connection, task, candidate: dict) -> None:
+    """A new academic-calendar context refreshes the same quote, never duplicates it.
+
+    User-edited deadline fields stay untouched. A changed rule interpretation goes back to
+    review and increments the revision so an old plan/approval cannot silently survive it.
+    """
+    from .task_service import _cand_view, _refresh_derived
+    stored = loads(task["date_candidates_json"], [])
+    fresh = _cand_view(candidate)
+    previous = next((c for c in stored if c.get("candidate_id") == fresh["candidate_id"]), None)
+    if previous is None or previous == fresh:
+        return
+    updated = [fresh if c.get("candidate_id") == fresh["candidate_id"] else c for c in stored]
+    edited = set()
+    for event in conn.execute("SELECT summary_json FROM audit_events WHERE object_type='task' AND object_id=? AND event_type='task_updated'", (task["id"],)):
+        edited.update(loads(event[0], {}).get("fields", []))
+    status = task["status"] if task["status"] in ("completed", "ignored") else "needs_review"
+    conn.execute("UPDATE tasks SET date_candidates_json=?, status=?, revision=revision+1, updated_at=? WHERE id=?",
+                 (dumps(updated), status, now_iso(), task["id"]))
+    if len(updated) == 1 and not edited.intersection({"official_date", "official_time", "source_timezone", "user_planning_cutoff"}):
+        date = fresh.get("official_date_candidate")
+        time = fresh.get("official_time_candidate")
+        deadline_status = ("conflict" if fresh.get("status") == "conflict_weekday_date" else
+                           ("explicit" if time else "date_only") if date else
+                           "relative_unresolved" if fresh.get("status") == "relative_semantics_need_confirmation" else "missing")
+        conn.execute("UPDATE tasks SET official_date=?, official_time=?, source_timezone=?, deadline_status=? WHERE id=?",
+                     (date, time, fresh.get("timezone"), deadline_status, task["id"]))
+    for ev in conn.execute("SELECT id,locator_json FROM task_evidence WHERE task_id=? AND message_id=?", (task["id"], candidate["message_id"])):
+        locator = loads(ev["locator_json"], {})
+        if locator.get("candidate_id") == fresh["candidate_id"]:
+            locator.update(status=fresh.get("status"), note=fresh.get("interpretation_note"))
+            conn.execute("UPDATE task_evidence SET locator_json=? WHERE id=?", (dumps(locator), ev["id"]))
+    _refresh_derived(conn, task["id"])
+    audit(conn, "document_candidate_refreshed", "task", task["id"], {"document_id": candidate["message_id"]})
 
 
 SYNTHETIC_DOCS = [

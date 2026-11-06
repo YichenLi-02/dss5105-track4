@@ -95,17 +95,31 @@ def _draft_payload(conn: sqlite3.Connection, draft_id: str, mode: str) -> tuple[
 
 
 def _plan_payload(conn: sqlite3.Connection, plan_id: str, mode: str) -> tuple[dict, int, list[str], str]:
-    from .plan_service import get_plan
+    from .plan_service import get_plan, study_calendar_target
     p = get_plan(conn, plan_id)
+    target = study_calendar_target(conn, p)
     blocking = []
     if p["status"] != "feasible":
         blocking.append(f"plan_status:{p['status']}")
     blocking += [f"stale:{r}" for r in p["stale_reasons"]]
     payload = {"operation": "create_study_events", "mode": mode, "plan_id": plan_id,
+               # The account whose app-created study calendar receives the new blocks; shown in the review.
+               "connection_id": f"conn_{target}", "calendar_provider": target,
                "calendar": "app_study_calendar", "timezone": p["inputs"].get("display_timezone"),
                "attendees": [],
                "events": [{"task_id": s["task_id"], "title": f"Study: {s['task_title']}", "start": s["start"],
-                           "end": s["end"]} for s in p["sessions"] if not s.get("kept")]}
+                           "end": s["end"]} for s in p["sessions"] if not s.get("kept")],
+               # Already-written blocks this plan moves: their old events are removed after the new ones exist.
+               "remove_events": [{"event_id": x["event_id"], "task_id": x["task_id"], "start": x["start"], "end": x["end"],
+                                  "provider": x.get("provider") or "google"}
+                                 for x in p["inputs"].get("remove_written", [])]}
+    if mode == "live":
+        if p["synthetic"]:
+            blocking.append("synthetic_plan_not_live")
+        if not payload["events"] and not payload["remove_events"]:
+            blocking.append("no_new_study_sessions")
+        if any(datetime.fromisoformat(ev["start"]) <= datetime.now(timezone.utc) for ev in payload["events"]):
+            blocking.append("past_study_session")
     return payload, p["revision"], blocking, "create_study_events"
 
 
@@ -130,8 +144,8 @@ def _build(conn, source_kind, object_id, mode):
         return _plan_payload(conn, object_id, mode)
     if source_kind == "connection":
         row = conn.execute("SELECT revision FROM connections WHERE id=?", (object_id,)).fetchone()
-        if not row or object_id != "conn_google":
-            raise AppError(422, "UNSUPPORTED_SOURCE", "A study calendar is created on a connected Google account")
+        if not row or object_id not in ("conn_google", "conn_microsoft"):
+            raise AppError(422, "UNSUPPORTED_SOURCE", "A study calendar is created on a connected Google or Outlook account")
         prefs, _ = preferences.get_raw(conn)
         payload = {"operation": "create_study_calendar", "mode": mode, "connection_id": object_id,
                    "summary": "Track4 学习计划 / study plan", "timezone": prefs["display_timezone"]}
@@ -242,10 +256,62 @@ def confirm(pid: str, body: dict, session, idempotency_key: str) -> dict:
         if mode == "demo":
             status, result = "simulated", {"simulated": True, "external_call": False, "operation_id": op_id}
         else:
-            from ..providers import writers
-            status, result = writers.execute(op, payload, op_id)
+            stop = recheck_busy_before_write(conn, payload) if op == "create_study_events" else None
+            if stop:
+                # Nothing is written. This approval is used up; a new plan needs a new review.
+                status, result = "invalidated", {**stop, "external_call": False, "operation_id": op_id}
+            else:
+                from ..providers import writers
+                status, result = writers.execute(op, payload, op_id)
         with transaction(conn):
             conn.execute("UPDATE proposals SET status=?, result_json=?, updated_at=? WHERE id=?",
                          (status, dumps(result), now_iso(), pid))
             audit(conn, "proposal_executed", "proposal", pid, {"status": status})
         return get(conn, pid)
+
+
+def recheck_busy_before_write(conn: sqlite3.Connection, payload: dict) -> dict | None:
+    """Read free/busy again just before study events are written. The calendar may have changed after the
+    preview (a meeting added inside the 5-minute snapshot window). Returns None when it is safe to write, or the
+    reason to stop: a new conflict, or a re-read that did not fully succeed (never treated as free time).
+    This narrows the race window; it cannot rule out a change made between this read and the write itself."""
+    from ..providers import calendars
+    from .plan_service import get_plan, get_snapshot, study_calendars
+    events = payload.get("events") or []
+    if not events:
+        return None  # only removals: nothing new can collide
+    plan = get_plan(conn, payload["plan_id"])
+    snap = get_snapshot(conn, plan["inputs"]["snapshot_id"])
+    starts = [datetime.fromisoformat(e["start"]) for e in events]
+    ends = [datetime.fromisoformat(e["end"]) for e in events]
+    t0, t1 = min(starts), max(ends)
+    tz = payload.get("timezone") or snap["display_timezone"]
+    reads = [(snap["provider"], snap.get("connection_id"), snap.get("calendar_ids") or ["primary"], False)]
+    if snap.get("study_calendar", {}).get("status") == "complete":
+        for prov, cal in study_calendars(conn):  # also catches events added to a study calendar by hand
+            reads.append((prov, f"conn_{prov}", [cal], True))
+    from .plan_service import _subtract_intervals
+    busy: list[tuple[datetime, datetime]] = []
+    for provider, cid, ids, own in reads:
+        try:
+            res = calendars.read_busy(conn, provider, cid, t0, t1, tz, ids)
+        except Exception as exc:  # noqa: BLE001 - a failed re-read stops the write
+            return {"reason": "busy_recheck_failed", "errors": [type(exc).__name__]}
+        if res["status"] != "complete":
+            return {"reason": "busy_recheck_failed", "errors": res.get("errors", [])}
+        got = [(datetime.fromisoformat(b["start"]), datetime.fromisoformat(b["end"])) for b in res["busy"]]
+        moving = [(datetime.fromisoformat(x["start"]), datetime.fromisoformat(x["end"]))
+                  for x in payload.get("remove_events", []) if (x.get("provider") or "google") == provider]
+        if own and moving:
+            # The old events of blocks being moved are still in the study calendar until this write removes them.
+            # An event in the other provider cannot explain busy time in this calendar.
+            got = [piece for iv in got for piece in _subtract_intervals(iv, moving)]
+        busy += got
+    conflicts = [{"event_start": e["start"], "event_end": e["end"], "busy_start": bs.isoformat(), "busy_end": be.isoformat()}
+                 for e, s, en in zip(events, starts, ends) for bs, be in busy if s < be and bs < en]
+    if not conflicts:
+        return None
+    # Force a fresh plan: the snapshot behind this plan no longer reflects the calendar.
+    conn.execute("UPDATE calendar_snapshots SET expires_at=? WHERE id=?", (now_iso(), snap["id"]))
+    audit(conn, "study_write_stopped_conflict", "plan", payload["plan_id"], {"conflicts": len(conflicts)})
+    return {"reason": "calendar_conflict", "conflicts": conflicts}

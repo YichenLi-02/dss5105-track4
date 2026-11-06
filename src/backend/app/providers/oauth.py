@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import re
 import secrets
 import sqlite3
 import time
@@ -21,9 +22,15 @@ G = "https://www.googleapis.com/auth/"
 CAPABILITY_SCOPES = {
     "google": {"read_mail": [G + "gmail.readonly"], "read_busy": [G + "calendar.events.freebusy"],
                "send_mail": [G + "gmail.send"], "study_calendar": [G + "calendar.app.created"]},
-    "microsoft": {"read_mail": ["Mail.Read"], "read_busy": ["Calendars.ReadBasic"], "read_chat": ["Chat.Read"],
+    # Calendars.Read rather than Calendars.ReadBasic: with ReadBasic, Graph answers /me/calendar and /me/calendarView
+    # with 403 ErrorAccessDenied for a personal Outlook.com account (seen with a real account; Microsoft Q&A threads
+    # report the same fix). It is still read-only; only id/start/end/showAs/isCancelled are requested and only busy
+    # times are kept.
+    "microsoft": {"read_mail": ["Mail.Read"], "read_busy": ["Calendars.Read"], "read_chat": ["Chat.Read"],
                   "send_mail": ["Mail.Send"], "send_chat": ["ChatMessage.Send"], "study_calendar": ["Calendars.ReadWrite"]},
 }
+# Scopes granted by earlier versions: still recognised, but no longer enough for any capability.
+LEGACY_MS_SCOPES = {"Calendars.ReadBasic"}
 BASE_SCOPES = {"google": ["openid", "email"], "microsoft": ["offline_access", "User.Read"]}
 WRITE_CAPS = {"send_mail", "send_chat", "study_calendar"}
 _pending: dict[str, dict] = {}
@@ -39,6 +46,46 @@ def configured(provider: str) -> bool:
 
 def _ms_base() -> str:
     return f"https://login.microsoftonline.com/{settings.microsoft_tenant_id}/oauth2/v2.0"
+
+
+_AAD_CODE = re.compile(r"AADSTS\d{4,7}")
+# Entra codes that mean "an administrator of this (school) tenant must approve the app first".
+NEEDS_ADMIN_CODES = {"AADSTS65001", "AADSTS90094", "AADSTS90095"}
+
+
+def aad_code(text: str | None) -> str | None:
+    m = _AAD_CODE.search(text or "")
+    return m.group(0) if m else None
+
+
+def _token_error(prefix: str, r) -> str:
+    """Short, secret-free reason for the UI: HTTP status plus the Entra AADSTS code when there is one."""
+    code = None
+    try:
+        body = r.json()
+        code = aad_code(body.get("error_description")) or (
+            f"AADSTS{body['error_codes'][0]}" if body.get("error_codes") else None) or body.get("error")
+    except Exception:  # noqa: BLE001 - non-JSON error page
+        pass
+    return f"{prefix}_http_{r.status_code}" + (f":{code}" if code else "")
+
+
+def _ms_known_scopes() -> dict[str, str]:
+    names = set(BASE_SCOPES["microsoft"]) | {"openid", "profile", "email"} | LEGACY_MS_SCOPES
+    for scopes in CAPABILITY_SCOPES["microsoft"].values():
+        names |= set(scopes)
+    return {n.lower(): n for n in names}
+
+
+def normalize_ms_scopes(raw: list[str]) -> list[str]:
+    """Graph returns scopes as 'https://graph.microsoft.com/Mail.Read' or 'Mail.Read', and personal accounts
+    sometimes in lower case. Map them onto the names used in CAPABILITY_SCOPES so permission checks match."""
+    known = _ms_known_scopes()
+    out = set()
+    for s in raw:
+        name = s.rstrip("/").split("/")[-1]
+        out.add(known.get(name.lower(), name))
+    return sorted(out)
 
 
 def list_connections(conn: sqlite3.Connection) -> list[dict]:
@@ -73,7 +120,13 @@ def begin(conn: sqlite3.Connection, provider: str, capability: str, session_hash
                        f"Set {provider.upper()}_CLIENT_ID / secret in .env and register the redirect URI first")
     row = conn.execute("SELECT scopes_json FROM connections WHERE id=?", (connection_id(provider),)).fetchone()
     granted = loads(row[0], []) if row else []
-    scopes = sorted(set(BASE_SCOPES[provider] + granted + CAPABILITY_SCOPES[provider][capability]))
+    requested = set(BASE_SCOPES[provider] + granted + CAPABILITY_SCOPES[provider][capability])
+    if provider == "microsoft":
+        requested -= LEGACY_MS_SCOPES
+        if capability not in WRITE_CAPS:
+            # A read-only reauthorization must not request old send/write grants again.
+            requested -= {s for cap in WRITE_CAPS for s in CAPABILITY_SCOPES[provider][cap]}
+    scopes = sorted(requested)
     state, verifier = secrets.token_urlsafe(24), secrets.token_urlsafe(48)
     challenge = base64.urlsafe_b64encode(hashlib.sha256(verifier.encode()).digest()).rstrip(b"=").decode()
     _pending[state] = {"provider": provider, "capability": capability, "verifier": verifier, "session": session_hash,
@@ -88,6 +141,9 @@ def begin(conn: sqlite3.Connection, provider: str, capability: str, session_hash
         params = {"client_id": settings.microsoft_client_id, "redirect_uri": settings.microsoft_redirect_uri,
                   "response_type": "code", "scope": " ".join(scopes), "state": state, "response_mode": "query",
                   "code_challenge": challenge, "code_challenge_method": "S256"}
+        if not granted:
+            # First connection: let the user pick which Outlook account (browsers are often signed in to several).
+            params["prompt"] = "select_account"
         url = f"{_ms_base()}/authorize?" + urlencode(params)
     audit(conn, "oauth_started", "connection", connection_id(provider), {"capability": capability})
     return {"authorization_url": url}
@@ -112,12 +168,14 @@ def callback(conn: sqlite3.Connection, provider: str, code: str | None, state: s
         return "invalid_state"
     if error:
         desc = (error_description or "").lower()
-        outcome = "needs_admin" if ("admin" in desc or "aadsts65001" in desc or "aadsts90094" in desc) else (
+        code = aad_code(error_description)
+        outcome = "needs_admin" if ("admin" in desc or code in NEEDS_ADMIN_CODES) else (
             "denied" if error == "access_denied" else "error")
         # A refusal of an extra capability keeps whatever read-only access already exists.
         row = conn.execute("SELECT status FROM connections WHERE id=?", (connection_id(provider),)).fetchone()
-        _set_status(conn, provider, row["status"] if row and row["status"] == "connected" else outcome, error=outcome)
-        audit(conn, "oauth_refused", "connection", connection_id(provider), {"outcome": outcome})
+        _set_status(conn, provider, row["status"] if row and row["status"] == "connected" else outcome,
+                    error=f"{outcome}:{code}" if code else outcome)
+        audit(conn, "oauth_refused", "connection", connection_id(provider), {"outcome": outcome, "code": code})
         return outcome
     if provider == "google":
         r = net.request("POST", "https://oauth2.googleapis.com/token", data={
@@ -132,12 +190,16 @@ def callback(conn: sqlite3.Connection, provider: str, code: str | None, state: s
             data["client_secret"] = settings.microsoft_client_secret
         r = net.request("POST", f"{_ms_base()}/token", data=data)
     if r.status_code != 200:
-        _set_status(conn, provider, "error", error=f"token_exchange_http_{r.status_code}")
-        return "error"
+        reason = _token_error("token_exchange", r)
+        row = conn.execute("SELECT status FROM connections WHERE id=?", (connection_id(provider),)).fetchone()
+        outcome = "needs_admin" if aad_code(reason) in NEEDS_ADMIN_CODES else "error"
+        _set_status(conn, provider, row["status"] if row and row["status"] == "connected" else outcome, error=reason)
+        audit(conn, "oauth_token_exchange_failed", "connection", connection_id(provider), {"reason": reason})
+        return outcome
     tok = r.json()
     granted = tok.get("scope", "").split()
     if provider == "microsoft":
-        granted = [s.split("/")[-1] for s in granted]
+        granted = normalize_ms_scopes(granted)
     tok["obtained_at"] = int(time.time())
     ref = f"{connection_id(provider)}:token"
     old = tokens.load(ref) or {}
@@ -160,9 +222,14 @@ def _account_label(provider: str, tok: dict) -> str:
             r = net.request("GET", "https://openidconnect.googleapis.com/v1/userinfo",
                             headers={"Authorization": f"Bearer {tok['access_token']}"})
             return r.json().get("email", "Google account") if r.status_code == 200 else "Google account"
-        r = net.request("GET", "https://graph.microsoft.com/v1.0/me?$select=userPrincipalName",
+        r = net.request("GET", "https://graph.microsoft.com/v1.0/me",
+                        params={"$select": "mail,userPrincipalName,displayName"},
                         headers={"Authorization": f"Bearer {tok['access_token']}"})
-        return r.json().get("userPrincipalName", "Microsoft account") if r.status_code == 200 else "Microsoft account"
+        if r.status_code != 200:
+            return "Microsoft account"
+        me = r.json()
+        # Personal accounts may have no 'mail'; userPrincipalName is then the sign-in address.
+        return me.get("mail") or me.get("userPrincipalName") or me.get("displayName") or "Microsoft account"
     except Exception:  # noqa: BLE001
         return f"{provider} account"
 
@@ -185,13 +252,16 @@ def access_token(conn: sqlite3.Connection, provider: str) -> str:
             "client_id": settings.google_client_id, "client_secret": settings.google_client_secret,
             "refresh_token": tok["refresh_token"], "grant_type": "refresh_token"})
     else:
+        # Ask for exactly what was granted before (a subset is allowed); some tenants reject a refresh without scope.
+        granted = loads(row["scopes_json"], [])
         data = {"client_id": settings.microsoft_client_id, "refresh_token": tok["refresh_token"],
-                "grant_type": "refresh_token"}
+                "grant_type": "refresh_token",
+                "scope": " ".join(sorted(set(BASE_SCOPES["microsoft"] + granted) - {"openid", "profile", "email"}))}
         if settings.microsoft_client_secret:
             data["client_secret"] = settings.microsoft_client_secret
         r = net.request("POST", f"{_ms_base()}/token", data=data)
     if r.status_code != 200:
-        _set_status(conn, provider, "expired", error=f"refresh_http_{r.status_code}")
+        _set_status(conn, provider, "expired", error=_token_error("refresh", r))
         raise AppError(401, "RECONNECT_REQUIRED", "Refresh failed; reconnect this account only")
     new = r.json()
     new["obtained_at"] = int(time.time())

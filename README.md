@@ -111,15 +111,26 @@ npm run build                          # 同时做 TypeScript 类型检查
 
 后端测试应全部通过。没有样本数据时，依赖样本的测试会自动跳过。
 
+排程评测（27 个固定场景 + 200 组固定种子随机场景 + 冲突修复评测，报告写到 `local-data/planner-eval/`）：
+
+```bash
+src/backend/.venv/Scripts/python scripts/eval-planner.py      # macOS / Linux: src/backend/.venv/bin/python
+```
+
+演示冲突处理（不需要真实日历）：示例模式下在“学习计划”页生成计划，展开“模拟一个新会议”，把会议放在某个学习块上并点“添加会议并检查”，会列出冲突；点“查看修复建议”比较各方案，选一个后照常审核保存。学习块上的“编辑”可以手动改时间或时长。细节见 `docs/IMPLEMENTATION.md`“计划冲突处理”。
+
+演示估计校准：在同一页点“根据你的历史校准估计 → 加载示例历史”（合成数据），会看到示例报告的估计建议（依据可展开）和完成率提示；采用后点“重新规划”。真实使用时，标记任务完成时填写实际用时即可积累数据。细节见 `docs/IMPLEMENTATION.md`“根据打卡校准估计”。
+
 ## 8. 可选：接入真实服务
 
-**不配置也能完整演示离线版。** 需要时再看下面三项：
+**不配置也能完整演示离线版。** 需要时再看下面几项：
 
 | 功能 | 需要什么 | 说明 |
 |---|---|---|
 | 智能分类（AI 模型） | 自己的 OpenAI API key | 在 `.env` 填 `LLM_PROVIDER=openai`、`OPENAI_API_KEY`、`OPENAI_MODEL`，并设 `ALLOW_MODEL_PROCESSING=true`；然后在应用的 **设置 → 数据处理** 里勾选开启。分析 50 封邮件通常不到 1 美元，建议先在 OpenAI 后台设消费上限 |
 | 读取 Gmail / Google 日历（只读） | Google OAuth 客户端 ID 和密钥 | 二选一：① 请 Yichen 把你的 Gmail 加为 Cloud 项目 `dss5105-student` 的**测试用户**，再私下拿客户端 ID 和密钥；② 用自己的 Google Cloud 项目创建，步骤见 `docs/RUNNING.md`。回调地址必须是 `http://127.0.0.1:8000/api/connections/google/callback` |
-| Outlook / Teams | Microsoft Entra 应用注册 | 学校账号可能需要管理员同意，非必需 |
+| 读取 Outlook 邮件 / 日历（只读；可选真实发送、写入本应用的 Outlook 学习日历） | Microsoft Entra 应用注册的客户端 ID 和密码 | 步骤见 `docs/OUTLOOK_SETUP.md`。回调地址为 `http://localhost:8000/api/connections/microsoft/callback`，演示推荐用个人 Outlook 账号（学校账号通常需要管理员同意）。配置后可用 `scripts/check-outlook.py` 检查 |
+| Teams 聊天 | 同上，仅限工作 / 学校账号 | 非必需 |
 
 key 和密钥只能放在自己电脑的 `.env` 里，不要写进代码、不要截图、不要上传。连接后的登录凭证保存在系统凭据库（Windows 凭据管理器），不在项目文件里。
 
@@ -145,5 +156,6 @@ key 和密钥只能放在自己电脑的 `.env` 里，不要写进代码、不�
 ## 更多文档
 
 - `docs/RUNNING.md`：启动、测试和外部服务配置的细节
+- `docs/OUTLOOK_SETUP.md`：接入真实 Outlook 邮箱的步骤和常见错误
 - `docs/IMPLEMENTATION.md`：已实现的功能、与设计接口的差异、仍为模拟的部分
 - `docs/UI_AUDIT.md`：界面设计审查记录（依据 `.claude/skills/refactoring-ui`）

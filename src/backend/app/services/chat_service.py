@@ -18,7 +18,7 @@ LEADING_TIME = re.compile(r"^\s*(?P<ts>\d{1,2}:\d{2})\s+")
 SUGGEST = re.compile(r"(?i)要不|建议|可以考虑|不如|how about|what about|maybe we|should we|shall we|i suggest|we could|let'?s try")
 DECIDE = re.compile(r"(?i)决定|就这么定|定了|确定(?:用|采用)|确认采用|最终方案|we(?:'ve| have)? decided|final decision|we(?:'ll| will) go with|agreed to")
 ASSIGN = re.compile(r"(?P<who>[\w一-鿿]{1,12})\s*负责|(?i:(?P<who2>[A-Z][a-z]+) will (?!be\b))|@(?P<who3>[\w一-鿿]{1,20})")
-SELF = re.compile(r"(?i)我来|我负责|我会|i'?ll|i will|i can take")
+SELF = re.compile(r"(?i)我来|我负责|我会|\bi'?ll\b|\bi will\b|\bi can take\b")
 ACK = re.compile(r"(?i)^(好的|好|收到|没问题|可以|ok|okay|sure|got it|will do|on it)\b|我来做|没问题")
 QUESTION = re.compile(r"[?？]|吗$|谁来|没人认领|(?i:^(any|does|do|can|could|who|what|when|which|should)\b|\bwho will\b|\bunassigned\b)")
 DUE = re.compile(r"(?i)(?:周|星期)[一二三四五六日天]\s*\d{1,2}[:：]\d{2}|(?:周|星期)[一二三四五六日天]|明天|今晚|下周[一二三四五六日天]?|"
@@ -87,7 +87,7 @@ def summarize(messages: list[dict]) -> dict:
             decisions.append(_item(m, kind="decision", basis="explicit_decision_statement"))
             continue
         assign = ASSIGN.search(text)
-        if assign or SELF.search(text):
+        if (assign or SELF.search(text)) and not is_q:
             others_named = any(sp in text for sp in speakers - {m["speaker"]})
             if SELF.search(text) and not others_named:
                 owner = m["speaker"]  # "我负责排练计时": the speaker commits themselves

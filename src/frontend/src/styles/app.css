@@ -42,3 +42,38 @@ h1,h2,h3,.brand,.stat strong,.mini strong{line-height:var(--leading-tight)}
 
 .boot-code{max-width:480px;margin:var(--space-7) auto;padding:0 var(--space-4)}
 .boot-code h1{font-size:var(--text-xl);margin:0 0 var(--space-3)}
+
+/* Date / time fields (components/DateTimeInputs.tsx): follow the UI language instead of the OS locale. */
+.dt-input{position:relative;display:flex;flex-direction:column;gap:var(--space-1);min-width:0}
+.dt-row{display:flex;gap:var(--space-1);align-items:stretch}
+.dt-row input{flex:1}
+.dt-toggle{flex:none;display:inline-flex;align-items:center;justify-content:center;width:40px;border:1px solid var(--line);
+  border-radius:var(--radius-sm);background:var(--surface);color:var(--ink-soft);cursor:pointer;padding:0}
+.dt-toggle:hover{background:var(--soft)}
+.dt-input input[aria-invalid="true"]{border-color:var(--danger)}
+.dt-error{color:var(--danger)!important}
+.dt-pair{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:var(--space-2)}
+.dt-pop{position:absolute;top:calc(100% + var(--space-1));left:0;z-index:30;width:272px;padding:var(--space-3);
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 8px 24px rgba(32,40,43,.14)}
+.dt-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-2);font-size:var(--text-sm)}
+.dt-head button{border:0;background:transparent;font-size:var(--text-lg);line-height:1;width:32px;height:32px;
+  border-radius:var(--radius-sm);cursor:pointer;color:var(--ink-soft)}
+.dt-head button:hover{background:var(--soft)}
+.dt-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.dt-wd{font-size:var(--text-xs);color:var(--muted);padding:var(--space-1) 0}
+.dt-day{border:0;background:transparent;border-radius:var(--radius-sm);height:32px;cursor:pointer;font-size:var(--text-sm)}
+.dt-day:hover{background:var(--accent-soft)}
+.dt-day.today{box-shadow:inset 0 0 0 1px var(--accent-line)}
+.dt-day.selected{background:var(--accent);color:#fff}
+.dt-foot{display:flex;justify-content:space-between;margin-top:var(--space-2);font-size:var(--text-xs)}
+
+/* conflict handling */
+.repair-option{border:1px solid var(--line);border-radius:var(--radius-sm);padding:var(--space-3) var(--space-4);margin:var(--space-3) 0;background:var(--surface)}
+.repair-option.recommended{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent-line)}
+.repair-diff{margin-top:var(--space-2)}
+.event .event-edit{min-height:24px;padding:0;margin-top:2px}
+.event.study.locked{border-left-width:4px}
+.event.editing{outline:2px solid var(--accent);outline-offset:1px}
+.block-editor{border-color:var(--accent-line)}
+.checkins .decision input{min-height:32px}
+.demo-meeting summary{cursor:pointer}

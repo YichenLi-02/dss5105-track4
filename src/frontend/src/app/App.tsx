@@ -142,7 +142,7 @@ export function App() {
             <div className="account" role="status">
               <span className="dot" aria-hidden="true" />
               {!health ? t('common.loading')
-                : live.mail.length ? t('header.connected_readonly', { accounts: live.mail.join(' / ') })
+                : live.mail.length ? t(writesOn ? 'header.connected' : 'header.connected_readonly', { accounts: live.mail.join(' / ') })
                 : t('header.mode_demo')}
               {live.model && <> · {t('header.smart_on')}</>}
             </div>

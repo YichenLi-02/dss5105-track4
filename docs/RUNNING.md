@@ -52,7 +52,7 @@ src/backend/.venv/Scripts/python scripts/smoke.py   # 对正在运行的服务�
 |---|---|---|
 | 模型分析 / 起草 | `LLM_PROVIDER=openai`、`OPENAI_API_KEY`、`OPENAI_MODEL`、`ALLOW_MODEL_PROCESSING=true`，并在“设置”里勾选允许 | 使用 Responses API 的严格 JSON schema，设置 `store=false`；只发送主题、去标识正文、时间和时区 |
 | Gmail 只读、Google 忙闲 | `GOOGLE_CLIENT_ID/SECRET`；在 Google Cloud 注册回调 `http://127.0.0.1:8000/api/connections/google/callback` | 只读权限 scope 为 `gmail.readonly` 和 `calendar.events.freebusy` |
-| Outlook、Teams 聊天只读 | `MICROSOFT_CLIENT_ID`（以及 secret 或公共客户端）、`MICROSOFT_TENANT_ID` | 权限为 `Mail.Read`、`Calendars.ReadBasic`、`Chat.Read`；学校租户可能要求管理员同意 |
+| Outlook 邮件 / 日历只读、Teams 聊天只读 | `MICROSOFT_CLIENT_ID`、`MICROSOFT_CLIENT_SECRET`、`MICROSOFT_TENANT_ID=common`；在 Entra 的 Web 平台注册回调 `http://localhost:8000/api/connections/microsoft/callback` | 权限为 `Mail.Read`、`Calendars.Read`（只读）、`Chat.Read`（Teams 仅限学校/工作账号），可选 `Mail.Send` 和 `Calendars.ReadWrite`（只写本应用创建的 Outlook 学习日历）；学校租户可能要求管理员同意。完整步骤见 `docs/OUTLOOK_SETUP.md`，检查用 `scripts/check-outlook.py [--live]` |
 | 真实发送 / 写日历 | `APP_MODE=live`、`ENABLE_EXTERNAL_WRITES=true`、设置里打开真实写入、账号额外授权写入权限 | 每次操作仍需单独审阅确认；去标识的样本地址永远不能用于真实发送 |
 
 OAuth token 保存在 Windows 凭据管理器（通过 keyring），数据库里只存引用，不会出现在浏览器、URL 或日志中。`APP_MODE=live` 时，服务启动会在控制台打印一次性本地会话码。

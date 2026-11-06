@@ -18,6 +18,8 @@ WEEKDAYS = {"monday": 0, "tuesday": 1, "wednesday": 2, "thursday": 3, "friday": 
 ZH_WEEKDAYS = {"一": 0, "二": 1, "三": 2, "四": 3, "五": 4, "六": 5, "日": 6, "天": 6}
 
 KEYWORDS = re.compile(r"(?i)\b(due|deadline|submit|submission|hand[- ]in|exam|quiz|presentation|test)\b|截止|提交|考试|测验|展示")
+DELIVERABLE = re.compile(r"(?i)\b(report|essay|assignment|presentation|project|quiz|exam|memo|homework)\b|报告|论文|作业|展示|考试")
+MISSING_DEADLINE = re.compile(r"(?i)(?:deadline|due date).{0,35}(?:not (?:been )?(?:agreed|set|confirmed)|to be (?:agreed|confirmed|announced)|tbd)|(?:截止|提交)(?:日期|时间).{0,8}(?:待定|未定|未确定)")
 ISO = re.compile(r"\b(\d{4})-(\d{2})-(\d{2})\b")
 MONTH_DAY = re.compile(r"(?i)\b(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?(?:,?\s+(\d{4}))?\b")
 DAY_MONTH = re.compile(r"(?i)\b(\d{1,2})(?:st|nd|rd|th)?\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?(?:,?\s+(\d{4}))?\b")
@@ -179,7 +181,10 @@ def extract(text: str, *, document_id: str, term: str, timezone: str | None, cou
                     status = "relative_semantics_need_confirmation"
                     notes.append("needs_same_term_academic_calendar")
             elif status == "candidate_needs_review":
-                continue  # keyword without any date expression ("submission time is not stated")
+                if DELIVERABLE.search(stripped) and MISSING_DEADLINE.search(stripped):
+                    notes.append("deadline_not_stated")
+                else:
+                    continue  # generic notes such as "submission time is not stated" are not tasks
         time_val = _find_time(stripped)
         if time_val is None:
             notes.append("time_not_stated")

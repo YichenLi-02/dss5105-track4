@@ -105,6 +105,7 @@ def row_to_task(conn: sqlite3.Connection, row: sqlite3.Row) -> dict:
         "date_candidates": loads(t["date_candidates_json"], []),
         "user_planning_cutoff": t["user_planning_cutoff"], "planning_cutoff_utc": t["planning_cutoff_utc"],
         "estimated_minutes": t["estimated_minutes"], "completed_minutes": t["completed_minutes"],
+        "first_estimate_minutes": t.get("first_estimate_minutes"), "actual_minutes": t.get("actual_minutes"),
         "progress": loads(t["progress_json"], []), "missing_fields": loads(t["missing_fields_json"], []),
         "can_confirm": can_confirm({**t, "missing_fields": None}),
         "evidence": evidence, "revision": t["revision"], "updated_at": t["updated_at"],
@@ -131,6 +132,9 @@ def _refresh_derived(conn: sqlite3.Connection, task_id: str) -> None:
     missing = compute_missing(t)
     conn.execute("UPDATE tasks SET planning_cutoff_utc=?, missing_fields_json=? WHERE id=?",
                  (cutoff, dumps(missing), task_id))
+    # The first estimate is kept as given: calibration compares it with the time the task really took.
+    conn.execute("""UPDATE tasks SET first_estimate_minutes=estimated_minutes
+                    WHERE id=? AND first_estimate_minutes IS NULL AND estimated_minutes > 0""", (task_id,))
 
 
 # ---------------------------------------------------------------- merge from candidates
@@ -284,7 +288,7 @@ def _add_evidence(conn: sqlite3.Connection, task_id: str, c: dict) -> None:
 # ---------------------------------------------------------------- user edits
 
 EDITABLE = {"required", "official_date", "official_time", "source_timezone", "user_planning_cutoff",
-            "estimated_minutes", "status", "title", "course", "term"}
+            "estimated_minutes", "status", "title", "course", "term", "actual_minutes"}
 
 
 def update_task(conn: sqlite3.Connection, task_id: str, patch: dict) -> dict:
@@ -309,6 +313,8 @@ def update_task(conn: sqlite3.Connection, task_id: str, patch: dict) -> dict:
             raise AppError(422, "CUTOFF_NEEDS_OFFSET", "user_planning_cutoff must include a UTC offset")
     if "required" in changes:
         changes["required"] = 1 if changes["required"] else 0
+    if changes.get("actual_minutes") is not None and not 1 <= int(changes["actual_minutes"]) <= 100000:
+        raise AppError(422, "VALIDATION_FAILED", "actual_minutes must be between 1 and 100000")
     if "title" in changes and changes["title"] != row["title"]:
         changes["title_en"] = None  # the user's own title is shown as typed
     t.update(changes)

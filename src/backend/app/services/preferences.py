@@ -12,7 +12,8 @@ DEFAULTS = {
     "display_timezone": "Asia/Singapore",
     "day_start": "09:00",
     "day_end": "21:00",
-    "daily_cap_minutes": 120,
+    "daily_cap_minutes": 120,  # all tasks together
+    "task_daily_cap_minutes": 120,  # any one task (0 = no separate limit)
     "session_min_minutes": 30,
     "session_target_minutes": 60,
     "session_max_minutes": 90,
@@ -28,7 +29,7 @@ DEFAULTS = {
 }
 PLANNING_KEYS = ("display_timezone", "day_start", "day_end", "daily_cap_minutes", "session_min_minutes",
                  "session_target_minutes", "session_max_minutes", "break_minutes", "deadline_buffer_minutes",
-                 "weekly_flex_minutes")
+                 "weekly_flex_minutes", "task_daily_cap_minutes")
 
 
 def _row(conn: sqlite3.Connection) -> sqlite3.Row:
@@ -94,6 +95,9 @@ def validate(value: dict) -> None:
         errs.append("need 0 < session_min <= session_target <= session_max")
     if value["daily_cap_minutes"] < 0 or value["break_minutes"] < 0:
         errs.append("caps and breaks cannot be negative")
+    tc = value.get("task_daily_cap_minutes", 0)
+    if tc != 0 and not mn <= tc <= 24 * 60:
+        errs.append("task_daily_cap must be 0 (no separate limit) or between session_min and 1440")
     if errs:
         raise AppError(422, "INVALID_PREFERENCES", "Preferences rejected", errs)
 
