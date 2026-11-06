@@ -21,14 +21,47 @@ function errorHint(t: (k: string, p?: Record<string, string | number>) => string
   return text !== key ? text : t('conn.aadsts.other', { code })
 }
 
+// One instance per account, so each mailbox keeps its own settings and sync result.
+function SyncPanel({ connectionId, onError }: { connectionId: string; onError: (message: string | null) => void }) {
+  const { t } = useI18n()
+  const app = useApp()
+  const [sync, setSync] = useState({ days: 7, max: 50, spam: false })
+  const [job, setJob] = useState<any>(null)
+
+  async function runSync() {
+    onError(null)
+    try {
+      const j = await post('/api/sync-jobs', { connection_id: connectionId, lookback_days: sync.days, max_messages: sync.max, include_spam_trash: sync.spam })
+      setJob(await waitJob(j.id, setJob))
+      app.bump()
+    } catch (e: any) {
+      onError(e.message)
+    }
+  }
+
+  return (
+    <div className="box" style={{ marginTop: 12 }}>
+      <h3>{t('conn.sync')}</h3>
+      <div className="fields">
+        <div className="field"><label htmlFor={connectionId + '-days'}>{t('conn.lookback')}</label>
+          <select id={connectionId + '-days'} value={sync.days} onChange={(e) => setSync({ ...sync, days: Number(e.target.value) })}>
+            {[7, 14, 30].map((d) => <option key={d} value={d}>{t('conn.days', { n: d })}</option>)}</select></div>
+        <div className="field"><label htmlFor={connectionId + '-max'}>{t('conn.max')}</label>
+          <input id={connectionId + '-max'} type="number" min={1} max={500} value={sync.max} onChange={(e) => setSync({ ...sync, max: Number(e.target.value) })} /></div>
+      </div>
+      <label className="checkline"><input type="checkbox" checked={sync.spam} onChange={(e) => setSync({ ...sync, spam: e.target.checked })} />{t('conn.include_spam')}</label>
+      <button className="primary" onClick={runSync} disabled={job && ['queued', 'running'].includes(job.status)}>{t('conn.sync_now')}</button>
+      {job && <p className="footnote">{t('conn.job', { status: t('status.' + job.status), n: job.processed, failed: job.failed_count })}</p>}
+    </div>
+  )
+}
+
 export function AccountConnections() {
   const { t } = useI18n()
   const app = useApp()
   const [conns, setConns] = useState<any[] | null>(null)
   const [model, setModel] = useState<any>(null)
   const [err, setErr] = useState<string | null>(null)
-  const [sync, setSync] = useState({ days: 7, max: 50, spam: false })
-  const [job, setJob] = useState<any>(null)
 
   const reload = () => Promise.all([get('/api/connections').then((r) => setConns(r.items)), get('/api/model/status').then(setModel)])
     .catch((e) => setErr(e.message))
@@ -47,17 +80,6 @@ export function AccountConnections() {
   async function disconnect(id: string) {
     await post(`/api/connections/${id}/disconnect`)
     reload(); app.bump()
-  }
-
-  async function runSync(id: string) {
-    setErr(null)
-    try {
-      const j = await post('/api/sync-jobs', { connection_id: id, lookback_days: sync.days, max_messages: sync.max, include_spam_trash: sync.spam })
-      setJob(await waitJob(j.id, setJob))
-      app.bump()
-    } catch (e: any) {
-      setErr(e.message)
-    }
   }
 
   async function createCalendar(connectionId: string) {
@@ -105,21 +127,7 @@ export function AccountConnections() {
               </div>
               {c.provider === 'microsoft' && <p className="footnote">{t('conn.ms_study_calendar_note')}</p>}
             </details>
-            {c.status === 'connected' && c.capabilities.read_mail && (
-              <div className="box" style={{ marginTop: 12 }}>
-                <h3>{t('conn.sync')}</h3>
-                <div className="fields">
-                  <div className="field"><label htmlFor={c.id + '-days'}>{t('conn.lookback')}</label>
-                    <select id={c.id + '-days'} value={sync.days} onChange={(e) => setSync({ ...sync, days: Number(e.target.value) })}>
-                      {[7, 14, 30].map((d) => <option key={d} value={d}>{t('conn.days', { n: d })}</option>)}</select></div>
-                  <div className="field"><label htmlFor={c.id + '-max'}>{t('conn.max')}</label>
-                    <input id={c.id + '-max'} type="number" min={1} max={500} value={sync.max} onChange={(e) => setSync({ ...sync, max: Number(e.target.value) })} /></div>
-                </div>
-                <label className="checkline"><input type="checkbox" checked={sync.spam} onChange={(e) => setSync({ ...sync, spam: e.target.checked })} />{t('conn.include_spam')}</label>
-                <button className="primary" onClick={() => runSync(c.id)} disabled={job && ['queued', 'running'].includes(job.status)}>{t('conn.sync_now')}</button>
-                {job && <p className="footnote">{t('conn.job', { status: t('status.' + job.status), n: job.processed, failed: job.failed_count })}</p>}
-              </div>
-            )}
+            {c.status === 'connected' && c.capabilities.read_mail && <SyncPanel connectionId={c.id} onError={setErr} />}
             {c.status !== 'not_configured' && c.status !== 'disconnected' && <ConfirmButton label={t('conn.disconnect')} message={t('conn.disconnect_confirm')} onConfirm={() => disconnect(c.id)} />}
           </div>
         ))}
