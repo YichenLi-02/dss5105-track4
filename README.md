@@ -1,41 +1,40 @@
-# 学生工作助手 · Student Work Assistant（liyichen-deployment 分支）
+# Student Work Assistant
 
-DSS5105 Track 4 小组项目的可运行版本。
+The runnable version of our DSS5105 Track 4 group project.
 
-- **功能**：整理邮件、提取任务和截止日期、生成学习计划、整理小组讨论、起草回复。所有发送和写入日历的操作都要先审阅确认；离线版只做模拟。
-- **组成**：后端 FastAPI + SQLite，前端 React + TypeScript + Vite，单机运行，不需要服务器。
+- **What it does:** organises mail, extracts tasks and deadlines, builds a study plan, summarises group discussions and drafts replies. Every send and calendar write must be reviewed and confirmed first. The offline version only simulates them.
+- **How it is built:** a FastAPI + SQLite backend and a React + TypeScript + Vite frontend. It runs on one machine and needs no server.
 
-本文档写给组员：照着做，约 15 分钟就能在自己电脑上跑起来。
+This guide is for teammates. Follow it and you should have the app running on your own computer in about 15 minutes.
 
 ---
 
-## 1. 准备环境
+## 1. Prepare your environment
 
-| 软件 | 版本 | 检查命令 |
+| Software | Version | Check with |
 |---|---|---|
-| Python | 3.11 或以上（已在 3.14 上测试） | `python --version` |
-| Node.js | 20.19 以上，或 22.12 以上 | `node --version` |
-| Git | 任意较新版本 | `git --version` |
+| Python | 3.11 or later (tested on 3.14) | `python --version` |
+| Node.js | 20.19 or later, or 22.12 or later | `node --version` |
+| Git | Any recent version | `git --version` |
 
-没装的话：Python 从 python.org 安装，Windows 安装时勾选 "Add Python to PATH"；Node.js 从 nodejs.org 安装 LTS 版。
+If something is missing, install Python from python.org (on Windows, tick "Add Python to PATH" during setup) and the LTS version of Node.js from nodejs.org.
 
-## 2. 获取代码
+## 2. Get the code
 
 ```bash
 git clone https://github.com/YichenLi-02/dss5105-track4.git
 cd dss5105-track4
-git checkout liyichen-deployment
 ```
 
-## 3. 样本数据（已在仓库里）
+## 3. Sample data (already in the repo)
 
-去隐私的邮件样本在 `data/AI项目数据源_去隐私/`，克隆后就有，不用另外准备。学校、课程、人名都已替换成虚构内容，邮箱地址改成了 `example.invalid`，说明见其中的 `去隐私说明.md`。
+The de-identified mail samples are in `data/AI项目数据源_去隐私/`, so you get them when you clone and have nothing else to prepare. Schools, courses and names have been replaced with fictional ones, and mail addresses now use `example.invalid`. See `去隐私说明.md` in that folder for details.
 
-> 去标识不等于完全匿名：**这个仓库必须保持私有**，样本不要转发到仓库以外。
+> These samples are published with this public repository. De-identified does not mean fully anonymous: course content and date combinations could still indirectly identify someone. Use them only for demonstrating and testing this project.
 
-## 4. 配置 `.env`
+## 4. Configure `.env`
 
-在项目根目录复制模板：
+Copy the template in the project root:
 
 ```bash
 # Windows PowerShell
@@ -44,118 +43,120 @@ Copy-Item .env.example .env
 cp .env.example .env
 ```
 
-默认值就能运行：`SAMPLE_DATA_DIR` 留空时，会使用仓库里的样本。只有把样本放到别处时，才需要填写路径。
+The defaults work as they are. If `SAMPLE_DATA_DIR` is empty, the app uses the samples in the repo. You only need to set this path if you move the samples somewhere else.
 
-其他项保持默认即可。`.env` 已被 git 忽略，**不要提交、不要发到群里**。
+Leave the other settings at their defaults. Git ignores `.env`, so **do not commit it or post it in the group chat**.
 
-## 5. 启动
+## 5. Start the app
 
-### Windows（一条命令）
+### Windows (one command)
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/run.ps1
 ```
 
-第一次运行会自动创建 Python 虚拟环境、安装依赖、构建前端，需要几分钟。完成后会显示 `Uvicorn running on http://127.0.0.1:8000`。
+The first run creates the Python virtual environment, installs dependencies and builds the frontend, which takes a few minutes. When it finishes, you will see `Uvicorn running on http://127.0.0.1:8000`.
 
-### macOS / Linux（手动）
+### macOS / Linux (manual)
 
 ```bash
-# 后端依赖
+# Backend dependencies
 cd src/backend
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements-dev.txt
 
-# 前端构建
+# Frontend build
 cd ../frontend
 npm ci
 npm run build
 
-# 启动（在 src/backend 目录）
+# Start (from src/backend)
 cd ../backend
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-### 打开应用
+### Open the app
 
-浏览器访问 **http://127.0.0.1:8000** ，进入"邮件"页，点 **刷新邮件** 导入样本。
+Go to **http://127.0.0.1:8000** in your browser, open the **Mail** page and click **Refresh mail** to import the samples.
 
-建议用 Chrome 或 Edge 正常打开；VS Code 内置预览浏览器的部分功能可能不完整。
+Use Chrome or Edge. Some features may not work fully in the VS Code built-in preview browser.
 
-## 6. 开发时（改代码实时生效）
+## 6. Development (changes apply as you edit)
 
-开两个终端：
+Open two terminals:
 
 ```bash
-# 终端 1：后端（自动重载）
+# Terminal 1: backend (auto-reload)
 cd src/backend
 .venv\Scripts\python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload   # Windows
 # .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload    # macOS / Linux
 
-# 终端 2：前端（热更新）
+# Terminal 2: frontend (hot reload)
 cd src/frontend
 npm run dev
 ```
 
-开发时访问 **http://127.0.0.1:5173** 。
+During development, use **http://127.0.0.1:5173**.
 
-## 7. 运行测试
+## 7. Run the tests
 
 ```bash
 cd src/backend
 .venv\Scripts\python -m pytest -q     # macOS / Linux: .venv/bin/python -m pytest -q
 cd ../frontend
-npm run build                          # 同时做 TypeScript 类型检查
+npm run build                          # also runs the TypeScript type check
 ```
 
-后端测试应全部通过。没有样本数据时，依赖样本的测试会自动跳过。
+All backend tests should pass. Tests that depend on the sample data are skipped automatically if it is missing.
 
-排程评测（27 个固定场景 + 200 组固定种子随机场景 + 冲突修复评测，报告写到 `local-data/planner-eval/`）：
+Planner evaluation (27 fixed scenarios, 200 fixed-seed random scenarios and a conflict-repair evaluation; the report is written to `local-data/planner-eval/`):
 
 ```bash
 src/backend/.venv/Scripts/python scripts/eval-planner.py      # macOS / Linux: src/backend/.venv/bin/python
 ```
 
-演示冲突处理（不需要真实日历）：示例模式下在“学习计划”页生成计划，展开“模拟一个新会议”，把会议放在某个学习块上并点“添加会议并检查”，会列出冲突；点“查看修复建议”比较各方案，选一个后照常审核保存。学习块上的“编辑”可以手动改时间或时长。细节见 `docs/IMPLEMENTATION.md`“计划冲突处理”。
+**To demo conflict handling (no real calendar needed):** in demo mode, generate a plan on the **Study plan** page, expand **Simulate a new meeting**, place a meeting on a study block and click **Add meeting and check** to list the conflicts. Click **Show fix suggestions** to compare the options, pick one, then review and save as usual. **Edit** on a study block changes its time or length by hand. For details, see the "计划冲突处理" section of `docs/IMPLEMENTATION.md`.
 
-演示估计校准：在同一页点“根据你的历史校准估计 → 加载示例历史”（合成数据），会看到示例报告的估计建议（依据可展开）和完成率提示；采用后点“重新规划”。真实使用时，标记任务完成时填写实际用时即可积累数据。细节见 `docs/IMPLEMENTATION.md`“根据打卡校准估计”。
+**To demo estimate calibration:** on the same page, open **Estimates from your own history** and click **Load sample history** (synthetic data). You will see a suggested estimate for the sample report, with expandable reasoning, and a completion-rate hint. After accepting a suggestion, click **Re-plan**. In real use, data builds up as you enter the actual time when marking a task complete. For details, see the "根据打卡校准估计" section of `docs/IMPLEMENTATION.md`.
 
-## 8. 可选：接入真实服务
+## 8. Optional: connect real services
 
-**不配置也能完整演示离线版。** 需要时再看下面几项：
+**The offline version works fully without any of this.** Only set these up if you need them:
 
-| 功能 | 需要什么 | 说明 |
+| Feature | What you need | Notes |
 |---|---|---|
-| 智能分类（AI 模型） | 自己的 OpenAI API key | 在 `.env` 填 `LLM_PROVIDER=openai`、`OPENAI_API_KEY`、`OPENAI_MODEL`，并设 `ALLOW_MODEL_PROCESSING=true`；然后在应用的 **设置 → 数据处理** 里勾选开启。分析 50 封邮件通常不到 1 美元，建议先在 OpenAI 后台设消费上限 |
-| 读取 Gmail / Google 日历（只读） | Google OAuth 客户端 ID 和密钥 | 二选一：① 请 Yichen 把你的 Gmail 加为 Cloud 项目 `dss5105-student` 的**测试用户**，再私下拿客户端 ID 和密钥；② 用自己的 Google Cloud 项目创建，步骤见 `docs/RUNNING.md`。回调地址必须是 `http://127.0.0.1:8000/api/connections/google/callback` |
-| 读取 Outlook 邮件 / 日历（只读；可选真实发送、写入本应用的 Outlook 学习日历） | Microsoft Entra 应用注册的客户端 ID 和密码 | 步骤见 `docs/OUTLOOK_SETUP.md`。回调地址为 `http://localhost:8000/api/connections/microsoft/callback`，演示推荐用个人 Outlook 账号（学校账号通常需要管理员同意）。配置后可用 `scripts/check-outlook.py` 检查 |
-| Teams 聊天 | 同上，仅限工作 / 学校账号 | 非必需 |
+| Smart classification (AI model) | Your own OpenAI API key | Set `LLM_PROVIDER=openai`, `OPENAI_API_KEY`, `OPENAI_MODEL` and `ALLOW_MODEL_PROCESSING=true` in `.env`, then turn it on in the app under **Settings → Data processing**. Analysing 50 emails usually costs less than US$1. We recommend setting a spending limit in your OpenAI account first |
+| Read Gmail / Google Calendar (read-only) | A Google OAuth client ID and secret | Either ask Yichen to add your Gmail as a **test user** of the Cloud project `dss5105-student` and get the client ID and secret privately, or create your own Google Cloud project using the steps in `docs/RUNNING.md`. The redirect URI must be `http://127.0.0.1:8000/api/connections/google/callback` |
+| Read Outlook mail / calendar (read-only; optionally send mail and write to the app's Outlook study calendar) | A client ID and secret from a Microsoft Entra app registration | Follow `docs/OUTLOOK_SETUP.md`. The redirect URI is `http://localhost:8000/api/connections/microsoft/callback`. Use a personal Outlook account for demos, because school accounts usually need admin consent. After setup, check it with `scripts/check-outlook.py` |
+| Teams chat | Same as above, work or school accounts only | Optional |
 
-key 和密钥只能放在自己电脑的 `.env` 里，不要写进代码、不要截图、不要上传。连接后的登录凭证保存在系统凭据库（Windows 凭据管理器），不在项目文件里。
+Keep keys and secrets only in `.env` on your own computer. Do not put them in code, screenshots or uploads. Sign-in credentials are stored in your system credential store (Windows Credential Manager), not in the project files.
 
-## 9. 注意事项
+## 9. Things to note
 
-- **不要提交这些内容**：`.env`、`local-data/`（本地数据库和上传文件）、原始（未去隐私）邮件数据。它们都已在 `.gitignore` 中，提交前用 `git status` 再确认一次。
-- **真实写入默认关闭**：发送邮件、Teams 消息和写入日历在离线版里都只是模拟，界面会写明"未实际发送"。
-- **重置本地数据**：停止服务后删除 `local-data/app.sqlite3*`，重新启动即可。
-- **想看演示样本**：如果连接了真实邮箱，样本会自动隐藏。可以在 **设置 → 演示数据** 里改为"显示"。
+- **Never commit** `.env`, `local-data/` (the local database and uploads) or raw, non-de-identified mail data. They are already in `.gitignore`, but check `git status` before you commit.
+- **Real writes are off by default.** In the offline version, sending mail, sending Teams messages and writing to calendars are only simulated, and the interface says that nothing was sent.
+- **To reset local data,** stop the app, delete `local-data/app.sqlite3*` and start it again.
+- **To see the demo samples** after connecting a real mailbox, where they hide automatically, turn them back on under **Settings → Demo data**.
 
-## 10. 常见问题
+## 10. Troubleshooting
 
-| 现象 | 解决 |
+| Problem | Fix |
 |---|---|
-| `python` 不是内部或外部命令 | 重新安装 Python 并勾选 Add to PATH，或改用 `py` 命令 |
-| PowerShell 提示禁止运行脚本 | 按第 5 步原样使用 `-ExecutionPolicy Bypass` |
-| 端口 8000 被占用 | 关掉之前启动的服务（终端里按 Ctrl+C），或换端口启动 |
-| 页面还是旧样子 | 顶部出现"界面已更新"时点 **刷新**，或按 Ctrl+F5 |
-| "刷新邮件"提示找不到样本数据 | 确认 `data/AI项目数据源_去隐私/` 存在；`.env` 里的 `SAMPLE_DATA_DIR` 留空，或填正确路径（Windows 用 `/`） |
-| Google 授权页显示"此应用未经验证" | 测试模式下的正常提示，点"继续"即可；如果提示无权访问，说明你还不是测试用户 |
-| `npm ci` 报 Node 版本错误 | 升级到 Node 20.19+ 或 22.12+ |
+| `python` is not recognised as a command | Reinstall Python with Add to PATH ticked, or use the `py` command |
+| PowerShell refuses to run the script | Use `-ExecutionPolicy Bypass` exactly as shown in step 5 |
+| Port 8000 is in use | Stop the app you started earlier (Ctrl+C in its terminal), or start on a different port |
+| The page still looks old | Click **Reload** when the update notice appears at the top, or press Ctrl+F5 |
+| **Refresh mail** says it cannot find the sample data | Check that `data/AI项目数据源_去隐私/` exists, and leave `SAMPLE_DATA_DIR` in `.env` empty or set it to the correct path (use `/` on Windows) |
+| Google's sign-in page says the app is unverified | This is normal in testing mode, so choose to continue. If you are told you have no access, you are not a test user yet |
+| `npm ci` reports a Node version error | Upgrade to Node 20.19+ or 22.12+ |
 
-## 更多文档
+## More documentation
 
-- `docs/RUNNING.md`：启动、测试和外部服务配置的细节
-- `docs/OUTLOOK_SETUP.md`：接入真实 Outlook 邮箱的步骤和常见错误
-- `docs/IMPLEMENTATION.md`：已实现的功能、与设计接口的差异、仍为模拟的部分
-- `docs/UI_AUDIT.md`：界面设计审查记录（依据 `.claude/skills/refactoring-ui`）
+These documents are in Chinese.
+
+- `docs/RUNNING.md`: details on starting, testing and configuring external services
+- `docs/OUTLOOK_SETUP.md`: how to connect a real Outlook mailbox, and common errors
+- `docs/IMPLEMENTATION.md`: what is implemented, how it differs from the design contract, and what is still simulated
+- `docs/UI_AUDIT.md`: the interface design audit (based on `.claude/skills/refactoring-ui`)
