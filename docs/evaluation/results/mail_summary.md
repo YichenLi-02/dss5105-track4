@@ -2,27 +2,27 @@
 
 ## samples
 
-Runs: mail_samples_run1. Labels: NOT verified - annotation status in the files: {'AI_assisted_proposal_pending_user_review': 40}; treat every number as provisional.
+Runs: mail_samples_run1. Labels: human reviewed.
 
 | Measure | Mean | Min | Max |
 |---|---|---|---|
 | needs_reply_f1 | 0.909 | 0.909 | 0.909 |
-| needs_action_f1 | 0.864 | 0.864 | 0.864 |
-| exact_match | 0.8 | 0.8 | 0.8 |
+| needs_action_f1 | 0.889 | 0.889 | 0.889 |
+| exact_match | 0.825 | 0.825 | 0.825 |
 | category_accuracy | 0.775 | 0.775 | 0.775 |
-| deadline_recall_per_mail | 0.952 | 0.952 | 0.952 |
+| deadline_recall_per_mail | 0.857 | 0.857 | 0.857 |
 | deadline_recall_unique | 1.0 | 1.0 | 1.0 |
-| deadline_precision_per_mail | 0.72 | 0.72 | 0.72 |
+| deadline_precision_per_mail | 0.64 | 0.64 | 0.64 |
 | deadline_precision_task_list | 0.44 | 0.44 | 0.44 |
 | deadline_precision_task_list_if_event_tasks_accepted | 0.48 | 0.48 | 0.48 |
 | non_task_became_open_task | 2.0 | 2 | 2 |
 | optional_became_open_task | 2.0 | 2 | 2 |
 | open_tasks_with_date | 25.0 | 25 | 25 |
-| needs_action_precision | 0.76 | 0.76 | 0.76 |
+| needs_action_precision | 0.8 | 0.8 | 0.8 |
 | needs_action_recall | 1.0 | 1.0 | 1.0 |
 | needs_reply_precision | 0.833 | 0.833 | 0.833 |
 | needs_reply_recall | 1.0 | 1.0 | 1.0 |
-| ignored_correctly | 0.737 | 0.737 | 0.737 |
+| ignored_correctly | 0.778 | 0.778 | 0.778 |
 | needed_attention_but_ignored | 0.0 | 0.0 | 0.0 |
 | baseline_exact_match | 0.65 | 0.65 | 0.65 |
 | baseline_deadline_recall_per_mail | 0.238 | 0.238 | 0.238 |

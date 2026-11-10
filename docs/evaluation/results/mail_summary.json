@@ -3,7 +3,7 @@
   "runs": [
    "mail_samples_run1"
   ],
-  "label_status": "NOT verified - annotation status in the files: {'AI_assisted_proposal_pending_user_review': 40}; treat every number as provisional",
+  "label_status": "human reviewed",
   "aggregate": {
    "needs_reply_f1": {
     "mean": 0.909,
@@ -12,15 +12,15 @@
     "runs": 1
    },
    "needs_action_f1": {
-    "mean": 0.864,
-    "min": 0.864,
-    "max": 0.864,
+    "mean": 0.889,
+    "min": 0.889,
+    "max": 0.889,
     "runs": 1
    },
    "exact_match": {
-    "mean": 0.8,
-    "min": 0.8,
-    "max": 0.8,
+    "mean": 0.825,
+    "min": 0.825,
+    "max": 0.825,
     "runs": 1
    },
    "category_accuracy": {
@@ -30,9 +30,9 @@
     "runs": 1
    },
    "deadline_recall_per_mail": {
-    "mean": 0.952,
-    "min": 0.952,
-    "max": 0.952,
+    "mean": 0.857,
+    "min": 0.857,
+    "max": 0.857,
     "runs": 1
    },
    "deadline_recall_unique": {
@@ -42,9 +42,9 @@
     "runs": 1
    },
    "deadline_precision_per_mail": {
-    "mean": 0.72,
-    "min": 0.72,
-    "max": 0.72,
+    "mean": 0.64,
+    "min": 0.64,
+    "max": 0.64,
     "runs": 1
    },
    "deadline_precision_task_list": {
@@ -78,9 +78,9 @@
     "runs": 1
    },
    "needs_action_precision": {
-    "mean": 0.76,
-    "min": 0.76,
-    "max": 0.76,
+    "mean": 0.8,
+    "min": 0.8,
+    "max": 0.8,
     "runs": 1
    },
    "needs_action_recall": {
@@ -102,9 +102,9 @@
     "runs": 1
    },
    "ignored_correctly": {
-    "mean": 0.737,
-    "min": 0.737,
-    "max": 0.737,
+    "mean": 0.778,
+    "min": 0.778,
+    "max": 0.778,
     "runs": 1
    },
    "needed_attention_but_ignored": {
