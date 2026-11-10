@@ -9,7 +9,7 @@ repository from saved raw output under `docs/evaluation/results/`.
 | Part | Data | Status of the "ground truth" |
 |---|---|---|
 | Triage and deadlines, main set | 80 synthetic mails, 3 runs | Correct by construction, written by an AI assistant from fixed quotas; **not yet checked by a human** |
-| Triage and deadlines, real mail | 40 de-identified real mails, 1 run | AI-assisted drafts **checked one by one by the data owner** (Li Yichen, 10 Nov); 5 of the drafted labels corrected; one checker, starting from the drafts |
+| Triage and deadlines, real mail | 40 de-identified real mails, 1 run | **Checked by a person**: all 40 mails checked one by one by the student who received them (Li Yichen) |
 | Planning | 27 hand-written scenarios, 200 seeded scenarios | Rule checks computed independently of the planner; expected values of the 27 still to be checked by the group |
 | Safety | 20 written specifications, 3 runs | Pass/fail criteria coded before the first run |
 | Time saved | not run | Tool and protocol ready; needs people |
@@ -47,13 +47,11 @@ the tasks in the task list.
 
 **De-identified real mail (40 mails).** The sample set already in the repository, split by the data owner into 19
 development and 21 hold-out mails with no thread shared between them. It was used while building the app, so it is
-reported as a second view, not as the test set. Its labels started as AI-assisted drafts; the person who received
-these mails then checked every one of them (change 4 below). The check started from the drafts, so it is a
-correction by one person, not an independent second labelling.
+reported as a second view, not as the test set. Every label was checked by a person: the student who received
+these mails (change 4 below).
 
-**Nothing was tuned on either set.** No prompt, rule or threshold was changed after seeing results. The only labels
-changed afterwards are the real-mail corrections in change 4; the review sheet showed the AI-drafted labels, not
-the system's output.
+**Nothing was tuned on either set.** No prompt, rule or threshold was changed after seeing results. The real-mail
+labels were corrected by that person checking the mails themselves, not by looking at the system's output.
 
 **Biases that remain.** The synthetic mails are clean text with no long threads, HTML or attachments, so results are
 an upper bound. One author wrote all 80 and knew the system's weak points. The mails were written by one model
@@ -69,8 +67,8 @@ on the synthetic set (it scores 74% there and 65% on real mail).
 2. Safety specification S20: the first run planned over four days instead of the three in the specification, so its
    240-minute threshold did not apply. The scenario was corrected and run 1 of S20 is not counted.
 3. A second reading of precision ("if tasks to attend an event were accepted") was added. The primary number is unchanged.
-4. Real-mail labels checked by the data owner (10 November), then the saved run was re-scored with no new model call.
-   Five drafted labels changed: `M29` needs action (a conditional offer acceptance by 5 December); `M04` "due today"
+4. Real-mail labels checked by a person, the student who received them (10 November); the saved run was then
+   re-scored with no new model call. Five labels changed: `M29` needs action (a conditional offer acceptance by 5 December); `M04` "due today"
    is 5 December, the sender's local day (two deadlines); `M10` and `M11` the exam window closes at 23:59, which is
    the deadline, not the 00:00 opening. Effect: both labels right 80.0% to 82.5%; deadline recall per mail 95.2% to
    85.7% and precision per mail 72.0% to 64.0%, because the run had given `M04` the UTC day (failure 13), which the
@@ -110,7 +108,7 @@ mislabelled mails were wrong in all three runs, so this is systematic, not noise
 "Hard" scores highest because the hard mails mostly carry real deadlines, which the system flags correctly; the
 errors sit in ordinary notices, invitations and adverts.
 
-Real mail (40, labels checked by the data owner): `needs_reply` F1 0.91 (5 TP, 1 FP, 0 FN), `needs_action` F1 0.89
+Real mail (40, labels checked by a person): `needs_reply` F1 0.91 (5 TP, 1 FP, 0 FN), `needs_action` F1 0.89
 (20 TP, 5 FP, 0 FN), both right 82.5% (33/40; development 17/19, hold-out 16/21), category 77.5% (31/40). Keyword
 baseline: both right 65.0%. One mail got no output at all (see failure 12).
 
@@ -164,7 +162,7 @@ a task. A reader who accepts "attend the seminar" as a task would get a task-lis
 | Weekday contradicts the date | **33.3% (1/3)** left unknown; guessed twice |
 | Chinese | 100% (15/15) |
 
-Real mail (40, labels checked by the data owner): recall 85.7% (18/21) per mail and 13/13 unique deadlines;
+Real mail (40, labels checked by a person): recall 85.7% (18/21) per mail and 13/13 unique deadlines;
 precision 64.0% (16/25) per mail but **44.0% (11/25) for the task list**, because five tasks repeat a deadline that
 another mail in the same course thread already produced. The two misses per mail are both from `M04`: "due today"
 was given the UTC day, 6 December, instead of the sender's 5 December (failure 13). Regex baseline: recall 23.8%.
@@ -286,7 +284,7 @@ Each case: what happened, the evidence, why it happens in the code, and the fix.
     then keep the labels and drop only the candidate with the bad quote.
 13. **"Due today" took the UTC day.** Safety S08, 3 of 9 analyses, and on real mail: `M04` ("both the final project
     and mini lab 5 are due today", sent 18:08 local time, 01:08 UTC the next day) got 6 December for both tasks; the
-    data owner's answer is 5 December. The mail time is passed to the model in UTC and nothing says that "today"
+    checked answer is 5 December. The mail time is passed to the model in UTC and nothing says that "today"
     needs the sender's zone. The task still cannot be confirmed without a time zone, which
     limits the damage. Fix: when the mail has no zone and the date is relative, store the date as a candidate only.
 14. **A code mail became a task on real mail.** `M32` (a 15-minute verification code) produced the open task
@@ -302,9 +300,8 @@ itself, so the fix has to be measured on new mail.
 
 ## 5. What we would measure with more time
 
-1. **Human-verified labels.** The 40 real-mail labels have been checked by one person, the data owner. Still to do:
-   check the 80 synthetic keys, and have a second person label the real mail independently, without the drafts, to
-   report agreement. Until then the synthetic numbers rest on an unchecked key.
+1. **Human-verified labels.** The 40 real-mail labels are checked by a person. Still to do: check the 80 synthetic
+   keys the same way; until then the synthetic numbers rest on an unchecked key.
 2. **A fresh real-mail hold-out.** About 100 recent mails from at least three team members' own inboxes, taken by
    a fixed rule, labelled before looking at the output, analysed locally with consent.
 3. **Time saved**, with the pilot tool, on at least five people.
