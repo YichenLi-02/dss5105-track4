@@ -40,8 +40,11 @@ CATEGORIES = ("academic", "career", "events", "promotions", "other")
 def load_synthetic(folder: Path) -> tuple[list[dict], dict]:
     messages = [json.loads(line) for line in (folder / "messages.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
     key = json.loads((folder / "labels.json").read_text(encoding="utf-8"))
-    key["verified"] = False
-    key["label_status"] = "correct by construction (written with each mail, frozen before the first run); not yet reviewed by a human"
+    reviewed = (key.get("review") or {}).get("status") == "human_reviewed"
+    key["verified"] = reviewed
+    key["label_status"] = ("checked by a person" if reviewed else
+                           "correct by construction (written with each mail, frozen before the first run); "
+                           "not yet reviewed by a human")
     return messages, key
 
 
@@ -100,7 +103,7 @@ def load_samples(folder: Path) -> dict:
     statuses = Counter((r.get("annotation") or {}).get("status") for r in inbound)
     verified = set(statuses) == {"human_reviewed"}
     return {"version": "selected_50 (de-identified real mail)", "verified": verified,
-            "label_status": "human reviewed" if verified else
+            "label_status": "checked by a person" if verified else
             f"NOT verified - annotation status in the files: {dict(statuses)}; treat every number as provisional",
             "messages": messages}
 

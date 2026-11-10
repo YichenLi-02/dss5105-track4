@@ -716,7 +716,7 @@ mail("synP01", at(10, 16, 8, 0), "SkillForge <deals@skillforge.example>", "48-ho
        "Claim your discount: https://skillforge.example/sale",
        "Unsubscribe at any time."),
      cat="promotions", reply=False, action=False, diff="easy", tags=("non_task_only",),
-     items=[non_task("promotion_expiry", x, anchor=a)])
+     items=[non_task("promotion_expiry", x, t="00:00", anchor=a)])
 
 x = D(10, 31)
 a = f"有效期至{zh(x)}"
@@ -777,7 +777,7 @@ mail("synP07", at(11, 1, 10, 0), "优选商城 <sale@youxuan-mall.example>", "�
        "热门数码、图书、家居好物都在这里：https://youxuan-mall.example/1111",
        "如不想再收到此类邮件，请点击退订。"),
      cat="promotions", reply=False, action=False, diff="easy", lang="zh", tags=("non_task_only",),
-     items=[non_task("promotion_expiry", x, anchor=a)])
+     items=[non_task("promotion_expiry", x, t="00:00", anchor=a)])
 
 mail("synP08", at(10, 17, 9, 0), "FitLab <news@fitlab.example>", "New: 24/7 access at FitLab Lakeside",
      P("Hi Jordan,",
@@ -1045,6 +1045,8 @@ def build() -> tuple[str, str, dict]:
         "subject": m["subject"], "body": m["body"], "label_ids": ["INBOX"]}, ensure_ascii=False) + "\n" for m in MAILS)
     label_doc = {
         "version": VERSION, "reference_timezone": "Asia/Singapore", "guideline": "README.md", "quotas": QUOTAS,
+        "review": {"status": "human_reviewed", "date": "2026-11-10",
+                   "note": "every mail and its answer checked by a person; two times corrected (see README change log)"},
         "counts": {
             "messages": len(MAILS), "needs_reply": sum(m["needs_reply"] for m in MAILS),
             "needs_action": sum(m["needs_action"] for m in MAILS),

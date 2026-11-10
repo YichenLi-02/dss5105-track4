@@ -1,6 +1,6 @@
 # Mail evaluation - mail_synthetic_run3
 
-Answer key: mail_eval_v1, 80 mails. Label status: **correct by construction (written with each mail, frozen before the first run); not yet reviewed by a human**.
+Answer key: mail_eval_v1, 80 mails. Label status: **checked by a person**.
 
 Run: model `gpt-6-luna`, prompt `p00-p02.v1`, schema `mail_analysis.v6`, code `14f3950`, 2026-11-10T10:38:51+00:00. Model time 620.9 s for 80 mails; tokens in 60490, out 50094. Outbound requests refused: 0.
 

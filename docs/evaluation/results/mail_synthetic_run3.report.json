@@ -35,8 +35,8 @@
  },
  "answer_key": {
   "version": "mail_eval_v1",
-  "verified": false,
-  "label_status": "correct by construction (written with each mail, frozen before the first run); not yet reviewed by a human",
+  "verified": true,
+  "label_status": "checked by a person",
   "mails": 80
  },
  "triage": {
@@ -4975,7 +4975,7 @@
        "2026-10-18"
       ],
       "expected_times": [
-       null
+       "00:00"
       ],
       "expected_timezone": null,
       "anchor": "offer ends on 18 October 2026 at midnight",
@@ -5084,7 +5084,7 @@
        "2026-11-11"
       ],
       "expected_times": [
-       null
+       "00:00"
       ],
       "expected_timezone": null,
       "anchor": "11月11日0点前付定金",

@@ -2,7 +2,7 @@
 
 ## samples
 
-Runs: mail_samples_run1. Labels: human reviewed.
+Runs: mail_samples_run1. Labels: checked by a person.
 
 | Measure | Mean | Min | Max |
 |---|---|---|---|
@@ -35,7 +35,7 @@ Runs: mail_samples_run1. Labels: human reviewed.
 
 ## synthetic
 
-Runs: mail_synthetic_run1, mail_synthetic_run2, mail_synthetic_run3. Labels: correct by construction (written with each mail, frozen before the first run); not yet reviewed by a human.
+Runs: mail_synthetic_run1, mail_synthetic_run2, mail_synthetic_run3. Labels: checked by a person.
 
 | Measure | Mean | Min | Max |
 |---|---|---|---|

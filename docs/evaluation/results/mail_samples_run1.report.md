@@ -1,6 +1,6 @@
 # Mail evaluation - mail_samples_run1
 
-Answer key: selected_50 (de-identified real mail), 40 mails. Label status: **human reviewed**.
+Answer key: selected_50 (de-identified real mail), 40 mails. Label status: **checked by a person**.
 
 Run: model `gpt-6-luna`, prompt `p00-p02.v1`, schema `mail_analysis.v6`, code `14f3950`, 2026-11-10T10:34:55+00:00. Model time 384.7 s for 40 mails; tokens in 35584, out 30835. Outbound requests refused: 0.
 

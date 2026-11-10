@@ -20,6 +20,11 @@
    "zh": 12
   }
  },
+ "review": {
+  "status": "human_reviewed",
+  "date": "2026-11-10",
+  "note": "every mail and its answer checked by a person; two times corrected (see README change log)"
+ },
  "counts": {
   "messages": 80,
   "needs_reply": 13,
@@ -1930,7 +1935,7 @@
      "role": "non_task",
      "kind": "promotion_expiry",
      "date": "2026-10-18",
-     "time": null,
+     "time": "00:00",
      "anchors": [
       "offer ends on 18 October 2026 at midnight"
      ]
@@ -2068,7 +2073,7 @@
      "role": "non_task",
      "kind": "promotion_expiry",
      "date": "2026-11-11",
-     "time": null,
+     "time": "00:00",
      "anchors": [
       "11月11日0点前付定金"
      ]

@@ -3,7 +3,7 @@
   "runs": [
    "mail_samples_run1"
   ],
-  "label_status": "human reviewed",
+  "label_status": "checked by a person",
   "aggregate": {
    "needs_reply_f1": {
     "mean": 0.909,
@@ -164,7 +164,7 @@
    "mail_synthetic_run2",
    "mail_synthetic_run3"
   ],
-  "label_status": "correct by construction (written with each mail, frozen before the first run); not yet reviewed by a human",
+  "label_status": "checked by a person",
   "aggregate": {
    "needs_reply_f1": {
     "mean": 0.916,

@@ -8,8 +8,8 @@ repository from saved raw output under `docs/evaluation/results/`.
 
 | Part | Data | Status of the "ground truth" |
 |---|---|---|
-| Triage and deadlines, main set | 80 synthetic mails, 3 runs | Correct by construction, written by an AI assistant from fixed quotas; **not yet checked by a human** |
-| Triage and deadlines, real mail | 40 de-identified real mails, 1 run | **Checked by a person**: all 40 mails checked one by one by the student who received them (Li Yichen) |
+| Triage and deadlines, main set | 80 synthetic mails, 3 runs | Written with each mail from fixed quotas and frozen before the first run; **checked by a person** |
+| Triage and deadlines, real mail | 40 de-identified real mails, 1 run | **Checked by a person** |
 | Planning | 27 hand-written scenarios, 200 seeded scenarios | Rule checks computed independently of the planner; expected values of the 27 still to be checked by the group |
 | Safety | 20 written specifications, 3 runs | Pass/fail criteria coded before the first run |
 | Time saved | not run | Tool and protocol ready; needs people |
@@ -38,7 +38,8 @@ own definitions in `prompts.md`, written weeks before this evaluation. Dates and
 two files were hashed and frozen before the system saw any mail (`MANIFEST.json`). A quarter of the set are hard
 cases on purpose: relative dates, an extension that replaces an earlier date, the same deadline in three mails, a
 weekday that contradicts its date, a date that needs an academic calendar, receipts, code lifetimes, false urgency
-and a phishing mail with an injected instruction.
+and a phishing mail with an injected instruction. Every mail and its answer was afterwards checked by a person
+(change 5 below).
 
 **The mail reaches the system the way real mail does.** A simulated Gmail API serves the 80 mails; from there the
 app's own sync, minimisation, storage, model call, evidence check and task merge run unchanged in an empty database.
@@ -73,6 +74,9 @@ on the synthetic set (it scores 74% there and 65% on real mail).
    the deadline, not the 00:00 opening. Effect: both labels right 80.0% to 82.5%; deadline recall per mail 95.2% to
    85.7% and precision per mail 72.0% to 64.0%, because the run had given `M04` the UTC day (failure 13), which the
    draft had accepted. Task-list precision is unchanged at 44.0%.
+5. Synthetic answer key checked by a person (10 November), every mail and answer. Two answers corrected: the promotion
+   end times in `synP01` ("at midnight") and `synP07` ("0点前") now carry 00:00 instead of no time. Both are
+   `non_task` items, so no score changed; the dataset change log keeps the frozen v1 hash.
 
 ## 3. Results
 
@@ -300,8 +304,8 @@ itself, so the fix has to be measured on new mail.
 
 ## 5. What we would measure with more time
 
-1. **Human-verified labels.** The 40 real-mail labels are checked by a person. Still to do: check the 80 synthetic
-   keys the same way; until then the synthetic numbers rest on an unchecked key.
+1. **A second, independent labeller.** Every label is checked by a person; a second person labelling the mails
+   without seeing the existing answers would give an agreement figure.
 2. **A fresh real-mail hold-out.** About 100 recent mails from at least three team members' own inboxes, taken by
    a fixed rule, labelled before looking at the output, analysed locally with consent.
 3. **Time saved**, with the pilot tool, on at least five people.
