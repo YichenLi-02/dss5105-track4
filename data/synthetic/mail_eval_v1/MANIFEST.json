@@ -1,0 +1,21 @@
+{
+ "version": "mail_eval_v1",
+ "messages": 80,
+ "sha256": {
+  "messages.jsonl": "e8cf01286723f25b4dc7828c712986cc0d8e690fa8a7ba0098dd1a55b812c04b",
+  "labels.json": "22e27bb9df04836a7d2b117dfccabe350fb7a5eff28c8155c949abeba78fe704"
+ },
+ "counts": {
+  "messages": 80,
+  "needs_reply": 13,
+  "needs_action": 32,
+  "ignore": 40,
+  "required_deadlines_unique": 39,
+  "items_by_role": {
+   "deadline": 41,
+   "non_task": 50,
+   "optional": 6,
+   "completed": 2
+  }
+ }
+}

@@ -1,0 +1,6358 @@
+{
+ "meta": {
+  "name": "mail_synthetic_run2",
+  "mail_set": "synthetic",
+  "started_at": "2026-11-10T10:28:30+00:00",
+  "finished_at": "2026-11-10T10:38:42+00:00",
+  "provider": "openai",
+  "model": "gpt-6-luna",
+  "prompt_version": "p00-p02.v1",
+  "schema_version": "mail_analysis.v6",
+  "code_commit": "14f3950",
+  "app_code_modified": false,
+  "dataset": {
+   "version": "mail_eval_v1",
+   "sha256": {
+    "messages.jsonl": "e8cf01286723f25b4dc7828c712986cc0d8e690fa8a7ba0098dd1a55b812c04b",
+    "labels.json": "22e27bb9df04836a7d2b117dfccabe350fb7a5eff28c8155c949abeba78fe704"
+   }
+  },
+  "messages": 80,
+  "analysis_seconds": 611.2,
+  "first_pass_errors": {},
+  "errors": {},
+  "retried": 0,
+  "outbound_calls": {
+   "gmail_read": 81,
+   "model": 80
+  },
+  "refused_requests": [],
+  "stored": {
+   "fetched": 80,
+   "created": 80,
+   "already_had": 0
+  }
+ },
+ "answer_key": {
+  "version": "mail_eval_v1",
+  "verified": false,
+  "label_status": "correct by construction (written with each mail, frozen before the first run); not yet reviewed by a human",
+  "mails": 80
+ },
+ "triage": {
+  "mails": 80,
+  "no_output": [],
+  "labels": {
+   "needs_reply": {
+    "TP": 13,
+    "FP": 2,
+    "FN": 0,
+    "TN": 65,
+    "precision": {
+     "k": 13,
+     "n": 15,
+     "value": 0.867,
+     "ci95": [
+      0.621,
+      0.963
+     ]
+    },
+    "recall": {
+     "k": 13,
+     "n": 13,
+     "value": 1.0,
+     "ci95": [
+      0.772,
+      1.0
+     ]
+    },
+    "f1": 0.929
+   },
+   "needs_action": {
+    "TP": 32,
+    "FP": 25,
+    "FN": 0,
+    "TN": 23,
+    "precision": {
+     "k": 32,
+     "n": 57,
+     "value": 0.561,
+     "ci95": [
+      0.433,
+      0.682
+     ]
+    },
+    "recall": {
+     "k": 32,
+     "n": 32,
+     "value": 1.0,
+     "ci95": [
+      0.893,
+      1.0
+     ]
+    },
+    "f1": 0.719
+   }
+  },
+  "exact_match": {
+   "k": 55,
+   "n": 80,
+   "value": 0.688,
+   "ci95": [
+    0.579,
+    0.778
+   ]
+  },
+  "ignore": {
+   "correctly_ignored": {
+    "k": 23,
+    "n": 40,
+    "value": 0.575,
+    "ci95": [
+     0.422,
+     0.715
+    ]
+   },
+   "needed_attention_but_ignored": {
+    "k": 0,
+    "n": 40,
+    "value": 0.0,
+    "ci95": [
+     0.0,
+     0.088
+    ]
+   }
+  },
+  "confusion": {
+   "action": {
+    "action": 27
+   },
+   "ignore": {
+    "action": 15,
+    "ignore": 23,
+    "reply+action": 2
+   },
+   "reply": {
+    "reply+action": 8
+   },
+   "reply+action": {
+    "reply+action": 5
+   }
+  },
+  "category_accuracy": {
+   "k": 75,
+   "n": 80,
+   "value": 0.938,
+   "ci95": [
+    0.862,
+    0.973
+   ]
+  },
+  "category_confusion": {
+   "academic": {
+    "academic": 29,
+    "events": 1
+   },
+   "career": {
+    "career": 11,
+    "academic": 1
+   },
+   "events": {
+    "events": 10
+   },
+   "promotions": {
+    "promotions": 10
+   },
+   "other": {
+    "other": 15,
+    "academic": 3
+   }
+  },
+  "by_group": {
+   "category": {
+    "academic": {
+     "exact_match": {
+      "k": 24,
+      "n": 30,
+      "value": 0.8,
+      "ci95": [
+       0.627,
+       0.905
+      ]
+     },
+     "category": {
+      "k": 29,
+      "n": 30,
+      "value": 0.967,
+      "ci95": [
+       0.833,
+       0.994
+      ]
+     }
+    },
+    "career": {
+     "exact_match": {
+      "k": 7,
+      "n": 12,
+      "value": 0.583,
+      "ci95": [
+       0.32,
+       0.807
+      ]
+     },
+     "category": {
+      "k": 11,
+      "n": 12,
+      "value": 0.917,
+      "ci95": [
+       0.646,
+       0.985
+      ]
+     }
+    },
+    "events": {
+     "exact_match": {
+      "k": 4,
+      "n": 10,
+      "value": 0.4,
+      "ci95": [
+       0.168,
+       0.687
+      ]
+     },
+     "category": {
+      "k": 10,
+      "n": 10,
+      "value": 1.0,
+      "ci95": [
+       0.722,
+       1.0
+      ]
+     }
+    },
+    "other": {
+     "exact_match": {
+      "k": 13,
+      "n": 18,
+      "value": 0.722,
+      "ci95": [
+       0.491,
+       0.875
+      ]
+     },
+     "category": {
+      "k": 15,
+      "n": 18,
+      "value": 0.833,
+      "ci95": [
+       0.608,
+       0.942
+      ]
+     }
+    },
+    "promotions": {
+     "exact_match": {
+      "k": 7,
+      "n": 10,
+      "value": 0.7,
+      "ci95": [
+       0.397,
+       0.892
+      ]
+     },
+     "category": {
+      "k": 10,
+      "n": 10,
+      "value": 1.0,
+      "ci95": [
+       0.722,
+       1.0
+      ]
+     }
+    }
+   },
+   "difficulty": {
+    "easy": {
+     "exact_match": {
+      "k": 22,
+      "n": 30,
+      "value": 0.733,
+      "ci95": [
+       0.556,
+       0.858
+      ]
+     },
+     "category": {
+      "k": 27,
+      "n": 30,
+      "value": 0.9,
+      "ci95": [
+       0.744,
+       0.965
+      ]
+     }
+    },
+    "hard": {
+     "exact_match": {
+      "k": 17,
+      "n": 20,
+      "value": 0.85,
+      "ci95": [
+       0.64,
+       0.948
+      ]
+     },
+     "category": {
+      "k": 20,
+      "n": 20,
+      "value": 1.0,
+      "ci95": [
+       0.839,
+       1.0
+      ]
+     }
+    },
+    "medium": {
+     "exact_match": {
+      "k": 16,
+      "n": 30,
+      "value": 0.533,
+      "ci95": [
+       0.361,
+       0.698
+      ]
+     },
+     "category": {
+      "k": 28,
+      "n": 30,
+      "value": 0.933,
+      "ci95": [
+       0.787,
+       0.982
+      ]
+     }
+    }
+   },
+   "language": {
+    "en": {
+     "exact_match": {
+      "k": 47,
+      "n": 68,
+      "value": 0.691,
+      "ci95": [
+       0.574,
+       0.788
+      ]
+     },
+     "category": {
+      "k": 63,
+      "n": 68,
+      "value": 0.926,
+      "ci95": [
+       0.839,
+       0.968
+      ]
+     }
+    },
+    "zh": {
+     "exact_match": {
+      "k": 8,
+      "n": 12,
+      "value": 0.667,
+      "ci95": [
+       0.391,
+       0.862
+      ]
+     },
+     "category": {
+      "k": 12,
+      "n": 12,
+      "value": 1.0,
+      "ci95": [
+       0.757,
+       1.0
+      ]
+     }
+    }
+   }
+  },
+  "wrong": [
+   {
+    "mail": "synA09",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "academic",
+    "got_category": "academic",
+    "difficulty": "easy",
+    "tags": [
+     "non_task_only"
+    ],
+    "summary_en": "DAT5310 Assignment 1 grades are available; log in to the course portal to view your score and feedback.",
+    "error": null
+   },
+   {
+    "mail": "synA10",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "academic",
+    "got_category": "academic",
+    "difficulty": "medium",
+    "tags": [
+     "optional"
+    ],
+    "summary_en": "DAT5310 Assignment 1 grades are out; if you believe there was a grading error, you may request a regrade by October 21.",
+    "error": null
+   },
+   {
+    "mail": "synA12",
+    "expected": "reply",
+    "got": "reply+action",
+    "expected_category": "academic",
+    "got_category": "academic",
+    "difficulty": "medium",
+    "tags": [
+     "relative_date",
+     "no_time",
+     "response_deadline"
+    ],
+    "summary_en": "Please reply whether you can handle capstone data cleaning by tomorrow evening.",
+    "error": null
+   },
+   {
+    "mail": "synA19",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "academic",
+    "got_category": "academic",
+    "difficulty": "easy",
+    "tags": [
+     "optional",
+     "boundary_category"
+    ],
+    "summary_en": "Please voluntarily complete the anonymous mid-semester course feedback survey by October 25.",
+    "error": null
+   },
+   {
+    "mail": "synA27",
+    "expected": "reply",
+    "got": "reply+action",
+    "expected_category": "academic",
+    "got_category": "academic",
+    "difficulty": "medium",
+    "tags": [
+     "relative_date",
+     "no_time",
+     "response_deadline"
+    ],
+    "summary_en": "Please tell the project group which dataset you chose by Wednesday.",
+    "error": null
+   },
+   {
+    "mail": "synA30",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "academic",
+    "got_category": "events",
+    "difficulty": "easy",
+    "tags": [
+     "non_task_only"
+    ],
+    "summary_en": "The consultation is confirmed for October 29 at 16:30 in the office; no preparation is needed.",
+    "error": null
+   },
+   {
+    "mail": "synC01",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "career",
+    "got_category": "career",
+    "difficulty": "easy",
+    "tags": [
+     "optional"
+    ],
+    "summary_en": "Northwind Consulting is hiring 2027 graduate Data Analysts; applications close on 2026-10-31.",
+    "error": null
+   },
+   {
+    "mail": "synC02",
+    "expected": "reply",
+    "got": "reply+action",
+    "expected_category": "career",
+    "got_category": "career",
+    "difficulty": "medium",
+    "tags": [
+     "no_time",
+     "response_deadline"
+    ],
+    "summary_en": "Harborlight Insurance invites you to a first-round video interview for the Data Analyst Intern role; reply with your availability for November 3–5 by October 30.",
+    "error": null
+   },
+   {
+    "mail": "synC04",
+    "expected": "reply",
+    "got": "reply+action",
+    "expected_category": "career",
+    "got_category": "career",
+    "difficulty": "medium",
+    "tags": [
+     "non_task_only"
+    ],
+    "summary_en": "Daniel proposes a mock interview over video and asks whether Thursday or Saturday works better.",
+    "error": null
+   },
+   {
+    "mail": "synC08",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "career",
+    "got_category": "career",
+    "difficulty": "easy",
+    "tags": [
+     "optional"
+    ],
+    "summary_en": "Received five new job recommendations, one with an application deadline of November 20 (year not specified).",
+    "error": null
+   },
+   {
+    "mail": "synC10",
+    "expected": "reply",
+    "got": "reply+action",
+    "expected_category": "career",
+    "got_category": "career",
+    "difficulty": "medium",
+    "tags": [
+     "no_time",
+     "response_deadline"
+    ],
+    "summary_en": "Xinglan Data invites you to an online interview for the data analyst internship; reply to confirm by November 5.",
+    "error": null
+   },
+   {
+    "mail": "synC12",
+    "expected": "ignore",
+    "got": "ignore",
+    "expected_category": "career",
+    "got_category": "academic",
+    "difficulty": "medium",
+    "tags": [
+     "non_task_only"
+    ],
+    "summary_en": "The transcript was received and added to the file; no further action is needed for now.",
+    "error": null
+   },
+   {
+    "mail": "synE02",
+    "expected": "ignore",
+    "got": "reply+action",
+    "expected_category": "events",
+    "got_category": "events",
+    "difficulty": "medium",
+    "tags": [
+     "non_task_only",
+     "calendar_invite"
+    ],
+    "summary_en": "You are invited to the Capstone sync on October 16; please respond whether you will attend.",
+    "error": null
+   },
+   {
+    "mail": "synE03",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "events",
+    "got_category": "events",
+    "difficulty": "medium",
+    "tags": [
+     "optional"
+    ],
+    "summary_en": "The Lakeside Hackathon takes place November 7–8; register by October 30.",
+    "error": null
+   },
+   {
+    "mail": "synE07",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "events",
+    "got_category": "events",
+    "difficulty": "medium",
+    "tags": [
+     "optional",
+     "relative_date"
+    ],
+    "summary_en": "The fall welcome party is on October 24; interested students should fill out the registration form by Thursday.",
+    "error": null
+   },
+   {
+    "mail": "synE08",
+    "expected": "ignore",
+    "got": "reply+action",
+    "expected_category": "events",
+    "got_category": "events",
+    "difficulty": "medium",
+    "tags": [
+     "non_task_only",
+     "calendar_invite",
+     "update"
+    ],
+    "summary_en": "Capstone sync was updated to 2026-10-19, and the invitation provides response options.",
+    "error": null
+   },
+   {
+    "mail": "synE09",
+    "expected": "reply",
+    "got": "reply+action",
+    "expected_category": "events",
+    "got_category": "events",
+    "difficulty": "hard",
+    "tags": [
+     "boundary",
+     "no_time",
+     "response_deadline"
+    ],
+    "summary_en": "Please reply by 6 November whether you can join the alumni networking night panel on 18 November.",
+    "error": null
+   },
+   {
+    "mail": "synE10",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "events",
+    "got_category": "events",
+    "difficulty": "easy",
+    "tags": [
+     "non_task_only"
+    ],
+    "summary_en": "The Intro to dbt live webinar starts today at 20:00 Singapore time.",
+    "error": null
+   },
+   {
+    "mail": "synP01",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "promotions",
+    "got_category": "promotions",
+    "difficulty": "easy",
+    "tags": [
+     "non_task_only"
+    ],
+    "summary_en": "SkillForge advertises a limited-time annual plan offer, with 40% off ending at midnight on 2026-10-18.",
+    "error": null
+   },
+   {
+    "mail": "synP05",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "promotions",
+    "got_category": "promotions",
+    "difficulty": "medium",
+    "tags": [
+     "non_task_only"
+    ],
+    "summary_en": "Meridian Bank promotes a student credit card with S$200 cashback for applying and meeting the spending condition.",
+    "error": null
+   },
+   {
+    "mail": "synP06",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "promotions",
+    "got_category": "promotions",
+    "difficulty": "hard",
+    "tags": [
+     "non_task_only",
+     "false_urgency",
+     "relative_date"
+    ],
+    "summary_en": "The DataPro Data Science Bootcamp scholarship discount expires tonight; confirm your seat to lock it in.",
+    "error": null
+   },
+   {
+    "mail": "synO02",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "other",
+    "got_category": "other",
+    "difficulty": "easy",
+    "tags": [
+     "non_task_only",
+     "security"
+    ],
+    "summary_en": "Lakeside detected a new sign-in; if it was not you, reset your password immediately.",
+    "error": null
+   },
+   {
+    "mail": "synO04",
+    "expected": "ignore",
+    "got": "ignore",
+    "expected_category": "other",
+    "got_category": "academic",
+    "difficulty": "easy",
+    "tags": [
+     "receipt",
+     "non_task_only"
+    ],
+    "summary_en": "Tuition instalment 2 payment received; no further action is required.",
+    "error": null
+   },
+   {
+    "mail": "synO06",
+    "expected": "action",
+    "got": "action",
+    "expected_category": "other",
+    "got_category": "academic",
+    "difficulty": "medium",
+    "tags": [
+     "no_time"
+    ],
+    "summary_en": "Renew or return the library item by 2026-10-28.",
+    "error": null
+   },
+   {
+    "mail": "synO07",
+    "expected": "reply",
+    "got": "reply+action",
+    "expected_category": "other",
+    "got_category": "other",
+    "difficulty": "medium",
+    "tags": [
+     "relative_date",
+     "no_time",
+     "response_deadline"
+    ],
+    "summary_en": "Choose and reply with an air-con repair date by Friday; someone must be in the room during the repair.",
+    "error": null
+   },
+   {
+    "mail": "synO09",
+    "expected": "ignore",
+    "got": "ignore",
+    "expected_category": "other",
+    "got_category": "academic",
+    "difficulty": "easy",
+    "tags": [
+     "non_task_only"
+    ],
+    "summary_en": "The course portal will undergo maintenance on October 25 from 02:00 to 06:00, during which submissions will be unavailable.",
+    "error": null
+   },
+   {
+    "mail": "synO10",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "other",
+    "got_category": "other",
+    "difficulty": "hard",
+    "tags": [
+     "non_task_only",
+     "injection",
+     "phishing"
+    ],
+    "summary_en": "The email claims the mailbox will be deactivated and asks for a username and password; this request is highly suspicious.",
+    "error": null
+   },
+   {
+    "mail": "synO13",
+    "expected": "reply",
+    "got": "reply+action",
+    "expected_category": "other",
+    "got_category": "other",
+    "difficulty": "medium",
+    "tags": [
+     "no_time",
+     "response_deadline"
+    ],
+    "summary_en": "Reply YES by October 23 to keep the October 26 Health Centre appointment.",
+    "error": null
+   },
+   {
+    "mail": "synO16",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "other",
+    "got_category": "other",
+    "difficulty": "medium",
+    "tags": [
+     "receipt",
+     "non_task_only"
+    ],
+    "summary_en": "The account received a notice of a CNY 268.00 online payment; call customer service if it was not made by you.",
+    "error": null
+   }
+  ]
+ },
+ "deadlines": {
+  "answer_key": {
+   "required_mentions": 41,
+   "required_unique": 39,
+   "optional": 6,
+   "non_task": 50,
+   "completed": 2,
+   "mails_with_required_deadline": 39
+  },
+  "system_output": {
+   "tasks": 86,
+   "open": 78,
+   "open_with_date": 65,
+   "open_without_date": 13,
+   "closed": 8,
+   "mails_analysis_failed": []
+  },
+  "recall_per_mail": {
+   "k": 38,
+   "n": 41,
+   "value": 0.927,
+   "ci95": [
+    0.806,
+    0.975
+   ]
+  },
+  "recall_unique": {
+   "k": 36,
+   "n": 39,
+   "value": 0.923,
+   "ci95": [
+    0.797,
+    0.973
+   ]
+  },
+  "precision_per_mail": {
+   "k": 37,
+   "n": 65,
+   "value": 0.569,
+   "ci95": [
+    0.448,
+    0.682
+   ]
+  },
+  "precision_task_list": {
+   "k": 35,
+   "n": 65,
+   "value": 0.538,
+   "ci95": [
+    0.419,
+    0.654
+   ]
+  },
+  "if_event_tasks_were_accepted": {
+   "dated_event_tasks": 20,
+   "precision_per_mail": {
+    "k": 57,
+    "n": 65,
+    "value": 0.877,
+    "ci95": [
+     0.775,
+     0.936
+    ]
+   },
+   "precision_task_list": {
+    "k": 55,
+    "n": 65,
+    "value": 0.846,
+    "ci95": [
+     0.739,
+     0.914
+    ]
+   }
+  },
+  "missed_breakdown": {
+   "wrong_date": 1,
+   "date_missing": 1,
+   "missed": 1
+  },
+  "open_task_outcomes": {
+   "stale": 2,
+   "correct": 36,
+   "wrong_date": 1,
+   "undated_spurious": 7,
+   "optional_promoted": 6,
+   "non_task_promoted": 23,
+   "date_missing": 1,
+   "duplicate_in_mail": 1,
+   "undated_extra": 1
+  },
+  "closed_task_outcomes": {
+   "not_open": 8
+  },
+  "optional": {
+   "total": 6,
+   "became_open_task": 6
+  },
+  "non_task": {
+   "total": 50,
+   "became_open_task": 23,
+   "by_kind": {
+    "billing_date": {
+     "became_open_task": 0,
+     "total": 1
+    },
+    "cancelled": {
+     "became_open_task": 0,
+     "total": 2
+    },
+    "delivery_estimate": {
+     "became_open_task": 0,
+     "total": 1
+    },
+    "event_time": {
+     "became_open_task": 21,
+     "total": 22
+    },
+    "expiry_context": {
+     "became_open_task": 0,
+     "total": 1
+    },
+    "graded_timestamp": {
+     "became_open_task": 0,
+     "total": 1
+    },
+    "order_timestamp": {
+     "became_open_task": 0,
+     "total": 1
+    },
+    "other_party_timeline": {
+     "became_open_task": 0,
+     "total": 1
+    },
+    "phishing_threat": {
+     "became_open_task": 1,
+     "total": 1
+    },
+    "promotion_expiry": {
+     "became_open_task": 0,
+     "total": 8
+    },
+    "quoted_old_request": {
+     "became_open_task": 0,
+     "total": 1
+    },
+    "receipt_timestamp": {
+     "became_open_task": 0,
+     "total": 6
+    },
+    "security_timestamp": {
+     "became_open_task": 1,
+     "total": 1
+    },
+    "security_token_lifetime": {
+     "became_open_task": 0,
+     "total": 1
+    },
+    "start_date": {
+     "became_open_task": 0,
+     "total": 1
+    },
+    "statement_date": {
+     "became_open_task": 0,
+     "total": 1
+    }
+   }
+  },
+  "completed": {
+   "total": 2,
+   "became_open_task": 0
+  },
+  "time_of_day": {
+   "time_as_expected": 38
+  },
+  "timezone": {
+   "stated_and_right": 3,
+   "none_stated_none_given": 35
+  },
+  "recall_by_group": {
+   "difficulty": {
+    "easy": {
+     "k": 7,
+     "n": 7,
+     "value": 1.0,
+     "ci95": [
+      0.646,
+      1.0
+     ]
+    },
+    "hard": {
+     "k": 15,
+     "n": 16,
+     "value": 0.938,
+     "ci95": [
+      0.717,
+      0.989
+     ]
+    },
+    "medium": {
+     "k": 16,
+     "n": 18,
+     "value": 0.889,
+     "ci95": [
+      0.672,
+      0.969
+     ]
+    }
+   },
+   "language": {
+    "en": {
+     "k": 33,
+     "n": 36,
+     "value": 0.917,
+     "ci95": [
+      0.782,
+      0.971
+     ]
+    },
+    "zh": {
+     "k": 5,
+     "n": 5,
+     "value": 1.0,
+     "ci95": [
+      0.566,
+      1.0
+     ]
+    }
+   },
+   "category": {
+    "academic": {
+     "k": 22,
+     "n": 23,
+     "value": 0.957,
+     "ci95": [
+      0.79,
+      0.992
+     ]
+    },
+    "career": {
+     "k": 6,
+     "n": 6,
+     "value": 1.0,
+     "ci95": [
+      0.61,
+      1.0
+     ]
+    },
+    "events": {
+     "k": 2,
+     "n": 2,
+     "value": 1.0,
+     "ci95": [
+      0.342,
+      1.0
+     ]
+    },
+    "other": {
+     "k": 8,
+     "n": 10,
+     "value": 0.8,
+     "ci95": [
+      0.49,
+      0.943
+     ]
+    }
+   },
+   "tag": {
+    "boundary": {
+     "k": 3,
+     "n": 3,
+     "value": 1.0,
+     "ci95": [
+      0.438,
+      1.0
+     ]
+    },
+    "later_updated": {
+     "k": 2,
+     "n": 2,
+     "value": 1.0,
+     "ci95": [
+      0.342,
+      1.0
+     ]
+    },
+    "multi_deadline": {
+     "k": 3,
+     "n": 3,
+     "value": 1.0,
+     "ci95": [
+      0.438,
+      1.0
+     ]
+    },
+    "needs_academic_calendar": {
+     "k": 1,
+     "n": 1,
+     "value": 1.0,
+     "ci95": [
+      0.207,
+      1.0
+     ]
+    },
+    "no_time": {
+     "k": 17,
+     "n": 19,
+     "value": 0.895,
+     "ci95": [
+      0.686,
+      0.971
+     ]
+    },
+    "relative_date": {
+     "k": 9,
+     "n": 10,
+     "value": 0.9,
+     "ci95": [
+      0.596,
+      0.982
+     ]
+    },
+    "repeat_mention": {
+     "k": 2,
+     "n": 2,
+     "value": 1.0,
+     "ci95": [
+      0.342,
+      1.0
+     ]
+    },
+    "response_deadline": {
+     "k": 5,
+     "n": 7,
+     "value": 0.714,
+     "ci95": [
+      0.359,
+      0.918
+     ]
+    },
+    "timezone": {
+     "k": 2,
+     "n": 2,
+     "value": 1.0,
+     "ci95": [
+      0.342,
+      1.0
+     ]
+    },
+    "two_dates": {
+     "k": 2,
+     "n": 2,
+     "value": 1.0,
+     "ci95": [
+      0.342,
+      1.0
+     ]
+    },
+    "update": {
+     "k": 1,
+     "n": 1,
+     "value": 1.0,
+     "ci95": [
+      0.207,
+      1.0
+     ]
+    },
+    "weekday_date_conflict": {
+     "k": 0,
+     "n": 1,
+     "value": 0.0,
+     "ci95": [
+      0.0,
+      0.793
+     ]
+    }
+   }
+  },
+  "failures": [
+   {
+    "kind": "missed_deadline",
+    "detail": "wrong_date",
+    "mail": "synA06",
+    "deadline_id": "D04",
+    "expected_dates": [
+     null
+    ],
+    "expected_times": [
+     "18:00",
+     null
+    ],
+    "anchor": "due Thursday, 23 October at 6 pm",
+    "analysis_failed": false,
+    "got": {
+     "title": "提交实验 3 报告和 docker-compose 文件",
+     "date": "2026-10-23",
+     "time": "18:00",
+     "state": "pending",
+     "model_status": "pending",
+     "quote": "[CSC5240] Lab 3 report"
+    }
+   },
+   {
+    "kind": "missed_deadline",
+    "detail": "date_missing",
+    "mail": "synO07",
+    "deadline_id": "D36",
+    "expected_dates": [
+     "2026-10-23"
+    ],
+    "expected_times": [
+     null
+    ],
+    "anchor": "Please let me know by Friday",
+    "analysis_failed": false,
+    "got": {
+     "title": "回复并选择空调维修日期",
+     "date": null,
+     "time": null,
+     "state": "pending",
+     "model_status": "pending",
+     "quote": "Which day works for you?"
+    }
+   },
+   {
+    "kind": "missed_deadline",
+    "detail": "missed",
+    "mail": "synO13",
+    "deadline_id": "D39",
+    "expected_dates": [
+     "2026-10-23"
+    ],
+    "expected_times": [
+     null
+    ],
+    "anchor": "by Friday, 23 October",
+    "analysis_failed": false,
+    "got": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "stale",
+    "mail": "synA01",
+    "task": {
+     "title": "提交 Assignment 2",
+     "title_en": "Submit Assignment 2",
+     "date": "2026-10-30",
+     "time": "23:59",
+     "timezone": "Asia/Singapore",
+     "model_status": "pending",
+     "quote": "[DAT5310] Assignment 2 released"
+    },
+    "item": {
+     "role": "deadline",
+     "kind": null,
+     "deadline_id": "D01",
+     "expected_dates": [
+      "2026-10-30"
+     ],
+     "anchor": "due on Friday, 30 October 2026 at 23:59 (SGT)"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "stale",
+    "mail": "synA02",
+    "task": {
+     "title": "提交作业2",
+     "title_en": "Submit Assignment 2",
+     "date": "2026-10-30",
+     "time": "23:59",
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "[DAT5310] Reminder: Assignment 2 due this Friday"
+    },
+    "item": {
+     "role": "deadline",
+     "kind": null,
+     "deadline_id": "D01",
+     "expected_dates": [
+      "2026-10-30"
+     ],
+     "anchor": "due this Friday at 23:59"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "wrong_date",
+    "mail": "synA06",
+    "task": {
+     "title": "提交实验 3 报告和 docker-compose 文件",
+     "title_en": "Submit the Lab 3 report and docker-compose file",
+     "date": "2026-10-23",
+     "time": "18:00",
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "[CSC5240] Lab 3 report"
+    },
+    "item": {
+     "role": "deadline",
+     "kind": null,
+     "deadline_id": "D04",
+     "expected_dates": [
+      null
+     ],
+     "anchor": "due Thursday, 23 October at 6 pm"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "undated_spurious",
+    "mail": "synA09",
+    "task": {
+     "title": "查看成绩和反馈",
+     "title_en": "View score and feedback",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "Log in to the course portal to view your score and feedback."
+    },
+    "item": null,
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "optional_promoted",
+    "mail": "synA10",
+    "task": {
+     "title": "提交作业1复核申请",
+     "title_en": "Submit an Assignment 1 regrade request",
+     "date": "2026-10-21",
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "If you believe there is a grading error, you may submit a regrade request through the portal by 21 October."
+    },
+    "item": {
+     "role": "optional",
+     "kind": null,
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-21"
+     ],
+     "anchor": "submit a regrade request through the portal by 21 October"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synA15",
+    "task": {
+     "title": "STA5120讲座（地点变更）",
+     "title_en": "STA5120 lecture (venue change)",
+     "date": "2026-10-21",
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "Tomorrow's lecture (Wednesday, 21 October, 14:00-16:00) will be held in LT12 instead of LT7 because of an examination booking."
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-21"
+     ],
+     "anchor": "Wednesday, 21 October, 14:00-16:00"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synA18",
+    "task": {
+     "title": "参加线上分工讨论会",
+     "title_en": "Attend the online task-allocation meeting",
+     "date": "2026-10-20",
+     "time": "20:00",
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "明晚8点我们线上开会讨论一下分工，你能参加吗？"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-20"
+     ],
+     "anchor": "明晚8点"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "optional_promoted",
+    "mail": "synA19",
+    "task": {
+     "title": "完成期中反馈调查",
+     "title_en": "Complete the mid-semester feedback survey",
+     "date": "2026-10-25",
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "Please take five minutes to complete the mid-semester feedback survey."
+    },
+    "item": {
+     "role": "optional",
+     "kind": null,
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-25"
+     ],
+     "anchor": "The survey closes on 25 October"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synA20",
+    "task": {
+     "title": "本周办公时间",
+     "title_en": "Office hours this week",
+     "date": "2026-11-05",
+     "time": "15:00",
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "[CSC5240] Office hours this week and Lab 4"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-11-05"
+     ],
+     "anchor": "Thursday 3-4 pm"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synA30",
+    "task": {
+     "title": "参加咨询",
+     "title_en": "Attend consultation",
+     "date": "2026-10-29",
+     "time": "16:30",
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "Your consultation is confirmed for Thursday, 29 October, 4:30 pm at my office (COM2-03-12)."
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-29"
+     ],
+     "anchor": "Thursday, 29 October, 4:30 pm"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "optional_promoted",
+    "mail": "synC01",
+    "task": {
+     "title": "申请 Northwind Consulting 数据分析师职位",
+     "title_en": "Apply for the Northwind Consulting Data Analyst role",
+     "date": "2026-10-31",
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "Applications close on 31 October 2026."
+    },
+    "item": {
+     "role": "optional",
+     "kind": null,
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-31"
+     ],
+     "anchor": "Applications close on 31 October 2026"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synC02",
+    "task": {
+     "title": "参加首轮视频面试",
+     "title_en": "Attend the first-round video interview",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "We would like to invite you to a first-round video interview with the analytics team."
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-11-03"
+     ],
+     "anchor": "availability on 3-5 November"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synC04",
+    "task": {
+     "title": "确认模拟面试时间（周四选项）",
+     "title_en": "Confirm the mock interview time (Thursday option)",
+     "date": "2026-10-22",
+     "time": "19:00",
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "Does Thursday 22 October at 7 pm or Saturday 24 October at 10 am suit you better?"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-22"
+     ],
+     "anchor": "Thursday 22 October at 7 pm"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synC04",
+    "task": {
+     "title": "确认模拟面试时间（周六选项）",
+     "title_en": "Confirm the mock interview time (Saturday option)",
+     "date": "2026-10-24",
+     "time": "10:00",
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "Does Thursday 22 October at 7 pm or Saturday 24 October at 10 am suit you better?"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-24"
+     ],
+     "anchor": "Saturday 24 October at 10 am"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "optional_promoted",
+    "mail": "synC08",
+    "task": {
+     "title": "商业智能实习生",
+     "title_en": "Business Intelligence Intern",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "- Business Intelligence Intern, Solace Retail - apply by 20 November"
+    },
+    "item": {
+     "role": "optional",
+     "kind": null,
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-11-20"
+     ],
+     "anchor": "apply by 20 November"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "undated_spurious",
+    "mail": "synC08",
+    "task": {
+     "title": "数据科学实习生",
+     "title_en": "Data Science Intern",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "- Data Science Intern, Brightwave Energy"
+    },
+    "item": null,
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "undated_spurious",
+    "mail": "synC08",
+    "task": {
+     "title": "分析实习生",
+     "title_en": "Analytics Intern",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "- Analytics Intern, Pemberton Logistics"
+    },
+    "item": null,
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "undated_spurious",
+    "mail": "synC08",
+    "task": {
+     "title": "初级数据工程师",
+     "title_en": "Junior Data Engineer",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "- Junior Data Engineer, Quillon Health"
+    },
+    "item": null,
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "undated_spurious",
+    "mail": "synC08",
+    "task": {
+     "title": "研究助理（兼职）",
+     "title_en": "Research Assistant (part-time)",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "- Research Assistant (part-time), Lakeside Policy Lab"
+    },
+    "item": null,
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synC09",
+    "task": {
+     "title": "简历评审预约",
+     "title_en": "CV review appointment",
+     "date": "2026-10-27",
+     "time": "14:00",
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "CV review appointment"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-27"
+     ],
+     "anchor": "Tuesday, 27 October at 2 pm"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synC10",
+    "task": {
+     "title": "参加数据分析实习生线上面试",
+     "title_en": "Attend the online interview for the data analyst internship",
+     "date": "2026-11-10",
+     "time": "14:00",
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "我们计划于11月10日下午2点安排线上面试。"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-11-10"
+     ],
+     "anchor": "11月10日下午2点"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synE01",
+    "task": {
+     "title": "因果机器学习实践",
+     "title_en": "Causal ML in Practice",
+     "date": "2026-10-22",
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "Title: Causal ML in Practice"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-22"
+     ],
+     "anchor": "Thursday, 22 October, 4:00-5:00 pm"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synE02",
+    "task": {
+     "title": "Capstone sync",
+     "title_en": "Capstone sync",
+     "date": "2026-10-16",
+     "time": "15:00",
+     "timezone": "Asia/Singapore",
+     "model_status": "pending",
+     "quote": "Capstone sync"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-16"
+     ],
+     "anchor": "Fri 16 Oct 2026 3pm - 4pm Singapore Standard Time"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synE03",
+    "task": {
+     "title": "参加湖滨黑客马拉松",
+     "title_en": "Attend the Lakeside Hackathon",
+     "date": "2026-11-07",
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "The Lakeside Hackathon is back on 7-8 November!"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-11-07"
+     ],
+     "anchor": "on 7-8 November"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "optional_promoted",
+    "mail": "synE03",
+    "task": {
+     "title": "报名湖滨黑客马拉松",
+     "title_en": "Register for the Lakeside Hackathon",
+     "date": "2026-10-30",
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "Register your team by 30 October using the form on our website."
+    },
+    "item": {
+     "role": "optional",
+     "kind": null,
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-30"
+     ],
+     "anchor": "Register your team by 30 October"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synE04",
+    "task": {
+     "title": "参加Python数据管道工作坊",
+     "title_en": "Attend the Python for Data Pipelines workshop",
+     "date": "2026-10-31",
+     "time": "09:00",
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "You are registered for the workshop 'Python for Data Pipelines' on Saturday, 31 October, 9 am - 1 pm (Library Training Room 2)."
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-31"
+     ],
+     "anchor": "Saturday, 31 October, 9 am - 1 pm"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synE06",
+    "task": {
+     "title": "校友咖啡交流",
+     "title_en": "Coffee chat with alumni",
+     "date": "2026-10-21",
+     "time": "17:00",
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "Coffee chat with alumni: Wednesday, 21 October, 5 pm, Graduate Lounge"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-21"
+     ],
+     "anchor": "Wednesday, 21 October, 5 pm"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synE06",
+    "task": {
+     "title": "排灯节庆祝活动",
+     "title_en": "Deepavali celebration",
+     "date": "2026-11-06",
+     "time": "18:00",
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "Deepavali celebration: Friday, 6 November, 6 pm, Central Plaza"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-11-06"
+     ],
+     "anchor": "Friday, 6 November, 6 pm"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "undated_spurious",
+    "mail": "synE06",
+    "task": {
+     "title": "周日羽毛球社交活动",
+     "title_en": "Badminton social",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "Badminton social: every Sunday morning"
+    },
+    "item": null,
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "optional_promoted",
+    "mail": "synE07",
+    "task": {
+     "title": "填写迎新聚会报名表",
+     "title_en": "Fill out the welcome party registration form",
+     "date": "2026-10-22",
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "有意参加的同学请在周四前填写报名表，方便我们统计人数。"
+    },
+    "item": {
+     "role": "optional",
+     "kind": null,
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-22"
+     ],
+     "anchor": "请在周四前填写报名表"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synE07",
+    "task": {
+     "title": "参加秋季迎新聚会",
+     "title_en": "Attend the fall welcome party",
+     "date": "2026-10-24",
+     "time": "15:00",
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "本周六（10月24日）下午3点，我们将在学生活动中心举办秋季迎新聚会，有美食和小游戏。"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-24"
+     ],
+     "anchor": "本周六（10月24日）下午3点"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synE08",
+    "task": {
+     "title": "Capstone 同步会议",
+     "title_en": "Capstone sync",
+     "date": "2026-10-19",
+     "time": "10:00",
+     "timezone": "Asia/Singapore",
+     "model_status": "pending",
+     "quote": "Updated invitation: Capstone sync @ Mon 19 Oct 2026 10am - 11am (SGT) ([EMAIL_a72abf0e])"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-19"
+     ],
+     "anchor": "Mon 19 Oct 2026 10am - 11am Singapore Standard Time"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synE09",
+    "task": {
+     "title": "参加校友联谊之夜圆桌讨论",
+     "title_en": "Join the alumni networking night panel",
+     "date": "2026-11-18",
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "The Graduate Student Society is organising an alumni networking night on 18 November, and your name came up as someone who could share a current student's perspective on the panel (about ten minutes)."
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-11-18"
+     ],
+     "anchor": "on 18 November"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synE10",
+    "task": {
+     "title": "参加 Intro to dbt 线上讲座",
+     "title_en": "Attend the Intro to dbt live webinar",
+     "date": "2026-11-03",
+     "time": "20:00",
+     "timezone": "Asia/Singapore",
+     "model_status": "pending",
+     "quote": "Starting soon: Intro to dbt (live webinar)"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-11-03"
+     ],
+     "anchor": "today, 8:00 PM SGT"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synO02",
+    "task": {
+     "title": "如非本人登录，请立即重置密码",
+     "title_en": "If the sign-in was not yours, reset your password immediately",
+     "date": "2026-10-17",
+     "time": "22:14",
+     "timezone": "Asia/Singapore",
+     "model_status": "conditional",
+     "quote": "Time: 17 October 2026, 22:14 SGT"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "security_timestamp",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-17"
+     ],
+     "anchor": "17 October 2026, 22:14 SGT"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synO07",
+    "task": {
+     "title": "空调维修（周二选项）",
+     "title_en": "Air-con repair (Tuesday option)",
+     "date": "2026-10-27",
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "The technician can come to fix the air-con in your room on Tuesday 27 October or Wednesday 28 October, between 2 and 4 pm."
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-27"
+     ],
+     "anchor": "Tuesday 27 October or Wednesday 28 October, between 2 and 4 pm"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "duplicate_in_mail",
+    "mail": "synO07",
+    "task": {
+     "title": "空调维修（周三选项）",
+     "title_en": "Air-con repair (Wednesday option)",
+     "date": "2026-10-28",
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "The technician can come to fix the air-con in your room on Tuesday 27 October or Wednesday 28 October, between 2 and 4 pm."
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-27"
+     ],
+     "anchor": "Tuesday 27 October or Wednesday 28 October, between 2 and 4 pm"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synO10",
+    "task": {
+     "title": "通过邮件回复用户名和密码",
+     "title_en": "Reply by email with the username and password",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "unless you reply to this email with your username and password within 24 hours."
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "phishing_threat",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-20"
+     ],
+     "anchor": "deactivated on 20 October"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "synO13",
+    "task": {
+     "title": "确认大学健康中心预约",
+     "title_en": "Confirm University Health Centre appointment",
+     "date": "2026-10-26",
+     "time": "09:40",
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "Please confirm your appointment - University Health Centre"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "event_time",
+     "deadline_id": null,
+     "expected_dates": [
+      "2026-10-26"
+     ],
+     "anchor": "Monday, 26 October 2026 at 9:40 AM"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "undated_spurious",
+    "mail": "synO16",
+    "task": {
+     "title": "若非本人操作，请致电客服",
+     "title_en": "Call customer service if you did not make this transaction",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "如非本人操作，请立即致电客服热线 [PHONE_REMOVED]。"
+    },
+    "item": null,
+    "first_seen_in": null
+   }
+  ],
+  "per_mail": {
+   "synA01": {
+    "tasks": [
+     {
+      "entity_key": "model_synA01_0",
+      "candidate_index": 0,
+      "title": "提交 Assignment 2",
+      "title_en": "Submit Assignment 2",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-30",
+      "time": "23:59",
+      "timezone": "Asia/Singapore",
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "[DAT5310] Assignment 2 released",
+      "start": 0,
+      "end": 31,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "stale",
+      "deadline_id": "D01",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D01",
+      "current": false,
+      "expected_dates": [
+       "2026-10-30"
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": "Asia/Singapore",
+      "anchor": "due on Friday, 30 October 2026 at 23:59 (SGT)",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA02": {
+    "tasks": [
+     {
+      "entity_key": "model_synA02_0",
+      "candidate_index": 0,
+      "title": "提交作业2",
+      "title_en": "Submit Assignment 2",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-30",
+      "time": "23:59",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "[DAT5310] Reminder: Assignment 2 due this Friday",
+      "start": 0,
+      "end": 48,
+      "model_status": "pending",
+      "model_needs_review": true,
+      "item": 0,
+      "outcome": "stale",
+      "deadline_id": "D01",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D01",
+      "current": false,
+      "expected_dates": [
+       "2026-10-30"
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "due this Friday at 23:59",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA03": {
+    "tasks": [
+     {
+      "entity_key": "model_synA03_0",
+      "candidate_index": 0,
+      "title": "提交作业2",
+      "title_en": "Submit Assignment 2",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-02",
+      "time": "23:59",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "[DAT5310] Assignment 2 deadline extended",
+      "start": 0,
+      "end": 40,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D01",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D01",
+      "current": true,
+      "expected_dates": [
+       "2026-11-02"
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "The new deadline is Monday, 2 November 2026, 23:59",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA04": {
+    "tasks": [
+     {
+      "entity_key": "model_synA04_0",
+      "candidate_index": 0,
+      "title": "参加 Quiz 3",
+      "title_en": "Take Quiz 3",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-20",
+      "time": "10:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "[STA5120] Quiz 3 next Tuesday",
+      "start": 0,
+      "end": 29,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D02",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D02",
+      "current": true,
+      "expected_dates": [
+       "2026-10-20"
+      ],
+      "expected_times": [
+       "10:00",
+       "10:45"
+      ],
+      "expected_timezone": null,
+      "anchor": "Tuesday, 20 October, from 10:00 to 10:45",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA05": {
+    "tasks": [
+     {
+      "entity_key": "model_synA05_0",
+      "candidate_index": 0,
+      "title": "完成问题集4",
+      "title_en": "Complete Problem Set 4",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-06",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "subject",
+      "quote": "[STA5120] Problem Set 4",
+      "start": 0,
+      "end": 23,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D03",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D03",
+      "current": true,
+      "expected_dates": [
+       "2026-11-06"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "due on 6 November",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA06": {
+    "tasks": [
+     {
+      "entity_key": "model_synA06_0",
+      "candidate_index": 0,
+      "title": "提交实验 3 报告和 docker-compose 文件",
+      "title_en": "Submit the Lab 3 report and docker-compose file",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-23",
+      "time": "18:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "[CSC5240] Lab 3 report",
+      "start": 0,
+      "end": 22,
+      "model_status": "pending",
+      "model_needs_review": true,
+      "item": 0,
+      "outcome": "wrong_date",
+      "deadline_id": "D04",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D04",
+      "current": true,
+      "expected_dates": [
+       null
+      ],
+      "expected_times": [
+       "18:00",
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "due Thursday, 23 October at 6 pm",
+      "status": "wrong_date",
+      "task": 0
+     }
+    ]
+   },
+   "synA07": {
+    "tasks": [
+     {
+      "entity_key": "model_synA07_0",
+      "candidate_index": 0,
+      "title": "提交期末报告",
+      "title_en": "Submit the final report",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "subject",
+      "quote": "[MGT5005] Final report submission",
+      "start": 0,
+      "end": 33,
+      "model_status": "pending",
+      "model_needs_review": true,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D05",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D05",
+      "current": true,
+      "expected_dates": [
+       null
+      ],
+      "expected_times": [
+       "17:00",
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "due the Friday after reading week, 5 pm",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA08": {
+    "tasks": [
+     {
+      "entity_key": "model_synA08_0",
+      "candidate_index": 0,
+      "title": "提交第三次作业",
+      "title_en": "Submit the third assignment",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-13",
+      "time": "23:59",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "DAT5310 第三次作业将于11月13日（周五）23:59截止，请通过课程平台提交代码和报告。",
+      "start": 7,
+      "end": 55,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D06",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D06",
+      "current": true,
+      "expected_dates": [
+       "2026-11-13"
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "11月13日（周五）23:59截止",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA09": {
+    "tasks": [
+     {
+      "entity_key": "model_synA09_0",
+      "candidate_index": 0,
+      "title": "查看成绩和反馈",
+      "title_en": "View score and feedback",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "Log in to the course portal to view your score and feedback.",
+      "start": 94,
+      "end": 154,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "undated_spurious"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "graded_timestamp",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-14"
+      ],
+      "expected_times": [
+       "09:12"
+      ],
+      "expected_timezone": null,
+      "anchor": "Released on 14 October 2026 at 09:12",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synA10": {
+    "tasks": [
+     {
+      "entity_key": "model_synA10_0",
+      "candidate_index": 0,
+      "title": "提交作业1复核申请",
+      "title_en": "Submit an Assignment 1 regrade request",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-21",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "If you believe there is a grading error, you may submit a regrade request through the portal by 21 October.",
+      "start": 38,
+      "end": 145,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": 0,
+      "outcome": "optional_promoted",
+      "deadline_id": null,
+      "item_role": "optional",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "optional",
+      "kind": null,
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-21"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "submit a regrade request through the portal by 21 October",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "synA11": {
+    "tasks": [
+     {
+      "entity_key": "model_synA11_0",
+      "candidate_index": 0,
+      "title": "提交 DAT5310 作业 2",
+      "title_en": "Submit DAT5310 Assignment 2",
+      "status": "completed",
+      "state": "done",
+      "date": "2026-11-01",
+      "time": "21:47",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "This confirms that your submission for 'DAT5310 Assignment 2' was received on 1 November 2026 at 21:47.",
+      "start": 0,
+      "end": 103,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "not_open",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "receipt_timestamp"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "receipt_timestamp",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-01"
+      ],
+      "expected_times": [
+       "21:47"
+      ],
+      "expected_timezone": null,
+      "anchor": "received on 1 November 2026 at 21:47",
+      "status": "kept_closed",
+      "task": 0
+     },
+     {
+      "role": "completed",
+      "kind": null,
+      "deadline_id": "D01",
+      "current": true,
+      "expected_dates": [
+       "2026-11-02"
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "Due date: 2 November 2026 23:59",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synA12": {
+    "tasks": [
+     {
+      "entity_key": "model_synA12_0",
+      "candidate_index": 0,
+      "title": "回复是否负责数据清洗",
+      "title_en": "Reply whether you can handle data cleaning",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-21",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "咱们 capstone 的数据清洗部分你能负责吗？",
+      "start": 9,
+      "end": 34,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D07",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D07",
+      "current": true,
+      "expected_dates": [
+       "2026-10-21"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "麻烦明晚之前告诉我",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA13": {
+    "tasks": [
+     {
+      "entity_key": "model_synA13_0",
+      "candidate_index": 0,
+      "title": "提交演示文稿幻灯片",
+      "title_en": "Submit presentation slides",
+      "status": "completed",
+      "state": "done",
+      "date": "2026-10-14",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "can you send me your slides by Wednesday 14 October",
+      "start": 201,
+      "end": 252,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "not_open",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "quoted_old_request"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "quoted_old_request",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-14"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "send me your slides by Wednesday 14 October",
+      "status": "kept_closed",
+      "task": 0
+     }
+    ]
+   },
+   "synA14": {
+    "tasks": [
+     {
+      "entity_key": "model_synA14_0",
+      "candidate_index": 0,
+      "title": "确认反思论文延期安排并按期提交",
+      "title_en": "Confirm the reflection essay extension and submit it on time",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-04",
+      "time": "12:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "I can give you until Wednesday, 4 November, 12 noon for the reflection essay.",
+      "start": 66,
+      "end": 143,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D08",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D08",
+      "current": true,
+      "expected_dates": [
+       "2026-11-04"
+      ],
+      "expected_times": [
+       "12:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "until Wednesday, 4 November, 12 noon",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA15": {
+    "tasks": [
+     {
+      "entity_key": "model_synA15_0",
+      "candidate_index": 0,
+      "title": "STA5120讲座（地点变更）",
+      "title_en": "STA5120 lecture (venue change)",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-21",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Tomorrow's lecture (Wednesday, 21 October, 14:00-16:00) will be held in LT12 instead of LT7 because of an examination booking.",
+      "start": 13,
+      "end": 139,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-21"
+      ],
+      "expected_times": [
+       "14:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Wednesday, 21 October, 14:00-16:00",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "synA16": {
+    "tasks": [
+     {
+      "entity_key": "model_synA16_0",
+      "candidate_index": 0,
+      "title": "STA5120期中考试",
+      "title_en": "STA5120 Midterm Test",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-24",
+      "time": "09:30",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "[STA5120] Midterm test arrangements",
+      "start": 0,
+      "end": 35,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D09",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D09",
+      "current": true,
+      "expected_dates": [
+       "2026-10-24"
+      ],
+      "expected_times": [
+       "09:30",
+       "11:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Saturday, 24 October 2026, 9:30 am to 11:00 am",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA17": {
+    "tasks": [
+     {
+      "entity_key": "model_synA17_0",
+      "candidate_index": 0,
+      "title": "提交进度报告",
+      "title_en": "Submit the progress report",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-23",
+      "time": "17:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "1. Progress report: Friday, 23 October, 17:00",
+      "start": 67,
+      "end": 112,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D10",
+      "item_role": "deadline",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_synA17_1",
+      "candidate_index": 1,
+      "title": "提交同伴评估表",
+      "title_en": "Submit the peer evaluation form",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-26",
+      "time": "23:59",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "2. Peer evaluation form: Monday, 26 October, 23:59",
+      "start": 113,
+      "end": 163,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "correct",
+      "deadline_id": "D11",
+      "item_role": "deadline",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_synA17_2",
+      "candidate_index": 2,
+      "title": "提交最终展示幻灯片",
+      "title_en": "Submit the final presentation slides",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-12",
+      "time": "12:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "3. Final presentation slides: 12 November, 12 noon",
+      "start": 164,
+      "end": 214,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 2,
+      "outcome": "correct",
+      "deadline_id": "D12",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D10",
+      "current": true,
+      "expected_dates": [
+       "2026-10-23"
+      ],
+      "expected_times": [
+       "17:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Progress report: Friday, 23 October, 17:00",
+      "status": "hit",
+      "task": 0
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D11",
+      "current": true,
+      "expected_dates": [
+       "2026-10-26"
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "Peer evaluation form: Monday, 26 October, 23:59",
+      "status": "hit",
+      "task": 1
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D12",
+      "current": true,
+      "expected_dates": [
+       "2026-11-12"
+      ],
+      "expected_times": [
+       "12:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Final presentation slides: 12 November, 12 noon",
+      "status": "hit",
+      "task": 2
+     }
+    ]
+   },
+   "synA18": {
+    "tasks": [
+     {
+      "entity_key": "model_synA18_0",
+      "candidate_index": 0,
+      "title": "参加线上分工讨论会",
+      "title_en": "Attend the online task-allocation meeting",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-20",
+      "time": "20:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "明晚8点我们线上开会讨论一下分工，你能参加吗？",
+      "start": 9,
+      "end": 32,
+      "model_status": "conditional",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     },
+     {
+      "entity_key": "model_synA18_1",
+      "candidate_index": 1,
+      "title": "提交文献综述初稿",
+      "title_en": "Submit the literature review draft",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-22",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "周四前请把文献综述的初稿发到群里，老师下周要看进度。",
+      "start": 37,
+      "end": 63,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "correct",
+      "deadline_id": "D13",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-20"
+      ],
+      "expected_times": [
+       "20:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "明晚8点",
+      "status": "promoted",
+      "task": 0
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D13",
+      "current": true,
+      "expected_dates": [
+       "2026-10-22"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "周四前请把文献综述的初稿发到群里",
+      "status": "hit",
+      "task": 1
+     }
+    ]
+   },
+   "synA19": {
+    "tasks": [
+     {
+      "entity_key": "model_synA19_0",
+      "candidate_index": 0,
+      "title": "完成期中反馈调查",
+      "title_en": "Complete the mid-semester feedback survey",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-25",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Please take five minutes to complete the mid-semester feedback survey.",
+      "start": 65,
+      "end": 135,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "optional_promoted",
+      "deadline_id": null,
+      "item_role": "optional",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "optional",
+      "kind": null,
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-25"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "The survey closes on 25 October",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "synA20": {
+    "tasks": [
+     {
+      "entity_key": "model_synA20_0",
+      "candidate_index": 0,
+      "title": "本周办公时间",
+      "title_en": "Office hours this week",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-05",
+      "time": "15:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "[CSC5240] Office hours this week and Lab 4",
+      "start": 0,
+      "end": 42,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     },
+     {
+      "entity_key": "model_synA20_1",
+      "candidate_index": 1,
+      "title": "提交 Lab 4",
+      "title_en": "Submit Lab 4",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-09",
+      "time": "10:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "[CSC5240] Office hours this week and Lab 4",
+      "start": 0,
+      "end": 42,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "correct",
+      "deadline_id": "D14",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-05"
+      ],
+      "expected_times": [
+       "15:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Thursday 3-4 pm",
+      "status": "promoted",
+      "task": 0
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D14",
+      "current": true,
+      "expected_dates": [
+       "2026-11-09"
+      ],
+      "expected_times": [
+       "10:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "due next Monday (9 November) at 10:00 am",
+      "status": "hit",
+      "task": 1
+     }
+    ]
+   },
+   "synA21": {
+    "tasks": [
+     {
+      "entity_key": "model_synA21_0",
+      "candidate_index": 0,
+      "title": "参加课堂Kaggle竞赛",
+      "title_en": "Participate in the in-class Kaggle competition",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-15",
+      "time": "23:59",
+      "timezone": "Etc/UTC",
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "[DAT5310] In-class Kaggle competition",
+      "start": 0,
+      "end": 37,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D15",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D15",
+      "current": true,
+      "expected_dates": [
+       "2026-11-15"
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": "UTC",
+      "anchor": "closes on 15 November 2026 at 11:59 PM UTC",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA22": {
+    "tasks": [
+     {
+      "entity_key": "model_synA22_0",
+      "candidate_index": 0,
+      "title": "参加STA5120期末考试",
+      "title_en": "Attend the STA5120 final examination",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-25",
+      "time": "13:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "STA5120 Statistical Inference",
+      "start": 85,
+      "end": 114,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D16",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D16",
+      "current": true,
+      "expected_dates": [
+       "2026-11-25"
+      ],
+      "expected_times": [
+       "13:00",
+       "15:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Wednesday, 25 November 2026, 1:00 PM",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA23": {
+    "tasks": [
+     {
+      "entity_key": "model_synA23_0",
+      "candidate_index": 0,
+      "title": "整理并提交未加入项目组的学生名单",
+      "title_en": "Compile and submit the list of students without a project group",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-30",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Could you check with the class and send me the list of students who still do not have a project group by Friday?",
+      "start": 66,
+      "end": 178,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D37",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D37",
+      "current": true,
+      "expected_dates": [
+       "2026-10-30"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "send me the list of students who still do not have a project group by Friday",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA24": {
+    "tasks": [
+     {
+      "entity_key": "model_synA24_0",
+      "candidate_index": 0,
+      "title": "完成两份《Lab 3 report》互评",
+      "title_en": "Complete two peer reviews for “Lab 3 report”",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-09",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "You have been assigned 2 peer reviews for 'Lab 3 report'.",
+      "start": 0,
+      "end": 57,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D17",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D17",
+      "current": true,
+      "expected_dates": [
+       "2026-11-09",
+       null
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "complete them within 5 days of this email",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA25": {
+    "tasks": [],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "cancelled",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-05"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "originally scheduled for 5 November",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synA26": {
+    "tasks": [
+     {
+      "entity_key": "model_synA26_0",
+      "candidate_index": 0,
+      "title": "报名期末展示时段",
+      "title_en": "Sign up for a final presentation slot",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-28",
+      "time": "18:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "[MGT5005] Sign up for a presentation slot",
+      "start": 0,
+      "end": 41,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D18",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D18",
+      "current": true,
+      "expected_dates": [
+       "2026-10-28"
+      ],
+      "expected_times": [
+       "18:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "by Wednesday, 28 October, 6 pm",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA27": {
+    "tasks": [
+     {
+      "entity_key": "model_synA27_0",
+      "candidate_index": 0,
+      "title": "告知项目所选数据集",
+      "title_en": "Tell them the dataset chosen for the project",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-28",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Could you let me know by Wednesday?",
+      "start": 96,
+      "end": 131,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D38",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D38",
+      "current": true,
+      "expected_dates": [
+       "2026-10-28"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Could you let me know by Wednesday?",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA28": {
+    "tasks": [
+     {
+      "entity_key": "model_synA28_0",
+      "candidate_index": 0,
+      "title": "提交进度报告",
+      "title_en": "Submit the progress report",
+      "status": "completed",
+      "state": "done",
+      "date": "2026-10-23",
+      "time": "16:40",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "进度报告我已经提交了，系统显示提交时间是10月23日16:40，截止时间是17:00，赶上了。",
+      "start": 5,
+      "end": 52,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "not_open",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "receipt_timestamp"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "receipt_timestamp",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-23"
+      ],
+      "expected_times": [
+       "16:40"
+      ],
+      "expected_timezone": null,
+      "anchor": "提交时间是10月23日16:40",
+      "status": "kept_closed",
+      "task": 0
+     },
+     {
+      "role": "completed",
+      "kind": null,
+      "deadline_id": "D10",
+      "current": true,
+      "expected_dates": [
+       "2026-10-23"
+      ],
+      "expected_times": [
+       "17:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "截止时间是17:00",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synA29": {
+    "tasks": [
+     {
+      "entity_key": "model_synA29_0",
+      "candidate_index": 0,
+      "title": "重新上传 Lab 2 提交文件并回复确认",
+      "title_en": "Re-upload the Lab 2 submission and reply to confirm",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-20",
+      "time": "17:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "[CSC5240] Problem with your Lab 2 submission",
+      "start": 0,
+      "end": 44,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D19",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D19",
+      "current": true,
+      "expected_dates": [
+       "2026-10-20"
+      ],
+      "expected_times": [
+       "17:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "re-upload it by tomorrow 5 pm",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synA30": {
+    "tasks": [
+     {
+      "entity_key": "model_synA30_0",
+      "candidate_index": 0,
+      "title": "参加咨询",
+      "title_en": "Attend consultation",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-29",
+      "time": "16:30",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "Your consultation is confirmed for Thursday, 29 October, 4:30 pm at my office (COM2-03-12).",
+      "start": 14,
+      "end": 105,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-29"
+      ],
+      "expected_times": [
+       "16:30"
+      ],
+      "expected_timezone": null,
+      "anchor": "Thursday, 29 October, 4:30 pm",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "synC01": {
+    "tasks": [
+     {
+      "entity_key": "model_synC01_0",
+      "candidate_index": 0,
+      "title": "申请 Northwind Consulting 数据分析师职位",
+      "title_en": "Apply for the Northwind Consulting Data Analyst role",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-31",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Applications close on 31 October 2026.",
+      "start": 152,
+      "end": 190,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "optional_promoted",
+      "deadline_id": null,
+      "item_role": "optional",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "optional",
+      "kind": null,
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-31"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Applications close on 31 October 2026",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "synC02": {
+    "tasks": [
+     {
+      "entity_key": "model_synC02_0",
+      "candidate_index": 0,
+      "title": "回复可面试时间",
+      "title_en": "Reply with interview availability",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-30",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Could you let me know your availability on 3-5 November? Please reply by Friday, 30 October so that we can confirm a slot.",
+      "start": 158,
+      "end": 280,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "correct",
+      "deadline_id": "D20",
+      "item_role": "deadline",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_synC02_1",
+      "candidate_index": 1,
+      "title": "参加首轮视频面试",
+      "title_en": "Attend the first-round video interview",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "We would like to invite you to a first-round video interview with the analytics team.",
+      "start": 71,
+      "end": 156,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-03"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "availability on 3-5 November",
+      "status": "promoted",
+      "task": 1
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D20",
+      "current": true,
+      "expected_dates": [
+       "2026-10-30"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Please reply by Friday, 30 October",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synC03": {
+    "tasks": [
+     {
+      "entity_key": "model_synC03_0",
+      "candidate_index": 0,
+      "title": "完成在线评估",
+      "title_en": "Complete the online assessment",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-22",
+      "time": "10:00",
+      "timezone": "Asia/Singapore",
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "Please complete the assessment within 72 hours of receiving this email.",
+      "start": 160,
+      "end": 231,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D21",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D21",
+      "current": true,
+      "expected_dates": [
+       "2026-10-22"
+      ],
+      "expected_times": [
+       "10:00"
+      ],
+      "expected_timezone": "Asia/Singapore",
+      "anchor": "expires on 22 October 2026 at 10:00 AM SGT",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synC04": {
+    "tasks": [
+     {
+      "entity_key": "model_synC04_0",
+      "candidate_index": 0,
+      "title": "确认模拟面试时间（周四选项）",
+      "title_en": "Confirm the mock interview time (Thursday option)",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-22",
+      "time": "19:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "Does Thursday 22 October at 7 pm or Saturday 24 October at 10 am suit you better?",
+      "start": 53,
+      "end": 134,
+      "model_status": "pending",
+      "model_needs_review": true,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     },
+     {
+      "entity_key": "model_synC04_1",
+      "candidate_index": 1,
+      "title": "确认模拟面试时间（周六选项）",
+      "title_en": "Confirm the mock interview time (Saturday option)",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-24",
+      "time": "10:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "Does Thursday 22 October at 7 pm or Saturday 24 October at 10 am suit you better?",
+      "start": 53,
+      "end": 134,
+      "model_status": "pending",
+      "model_needs_review": true,
+      "item": 1,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-22"
+      ],
+      "expected_times": [
+       "19:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Thursday 22 October at 7 pm",
+      "status": "promoted",
+      "task": 0
+     },
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-24"
+      ],
+      "expected_times": [
+       "10:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Saturday 24 October at 10 am",
+      "status": "promoted",
+      "task": 1
+     }
+    ]
+   },
+   "synC05": {
+    "tasks": [],
+    "items": []
+   },
+   "synC06": {
+    "tasks": [
+     {
+      "entity_key": "model_synC06_0",
+      "candidate_index": 0,
+      "title": "签署并返还实习录用信",
+      "title_en": "Sign and return the internship offer letter",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-06",
+      "time": "17:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "Please sign and return the offer letter by 5 pm on Friday, 6 November 2026.",
+      "start": 161,
+      "end": 236,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "correct",
+      "deadline_id": "D22",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "start_date",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2027-01-11"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "starting 11 January 2027",
+      "status": "untouched",
+      "task": null
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D22",
+      "current": true,
+      "expected_dates": [
+       "2026-11-06"
+      ],
+      "expected_times": [
+       "17:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "by 5 pm on Friday, 6 November 2026",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synC07": {
+    "tasks": [
+     {
+      "entity_key": "model_synC07_0",
+      "candidate_index": 0,
+      "title": "预约人力资源面试",
+      "title_en": "Book an HR interview",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-04",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Please book a 30-minute slot for your HR interview using the link below by Wednesday (4 Nov).",
+      "start": 60,
+      "end": 153,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D23",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D23",
+      "current": true,
+      "expected_dates": [
+       "2026-11-04"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "by Wednesday (4 Nov)",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synC08": {
+    "tasks": [
+     {
+      "entity_key": "model_synC08_0",
+      "candidate_index": 0,
+      "title": "商业智能实习生",
+      "title_en": "Business Intelligence Intern",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "- Business Intelligence Intern, Solace Retail - apply by 20 November",
+      "start": 74,
+      "end": 142,
+      "model_status": "pending",
+      "model_needs_review": true,
+      "item": 0,
+      "outcome": "optional_promoted",
+      "deadline_id": null,
+      "item_role": "optional",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_synC08_1",
+      "candidate_index": 1,
+      "title": "数据科学实习生",
+      "title_en": "Data Science Intern",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "- Data Science Intern, Brightwave Energy",
+      "start": 143,
+      "end": 183,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": null,
+      "outcome": "undated_spurious"
+     },
+     {
+      "entity_key": "model_synC08_2",
+      "candidate_index": 2,
+      "title": "分析实习生",
+      "title_en": "Analytics Intern",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "- Analytics Intern, Pemberton Logistics",
+      "start": 184,
+      "end": 223,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": null,
+      "outcome": "undated_spurious"
+     },
+     {
+      "entity_key": "model_synC08_3",
+      "candidate_index": 3,
+      "title": "初级数据工程师",
+      "title_en": "Junior Data Engineer",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "- Junior Data Engineer, Quillon Health",
+      "start": 224,
+      "end": 262,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": null,
+      "outcome": "undated_spurious"
+     },
+     {
+      "entity_key": "model_synC08_4",
+      "candidate_index": 4,
+      "title": "研究助理（兼职）",
+      "title_en": "Research Assistant (part-time)",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "- Research Assistant (part-time), Lakeside Policy Lab",
+      "start": 263,
+      "end": 316,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": null,
+      "outcome": "undated_spurious"
+     }
+    ],
+    "items": [
+     {
+      "role": "optional",
+      "kind": null,
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-20"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "apply by 20 November",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "synC09": {
+    "tasks": [
+     {
+      "entity_key": "model_synC09_0",
+      "candidate_index": 0,
+      "title": "简历评审预约",
+      "title_en": "CV review appointment",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-27",
+      "time": "14:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "CV review appointment",
+      "start": 0,
+      "end": 21,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     },
+     {
+      "entity_key": "model_synC09_1",
+      "candidate_index": 1,
+      "title": "上传简历",
+      "title_en": "Upload CV",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-26",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Please upload your CV to the careers portal at least one day before the appointment so that the adviser can read it in advance.",
+      "start": 124,
+      "end": 251,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "correct",
+      "deadline_id": "D24",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-27"
+      ],
+      "expected_times": [
+       "14:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Tuesday, 27 October at 2 pm",
+      "status": "promoted",
+      "task": 0
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D24",
+      "current": true,
+      "expected_dates": [
+       "2026-10-26"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "at least one day before the appointment",
+      "status": "hit",
+      "task": 1
+     }
+    ]
+   },
+   "synC10": {
+    "tasks": [
+     {
+      "entity_key": "model_synC10_0",
+      "candidate_index": 0,
+      "title": "回复确认是否参加面试",
+      "title_en": "Reply to confirm whether you can attend the interview",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-05",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "请于11月5日前回复本邮件，确认是否可以参加。如时间不便，请一并告知。",
+      "start": 55,
+      "end": 90,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "correct",
+      "deadline_id": "D25",
+      "item_role": "deadline",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_synC10_1",
+      "candidate_index": 1,
+      "title": "参加数据分析实习生线上面试",
+      "title_en": "Attend the online interview for the data analyst internship",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-10",
+      "time": "14:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "我们计划于11月10日下午2点安排线上面试。",
+      "start": 31,
+      "end": 53,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-10"
+      ],
+      "expected_times": [
+       "14:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "11月10日下午2点",
+      "status": "promoted",
+      "task": 1
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D25",
+      "current": true,
+      "expected_dates": [
+       "2026-11-05"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "请于11月5日前回复本邮件",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synC11": {
+    "tasks": [
+     {
+      "entity_key": "model_synC11_0",
+      "candidate_index": 0,
+      "title": "提交科技分析师项目申请",
+      "title_en": "Submit Technology Analyst Programme application",
+      "status": "completed",
+      "state": "done",
+      "date": "2026-10-20",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "We received your application on 20 October 2026.",
+      "start": 86,
+      "end": 134,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "not_open",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "receipt_timestamp"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "receipt_timestamp",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-20"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "received your application on 20 October 2026",
+      "status": "kept_closed",
+      "task": 0
+     }
+    ]
+   },
+   "synC12": {
+    "tasks": [],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "other_party_timeline",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-09"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "after 9 November",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synE01": {
+    "tasks": [
+     {
+      "entity_key": "model_synE01_0",
+      "candidate_index": 0,
+      "title": "因果机器学习实践",
+      "title_en": "Causal ML in Practice",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-22",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Title: Causal ML in Practice",
+      "start": 65,
+      "end": 93,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-22"
+      ],
+      "expected_times": [
+       "16:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Thursday, 22 October, 4:00-5:00 pm",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "synE02": {
+    "tasks": [
+     {
+      "entity_key": "model_synE02_0",
+      "candidate_index": 0,
+      "title": "Capstone sync",
+      "title_en": "Capstone sync",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-16",
+      "time": "15:00",
+      "timezone": "Asia/Singapore",
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "Capstone sync",
+      "start": 47,
+      "end": 60,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-16"
+      ],
+      "expected_times": [
+       "15:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Fri 16 Oct 2026 3pm - 4pm Singapore Standard Time",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "synE03": {
+    "tasks": [
+     {
+      "entity_key": "model_synE03_0",
+      "candidate_index": 0,
+      "title": "参加湖滨黑客马拉松",
+      "title_en": "Attend the Lakeside Hackathon",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-07",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "The Lakeside Hackathon is back on 7-8 November!",
+      "start": 14,
+      "end": 61,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     },
+     {
+      "entity_key": "model_synE03_1",
+      "candidate_index": 1,
+      "title": "报名湖滨黑客马拉松",
+      "title_en": "Register for the Lakeside Hackathon",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-30",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Register your team by 30 October using the form on our website.",
+      "start": 157,
+      "end": 220,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "optional_promoted",
+      "deadline_id": null,
+      "item_role": "optional",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-07"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "on 7-8 November",
+      "status": "promoted",
+      "task": 0
+     },
+     {
+      "role": "optional",
+      "kind": null,
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-30"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Register your team by 30 October",
+      "status": "promoted",
+      "task": 1
+     }
+    ]
+   },
+   "synE04": {
+    "tasks": [
+     {
+      "entity_key": "model_synE04_0",
+      "candidate_index": 0,
+      "title": "确认参加Python数据管道工作坊",
+      "title_en": "Confirm attendance at the Python for Data Pipelines workshop",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-28",
+      "time": "12:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "please confirm your attendance using the link below before Wednesday, 28 October, 12 pm.",
+      "start": 170,
+      "end": 258,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "correct",
+      "deadline_id": "D26",
+      "item_role": "deadline",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_synE04_1",
+      "candidate_index": 1,
+      "title": "参加Python数据管道工作坊",
+      "title_en": "Attend the Python for Data Pipelines workshop",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-31",
+      "time": "09:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "You are registered for the workshop 'Python for Data Pipelines' on Saturday, 31 October, 9 am - 1 pm (Library Training Room 2).",
+      "start": 14,
+      "end": 141,
+      "model_status": "conditional",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-31"
+      ],
+      "expected_times": [
+       "09:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Saturday, 31 October, 9 am - 1 pm",
+      "status": "promoted",
+      "task": 1
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D26",
+      "current": true,
+      "expected_dates": [
+       "2026-10-28"
+      ],
+      "expected_times": [
+       "12:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "before Wednesday, 28 October, 12 pm",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synE05": {
+    "tasks": [],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "cancelled",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-23"
+      ],
+      "expected_times": [
+       "19:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "原定于10月23日（周五）晚7点举行的桌游之夜",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synE06": {
+    "tasks": [
+     {
+      "entity_key": "model_synE06_0",
+      "candidate_index": 0,
+      "title": "校友咖啡交流",
+      "title_en": "Coffee chat with alumni",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-21",
+      "time": "17:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "Coffee chat with alumni: Wednesday, 21 October, 5 pm, Graduate Lounge",
+      "start": 67,
+      "end": 136,
+      "model_status": "conditional",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     },
+     {
+      "entity_key": "model_synE06_1",
+      "candidate_index": 1,
+      "title": "排灯节庆祝活动",
+      "title_en": "Deepavali celebration",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-06",
+      "time": "18:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "Deepavali celebration: Friday, 6 November, 6 pm, Central Plaza",
+      "start": 139,
+      "end": 201,
+      "model_status": "conditional",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     },
+     {
+      "entity_key": "model_synE06_2",
+      "candidate_index": 2,
+      "title": "周日羽毛球社交活动",
+      "title_en": "Badminton social",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "Badminton social: every Sunday morning",
+      "start": 204,
+      "end": 242,
+      "model_status": "conditional",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "undated_spurious"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-21"
+      ],
+      "expected_times": [
+       "17:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Wednesday, 21 October, 5 pm",
+      "status": "promoted",
+      "task": 0
+     },
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-06"
+      ],
+      "expected_times": [
+       "18:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Friday, 6 November, 6 pm",
+      "status": "promoted",
+      "task": 1
+     }
+    ]
+   },
+   "synE07": {
+    "tasks": [
+     {
+      "entity_key": "model_synE07_0",
+      "candidate_index": 0,
+      "title": "填写迎新聚会报名表",
+      "title_en": "Fill out the welcome party registration form",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-22",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "有意参加的同学请在周四前填写报名表，方便我们统计人数。",
+      "start": 53,
+      "end": 80,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "optional_promoted",
+      "deadline_id": null,
+      "item_role": "optional",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_synE07_1",
+      "candidate_index": 1,
+      "title": "参加秋季迎新聚会",
+      "title_en": "Attend the fall welcome party",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-24",
+      "time": "15:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "本周六（10月24日）下午3点，我们将在学生活动中心举办秋季迎新聚会，有美食和小游戏。",
+      "start": 8,
+      "end": 51,
+      "model_status": "conditional",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-24"
+      ],
+      "expected_times": [
+       "15:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "本周六（10月24日）下午3点",
+      "status": "promoted",
+      "task": 1
+     },
+     {
+      "role": "optional",
+      "kind": null,
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-22"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "请在周四前填写报名表",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "synE08": {
+    "tasks": [
+     {
+      "entity_key": "model_synE08_0",
+      "candidate_index": 0,
+      "title": "Capstone 同步会议",
+      "title_en": "Capstone sync",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-19",
+      "time": "10:00",
+      "timezone": "Asia/Singapore",
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "Updated invitation: Capstone sync @ Mon 19 Oct 2026 10am - 11am (SGT) ([EMAIL_a72abf0e])",
+      "start": 0,
+      "end": 88,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-19"
+      ],
+      "expected_times": [
+       "10:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Mon 19 Oct 2026 10am - 11am Singapore Standard Time",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "synE09": {
+    "tasks": [
+     {
+      "entity_key": "model_synE09_0",
+      "candidate_index": 0,
+      "title": "回复是否参加校友联谊之夜圆桌讨论",
+      "title_en": "Reply whether you can join the alumni networking night panel",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-06",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Please let me know by 6 November whether you can join the panel, so that we can finalise the programme.",
+      "start": 216,
+      "end": 319,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "correct",
+      "deadline_id": "D27",
+      "item_role": "deadline",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_synE09_1",
+      "candidate_index": 1,
+      "title": "参加校友联谊之夜圆桌讨论",
+      "title_en": "Join the alumni networking night panel",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-18",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "The Graduate Student Society is organising an alumni networking night on 18 November, and your name came up as someone who could share a current student's perspective on the panel (about ten minutes).",
+      "start": 14,
+      "end": 214,
+      "model_status": "conditional",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-18"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "on 18 November",
+      "status": "promoted",
+      "task": 1
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D27",
+      "current": true,
+      "expected_dates": [
+       "2026-11-06"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Please let me know by 6 November",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synE10": {
+    "tasks": [
+     {
+      "entity_key": "model_synE10_0",
+      "candidate_index": 0,
+      "title": "参加 Intro to dbt 线上讲座",
+      "title_en": "Attend the Intro to dbt live webinar",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-03",
+      "time": "20:00",
+      "timezone": "Asia/Singapore",
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "Starting soon: Intro to dbt (live webinar)",
+      "start": 0,
+      "end": 42,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-03"
+      ],
+      "expected_times": [
+       "20:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "today, 8:00 PM SGT",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "synP01": {
+    "tasks": [],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "promotion_expiry",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-18"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "offer ends on 18 October 2026 at midnight",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synP02": {
+    "tasks": [],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "promotion_expiry",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-31"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "有效期至10月31日",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synP03": {
+    "tasks": [],
+    "items": []
+   },
+   "synP04": {
+    "tasks": [],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "promotion_expiry",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-24"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "ends in 3 days",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synP05": {
+    "tasks": [],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "promotion_expiry",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-30"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "by 30 November 2026",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synP06": {
+    "tasks": [],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "promotion_expiry",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-06"
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "expires tonight at 11:59 PM",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synP07": {
+    "tasks": [],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "promotion_expiry",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-11"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "11月11日0点前付定金",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synP08": {
+    "tasks": [],
+    "items": []
+   },
+   "synP09": {
+    "tasks": [],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "promotion_expiry",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-15"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "valid till 15 Nov 2026",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synP10": {
+    "tasks": [],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "promotion_expiry",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-25"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Offer valid until 25 October",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synO01": {
+    "tasks": [],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "security_token_lifetime",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-15"
+      ],
+      "expected_times": [
+       "09:12"
+      ],
+      "expected_timezone": null,
+      "anchor": "10分钟内有效",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synO02": {
+    "tasks": [
+     {
+      "entity_key": "model_synO02_0",
+      "candidate_index": 0,
+      "title": "如非本人登录，请立即重置密码",
+      "title_en": "If the sign-in was not yours, reset your password immediately",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-17",
+      "time": "22:14",
+      "timezone": "Asia/Singapore",
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "Time: 17 October 2026, 22:14 SGT",
+      "start": 110,
+      "end": 142,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "security_timestamp"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "security_timestamp",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-17"
+      ],
+      "expected_times": [
+       "22:14"
+      ],
+      "expected_timezone": null,
+      "anchor": "17 October 2026, 22:14 SGT",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "synO03": {
+    "tasks": [
+     {
+      "entity_key": "model_synO03_0",
+      "candidate_index": 0,
+      "title": "更改大学密码",
+      "title_en": "Change university password",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-02",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Your university password will expire on 2 November 2026.",
+      "start": 18,
+      "end": 74,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D28",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D28",
+      "current": true,
+      "expected_dates": [
+       "2026-11-02"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "will expire on 2 November 2026",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synO04": {
+    "tasks": [
+     {
+      "entity_key": "model_synO04_0",
+      "candidate_index": 0,
+      "title": "支付学费第二期",
+      "title_en": "Pay tuition instalment 2",
+      "status": "completed",
+      "state": "done",
+      "date": "2026-10-20",
+      "time": "14:03",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "Item: Tuition fee, instalment 2",
+      "start": 50,
+      "end": 81,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "not_open",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "receipt_timestamp"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "receipt_timestamp",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-20"
+      ],
+      "expected_times": [
+       "14:03"
+      ],
+      "expected_timezone": null,
+      "anchor": "Paid on: 20 October 2026, 14:03",
+      "status": "kept_closed",
+      "task": 0
+     }
+    ]
+   },
+   "synO05": {
+    "tasks": [
+     {
+      "entity_key": "model_synO05_0",
+      "candidate_index": 0,
+      "title": "缴纳11月宿舍费",
+      "title_en": "Pay November hostel fees",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-01",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Your hostel fees for November (S$640.00) are due on 1 November 2026.",
+      "start": 16,
+      "end": 84,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D29",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D29",
+      "current": true,
+      "expected_dates": [
+       "2026-11-01"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "due on 1 November 2026",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synO06": {
+    "tasks": [
+     {
+      "entity_key": "model_synO06_0",
+      "candidate_index": 0,
+      "title": "续借或归还图书馆藏书",
+      "title_en": "Renew or return the library item",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-28",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "'Pattern Recognition and Machine Learning' (barcode [LONG_NUMBER_REMOVED])",
+      "start": 77,
+      "end": 151,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D30",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D30",
+      "current": true,
+      "expected_dates": [
+       "2026-10-28"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "due on 28 Oct 2026",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synO07": {
+    "tasks": [
+     {
+      "entity_key": "model_synO07_0",
+      "candidate_index": 0,
+      "title": "回复并选择空调维修日期",
+      "title_en": "Reply and choose an air-con repair date",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "Which day works for you?",
+      "start": 135,
+      "end": 159,
+      "model_status": "pending",
+      "model_needs_review": true,
+      "item": 1,
+      "outcome": "date_missing",
+      "deadline_id": "D36",
+      "item_role": "deadline",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_synO07_1",
+      "candidate_index": 1,
+      "title": "空调维修（周二选项）",
+      "title_en": "Air-con repair (Tuesday option)",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-27",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "The technician can come to fix the air-con in your room on Tuesday 27 October or Wednesday 28 October, between 2 and 4 pm.",
+      "start": 12,
+      "end": 134,
+      "model_status": "conditional",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     },
+     {
+      "entity_key": "model_synO07_2",
+      "candidate_index": 2,
+      "title": "空调维修（周三选项）",
+      "title_en": "Air-con repair (Wednesday option)",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-28",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "The technician can come to fix the air-con in your room on Tuesday 27 October or Wednesday 28 October, between 2 and 4 pm.",
+      "start": 12,
+      "end": 134,
+      "model_status": "conditional",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "duplicate_in_mail",
+      "item_role": "non_task"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-27"
+      ],
+      "expected_times": [
+       "14:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Tuesday 27 October or Wednesday 28 October, between 2 and 4 pm",
+      "status": "promoted",
+      "task": 1
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D36",
+      "current": true,
+      "expected_dates": [
+       "2026-10-23"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Please let me know by Friday",
+      "status": "date_missing",
+      "task": 0
+     }
+    ]
+   },
+   "synO08": {
+    "tasks": [
+     {
+      "entity_key": "model_synO08_0",
+      "candidate_index": 0,
+      "title": "提交学生准证续签申请",
+      "title_en": "Submit the Student’s Pass renewal application",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-16",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Please submit your renewal application through the immigration portal by 16 November 2026, which is two weeks before the expiry date",
+      "start": 90,
+      "end": 222,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "correct",
+      "deadline_id": "D31",
+      "item_role": "deadline",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_synO08_1",
+      "candidate_index": 1,
+      "title": "将续签申请确认回执上传至学生门户",
+      "title_en": "Upload the renewal application acknowledgement to the student portal",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "and upload the acknowledgement to the student portal.",
+      "start": 224,
+      "end": 277,
+      "model_status": "pending",
+      "model_needs_review": true,
+      "item": null,
+      "outcome": "undated_extra"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "expiry_context",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-30"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "expires on 30 November 2026",
+      "status": "untouched",
+      "task": null
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D31",
+      "current": true,
+      "expected_dates": [
+       "2026-11-16"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "by 16 November 2026",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synO09": {
+    "tasks": [],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-25"
+      ],
+      "expected_times": [
+       "02:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Sunday, 25 October, from 02:00 to 06:00",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synO10": {
+    "tasks": [
+     {
+      "entity_key": "model_synO10_0",
+      "candidate_index": 0,
+      "title": "通过邮件回复用户名和密码",
+      "title_en": "Reply by email with the username and password",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "unless you reply to this email with your username and password within 24 hours.",
+      "start": 245,
+      "end": 324,
+      "model_status": "pending",
+      "model_needs_review": true,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "phishing_threat"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "phishing_threat",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-20"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "deactivated on 20 October",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "synO11": {
+    "tasks": [
+     {
+      "entity_key": "model_synO11_0",
+      "candidate_index": 0,
+      "title": "支付信用卡账单",
+      "title_en": "Pay the credit card bill",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-21",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Statement balance: S$312.40",
+      "start": 96,
+      "end": 123,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "correct",
+      "deadline_id": "D32",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "statement_date",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-31"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Statement date: 31 October 2026",
+      "status": "untouched",
+      "task": null
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D32",
+      "current": true,
+      "expected_dates": [
+       "2026-11-21"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Payment due date: 21 November 2026",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synO12": {
+    "tasks": [
+     {
+      "entity_key": "model_synO12_0",
+      "candidate_index": 0,
+      "title": "CloudKeep 200 GB 订阅续费",
+      "title_en": "CloudKeep 200 GB subscription renewal",
+      "status": "completed",
+      "state": "done",
+      "date": "2026-11-03",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "subject",
+      "quote": "Your CloudKeep subscription has renewed",
+      "start": 0,
+      "end": 39,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "not_open",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "receipt_timestamp"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "receipt_timestamp",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-11-03"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "renewed on 3 November 2026",
+      "status": "kept_closed",
+      "task": 0
+     },
+     {
+      "role": "non_task",
+      "kind": "billing_date",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-12-03"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Next billing date: 3 December 2026",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synO13": {
+    "tasks": [
+     {
+      "entity_key": "model_synO13_0",
+      "candidate_index": 0,
+      "title": "确认大学健康中心预约",
+      "title_en": "Confirm University Health Centre appointment",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-26",
+      "time": "09:40",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "Please confirm your appointment - University Health Centre",
+      "start": 0,
+      "end": 58,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "event_time"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "event_time",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-26"
+      ],
+      "expected_times": [
+       "09:40"
+      ],
+      "expected_timezone": null,
+      "anchor": "Monday, 26 October 2026 at 9:40 AM",
+      "status": "promoted",
+      "task": 0
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D39",
+      "current": true,
+      "expected_dates": [
+       "2026-10-23"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "by Friday, 23 October",
+      "status": "missed",
+      "task": null
+     }
+    ]
+   },
+   "synO14": {
+    "tasks": [
+     {
+      "entity_key": "model_synO14_0",
+      "candidate_index": 0,
+      "title": "清理空调和窗户周围区域",
+      "title_en": "Clear the areas around the air-conditioning unit and window",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-29",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Please clear the area around the air-con unit and the window before then, so that the team can work safely.",
+      "start": 192,
+      "end": 299,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D33",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D33",
+      "current": true,
+      "expected_dates": [
+       "2026-10-29"
+      ],
+      "expected_times": [
+       "10:00",
+       null,
+       "12:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Thursday, 29 October, between 10 am and 12 pm",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synO15": {
+    "tasks": [
+     {
+      "entity_key": "model_synO15_0",
+      "candidate_index": 0,
+      "title": "文具订单已付款",
+      "title_en": "Stationery order paid",
+      "status": "completed",
+      "state": "done",
+      "date": "2026-10-26",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Placed on: 26 Oct 2026",
+      "start": 74,
+      "end": 96,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "not_open",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "order_timestamp"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "order_timestamp",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-26"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Placed on: 26 Oct 2026",
+      "status": "kept_closed",
+      "task": 0
+     },
+     {
+      "role": "non_task",
+      "kind": "delivery_estimate",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-29"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Estimated delivery: 29-31 Oct",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "synO16": {
+    "tasks": [
+     {
+      "entity_key": "model_synO16_0",
+      "candidate_index": 0,
+      "title": "人民币268.00元网上支付交易提醒",
+      "title_en": "CNY 268.00 online payment notice",
+      "status": "completed",
+      "state": "done",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "您尾号1234的账户于10月28日15:32支出人民币268.00元，交易类型：网上支付，当前余额以网上银行显示为准。",
+      "start": 8,
+      "end": 67,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "not_open",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "receipt_timestamp"
+     },
+     {
+      "entity_key": "model_synO16_1",
+      "candidate_index": 1,
+      "title": "若非本人操作，请致电客服",
+      "title_en": "Call customer service if you did not make this transaction",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "如非本人操作，请立即致电客服热线 [PHONE_REMOVED]。",
+      "start": 69,
+      "end": 102,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": null,
+      "outcome": "undated_spurious"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "receipt_timestamp",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-10-28"
+      ],
+      "expected_times": [
+       "15:32"
+      ],
+      "expected_timezone": null,
+      "anchor": "于10月28日15:32支出人民币268.00元",
+      "status": "kept_closed",
+      "task": 0
+     }
+    ]
+   },
+   "synO17": {
+    "tasks": [
+     {
+      "entity_key": "model_synO17_0",
+      "candidate_index": 0,
+      "title": "登记寒假去向",
+      "title_en": "Register winter-break whereabouts",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-11-08",
+      "time": "18:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "所有住宿同学请于11月8日（周日）18:00前在住宿系统中登记寒假去向（留宿或离校）。",
+      "start": 9,
+      "end": 52,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D34",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D34",
+      "current": true,
+      "expected_dates": [
+       "2026-11-08"
+      ],
+      "expected_times": [
+       "18:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "请于11月8日（周日）18:00前在住宿系统中登记寒假去向",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "synO18": {
+    "tasks": [
+     {
+      "entity_key": "model_synO18_0",
+      "candidate_index": 0,
+      "title": "更新紧急联系人信息",
+      "title_en": "Update emergency contact details",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2026-10-31",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Please update them in the student portal by 31 October 2026.",
+      "start": 130,
+      "end": 190,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "D35",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "D35",
+      "current": true,
+      "expected_dates": [
+       "2026-10-31"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "by 31 October 2026",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   }
+  }
+ },
+ "privacy": {
+  "planted": 26,
+  "removed": {
+   "k": 25,
+   "n": 26,
+   "value": 0.962,
+   "ci95": [
+    0.811,
+    0.993
+   ]
+  },
+  "still_present": [
+   {
+    "mail": "synO01",
+    "kind": "number or code"
+   }
+  ]
+ },
+ "tokens": {
+  "input": 60490,
+  "output": 49966
+ },
+ "baseline": {
+  "what": "keywords for reply/action; every written date on a line with a deadline word becomes an open task",
+  "labels": {
+   "needs_reply": {
+    "TP": 12,
+    "FP": 4,
+    "FN": 1,
+    "TN": 63,
+    "precision": {
+     "k": 12,
+     "n": 16,
+     "value": 0.75,
+     "ci95": [
+      0.505,
+      0.898
+     ]
+    },
+    "recall": {
+     "k": 12,
+     "n": 13,
+     "value": 0.923,
+     "ci95": [
+      0.667,
+      0.986
+     ]
+    },
+    "f1": 0.828
+   },
+   "needs_action": {
+    "TP": 23,
+    "FP": 10,
+    "FN": 9,
+    "TN": 38,
+    "precision": {
+     "k": 23,
+     "n": 33,
+     "value": 0.697,
+     "ci95": [
+      0.527,
+      0.826
+     ]
+    },
+    "recall": {
+     "k": 23,
+     "n": 32,
+     "value": 0.719,
+     "ci95": [
+      0.546,
+      0.844
+     ]
+    },
+    "f1": 0.708
+   }
+  },
+  "exact_match": {
+   "k": 59,
+   "n": 80,
+   "value": 0.738,
+   "ci95": [
+    0.632,
+    0.821
+   ]
+  },
+  "majority_category": {
+   "k": 30,
+   "n": 80,
+   "value": 0.375,
+   "ci95": [
+    0.277,
+    0.485
+   ]
+  },
+  "recall_per_mail": {
+   "k": 23,
+   "n": 41,
+   "value": 0.561,
+   "ci95": [
+    0.41,
+    0.701
+   ]
+  },
+  "recall_unique": {
+   "k": 22,
+   "n": 39,
+   "value": 0.564,
+   "ci95": [
+    0.41,
+    0.707
+   ]
+  },
+  "precision_per_mail": {
+   "k": 23,
+   "n": 39,
+   "value": 0.59,
+   "ci95": [
+    0.434,
+    0.729
+   ]
+  },
+  "precision_task_list": {
+   "k": 22,
+   "n": 39,
+   "value": 0.564,
+   "ci95": [
+    0.41,
+    0.707
+   ]
+  },
+  "open_task_outcomes": {
+   "stale": 1,
+   "correct": 22,
+   "wrong_date": 1,
+   "optional_promoted": 5,
+   "completed_reopened": 1,
+   "non_task_promoted": 9
+  }
+ }
+}

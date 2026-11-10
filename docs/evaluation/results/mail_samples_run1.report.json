@@ -1,0 +1,3233 @@
+{
+ "meta": {
+  "name": "mail_samples_run1",
+  "mail_set": "samples",
+  "started_at": "2026-11-10T10:28:30+00:00",
+  "finished_at": "2026-11-10T10:34:55+00:00",
+  "provider": "openai",
+  "model": "gpt-6-luna",
+  "prompt_version": "p00-p02.v1",
+  "schema_version": "mail_analysis.v6",
+  "code_commit": "14f3950",
+  "app_code_modified": false,
+  "dataset": {
+   "version": "selected_50",
+   "sha256": {
+    "selected_50.jsonl": "56bf772ad77bd27bc1ff25c6abf9372027b192f2b2bd565d6d682e3d310b5bbe",
+    "date_candidates.jsonl": "8d9d7663751dce8f121cd38ce374dc19b27a94a413a19dca65c4079ba111cc0e"
+   }
+  },
+  "messages": 40,
+  "analysis_seconds": 384.7,
+  "first_pass_errors": {
+   "M25": "MODEL_EVIDENCE_INVALID"
+  },
+  "errors": {
+   "M25": "MODEL_EVIDENCE_INVALID"
+  },
+  "retried": 0,
+  "outbound_calls": {
+   "model": 40
+  },
+  "refused_requests": [],
+  "stored": {
+   "messages_created": 50,
+   "messages_updated": 0,
+   "messages_unchanged": 0,
+   "inbound": 40,
+   "outbound_style": 10,
+   "tasks_created": 19,
+   "reference_view_loaded": true
+  }
+ },
+ "answer_key": {
+  "version": "selected_50 (de-identified real mail)",
+  "verified": false,
+  "label_status": "NOT verified - annotation status in the files: {'AI_assisted_proposal_pending_user_review': 40}; treat every number as provisional",
+  "mails": 40
+ },
+ "triage": {
+  "mails": 40,
+  "no_output": [
+   "M25"
+  ],
+  "labels": {
+   "needs_reply": {
+    "TP": 5,
+    "FP": 1,
+    "FN": 0,
+    "TN": 34,
+    "precision": {
+     "k": 5,
+     "n": 6,
+     "value": 0.833,
+     "ci95": [
+      0.436,
+      0.97
+     ]
+    },
+    "recall": {
+     "k": 5,
+     "n": 5,
+     "value": 1.0,
+     "ci95": [
+      0.566,
+      1.0
+     ]
+    },
+    "f1": 0.909
+   },
+   "needs_action": {
+    "TP": 19,
+    "FP": 6,
+    "FN": 0,
+    "TN": 15,
+    "precision": {
+     "k": 19,
+     "n": 25,
+     "value": 0.76,
+     "ci95": [
+      0.566,
+      0.885
+     ]
+    },
+    "recall": {
+     "k": 19,
+     "n": 19,
+     "value": 1.0,
+     "ci95": [
+      0.832,
+      1.0
+     ]
+    },
+    "f1": 0.864
+   }
+  },
+  "exact_match": {
+   "k": 32,
+   "n": 40,
+   "value": 0.8,
+   "ci95": [
+    0.652,
+    0.895
+   ]
+  },
+  "ignore": {
+   "correctly_ignored": {
+    "k": 14,
+    "n": 19,
+    "value": 0.737,
+    "ci95": [
+     0.512,
+     0.882
+    ]
+   },
+   "needed_attention_but_ignored": {
+    "k": 0,
+    "n": 21,
+    "value": 0.0,
+    "ci95": [
+     0.0,
+     0.155
+    ]
+   }
+  },
+  "confusion": {
+   "action": {
+    "action": 15,
+    "reply+action": 1
+   },
+   "ignore": {
+    "ignore": 14,
+    "no output": 1,
+    "action": 4
+   },
+   "reply+action": {
+    "reply+action": 3
+   },
+   "reply": {
+    "reply+action": 2
+   }
+  },
+  "category_accuracy": {
+   "k": 31,
+   "n": 40,
+   "value": 0.775,
+   "ci95": [
+    0.625,
+    0.877
+   ]
+  },
+  "category_confusion": {
+   "academic": {
+    "academic": 20,
+    "career": 1,
+    "events": 2
+   },
+   "promotions": {
+    "promotions": 3
+   },
+   "events": {
+    "career": 1,
+    "no output": 1,
+    "events": 4,
+    "academic": 1
+   },
+   "career": {
+    "career": 1
+   },
+   "other": {
+    "other": 3,
+    "academic": 3
+   }
+  },
+  "by_group": {
+   "category": {
+    "academic": {
+     "exact_match": {
+      "k": 20,
+      "n": 23,
+      "value": 0.87,
+      "ci95": [
+       0.679,
+       0.955
+      ]
+     },
+     "category": {
+      "k": 20,
+      "n": 23,
+      "value": 0.87,
+      "ci95": [
+       0.679,
+       0.955
+      ]
+     }
+    },
+    "career": {
+     "exact_match": {
+      "k": 0,
+      "n": 1,
+      "value": 0.0,
+      "ci95": [
+       0.0,
+       0.793
+      ]
+     },
+     "category": {
+      "k": 1,
+      "n": 1,
+      "value": 1.0,
+      "ci95": [
+       0.207,
+       1.0
+      ]
+     }
+    },
+    "events": {
+     "exact_match": {
+      "k": 4,
+      "n": 7,
+      "value": 0.571,
+      "ci95": [
+       0.25,
+       0.842
+      ]
+     },
+     "category": {
+      "k": 4,
+      "n": 7,
+      "value": 0.571,
+      "ci95": [
+       0.25,
+       0.842
+      ]
+     }
+    },
+    "other": {
+     "exact_match": {
+      "k": 5,
+      "n": 6,
+      "value": 0.833,
+      "ci95": [
+       0.436,
+       0.97
+      ]
+     },
+     "category": {
+      "k": 3,
+      "n": 6,
+      "value": 0.5,
+      "ci95": [
+       0.188,
+       0.812
+      ]
+     }
+    },
+    "promotions": {
+     "exact_match": {
+      "k": 3,
+      "n": 3,
+      "value": 1.0,
+      "ci95": [
+       0.438,
+       1.0
+      ]
+     },
+     "category": {
+      "k": 3,
+      "n": 3,
+      "value": 1.0,
+      "ci95": [
+       0.438,
+       1.0
+      ]
+     }
+    }
+   },
+   "language": {
+    "en": {
+     "exact_match": {
+      "k": 32,
+      "n": 40,
+      "value": 0.8,
+      "ci95": [
+       0.652,
+       0.895
+      ]
+     },
+     "category": {
+      "k": 31,
+      "n": 40,
+      "value": 0.775,
+      "ci95": [
+       0.625,
+       0.877
+      ]
+     }
+    }
+   },
+   "split": {
+    "dev": {
+     "exact_match": {
+      "k": 17,
+      "n": 19,
+      "value": 0.895,
+      "ci95": [
+       0.686,
+       0.971
+      ]
+     },
+     "category": {
+      "k": 13,
+      "n": 19,
+      "value": 0.684,
+      "ci95": [
+       0.46,
+       0.846
+      ]
+     }
+    },
+    "holdout": {
+     "exact_match": {
+      "k": 15,
+      "n": 21,
+      "value": 0.714,
+      "ci95": [
+       0.5,
+       0.862
+      ]
+     },
+     "category": {
+      "k": 18,
+      "n": 21,
+      "value": 0.857,
+      "ci95": [
+       0.654,
+       0.95
+      ]
+     }
+    }
+   }
+  },
+  "wrong": [
+   {
+    "mail": "M17",
+    "expected": "reply+action",
+    "got": "reply+action",
+    "expected_category": "academic",
+    "got_category": "career",
+    "difficulty": null,
+    "tags": [
+     "回复与行动并存"
+    ],
+    "summary_en": "Please review the recommendation letter draft, revise your resume as suggested, and provide relevant experience information.",
+    "error": null
+   },
+   {
+    "mail": "M18",
+    "expected": "reply",
+    "got": "reply+action",
+    "expected_category": "academic",
+    "got_category": "events",
+    "difficulty": null,
+    "tags": [
+     "需要回复"
+    ],
+    "summary_en": "Confirm by November 25, 2025 whether power is needed for equipment beyond laptops; otherwise, only laptop power will be assumed.",
+    "error": null
+   },
+   {
+    "mail": "M19",
+    "expected": "reply+action",
+    "got": "reply+action",
+    "expected_category": "academic",
+    "got_category": "events",
+    "difficulty": null,
+    "tags": [
+     "回复与行动并存"
+    ],
+    "summary_en": "Please confirm by November 25 whether the demo fits the default table space, or specify any additional space needed.",
+    "error": null
+   },
+   {
+    "mail": "M20",
+    "expected": "reply",
+    "got": "reply+action",
+    "expected_category": "academic",
+    "got_category": "academic",
+    "difficulty": null,
+    "tags": [
+     "需要回复"
+    ],
+    "summary_en": "A teammate asks for feedback on the chat platform and the project contact email draft.",
+    "error": null
+   },
+   {
+    "mail": "M24",
+    "expected": "action",
+    "got": "reply+action",
+    "expected_category": "events",
+    "got_category": "career",
+    "difficulty": null,
+    "tags": [
+     "日历更新与取消"
+    ],
+    "summary_en": "Priya paused the internship progress meetings and asked you to message her on WhatsApp after completing the next steps and keep her updated.",
+    "error": null
+   },
+   {
+    "mail": "M25",
+    "expected": "ignore",
+    "got": "no output",
+    "expected_category": "events",
+    "got_category": null,
+    "difficulty": null,
+    "tags": [
+     "日历邀请"
+    ],
+    "summary_en": null,
+    "error": "MODEL_EVIDENCE_INVALID"
+   },
+   {
+    "mail": "M28",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "events",
+    "got_category": "academic",
+    "difficulty": null,
+    "tags": [
+     "会议上下文通知"
+    ],
+    "summary_en": "Marcus will join the meeting by phone, with his camera off and possibly distracted.",
+    "error": null
+   },
+   {
+    "mail": "M29",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "academic",
+    "got_category": "academic",
+    "difficulty": null,
+    "tags": [
+     "日期冲突与延期"
+    ],
+    "summary_en": "You have been admitted to Harbor and need to accept the offer by the stated deadline.",
+    "error": null
+   },
+   {
+    "mail": "M31",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "career",
+    "got_category": "career",
+    "difficulty": null,
+    "tags": [
+     "招聘信息缺失"
+    ],
+    "summary_en": "A Deloitte recruiter invites you to consider a Software Engineering Solutions Analyst role; no application deadline is specified.",
+    "error": null
+   },
+   {
+    "mail": "M32",
+    "expected": "ignore",
+    "got": "action",
+    "expected_category": "other",
+    "got_category": "other",
+    "difficulty": null,
+    "tags": [
+     "验证码与敏感内容"
+    ],
+    "summary_en": "The Microsoft OneDrive verification code is for verifying the account and accessing a shared document; it is valid for 15 minutes.",
+    "error": null
+   },
+   {
+    "mail": "M37",
+    "expected": "action",
+    "got": "action",
+    "expected_category": "other",
+    "got_category": "academic",
+    "difficulty": null,
+    "tags": [
+     "财务行政行动"
+    ],
+    "summary_en": "A refund check was issued but not mailed; submit the form and choose a refund option within five days.",
+    "error": null
+   },
+   {
+    "mail": "M38",
+    "expected": "ignore",
+    "got": "ignore",
+    "expected_category": "other",
+    "got_category": "academic",
+    "difficulty": null,
+    "tags": [
+     "交易回执"
+    ],
+    "summary_en": "Payment for the UBC Graduate Program Application Fee was completed successfully.",
+    "error": null
+   },
+   {
+    "mail": "M39",
+    "expected": "ignore",
+    "got": "ignore",
+    "expected_category": "other",
+    "got_category": "academic",
+    "difficulty": null,
+    "tags": [
+     "交易回执"
+    ],
+    "summary_en": "The electronic transcript order was placed; delivery will wait for grades and degree posting.",
+    "error": null
+   }
+  ]
+ },
+ "deadlines": {
+  "answer_key": {
+   "required_mentions": 21,
+   "required_unique": 13,
+   "optional": 2,
+   "non_task": 5,
+   "completed": 2,
+   "mails_with_required_deadline": 14
+  },
+  "system_output": {
+   "tasks": 52,
+   "open": 42,
+   "open_with_date": 25,
+   "open_without_date": 17,
+   "closed": 10,
+   "mails_analysis_failed": [
+    "M25"
+   ]
+  },
+  "recall_per_mail": {
+   "k": 20,
+   "n": 21,
+   "value": 0.952,
+   "ci95": [
+    0.773,
+    0.992
+   ]
+  },
+  "recall_unique": {
+   "k": 13,
+   "n": 13,
+   "value": 1.0,
+   "ci95": [
+    0.772,
+    1.0
+   ]
+  },
+  "precision_per_mail": {
+   "k": 18,
+   "n": 25,
+   "value": 0.72,
+   "ci95": [
+    0.524,
+    0.857
+   ]
+  },
+  "precision_task_list": {
+   "k": 11,
+   "n": 25,
+   "value": 0.44,
+   "ci95": [
+    0.267,
+    0.629
+   ]
+  },
+  "if_event_tasks_were_accepted": {
+   "dated_event_tasks": 1,
+   "precision_per_mail": {
+    "k": 19,
+    "n": 25,
+    "value": 0.76,
+    "ci95": [
+     0.566,
+     0.885
+    ]
+   },
+   "precision_task_list": {
+    "k": 12,
+    "n": 25,
+    "value": 0.48,
+    "ci95": [
+     0.3,
+     0.665
+    ]
+   }
+  },
+  "missed_breakdown": {
+   "missed": 1
+  },
+  "open_task_outcomes": {
+   "correct": 13,
+   "undated_extra": 9,
+   "duplicate_across_mails": 7,
+   "invented": 4,
+   "non_task_promoted": 2,
+   "optional_promoted": 2,
+   "completed_reopened": 1,
+   "undated_spurious": 4
+  },
+  "closed_task_outcomes": {
+   "not_open": 10
+  },
+  "optional": {
+   "total": 2,
+   "became_open_task": 2
+  },
+  "non_task": {
+   "total": 5,
+   "became_open_task": 2,
+   "by_kind": {
+    "class_event": {
+     "became_open_task": 1,
+     "total": 1
+    },
+    "graded_timestamp": {
+     "became_open_task": 0,
+     "total": 1
+    },
+    "order_placed_timestamp": {
+     "became_open_task": 0,
+     "total": 1
+    },
+    "promotion_expiry": {
+     "became_open_task": 0,
+     "total": 1
+    },
+    "security_token_lifetime": {
+     "became_open_task": 1,
+     "total": 1
+    }
+   }
+  },
+  "completed": {
+   "total": 2,
+   "became_open_task": 1
+  },
+  "time_of_day": {
+   "time_as_expected": 18,
+   "time_missing": 2
+  },
+  "timezone": {
+   "none_stated_none_given": 20
+  },
+  "recall_by_group": {
+   "language": {
+    "en": {
+     "k": 20,
+     "n": 21,
+     "value": 0.952,
+     "ci95": [
+      0.773,
+      0.992
+     ]
+    }
+   },
+   "category": {
+    "academic": {
+     "k": 18,
+     "n": 19,
+     "value": 0.947,
+     "ci95": [
+      0.754,
+      0.991
+     ]
+    },
+    "other": {
+     "k": 2,
+     "n": 2,
+     "value": 1.0,
+     "ci95": [
+      0.342,
+      1.0
+     ]
+    }
+   },
+   "split": {
+    "dev": {
+     "k": 15,
+     "n": 16,
+     "value": 0.938,
+     "ci95": [
+      0.717,
+      0.989
+     ]
+    },
+    "holdout": {
+     "k": 5,
+     "n": 5,
+     "value": 1.0,
+     "ci95": [
+      0.566,
+      1.0
+     ]
+    }
+   },
+   "tag": {
+    "回复与行动并存": {
+     "k": 1,
+     "n": 1,
+     "value": 1.0,
+     "ci95": [
+      0.207,
+      1.0
+     ]
+    },
+    "日期冲突与延期": {
+     "k": 2,
+     "n": 2,
+     "value": 1.0,
+     "ci95": [
+      0.342,
+      1.0
+     ]
+    },
+    "相对日期与多任务": {
+     "k": 7,
+     "n": 8,
+     "value": 0.875,
+     "ci95": [
+      0.529,
+      0.978
+     ]
+    },
+    "考试时间窗与重复": {
+     "k": 2,
+     "n": 2,
+     "value": 1.0,
+     "ci95": [
+      0.342,
+      1.0
+     ]
+    },
+    "课程任务与截止日期": {
+     "k": 5,
+     "n": 5,
+     "value": 1.0,
+     "ci95": [
+      0.566,
+      1.0
+     ]
+    },
+    "财务行政行动": {
+     "k": 2,
+     "n": 2,
+     "value": 1.0,
+     "ci95": [
+      0.342,
+      1.0
+     ]
+    },
+    "需要回复": {
+     "k": 1,
+     "n": 1,
+     "value": 1.0,
+     "ci95": [
+      0.207,
+      1.0
+     ]
+    }
+   }
+  },
+  "failures": [
+   {
+    "kind": "missed_deadline",
+    "detail": "missed",
+    "mail": "M05",
+    "deadline_id": "cs4310_quiz14",
+    "expected_dates": [
+     "2025-12-05"
+    ],
+    "expected_times": [
+     null
+    ],
+    "anchor": "Quiz 13 and 14 will later be released and remain open until 12/05.",
+    "analysis_failed": false,
+    "got": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "duplicate_across_mails",
+    "mail": "M03",
+    "task": {
+     "title": "提交项目结果 JSON 文件",
+     "title_en": "Submit the project results JSON file",
+     "date": "2025-12-06",
+     "time": "23:59",
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "New deadline: Friday, Dec 6, 11:59 PM"
+    },
+    "item": {
+     "role": "deadline",
+     "kind": null,
+     "deadline_id": "cs4310_final_results",
+     "expected_dates": [
+      "2025-12-06",
+      null
+     ],
+     "anchor": "New deadline: Friday, Dec 6, 11:59 PM"
+    },
+    "first_seen_in": "M01"
+   },
+   {
+    "kind": "false_task",
+    "detail": "invented",
+    "mail": "M03",
+    "task": {
+     "title": "原截止前提交可获 0.5% 额外学分",
+     "title_en": "Receive 0.5% extra credit for submitting by the original deadline",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "To recognize those who submitted by the original deadline (Dec 5), anyone who turned in both components on time will receive 0.5% extra credit toward their final course grade."
+    },
+    "item": null,
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "duplicate_across_mails",
+    "mail": "M04",
+    "task": {
+     "title": "提交期末项目",
+     "title_en": "Submit the final project",
+     "date": "2025-12-06",
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "this is a friendly reminder that both the final project and mini lab 5 are due today."
+    },
+    "item": {
+     "role": "deadline",
+     "kind": null,
+     "deadline_id": "cs4310_final_results",
+     "expected_dates": [
+      null,
+      "2025-12-06",
+      "2025-12-05"
+     ],
+     "anchor": "both the final project and mini lab 5 are due today"
+    },
+    "first_seen_in": "M01"
+   },
+   {
+    "kind": "false_task",
+    "detail": "duplicate_across_mails",
+    "mail": "M04",
+    "task": {
+     "title": "提交迷你实验 5",
+     "title_en": "Submit mini lab 5",
+     "date": "2025-12-06",
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "this is a friendly reminder that both the final project and mini lab 5 are due today."
+    },
+    "item": {
+     "role": "deadline",
+     "kind": null,
+     "deadline_id": "cs4310_minilab5",
+     "expected_dates": [
+      null,
+      "2025-12-06",
+      "2025-12-05"
+     ],
+     "anchor": "both the final project and mini lab 5 are due today"
+    },
+    "first_seen_in": "M07"
+   },
+   {
+    "kind": "false_task",
+    "detail": "duplicate_across_mails",
+    "mail": "M05",
+    "task": {
+     "title": "提交期末项目",
+     "title_en": "Submit the final project",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)"
+    },
+    "item": {
+     "role": "deadline",
+     "kind": null,
+     "deadline_id": "cs4310_final_results",
+     "expected_dates": [
+      "2025-12-05"
+     ],
+     "anchor": "The final project (Due 12/05)"
+    },
+    "first_seen_in": "M01"
+   },
+   {
+    "kind": "false_task",
+    "detail": "duplicate_across_mails",
+    "mail": "M05",
+    "task": {
+     "title": "完成Mini Lab 5",
+     "title_en": "Complete Mini Lab 5",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)"
+    },
+    "item": {
+     "role": "deadline",
+     "kind": null,
+     "deadline_id": "cs4310_minilab5",
+     "expected_dates": [
+      "2025-12-05"
+     ],
+     "anchor": "Mini Lab 5 (Due 12/05)"
+    },
+    "first_seen_in": "M07"
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "M05",
+    "task": {
+     "title": "参加Zoom课程讲座",
+     "title_en": "Attend the lecture on Zoom",
+     "date": "2025-12-03",
+     "time": null,
+     "timezone": null,
+     "model_status": "unknown",
+     "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)"
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "class_event",
+     "deadline_id": null,
+     "expected_dates": [
+      "2025-12-03"
+     ],
+     "anchor": "The Wednesday (12/03) lecture will be held solely on Zoom"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "duplicate_across_mails",
+    "mail": "M06",
+    "task": {
+     "title": "完成 Quiz 13",
+     "title_en": "Complete Quiz 13",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "Quiz 13 and Quiz 14 are now published on Canvas. Both quizzes are due on 12/05. Please make sure to complete them before the deadline."
+    },
+    "item": {
+     "role": "deadline",
+     "kind": null,
+     "deadline_id": "cs4310_quiz13",
+     "expected_dates": [
+      "2025-12-05"
+     ],
+     "anchor": "Both quizzes are due on 12/05."
+    },
+    "first_seen_in": "M05"
+   },
+   {
+    "kind": "false_task",
+    "detail": "invented",
+    "mail": "M09",
+    "task": {
+     "title": "复习模拟期末考试",
+     "title_en": "Review the mock final exam",
+     "date": "2025-12-03",
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "On Wednesday we will review the mock final document and I am happy to discuss any material that is not clear."
+    },
+    "item": null,
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "duplicate_across_mails",
+    "mail": "M11",
+    "task": {
+     "title": "完成 CS 3120 数据库管理期末考试",
+     "title_en": "Complete the CS 3120 Database Management final exam",
+     "date": "2025-12-08",
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "Final Exam Reminder -  December 8: CS 3120: Database Management (2025 Fall)"
+    },
+    "item": {
+     "role": "deadline",
+     "kind": null,
+     "deadline_id": "cs3120_final",
+     "expected_dates": [
+      "2025-12-08"
+     ],
+     "anchor": "Availability Window: December 8 (12:00 AM) – December 8 (11:59 PM)"
+    },
+    "first_seen_in": "M10"
+   },
+   {
+    "kind": "false_task",
+    "detail": "optional_promoted",
+    "mail": "M12",
+    "task": {
+     "title": "有异议时提交重新评分申请",
+     "title_en": "Submit a regrade request if you have concerns",
+     "date": "2025-12-11",
+     "time": "23:59",
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "Please review your grades, and if you have any concerns, submit a regrade request by 11:59 PM on December 11, 2025."
+    },
+    "item": {
+     "role": "optional",
+     "kind": null,
+     "deadline_id": null,
+     "expected_dates": [
+      "2025-12-11"
+     ],
+     "anchor": "if you have any concerns, submit a regrade request by 11:59 PM on December 11, 2025."
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "completed_reopened",
+    "mail": "M14",
+    "task": {
+     "title": "重新提交最终项目报告（可选）",
+     "title_en": "Resubmit Final Project Report (optional)",
+     "date": "2025-12-06",
+     "time": "23:59",
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "You may be able to resubmit until the due date (Dec 06, 2025 at 11:59:00 PM MST)."
+    },
+    "item": {
+     "role": "completed",
+     "kind": null,
+     "deadline_id": "cs4310_final_report",
+     "expected_dates": [
+      "2025-12-06"
+     ],
+     "anchor": "Due Date:\nDec 06, 2025 at 11:59:00 PM MST"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "undated_spurious",
+    "mail": "M26",
+    "task": {
+     "title": "Lyrebird AI 团队周会",
+     "title_en": "Lyrebird AI Team Meeting",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "Updated invitation: Team - Lyrebird AI Meeting @ Weekly from 9am to 10am on Thursday (MST) ([EMAIL_42022df7])"
+    },
+    "item": null,
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "undated_spurious",
+    "mail": "M27",
+    "task": {
+     "title": "Lyrebird AI 团队会议",
+     "title_en": "Lyrebird AI Team Meeting",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "Team - Lyrebird AI Meeting"
+    },
+    "item": null,
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "invented",
+    "mail": "M28",
+    "task": {
+     "title": "CS4860 第三次导师会议：Lyrebird AI",
+     "title_en": "CS4860 Third Instructor Meeting: Lyrebird AI",
+     "date": "2025-11-21",
+     "time": "13:00",
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "Re: CS4860: 3rd Instructor Meeting- Lyrebird AI 11/21 1:00pm-1:30pm"
+    },
+    "item": null,
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "optional_promoted",
+    "mail": "M29",
+    "task": {
+     "title": "接受Harbor录取通知",
+     "title_en": "Accept the Harbor offer",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "To accept your offer: Log into your MyNorthbridge portal."
+    },
+    "item": {
+     "role": "optional",
+     "kind": null,
+     "deadline_id": null,
+     "expected_dates": [
+      "2025-12-05"
+     ],
+     "anchor": "Monday, December 5, at 12 p.m. Mountain Standard Time"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "undated_spurious",
+    "mail": "M31",
+    "task": {
+     "title": "申请软件工程解决方案分析师职位",
+     "title_en": "Apply for the Software Engineering Solutions Analyst role",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "Deloitte Application Deadline Approaching! Apply Now!"
+    },
+    "item": null,
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "non_task_promoted",
+    "mail": "M32",
+    "task": {
+     "title": "验证账户以访问共享文档",
+     "title_en": "Verify the account to access the shared document",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "pending",
+     "quote": "For security purposes, you must enter the code below to verify your account to access the shared document."
+    },
+    "item": {
+     "role": "non_task",
+     "kind": "security_token_lifetime",
+     "deadline_id": null,
+     "expected_dates": [
+      null
+     ],
+     "anchor": "The code will only work for 15 minutes"
+    },
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "invented",
+    "mail": "M35",
+    "task": {
+     "title": "Lyrebird AI 团队会议（已取消）",
+     "title_en": "Lyrebird AI Team Meeting (Canceled)",
+     "date": "2025-09-12",
+     "time": "10:00",
+     "timezone": null,
+     "model_status": "unknown",
+     "quote": "This event has been canceled and removed from your calendar with a note:"
+    },
+    "item": null,
+    "first_seen_in": null
+   },
+   {
+    "kind": "false_task",
+    "detail": "undated_spurious",
+    "mail": "M39",
+    "task": {
+     "title": "等待成绩或学位发布后处理并寄送成绩单",
+     "title_en": "Wait for grades or degree posting before processing and sending the transcript",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "model_status": "conditional",
+     "quote": "*Note:* You requested that you would like to wait until grades are out before we send your document. Once the new grades are posted, *Northbridge University* will process your order, and we will send your document to its destination."
+    },
+    "item": null,
+    "first_seen_in": null
+   }
+  ],
+  "per_mail": {
+   "M01": {
+    "tasks": [
+     {
+      "entity_key": "model_M01_0",
+      "candidate_index": 0,
+      "title": "提交期末项目 JSON 输出文件",
+      "title_en": "Submit the final project JSON output file",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-05",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "subject",
+      "quote": "Due 12/05",
+      "start": 68,
+      "end": 77,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "cs4310_final_results",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs4310_final_results",
+      "current": true,
+      "expected_dates": [
+       "2025-12-05"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Deadline: 12/05",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "M02": {
+    "tasks": [
+     {
+      "entity_key": "model_M02_0",
+      "candidate_index": 0,
+      "title": "提交期末项目报告",
+      "title_en": "Submit the Final Project Report",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "Final Project Report (on Gradescope)",
+      "start": 154,
+      "end": 190,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "undated_extra"
+     },
+     {
+      "entity_key": "model_M02_1",
+      "candidate_index": 1,
+      "title": "提交最终结果 JSON 文件",
+      "title_en": "Submit the Final Results JSON File",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "Final Results File (on Canvas)",
+      "start": 562,
+      "end": 592,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "undated_extra"
+     }
+    ],
+    "items": []
+   },
+   "M03": {
+    "tasks": [
+     {
+      "entity_key": "model_M03_0",
+      "candidate_index": 0,
+      "title": "提交项目结果 JSON 文件",
+      "title_en": "Submit the project results JSON file",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-06",
+      "time": "23:59",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "New deadline: Friday, Dec 6, 11:59 PM",
+      "start": 138,
+      "end": 175,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "duplicate_across_mails",
+      "deadline_id": "cs4310_final_results",
+      "item_role": "deadline",
+      "item_kind": null,
+      "first_seen_in": "M01"
+     },
+     {
+      "entity_key": "model_M03_1",
+      "candidate_index": 1,
+      "title": "提交期末项目报告",
+      "title_en": "Submit the final project report",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-06",
+      "time": "23:59",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "New deadline: Friday, Dec 6, 11:59 PM",
+      "start": 138,
+      "end": 175,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "correct",
+      "deadline_id": "cs4310_final_report",
+      "item_role": "deadline",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_M03_2",
+      "candidate_index": 2,
+      "title": "原截止前提交可获 0.5% 额外学分",
+      "title_en": "Receive 0.5% extra credit for submitting by the original deadline",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-05",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "To recognize those who submitted by the original deadline (Dec 5), anyone who turned in both components on time will receive 0.5% extra credit toward their final course grade.",
+      "start": 268,
+      "end": 443,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": null,
+      "outcome": "invented"
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs4310_final_results",
+      "current": true,
+      "expected_dates": [
+       "2025-12-06",
+       null
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "New deadline: Friday, Dec 6, 11:59 PM",
+      "status": "hit",
+      "task": 0
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs4310_final_report",
+      "current": true,
+      "expected_dates": [
+       "2025-12-06",
+       null
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "New deadline: Friday, Dec 6, 11:59 PM",
+      "status": "hit",
+      "task": 1
+     }
+    ]
+   },
+   "M04": {
+    "tasks": [
+     {
+      "entity_key": "model_M04_0",
+      "candidate_index": 0,
+      "title": "提交期末项目",
+      "title_en": "Submit the final project",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-06",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "this is a friendly reminder that both the final project and mini lab 5 are due today.",
+      "start": 10,
+      "end": 95,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "duplicate_across_mails",
+      "deadline_id": "cs4310_final_results",
+      "item_role": "deadline",
+      "item_kind": null,
+      "first_seen_in": "M01"
+     },
+     {
+      "entity_key": "model_M04_1",
+      "candidate_index": 1,
+      "title": "提交迷你实验 5",
+      "title_en": "Submit mini lab 5",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-06",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "this is a friendly reminder that both the final project and mini lab 5 are due today.",
+      "start": 10,
+      "end": 95,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "duplicate_across_mails",
+      "deadline_id": "cs4310_minilab5",
+      "item_role": "deadline",
+      "item_kind": null,
+      "first_seen_in": "M07"
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs4310_final_results",
+      "current": true,
+      "expected_dates": [
+       null,
+       "2025-12-06",
+       "2025-12-05"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "both the final project and mini lab 5 are due today",
+      "status": "hit",
+      "task": 0
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs4310_minilab5",
+      "current": true,
+      "expected_dates": [
+       null,
+       "2025-12-06",
+       "2025-12-05"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "both the final project and mini lab 5 are due today",
+      "status": "hit",
+      "task": 1
+     }
+    ]
+   },
+   "M05": {
+    "tasks": [
+     {
+      "entity_key": "model_M05_0",
+      "candidate_index": 0,
+      "title": "提交期末项目",
+      "title_en": "Submit the final project",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-05",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "subject",
+      "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)",
+      "start": 0,
+      "end": 78,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "duplicate_across_mails",
+      "deadline_id": "cs4310_final_results",
+      "item_role": "deadline",
+      "item_kind": null,
+      "first_seen_in": "M01"
+     },
+     {
+      "entity_key": "model_M05_1",
+      "candidate_index": 1,
+      "title": "完成Mini Lab 5",
+      "title_en": "Complete Mini Lab 5",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-05",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "subject",
+      "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)",
+      "start": 0,
+      "end": 78,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "duplicate_across_mails",
+      "deadline_id": "cs4310_minilab5",
+      "item_role": "deadline",
+      "item_kind": null,
+      "first_seen_in": "M07"
+     },
+     {
+      "entity_key": "model_M05_2",
+      "candidate_index": 2,
+      "title": "完成Quiz 13和14",
+      "title_en": "Complete Quizzes 13 and 14",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-05",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "subject",
+      "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)",
+      "start": 0,
+      "end": 78,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 2,
+      "outcome": "correct",
+      "deadline_id": "cs4310_quiz13",
+      "item_role": "deadline",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_M05_3",
+      "candidate_index": 3,
+      "title": "参加Zoom课程讲座",
+      "title_en": "Attend the lecture on Zoom",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-03",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "subject",
+      "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)",
+      "start": 0,
+      "end": 78,
+      "model_status": "unknown",
+      "model_needs_review": true,
+      "item": 4,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "class_event"
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs4310_final_results",
+      "current": true,
+      "expected_dates": [
+       "2025-12-05"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "The final project (Due 12/05)",
+      "status": "hit",
+      "task": 0
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs4310_minilab5",
+      "current": true,
+      "expected_dates": [
+       "2025-12-05"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Mini Lab 5 (Due 12/05)",
+      "status": "hit",
+      "task": 1
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs4310_quiz13",
+      "current": true,
+      "expected_dates": [
+       "2025-12-05"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Quiz 13 and 14 will later be released and remain open until 12/05.",
+      "status": "hit",
+      "task": 2
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs4310_quiz14",
+      "current": true,
+      "expected_dates": [
+       "2025-12-05"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Quiz 13 and 14 will later be released and remain open until 12/05.",
+      "status": "missed",
+      "task": null
+     },
+     {
+      "role": "non_task",
+      "kind": "class_event",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2025-12-03"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "The Wednesday (12/03) lecture will be held solely on Zoom",
+      "status": "promoted",
+      "task": 3
+     }
+    ]
+   },
+   "M06": {
+    "tasks": [
+     {
+      "entity_key": "model_M06_0",
+      "candidate_index": 0,
+      "title": "完成 Quiz 13",
+      "title_en": "Complete Quiz 13",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-05",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Quiz 13 and Quiz 14 are now published on Canvas. Both quizzes are due on 12/05. Please make sure to complete them before the deadline.",
+      "start": 486,
+      "end": 620,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "duplicate_across_mails",
+      "deadline_id": "cs4310_quiz13",
+      "item_role": "deadline",
+      "item_kind": null,
+      "first_seen_in": "M05"
+     },
+     {
+      "entity_key": "model_M06_1",
+      "candidate_index": 1,
+      "title": "完成 Quiz 14",
+      "title_en": "Complete Quiz 14",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-05",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Quiz 13 and Quiz 14 are now published on Canvas. Both quizzes are due on 12/05. Please make sure to complete them before the deadline.",
+      "start": 486,
+      "end": 620,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "correct",
+      "deadline_id": "cs4310_quiz14",
+      "item_role": "deadline",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_M06_2",
+      "candidate_index": 2,
+      "title": "Midterm 2 解答已发布",
+      "title_en": "Midterm 2 Solution Released",
+      "status": "completed",
+      "state": "done",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "The solution for Midterm 2 has been released and is attached to this announcement.",
+      "start": 334,
+      "end": 416,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "not_open"
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs4310_quiz13",
+      "current": true,
+      "expected_dates": [
+       "2025-12-05"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Both quizzes are due on 12/05.",
+      "status": "hit",
+      "task": 0
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs4310_quiz14",
+      "current": true,
+      "expected_dates": [
+       "2025-12-05"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Both quizzes are due on 12/05.",
+      "status": "hit",
+      "task": 1
+     }
+    ]
+   },
+   "M07": {
+    "tasks": [
+     {
+      "entity_key": "model_M07_0",
+      "candidate_index": 0,
+      "title": "提交 Mini Lab 5",
+      "title_en": "Submit Mini Lab 5",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-05",
+      "time": "23:59",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "Mini Lab 5 Released: CS 4310: Intro Natural Language Process (2025 Fall)",
+      "start": 0,
+      "end": 72,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "cs4310_minilab5",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs4310_minilab5",
+      "current": true,
+      "expected_dates": [
+       "2025-12-05"
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "Due: 12/05 11:59 PM.",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "M08": {
+    "tasks": [
+     {
+      "entity_key": "model_M08_0",
+      "candidate_index": 0,
+      "title": "完成 Quiz 04",
+      "title_en": "Complete Quiz 04",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-03",
+      "time": "23:59",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "Quiz 04 Available: CS 3120: Database Management (2025 Fall)",
+      "start": 0,
+      "end": 59,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "cs3120_quiz4",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs3120_quiz4",
+      "current": true,
+      "expected_dates": [
+       "2025-12-03"
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "due on December 3 at 11:59 PM",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "M09": {
+    "tasks": [
+     {
+      "entity_key": "model_M09_0",
+      "candidate_index": 0,
+      "title": "上传所有作业",
+      "title_en": "Upload all submissions",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-05",
+      "time": "23:50",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "All submissions must be uploaded to Canvas by Friday, Dec 5 at 11:50pm.",
+      "start": 130,
+      "end": 201,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "cs4370_all_submissions",
+      "item_role": "deadline",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_M09_1",
+      "candidate_index": 1,
+      "title": "期末考试",
+      "title_en": "Final exam",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-10",
+      "time": "09:50",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "The final exam is on Wednesday, Dec 10 at 9:50am. It is a canvas quiz that requires Respondus Lockdown browser with a webcam.",
+      "start": 203,
+      "end": 328,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 1,
+      "outcome": "correct",
+      "deadline_id": "cs4370_final",
+      "item_role": "deadline",
+      "item_kind": null
+     },
+     {
+      "entity_key": "model_M09_2",
+      "candidate_index": 2,
+      "title": "复习模拟期末考试",
+      "title_en": "Review the mock final exam",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-03",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "On Wednesday we will review the mock final document and I am happy to discuss any material that is not clear.",
+      "start": 19,
+      "end": 128,
+      "model_status": "conditional",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "invented"
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs4370_all_submissions",
+      "current": true,
+      "expected_dates": [
+       "2025-12-05"
+      ],
+      "expected_times": [
+       "23:50"
+      ],
+      "expected_timezone": null,
+      "anchor": "All submissions must be uploaded to Canvas by Friday, Dec 5 at 11:50pm.",
+      "status": "hit",
+      "task": 0
+     },
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs4370_final",
+      "current": true,
+      "expected_dates": [
+       "2025-12-10"
+      ],
+      "expected_times": [
+       "09:50"
+      ],
+      "expected_timezone": null,
+      "anchor": "The final exam is on Wednesday, Dec 10 at 9:50am.",
+      "status": "hit",
+      "task": 1
+     }
+    ]
+   },
+   "M10": {
+    "tasks": [
+     {
+      "entity_key": "model_M10_0",
+      "candidate_index": 0,
+      "title": "CS 3120数据库管理期末考试",
+      "title_en": "CS 3120 Database Management Final Exam",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-08",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "subject",
+      "quote": "Final Exam (December 8, 12:00 am - 11:59 pm) Instructions - Online: CS 3120: Database Management (2025 Fall)",
+      "start": 0,
+      "end": 108,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "cs3120_final",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs3120_final",
+      "current": true,
+      "expected_dates": [
+       "2025-12-08"
+      ],
+      "expected_times": [
+       "00:00",
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "Availability Window: December 8 (12:00 AM) – December 8 (11:59 PM)",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "M11": {
+    "tasks": [
+     {
+      "entity_key": "model_M11_0",
+      "candidate_index": 0,
+      "title": "完成 CS 3120 数据库管理期末考试",
+      "title_en": "Complete the CS 3120 Database Management final exam",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-08",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "subject",
+      "quote": "Final Exam Reminder -  December 8: CS 3120: Database Management (2025 Fall)",
+      "start": 0,
+      "end": 75,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "duplicate_across_mails",
+      "deadline_id": "cs3120_final",
+      "item_role": "deadline",
+      "item_kind": null,
+      "first_seen_in": "M10"
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "cs3120_final",
+      "current": true,
+      "expected_dates": [
+       "2025-12-08"
+      ],
+      "expected_times": [
+       "00:00",
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "Availability Window: December 8 (12:00 AM) – December 8 (11:59 PM)",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "M12": {
+    "tasks": [
+     {
+      "entity_key": "model_M12_0",
+      "candidate_index": 0,
+      "title": "有异议时提交重新评分申请",
+      "title_en": "Submit a regrade request if you have concerns",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-11",
+      "time": "23:59",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "Please review your grades, and if you have any concerns, submit a regrade request by 11:59 PM on December 11, 2025.",
+      "start": 74,
+      "end": 189,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": 0,
+      "outcome": "optional_promoted",
+      "deadline_id": null,
+      "item_role": "optional",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "optional",
+      "kind": null,
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2025-12-11"
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "if you have any concerns, submit a regrade request by 11:59 PM on December 11, 2025.",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "M13": {
+    "tasks": [
+     {
+      "entity_key": "model_M13_0",
+      "candidate_index": 0,
+      "title": "提交最终项目报告",
+      "title_en": "Submit Final Project Report",
+      "status": "completed",
+      "state": "done",
+      "date": "2025-12-05",
+      "time": "23:54",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "[CS 4310 on Gradescope] Successfully submitted to Final Project Report",
+      "start": 0,
+      "end": 70,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "not_open"
+     }
+    ],
+    "items": [
+     {
+      "role": "completed",
+      "kind": null,
+      "deadline_id": "cs4310_final_report",
+      "current": true,
+      "expected_dates": [
+       "2025-12-06"
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "Due Date:\nDec 06, 2025 at 11:59:00 PM MST",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   },
+   "M14": {
+    "tasks": [
+     {
+      "entity_key": "model_M14_0",
+      "candidate_index": 0,
+      "title": "提交最终项目报告",
+      "title_en": "Submit Final Project Report",
+      "status": "completed",
+      "state": "done",
+      "date": "2025-12-05",
+      "time": "23:46",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "[CS 4310 on Gradescope] Successfully submitted to Final Project Report",
+      "start": 0,
+      "end": 70,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "not_open"
+     },
+     {
+      "entity_key": "model_M14_1",
+      "candidate_index": 1,
+      "title": "重新提交最终项目报告（可选）",
+      "title_en": "Resubmit Final Project Report (optional)",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-12-06",
+      "time": "23:59",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "You may be able to resubmit until the due date (Dec 06, 2025 at 11:59:00 PM MST).",
+      "start": 109,
+      "end": 190,
+      "model_status": "conditional",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "completed_reopened",
+      "deadline_id": "cs4310_final_report",
+      "item_role": "completed",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "completed",
+      "kind": null,
+      "deadline_id": "cs4310_final_report",
+      "current": true,
+      "expected_dates": [
+       "2025-12-06"
+      ],
+      "expected_times": [
+       "23:59"
+      ],
+      "expected_timezone": null,
+      "anchor": "Due Date:\nDec 06, 2025 at 11:59:00 PM MST",
+      "status": "promoted",
+      "task": 1
+     }
+    ]
+   },
+   "M15": {
+    "tasks": [
+     {
+      "entity_key": "model_M15_0",
+      "candidate_index": 0,
+      "title": "期末作业评分通知",
+      "title_en": "Final assignment grading notification",
+      "status": "completed",
+      "state": "done",
+      "date": "2025-12-10",
+      "time": "10:09",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "Assignment Graded: Final - Requires Respondus LockDown Browser + Webcam, CS 4370: Intro Computer-Aided Geom Desg (2025 Fall)",
+      "start": 0,
+      "end": 124,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "not_open",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "graded_timestamp"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "graded_timestamp",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2025-12-10"
+      ],
+      "expected_times": [
+       "10:09"
+      ],
+      "expected_timezone": null,
+      "anchor": "graded: Dec 10 at 10:09am",
+      "status": "kept_closed",
+      "task": 0
+     }
+    ]
+   },
+   "M16": {
+    "tasks": [
+     {
+      "entity_key": "model_M16_0",
+      "candidate_index": 0,
+      "title": "重新检查并提供未关闭的拉取请求",
+      "title_en": "Recheck and provide an open pull request",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "Can you please recheck it and provide\nme a pull request which is not closed so that I can merge it.",
+      "start": 110,
+      "end": 209,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "undated_extra"
+     }
+    ],
+    "items": []
+   },
+   "M17": {
+    "tasks": [
+     {
+      "entity_key": "model_M17_0",
+      "candidate_index": 0,
+      "title": "统一并修正简历内容",
+      "title_en": "Make the resume consistent and correct its content",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "8.2022- 2025.12(Expected), keep the format consistent for the time",
+      "start": 105,
+      "end": 171,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "undated_extra"
+     },
+     {
+      "entity_key": "model_M17_1",
+      "candidate_index": 1,
+      "title": "回复推荐信草稿反馈并说明相关经历",
+      "title_en": "Respond with feedback on the recommendation letter draft and share relevant experience",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "This is the draft of the letter. Let me know if I missed anything.",
+      "start": 0,
+      "end": 66,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "undated_extra"
+     }
+    ],
+    "items": []
+   },
+   "M18": {
+    "tasks": [
+     {
+      "entity_key": "model_M18_0",
+      "candidate_index": 0,
+      "title": "确认展示活动的供电需求",
+      "title_en": "Confirm power needs for the showcase",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-11-25",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "subject",
+      "quote": "Action Needed: Fall 2025 SoC Senior Capstone Showcase Power Access",
+      "start": 0,
+      "end": 66,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "showcase_power_reply",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "showcase_power_reply",
+      "current": true,
+      "expected_dates": [
+       "2025-11-25"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Please confirm by Tuesday, November 25",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "M19": {
+    "tasks": [
+     {
+      "entity_key": "model_M19_0",
+      "candidate_index": 0,
+      "title": "确认演示是否符合默认空间要求",
+      "title_en": "Confirm whether the demo fits the default space allocation",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-11-25",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Please confirm by Tuesday, November 25, whether your demo will fit within this space. If it does not, please specify the additional space you will require.",
+      "start": 137,
+      "end": 292,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "showcase_demo_reply",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "showcase_demo_reply",
+      "current": true,
+      "expected_dates": [
+       "2025-11-25"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Please confirm by Tuesday, November 25",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "M20": {
+    "tasks": [
+     {
+      "entity_key": "model_M20_0",
+      "candidate_index": 0,
+      "title": "商定团队聊天平台",
+      "title_en": "Agree on a team chat platform",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "Let's make a chatroom on a platform where everyone is available, like\nDiscord or a text group; either one works for me.",
+      "start": 0,
+      "end": 119,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "undated_extra"
+     },
+     {
+      "entity_key": "model_M20_1",
+      "candidate_index": 1,
+      "title": "审阅并反馈初次联系邮件草稿",
+      "title_en": "Review and give feedback on the initial contact email draft",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "For the initial email,\nhow does this draft look?",
+      "start": 120,
+      "end": 168,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "undated_extra"
+     }
+    ],
+    "items": []
+   },
+   "M21": {
+    "tasks": [
+     {
+      "entity_key": "model_M21_0",
+      "candidate_index": 0,
+      "title": "收到推荐信修改稿",
+      "title_en": "Received recommendation letter edits",
+      "status": "completed",
+      "state": "done",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "Attached you will find my edits, one clean file and another with tracked changes.",
+      "start": 0,
+      "end": 81,
+      "model_status": "completed",
+      "model_needs_review": true,
+      "item": null,
+      "outcome": "not_open"
+     }
+    ],
+    "items": []
+   },
+   "M22": {
+    "tasks": [
+     {
+      "entity_key": "model_M22_0",
+      "candidate_index": 0,
+      "title": "提交项目2",
+      "title_en": "Submit Project 2",
+      "status": "completed",
+      "state": "done",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "subject",
+      "quote": "Re: ACC3300: Apology for Late Submission of Project 2",
+      "start": 0,
+      "end": 53,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "not_open"
+     }
+    ],
+    "items": []
+   },
+   "M23": {
+    "tasks": [],
+    "items": []
+   },
+   "M24": {
+    "tasks": [
+     {
+      "entity_key": "model_M24_0",
+      "candidate_index": 0,
+      "title": "完成讨论过的后续事项并通过 WhatsApp 告知 Priya",
+      "title_en": "Complete the discussed next steps and notify Priya on WhatsApp",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "removing this reoccurring meeting until you complete your \ndiscussed next steps.🙂 Message me on WhatApp once it is complete.",
+      "start": 50,
+      "end": 174,
+      "model_status": "pending",
+      "model_needs_review": true,
+      "item": null,
+      "outcome": "undated_extra"
+     },
+     {
+      "entity_key": "model_M24_1",
+      "candidate_index": 1,
+      "title": "更新实习进度并告知学校回复",
+      "title_en": "Share internship progress and report school responses",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "Keep me posted on your progress. Let me know if you hear back from any of \nthe schools.",
+      "start": 443,
+      "end": 530,
+      "model_status": "conditional",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "undated_extra"
+     }
+    ],
+    "items": []
+   },
+   "M25": {
+    "tasks": [],
+    "items": []
+   },
+   "M26": {
+    "tasks": [
+     {
+      "entity_key": "model_M26_0",
+      "candidate_index": 0,
+      "title": "Lyrebird AI 团队周会",
+      "title_en": "Lyrebird AI Team Meeting",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "subject",
+      "quote": "Updated invitation: Team - Lyrebird AI Meeting @ Weekly from 9am to 10am on Thursday (MST) ([EMAIL_42022df7])",
+      "start": 0,
+      "end": 109,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": null,
+      "outcome": "undated_spurious"
+     }
+    ],
+    "items": []
+   },
+   "M27": {
+    "tasks": [
+     {
+      "entity_key": "model_M27_0",
+      "candidate_index": 0,
+      "title": "Lyrebird AI 团队会议",
+      "title_en": "Lyrebird AI Team Meeting",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "Team - Lyrebird AI Meeting",
+      "start": 57,
+      "end": 83,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": null,
+      "outcome": "undated_spurious"
+     }
+    ],
+    "items": []
+   },
+   "M28": {
+    "tasks": [
+     {
+      "entity_key": "model_M28_0",
+      "candidate_index": 0,
+      "title": "CS4860 第三次导师会议：Lyrebird AI",
+      "title_en": "CS4860 Third Instructor Meeting: Lyrebird AI",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-11-21",
+      "time": "13:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "subject",
+      "quote": "Re: CS4860: 3rd Instructor Meeting- Lyrebird AI 11/21 1:00pm-1:30pm",
+      "start": 0,
+      "end": 67,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "invented"
+     }
+    ],
+    "items": []
+   },
+   "M29": {
+    "tasks": [
+     {
+      "entity_key": "model_M29_0",
+      "candidate_index": 0,
+      "title": "接受Harbor录取通知",
+      "title_en": "Accept the Harbor offer",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "To accept your offer: Log into your MyNorthbridge portal.",
+      "start": 1105,
+      "end": 1162,
+      "model_status": "pending",
+      "model_needs_review": true,
+      "item": 0,
+      "outcome": "optional_promoted",
+      "deadline_id": null,
+      "item_role": "optional",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "optional",
+      "kind": null,
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2025-12-05"
+      ],
+      "expected_times": [
+       "12:00"
+      ],
+      "expected_timezone": null,
+      "anchor": "Monday, December 5, at 12 p.m. Mountain Standard Time",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "M30": {
+    "tasks": [],
+    "items": []
+   },
+   "M31": {
+    "tasks": [
+     {
+      "entity_key": "model_M31_0",
+      "candidate_index": 0,
+      "title": "申请软件工程解决方案分析师职位",
+      "title_en": "Apply for the Software Engineering Solutions Analyst role",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "subject",
+      "quote": "Deloitte Application Deadline Approaching! Apply Now!",
+      "start": 0,
+      "end": 53,
+      "model_status": "pending",
+      "model_needs_review": true,
+      "item": null,
+      "outcome": "undated_spurious"
+     }
+    ],
+    "items": []
+   },
+   "M32": {
+    "tasks": [
+     {
+      "entity_key": "model_M32_0",
+      "candidate_index": 0,
+      "title": "验证账户以访问共享文档",
+      "title_en": "Verify the account to access the shared document",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "For security purposes, you must enter the code below to verify your account to access the shared document.",
+      "start": 8,
+      "end": 114,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "non_task_promoted",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "security_token_lifetime"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "security_token_lifetime",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       null
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "The code will only work for 15 minutes",
+      "status": "promoted",
+      "task": 0
+     }
+    ]
+   },
+   "M33": {
+    "tasks": [
+     {
+      "entity_key": "model_M33_0",
+      "candidate_index": 0,
+      "title": "已启用两步验证",
+      "title_en": "2-Step Verification enabled",
+      "status": "completed",
+      "state": "done",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "subject",
+      "quote": "2-Step Verification turned on",
+      "start": 0,
+      "end": 29,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "not_open"
+     }
+    ],
+    "items": []
+   },
+   "M34": {
+    "tasks": [
+     {
+      "entity_key": "model_M34_0",
+      "candidate_index": 0,
+      "title": "Lyrebird AI 团队会议（已取消）",
+      "title_en": "Lyrebird AI Team Meeting (Canceled)",
+      "status": "completed",
+      "state": "done",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "This event has been canceled and removed from your calendar with a note:",
+      "start": 0,
+      "end": 72,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "not_open"
+     }
+    ],
+    "items": []
+   },
+   "M35": {
+    "tasks": [
+     {
+      "entity_key": "model_M35_0",
+      "candidate_index": 0,
+      "title": "Lyrebird AI 团队会议（已取消）",
+      "title_en": "Lyrebird AI Team Meeting (Canceled)",
+      "status": "needs_review",
+      "state": "pending",
+      "date": "2025-09-12",
+      "time": "10:00",
+      "timezone": null,
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "This event has been canceled and removed from your calendar with a note:",
+      "start": 0,
+      "end": 72,
+      "model_status": "unknown",
+      "model_needs_review": true,
+      "item": null,
+      "outcome": "invented"
+     }
+    ],
+    "items": []
+   },
+   "M36": {
+    "tasks": [
+     {
+      "entity_key": "model_M36_0",
+      "candidate_index": 0,
+      "title": "兑现学生账户退款支票",
+      "title_en": "Cash the student account refund check",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "Please cash this check immediately.",
+      "start": 344,
+      "end": 379,
+      "model_status": "pending",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "refund_cash_check",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "refund_cash_check",
+      "current": true,
+      "expected_dates": [
+       null
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Please cash this check immediately.",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "M37": {
+    "tasks": [
+     {
+      "entity_key": "model_M37_0",
+      "candidate_index": 0,
+      "title": "提交国际学生退款表格",
+      "title_en": "Submit the International Student Refund Form",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "Within 5 days of this email",
+      "start": 660,
+      "end": 687,
+      "model_status": "pending",
+      "model_needs_review": true,
+      "item": 0,
+      "outcome": "correct",
+      "deadline_id": "refund_choose_and_submit_form",
+      "item_role": "deadline",
+      "item_kind": null
+     }
+    ],
+    "items": [
+     {
+      "role": "deadline",
+      "kind": null,
+      "deadline_id": "refund_choose_and_submit_form",
+      "current": true,
+      "expected_dates": [
+       "2025-06-04",
+       null
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Within 5 days of this email",
+      "status": "hit",
+      "task": 0
+     }
+    ]
+   },
+   "M38": {
+    "tasks": [
+     {
+      "entity_key": "model_M38_0",
+      "candidate_index": 0,
+      "title": "UBC研究生项目申请费付款收据",
+      "title_en": "UBC Graduate Program Application Fee Payment Receipt",
+      "status": "completed",
+      "state": "done",
+      "date": "2025-11-27",
+      "time": "22:32",
+      "timezone": "America/Los_Angeles",
+      "deadline_status": "explicit",
+      "required": true,
+      "field": "body_view",
+      "quote": "This message is an automated notification to inform you that your payment has been completed successfully.",
+      "start": 134,
+      "end": 240,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": null,
+      "outcome": "not_open"
+     }
+    ],
+    "items": []
+   },
+   "M39": {
+    "tasks": [
+     {
+      "entity_key": "model_M39_0",
+      "candidate_index": 0,
+      "title": "电子成绩单订单已成功提交",
+      "title_en": "Electronic transcript order successfully placed",
+      "status": "completed",
+      "state": "done",
+      "date": "2025-12-18",
+      "time": null,
+      "timezone": null,
+      "deadline_status": "date_only",
+      "required": true,
+      "field": "body_view",
+      "quote": "Your order was placed successfully on 12/18/2025.",
+      "start": 71,
+      "end": 120,
+      "model_status": "completed",
+      "model_needs_review": false,
+      "item": 0,
+      "outcome": "not_open",
+      "deadline_id": null,
+      "item_role": "non_task",
+      "item_kind": "order_placed_timestamp"
+     },
+     {
+      "entity_key": "model_M39_1",
+      "candidate_index": 1,
+      "title": "等待成绩或学位发布后处理并寄送成绩单",
+      "title_en": "Wait for grades or degree posting before processing and sending the transcript",
+      "status": "needs_review",
+      "state": "pending",
+      "date": null,
+      "time": null,
+      "timezone": null,
+      "deadline_status": "missing",
+      "required": true,
+      "field": "body_view",
+      "quote": "*Note:* You requested that you would like to wait until grades are out before we send your document. Once the new grades are posted, *Northbridge University* will process your order, and we will send your document to its destination.",
+      "start": 589,
+      "end": 822,
+      "model_status": "conditional",
+      "model_needs_review": true,
+      "item": null,
+      "outcome": "undated_spurious"
+     }
+    ],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "order_placed_timestamp",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2025-12-18"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Your order was placed successfully on 12/18/2025.",
+      "status": "kept_closed",
+      "task": 0
+     }
+    ]
+   },
+   "M40": {
+    "tasks": [],
+    "items": [
+     {
+      "role": "non_task",
+      "kind": "promotion_expiry",
+      "deadline_id": null,
+      "current": true,
+      "expected_dates": [
+       "2026-02-08"
+      ],
+      "expected_times": [
+       null
+      ],
+      "expected_timezone": null,
+      "anchor": "Valid 01.26.26 through 02.08.26.",
+      "status": "untouched",
+      "task": null
+     }
+    ]
+   }
+  }
+ },
+ "privacy": {
+  "planted": 0,
+  "removed": {
+   "k": 0,
+   "n": 0,
+   "value": null,
+   "ci95": null
+  },
+  "still_present": []
+ },
+ "tokens": {
+  "input": 35584,
+  "output": 30835
+ },
+ "baseline": {
+  "what": "keywords for reply/action; every written date on a line with a deadline word becomes an open task",
+  "labels": {
+   "needs_reply": {
+    "TP": 5,
+    "FP": 4,
+    "FN": 0,
+    "TN": 31,
+    "precision": {
+     "k": 5,
+     "n": 9,
+     "value": 0.556,
+     "ci95": [
+      0.267,
+      0.811
+     ]
+    },
+    "recall": {
+     "k": 5,
+     "n": 5,
+     "value": 1.0,
+     "ci95": [
+      0.566,
+      1.0
+     ]
+    },
+    "f1": 0.714
+   },
+   "needs_action": {
+    "TP": 14,
+    "FP": 7,
+    "FN": 5,
+    "TN": 14,
+    "precision": {
+     "k": 14,
+     "n": 21,
+     "value": 0.667,
+     "ci95": [
+      0.454,
+      0.828
+     ]
+    },
+    "recall": {
+     "k": 14,
+     "n": 19,
+     "value": 0.737,
+     "ci95": [
+      0.512,
+      0.882
+     ]
+    },
+    "f1": 0.7
+   }
+  },
+  "exact_match": {
+   "k": 26,
+   "n": 40,
+   "value": 0.65,
+   "ci95": [
+    0.495,
+    0.779
+   ]
+  },
+  "majority_category": {
+   "k": 23,
+   "n": 40,
+   "value": 0.575,
+   "ci95": [
+    0.422,
+    0.715
+   ]
+  },
+  "recall_per_mail": {
+   "k": 5,
+   "n": 21,
+   "value": 0.238,
+   "ci95": [
+    0.106,
+    0.451
+   ]
+  },
+  "recall_unique": {
+   "k": 5,
+   "n": 13,
+   "value": 0.385,
+   "ci95": [
+    0.177,
+    0.645
+   ]
+  },
+  "precision_per_mail": {
+   "k": 5,
+   "n": 12,
+   "value": 0.417,
+   "ci95": [
+    0.193,
+    0.68
+   ]
+  },
+  "precision_task_list": {
+   "k": 5,
+   "n": 12,
+   "value": 0.417,
+   "ci95": [
+    0.193,
+    0.68
+   ]
+  },
+  "open_task_outcomes": {
+   "correct": 5,
+   "wrong_date": 1,
+   "optional_promoted": 2,
+   "completed_reopened": 2,
+   "invented": 2
+  }
+ }
+}

@@ -1,0 +1,327 @@
+{
+ "samples": {
+  "runs": [
+   "mail_samples_run1"
+  ],
+  "label_status": "NOT verified - annotation status in the files: {'AI_assisted_proposal_pending_user_review': 40}; treat every number as provisional",
+  "aggregate": {
+   "needs_reply_f1": {
+    "mean": 0.909,
+    "min": 0.909,
+    "max": 0.909,
+    "runs": 1
+   },
+   "needs_action_f1": {
+    "mean": 0.864,
+    "min": 0.864,
+    "max": 0.864,
+    "runs": 1
+   },
+   "exact_match": {
+    "mean": 0.8,
+    "min": 0.8,
+    "max": 0.8,
+    "runs": 1
+   },
+   "category_accuracy": {
+    "mean": 0.775,
+    "min": 0.775,
+    "max": 0.775,
+    "runs": 1
+   },
+   "deadline_recall_per_mail": {
+    "mean": 0.952,
+    "min": 0.952,
+    "max": 0.952,
+    "runs": 1
+   },
+   "deadline_recall_unique": {
+    "mean": 1.0,
+    "min": 1.0,
+    "max": 1.0,
+    "runs": 1
+   },
+   "deadline_precision_per_mail": {
+    "mean": 0.72,
+    "min": 0.72,
+    "max": 0.72,
+    "runs": 1
+   },
+   "deadline_precision_task_list": {
+    "mean": 0.44,
+    "min": 0.44,
+    "max": 0.44,
+    "runs": 1
+   },
+   "deadline_precision_task_list_if_event_tasks_accepted": {
+    "mean": 0.48,
+    "min": 0.48,
+    "max": 0.48,
+    "runs": 1
+   },
+   "non_task_became_open_task": {
+    "mean": 2.0,
+    "min": 2,
+    "max": 2,
+    "runs": 1
+   },
+   "optional_became_open_task": {
+    "mean": 2.0,
+    "min": 2,
+    "max": 2,
+    "runs": 1
+   },
+   "open_tasks_with_date": {
+    "mean": 25.0,
+    "min": 25,
+    "max": 25,
+    "runs": 1
+   },
+   "needs_action_precision": {
+    "mean": 0.76,
+    "min": 0.76,
+    "max": 0.76,
+    "runs": 1
+   },
+   "needs_action_recall": {
+    "mean": 1.0,
+    "min": 1.0,
+    "max": 1.0,
+    "runs": 1
+   },
+   "needs_reply_precision": {
+    "mean": 0.833,
+    "min": 0.833,
+    "max": 0.833,
+    "runs": 1
+   },
+   "needs_reply_recall": {
+    "mean": 1.0,
+    "min": 1.0,
+    "max": 1.0,
+    "runs": 1
+   },
+   "ignored_correctly": {
+    "mean": 0.737,
+    "min": 0.737,
+    "max": 0.737,
+    "runs": 1
+   },
+   "needed_attention_but_ignored": {
+    "mean": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "runs": 1
+   },
+   "baseline_exact_match": {
+    "mean": 0.65,
+    "min": 0.65,
+    "max": 0.65,
+    "runs": 1
+   },
+   "baseline_deadline_recall_per_mail": {
+    "mean": 0.238,
+    "min": 0.238,
+    "max": 0.238,
+    "runs": 1
+   },
+   "baseline_deadline_precision_per_mail": {
+    "mean": 0.417,
+    "min": 0.417,
+    "max": 0.417,
+    "runs": 1
+   },
+   "secrets_removed": {},
+   "seconds_per_mail": {
+    "mean": 9.62,
+    "min": 9.62,
+    "max": 9.62,
+    "runs": 1
+   },
+   "tokens_per_mail": {
+    "mean": 1660.0,
+    "min": 1660,
+    "max": 1660,
+    "runs": 1
+   },
+   "open_tasks": {
+    "mean": 42.0,
+    "min": 42,
+    "max": 42,
+    "runs": 1
+   },
+   "analysis_failed": {
+    "mean": 1.0,
+    "min": 1,
+    "max": 1,
+    "runs": 1
+   }
+  }
+ },
+ "synthetic": {
+  "runs": [
+   "mail_synthetic_run1",
+   "mail_synthetic_run2",
+   "mail_synthetic_run3"
+  ],
+  "label_status": "correct by construction (written with each mail, frozen before the first run); not yet reviewed by a human",
+  "aggregate": {
+   "needs_reply_f1": {
+    "mean": 0.916,
+    "min": 0.889,
+    "max": 0.929,
+    "runs": 3
+   },
+   "needs_action_f1": {
+    "mean": 0.714,
+    "min": 0.703,
+    "max": 0.719,
+    "runs": 3
+   },
+   "exact_match": {
+    "mean": 0.675,
+    "min": 0.65,
+    "max": 0.688,
+    "runs": 3
+   },
+   "category_accuracy": {
+    "mean": 0.934,
+    "min": 0.925,
+    "max": 0.938,
+    "runs": 3
+   },
+   "deadline_recall_per_mail": {
+    "mean": 0.96,
+    "min": 0.927,
+    "max": 0.976,
+    "runs": 3
+   },
+   "deadline_recall_unique": {
+    "mean": 0.957,
+    "min": 0.923,
+    "max": 0.974,
+    "runs": 3
+   },
+   "deadline_precision_per_mail": {
+    "mean": 0.595,
+    "min": 0.569,
+    "max": 0.613,
+    "runs": 3
+   },
+   "deadline_precision_task_list": {
+    "mean": 0.563,
+    "min": 0.538,
+    "max": 0.581,
+    "runs": 3
+   },
+   "deadline_precision_task_list_if_event_tasks_accepted": {
+    "mean": 0.847,
+    "min": 0.841,
+    "max": 0.855,
+    "runs": 3
+   },
+   "non_task_became_open_task": {
+    "mean": 20.333,
+    "min": 18,
+    "max": 23,
+    "runs": 3
+   },
+   "optional_became_open_task": {
+    "mean": 6.0,
+    "min": 6,
+    "max": 6,
+    "runs": 3
+   },
+   "open_tasks_with_date": {
+    "mean": 63.333,
+    "min": 62,
+    "max": 65,
+    "runs": 3
+   },
+   "needs_action_precision": {
+    "mean": 0.555,
+    "min": 0.542,
+    "max": 0.561,
+    "runs": 3
+   },
+   "needs_action_recall": {
+    "mean": 1.0,
+    "min": 1.0,
+    "max": 1.0,
+    "runs": 3
+   },
+   "needs_reply_precision": {
+    "mean": 0.864,
+    "min": 0.857,
+    "max": 0.867,
+    "runs": 3
+   },
+   "needs_reply_recall": {
+    "mean": 0.974,
+    "min": 0.923,
+    "max": 1.0,
+    "runs": 3
+   },
+   "ignored_correctly": {
+    "mean": 0.558,
+    "min": 0.525,
+    "max": 0.575,
+    "runs": 3
+   },
+   "needed_attention_but_ignored": {
+    "mean": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "runs": 3
+   },
+   "baseline_exact_match": {
+    "mean": 0.738,
+    "min": 0.738,
+    "max": 0.738,
+    "runs": 3
+   },
+   "baseline_deadline_recall_per_mail": {
+    "mean": 0.561,
+    "min": 0.561,
+    "max": 0.561,
+    "runs": 3
+   },
+   "baseline_deadline_precision_per_mail": {
+    "mean": 0.59,
+    "min": 0.59,
+    "max": 0.59,
+    "runs": 3
+   },
+   "secrets_removed": {
+    "mean": 0.962,
+    "min": 0.962,
+    "max": 0.962,
+    "runs": 3
+   },
+   "seconds_per_mail": {
+    "mean": 7.777,
+    "min": 7.64,
+    "max": 7.93,
+    "runs": 3
+   },
+   "tokens_per_mail": {
+    "mean": 1390.333,
+    "min": 1381,
+    "max": 1408,
+    "runs": 3
+   },
+   "open_tasks": {
+    "mean": 77.0,
+    "min": 75,
+    "max": 78,
+    "runs": 3
+   },
+   "analysis_failed": {
+    "mean": 0.0,
+    "min": 0,
+    "max": 0,
+    "runs": 3
+   }
+  }
+ }
+}

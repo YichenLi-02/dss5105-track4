@@ -1,0 +1,2704 @@
+{
+ "version": "mail_eval_v1",
+ "reference_timezone": "Asia/Singapore",
+ "guideline": "README.md",
+ "quotas": {
+  "category": {
+   "academic": 30,
+   "career": 12,
+   "events": 10,
+   "promotions": 10,
+   "other": 18
+  },
+  "difficulty": {
+   "easy": 30,
+   "medium": 30,
+   "hard": 20
+  },
+  "language": {
+   "en": 68,
+   "zh": 12
+  }
+ },
+ "counts": {
+  "messages": 80,
+  "needs_reply": 13,
+  "needs_action": 32,
+  "ignore": 40,
+  "required_deadlines_unique": 39,
+  "items_by_role": {
+   "deadline": 41,
+   "non_task": 50,
+   "optional": 6,
+   "completed": 2
+  }
+ },
+ "deadlines": {
+  "D01": {
+   "final_date": "2026-11-02",
+   "final_time": "23:59",
+   "stated_in": [
+    "synA03"
+   ],
+   "superseded_mentions": [
+    {
+     "message": "synA01",
+     "date": "2026-10-30",
+     "time": "23:59"
+    },
+    {
+     "message": "synA02",
+     "date": "2026-10-30",
+     "time": "23:59"
+    }
+   ]
+  },
+  "D02": {
+   "final_date": "2026-10-20",
+   "final_time": "10:00",
+   "stated_in": [
+    "synA04"
+   ],
+   "superseded_mentions": []
+  },
+  "D03": {
+   "final_date": "2026-11-06",
+   "final_time": null,
+   "stated_in": [
+    "synA05"
+   ],
+   "superseded_mentions": []
+  },
+  "D04": {
+   "final_date": null,
+   "final_time": "18:00",
+   "stated_in": [
+    "synA06"
+   ],
+   "superseded_mentions": []
+  },
+  "D05": {
+   "final_date": null,
+   "final_time": "17:00",
+   "stated_in": [
+    "synA07"
+   ],
+   "superseded_mentions": []
+  },
+  "D06": {
+   "final_date": "2026-11-13",
+   "final_time": "23:59",
+   "stated_in": [
+    "synA08"
+   ],
+   "superseded_mentions": []
+  },
+  "D07": {
+   "final_date": "2026-10-21",
+   "final_time": null,
+   "stated_in": [
+    "synA12"
+   ],
+   "superseded_mentions": []
+  },
+  "D08": {
+   "final_date": "2026-11-04",
+   "final_time": "12:00",
+   "stated_in": [
+    "synA14"
+   ],
+   "superseded_mentions": []
+  },
+  "D09": {
+   "final_date": "2026-10-24",
+   "final_time": "09:30",
+   "stated_in": [
+    "synA16"
+   ],
+   "superseded_mentions": []
+  },
+  "D10": {
+   "final_date": "2026-10-23",
+   "final_time": "17:00",
+   "stated_in": [
+    "synA17"
+   ],
+   "superseded_mentions": []
+  },
+  "D11": {
+   "final_date": "2026-10-26",
+   "final_time": "23:59",
+   "stated_in": [
+    "synA17"
+   ],
+   "superseded_mentions": []
+  },
+  "D12": {
+   "final_date": "2026-11-12",
+   "final_time": "12:00",
+   "stated_in": [
+    "synA17"
+   ],
+   "superseded_mentions": []
+  },
+  "D13": {
+   "final_date": "2026-10-22",
+   "final_time": null,
+   "stated_in": [
+    "synA18"
+   ],
+   "superseded_mentions": []
+  },
+  "D14": {
+   "final_date": "2026-11-09",
+   "final_time": "10:00",
+   "stated_in": [
+    "synA20"
+   ],
+   "superseded_mentions": []
+  },
+  "D15": {
+   "final_date": "2026-11-15",
+   "final_time": "23:59",
+   "stated_in": [
+    "synA21"
+   ],
+   "superseded_mentions": []
+  },
+  "D16": {
+   "final_date": "2026-11-25",
+   "final_time": "13:00",
+   "stated_in": [
+    "synA22"
+   ],
+   "superseded_mentions": []
+  },
+  "D17": {
+   "final_date": "2026-11-09",
+   "final_time": null,
+   "stated_in": [
+    "synA24"
+   ],
+   "superseded_mentions": []
+  },
+  "D18": {
+   "final_date": "2026-10-28",
+   "final_time": "18:00",
+   "stated_in": [
+    "synA26"
+   ],
+   "superseded_mentions": []
+  },
+  "D19": {
+   "final_date": "2026-10-20",
+   "final_time": "17:00",
+   "stated_in": [
+    "synA29"
+   ],
+   "superseded_mentions": []
+  },
+  "D20": {
+   "final_date": "2026-10-30",
+   "final_time": null,
+   "stated_in": [
+    "synC02"
+   ],
+   "superseded_mentions": []
+  },
+  "D21": {
+   "final_date": "2026-10-22",
+   "final_time": "10:00",
+   "stated_in": [
+    "synC03"
+   ],
+   "superseded_mentions": []
+  },
+  "D22": {
+   "final_date": "2026-11-06",
+   "final_time": "17:00",
+   "stated_in": [
+    "synC06"
+   ],
+   "superseded_mentions": []
+  },
+  "D23": {
+   "final_date": "2026-11-04",
+   "final_time": null,
+   "stated_in": [
+    "synC07"
+   ],
+   "superseded_mentions": []
+  },
+  "D24": {
+   "final_date": "2026-10-26",
+   "final_time": null,
+   "stated_in": [
+    "synC09"
+   ],
+   "superseded_mentions": []
+  },
+  "D25": {
+   "final_date": "2026-11-05",
+   "final_time": null,
+   "stated_in": [
+    "synC10"
+   ],
+   "superseded_mentions": []
+  },
+  "D26": {
+   "final_date": "2026-10-28",
+   "final_time": "12:00",
+   "stated_in": [
+    "synE04"
+   ],
+   "superseded_mentions": []
+  },
+  "D27": {
+   "final_date": "2026-11-06",
+   "final_time": null,
+   "stated_in": [
+    "synE09"
+   ],
+   "superseded_mentions": []
+  },
+  "D28": {
+   "final_date": "2026-11-02",
+   "final_time": null,
+   "stated_in": [
+    "synO03"
+   ],
+   "superseded_mentions": []
+  },
+  "D29": {
+   "final_date": "2026-11-01",
+   "final_time": null,
+   "stated_in": [
+    "synO05"
+   ],
+   "superseded_mentions": []
+  },
+  "D30": {
+   "final_date": "2026-10-28",
+   "final_time": null,
+   "stated_in": [
+    "synO06"
+   ],
+   "superseded_mentions": []
+  },
+  "D31": {
+   "final_date": "2026-11-16",
+   "final_time": null,
+   "stated_in": [
+    "synO08"
+   ],
+   "superseded_mentions": []
+  },
+  "D32": {
+   "final_date": "2026-11-21",
+   "final_time": null,
+   "stated_in": [
+    "synO11"
+   ],
+   "superseded_mentions": []
+  },
+  "D33": {
+   "final_date": "2026-10-29",
+   "final_time": "10:00",
+   "stated_in": [
+    "synO14"
+   ],
+   "superseded_mentions": []
+  },
+  "D34": {
+   "final_date": "2026-11-08",
+   "final_time": "18:00",
+   "stated_in": [
+    "synO17"
+   ],
+   "superseded_mentions": []
+  },
+  "D35": {
+   "final_date": "2026-10-31",
+   "final_time": null,
+   "stated_in": [
+    "synO18"
+   ],
+   "superseded_mentions": []
+  },
+  "D36": {
+   "final_date": "2026-10-23",
+   "final_time": null,
+   "stated_in": [
+    "synO07"
+   ],
+   "superseded_mentions": []
+  },
+  "D37": {
+   "final_date": "2026-10-30",
+   "final_time": null,
+   "stated_in": [
+    "synA23"
+   ],
+   "superseded_mentions": []
+  },
+  "D38": {
+   "final_date": "2026-10-28",
+   "final_time": null,
+   "stated_in": [
+    "synA27"
+   ],
+   "superseded_mentions": []
+  },
+  "D39": {
+   "final_date": "2026-10-23",
+   "final_time": null,
+   "stated_in": [
+    "synO13"
+   ],
+   "superseded_mentions": []
+  }
+ },
+ "messages": {
+  "synA01": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "later_updated"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D01",
+     "date": "2026-10-30",
+     "time": "23:59",
+     "timezone": "Asia/Singapore",
+     "accept_dates": [
+      "2026-10-30"
+     ],
+     "accept_times": [
+      "23:59"
+     ],
+     "current": false,
+     "anchors": [
+      "due on Friday, 30 October 2026 at 23:59 (SGT)"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA02": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "relative_date",
+    "repeat_mention",
+    "later_updated"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D01",
+     "date": "2026-10-30",
+     "time": "23:59",
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-30"
+     ],
+     "accept_times": [
+      "23:59"
+     ],
+     "current": false,
+     "anchors": [
+      "due this Friday at 23:59"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA03": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "update",
+    "repeat_mention"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D01",
+     "date": "2026-11-02",
+     "time": "23:59",
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-02"
+     ],
+     "accept_times": [
+      "23:59"
+     ],
+     "current": true,
+     "anchors": [
+      "The new deadline is Monday, 2 November 2026, 23:59"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA04": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D02",
+     "date": "2026-10-20",
+     "time": "10:00",
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-20"
+     ],
+     "accept_times": [
+      "10:00",
+      "10:45"
+     ],
+     "current": true,
+     "anchors": [
+      "Tuesday, 20 October, from 10:00 to 10:45"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA05": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "no_time"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D03",
+     "date": "2026-11-06",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-06"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "due on 6 November"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA06": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "weekday_date_conflict"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D04",
+     "date": null,
+     "time": "18:00",
+     "timezone": null,
+     "accept_dates": [
+      null
+     ],
+     "accept_times": [
+      "18:00",
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "due Thursday, 23 October at 6 pm"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA07": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "needs_academic_calendar"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D05",
+     "date": null,
+     "time": "17:00",
+     "timezone": null,
+     "accept_dates": [
+      null
+     ],
+     "accept_times": [
+      "17:00",
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "due the Friday after reading week, 5 pm"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA08": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "medium",
+   "language": "zh",
+   "tags": [],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D06",
+     "date": "2026-11-13",
+     "time": "23:59",
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-13"
+     ],
+     "accept_times": [
+      "23:59"
+     ],
+     "current": true,
+     "anchors": [
+      "11月13日（周五）23:59截止"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA09": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "graded_timestamp",
+     "date": "2026-10-14",
+     "time": "09:12",
+     "anchors": [
+      "Released on 14 October 2026 at 09:12"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA10": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "optional"
+   ],
+   "items": [
+    {
+     "role": "optional",
+     "date": "2026-10-21",
+     "time": null,
+     "anchors": [
+      "submit a regrade request through the portal by 21 October"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA11": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "receipt",
+    "repeat_mention"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "receipt_timestamp",
+     "date": "2026-11-01",
+     "time": "21:47",
+     "anchors": [
+      "received on 1 November 2026 at 21:47"
+     ]
+    },
+    {
+     "role": "completed",
+     "deadline_id": "D01",
+     "date": "2026-11-02",
+     "time": "23:59",
+     "anchors": [
+      "Due date: 2 November 2026 23:59"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA12": {
+   "category": "academic",
+   "needs_reply": true,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "zh",
+   "tags": [
+    "relative_date",
+    "no_time",
+    "response_deadline"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D07",
+     "date": "2026-10-21",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-21"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "麻烦明晚之前告诉我"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA13": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "quoted_thread",
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "quoted_old_request",
+     "date": "2026-10-14",
+     "time": null,
+     "anchors": [
+      "send me your slides by Wednesday 14 October"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA14": {
+   "category": "academic",
+   "needs_reply": true,
+   "needs_action": true,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D08",
+     "date": "2026-11-04",
+     "time": "12:00",
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-04"
+     ],
+     "accept_times": [
+      "12:00"
+     ],
+     "current": true,
+     "anchors": [
+      "until Wednesday, 4 November, 12 noon"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA15": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-21",
+     "time": "14:00",
+     "anchors": [
+      "Wednesday, 21 October, 14:00-16:00"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA16": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D09",
+     "date": "2026-10-24",
+     "time": "09:30",
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-24"
+     ],
+     "accept_times": [
+      "09:30",
+      "11:00"
+     ],
+     "current": true,
+     "anchors": [
+      "Saturday, 24 October 2026, 9:30 am to 11:00 am"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA17": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "multi_deadline"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D10",
+     "date": "2026-10-23",
+     "time": "17:00",
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-23"
+     ],
+     "accept_times": [
+      "17:00"
+     ],
+     "current": true,
+     "anchors": [
+      "Progress report: Friday, 23 October, 17:00"
+     ]
+    },
+    {
+     "role": "deadline",
+     "deadline_id": "D11",
+     "date": "2026-10-26",
+     "time": "23:59",
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-26"
+     ],
+     "accept_times": [
+      "23:59"
+     ],
+     "current": true,
+     "anchors": [
+      "Peer evaluation form: Monday, 26 October, 23:59"
+     ]
+    },
+    {
+     "role": "deadline",
+     "deadline_id": "D12",
+     "date": "2026-11-12",
+     "time": "12:00",
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-12"
+     ],
+     "accept_times": [
+      "12:00"
+     ],
+     "current": true,
+     "anchors": [
+      "Final presentation slides: 12 November, 12 noon"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA18": {
+   "category": "academic",
+   "needs_reply": true,
+   "needs_action": true,
+   "difficulty": "hard",
+   "language": "zh",
+   "tags": [
+    "relative_date",
+    "no_time"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-20",
+     "time": "20:00",
+     "anchors": [
+      "明晚8点"
+     ]
+    },
+    {
+     "role": "deadline",
+     "deadline_id": "D13",
+     "date": "2026-10-22",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-22"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "周四前请把文献综述的初稿发到群里"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA19": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "optional",
+    "boundary_category"
+   ],
+   "items": [
+    {
+     "role": "optional",
+     "date": "2026-10-25",
+     "time": null,
+     "anchors": [
+      "The survey closes on 25 October"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA20": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-11-05",
+     "time": "15:00",
+     "anchors": [
+      "Thursday 3-4 pm"
+     ]
+    },
+    {
+     "role": "deadline",
+     "deadline_id": "D14",
+     "date": "2026-11-09",
+     "time": "10:00",
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-09"
+     ],
+     "accept_times": [
+      "10:00"
+     ],
+     "current": true,
+     "anchors": [
+      "due next Monday (9 November) at 10:00 am"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA21": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "timezone"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D15",
+     "date": "2026-11-15",
+     "time": "23:59",
+     "timezone": "UTC",
+     "accept_dates": [
+      "2026-11-15"
+     ],
+     "accept_times": [
+      "23:59"
+     ],
+     "current": true,
+     "anchors": [
+      "closes on 15 November 2026 at 11:59 PM UTC"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA22": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D16",
+     "date": "2026-11-25",
+     "time": "13:00",
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-25"
+     ],
+     "accept_times": [
+      "13:00",
+      "15:00"
+     ],
+     "current": true,
+     "anchors": [
+      "Wednesday, 25 November 2026, 1:00 PM"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA23": {
+   "category": "academic",
+   "needs_reply": true,
+   "needs_action": true,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "relative_date",
+    "no_time"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D37",
+     "date": "2026-10-30",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-30"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "send me the list of students who still do not have a project group by Friday"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA24": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "relative_date",
+    "no_time"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D17",
+     "date": "2026-11-09",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-09",
+      null
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "complete them within 5 days of this email"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA25": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "non_task_only",
+    "cancelled"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "cancelled",
+     "date": "2026-11-05",
+     "time": null,
+     "anchors": [
+      "originally scheduled for 5 November"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA26": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D18",
+     "date": "2026-10-28",
+     "time": "18:00",
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-28"
+     ],
+     "accept_times": [
+      "18:00"
+     ],
+     "current": true,
+     "anchors": [
+      "by Wednesday, 28 October, 6 pm"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://sheets.lakeside.example/mgt5005-slots"
+   ]
+  },
+  "synA27": {
+   "category": "academic",
+   "needs_reply": true,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "relative_date",
+    "no_time",
+    "response_deadline"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D38",
+     "date": "2026-10-28",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-28"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "Could you let me know by Wednesday?"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA28": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "hard",
+   "language": "zh",
+   "tags": [
+    "receipt",
+    "repeat_mention"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "receipt_timestamp",
+     "date": "2026-10-23",
+     "time": "16:40",
+     "anchors": [
+      "提交时间是10月23日16:40"
+     ]
+    },
+    {
+     "role": "completed",
+     "deadline_id": "D10",
+     "date": "2026-10-23",
+     "time": "17:00",
+     "anchors": [
+      "截止时间是17:00"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA29": {
+   "category": "academic",
+   "needs_reply": true,
+   "needs_action": true,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "relative_date"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D19",
+     "date": "2026-10-20",
+     "time": "17:00",
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-20"
+     ],
+     "accept_times": [
+      "17:00"
+     ],
+     "current": true,
+     "anchors": [
+      "re-upload it by tomorrow 5 pm"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synA30": {
+   "category": "academic",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-29",
+     "time": "16:30",
+     "anchors": [
+      "Thursday, 29 October, 4:30 pm"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synC01": {
+   "category": "career",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "optional"
+   ],
+   "items": [
+    {
+     "role": "optional",
+     "date": "2026-10-31",
+     "time": null,
+     "anchors": [
+      "Applications close on 31 October 2026"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://careers.northwind.example/grad2027"
+   ]
+  },
+  "synC02": {
+   "category": "career",
+   "needs_reply": true,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "no_time",
+    "response_deadline"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-11-03",
+     "time": null,
+     "anchors": [
+      "availability on 3-5 November"
+     ]
+    },
+    {
+     "role": "deadline",
+     "deadline_id": "D20",
+     "date": "2026-10-30",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-30"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "Please reply by Friday, 30 October"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synC03": {
+   "category": "career",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "timezone"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D21",
+     "date": "2026-10-22",
+     "time": "10:00",
+     "timezone": "Asia/Singapore",
+     "accept_dates": [
+      "2026-10-22"
+     ],
+     "accept_times": [
+      "10:00"
+     ],
+     "current": true,
+     "anchors": [
+      "expires on 22 October 2026 at 10:00 AM SGT"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://assess.orchid-analytics.example/t/8f3k2"
+   ]
+  },
+  "synC04": {
+   "category": "career",
+   "needs_reply": true,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-22",
+     "time": "19:00",
+     "anchors": [
+      "Thursday 22 October at 7 pm"
+     ]
+    },
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-24",
+     "time": "10:00",
+     "anchors": [
+      "Saturday 24 October at 10 am"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synC05": {
+   "category": "career",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "no_time_expression"
+   ],
+   "items": [],
+   "secrets": []
+  },
+  "synC06": {
+   "category": "career",
+   "needs_reply": true,
+   "needs_action": true,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "boundary"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "start_date",
+     "date": "2027-01-11",
+     "time": null,
+     "anchors": [
+      "starting 11 January 2027"
+     ]
+    },
+    {
+     "role": "deadline",
+     "deadline_id": "D22",
+     "date": "2026-11-06",
+     "time": "17:00",
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-06"
+     ],
+     "accept_times": [
+      "17:00"
+     ],
+     "current": true,
+     "anchors": [
+      "by 5 pm on Friday, 6 November 2026"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synC07": {
+   "category": "career",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "no_time"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D23",
+     "date": "2026-11-04",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-04"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "by Wednesday (4 Nov)"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://meridianbank.example/schedule/hr-7d21"
+   ]
+  },
+  "synC08": {
+   "category": "career",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "optional"
+   ],
+   "items": [
+    {
+     "role": "optional",
+     "date": "2026-11-20",
+     "time": null,
+     "anchors": [
+      "apply by 20 November"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://talentbridge.example/jobs"
+   ]
+  },
+  "synC09": {
+   "category": "career",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "relative_date",
+    "no_time"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-27",
+     "time": "14:00",
+     "anchors": [
+      "Tuesday, 27 October at 2 pm"
+     ]
+    },
+    {
+     "role": "deadline",
+     "deadline_id": "D24",
+     "date": "2026-10-26",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-26"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "at least one day before the appointment"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synC10": {
+   "category": "career",
+   "needs_reply": true,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "zh",
+   "tags": [
+    "no_time",
+    "response_deadline"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-11-10",
+     "time": "14:00",
+     "anchors": [
+      "11月10日下午2点"
+     ]
+    },
+    {
+     "role": "deadline",
+     "deadline_id": "D25",
+     "date": "2026-11-05",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-05"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "请于11月5日前回复本邮件"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synC11": {
+   "category": "career",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "receipt",
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "receipt_timestamp",
+     "date": "2026-10-20",
+     "time": null,
+     "anchors": [
+      "received your application on 20 October 2026"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synC12": {
+   "category": "career",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "other_party_timeline",
+     "date": "2026-11-09",
+     "time": null,
+     "anchors": [
+      "after 9 November"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synE01": {
+   "category": "events",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-22",
+     "time": "16:00",
+     "anchors": [
+      "Thursday, 22 October, 4:00-5:00 pm"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synE02": {
+   "category": "events",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "non_task_only",
+    "calendar_invite"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-16",
+     "time": "15:00",
+     "anchors": [
+      "Fri 16 Oct 2026 3pm - 4pm Singapore Standard Time"
+     ]
+    }
+   ],
+   "secrets": [
+    "jordan.lim@u.lakeside.example"
+   ]
+  },
+  "synE03": {
+   "category": "events",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "optional"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-11-07",
+     "time": null,
+     "anchors": [
+      "on 7-8 November"
+     ]
+    },
+    {
+     "role": "optional",
+     "date": "2026-10-30",
+     "time": null,
+     "anchors": [
+      "Register your team by 30 October"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synE04": {
+   "category": "events",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "boundary"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-31",
+     "time": "09:00",
+     "anchors": [
+      "Saturday, 31 October, 9 am - 1 pm"
+     ]
+    },
+    {
+     "role": "deadline",
+     "deadline_id": "D26",
+     "date": "2026-10-28",
+     "time": "12:00",
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-28"
+     ],
+     "accept_times": [
+      "12:00"
+     ],
+     "current": true,
+     "anchors": [
+      "before Wednesday, 28 October, 12 pm"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://library.lakeside.example/workshops/confirm/4471"
+   ]
+  },
+  "synE05": {
+   "category": "events",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "zh",
+   "tags": [
+    "non_task_only",
+    "cancelled"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "cancelled",
+     "date": "2026-10-23",
+     "time": "19:00",
+     "anchors": [
+      "原定于10月23日（周五）晚7点举行的桌游之夜"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synE06": {
+   "category": "events",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "non_task_only",
+    "boundary_category"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-21",
+     "time": "17:00",
+     "anchors": [
+      "Wednesday, 21 October, 5 pm"
+     ]
+    },
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-11-06",
+     "time": "18:00",
+     "anchors": [
+      "Friday, 6 November, 6 pm"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synE07": {
+   "category": "events",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "zh",
+   "tags": [
+    "optional",
+    "relative_date"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-24",
+     "time": "15:00",
+     "anchors": [
+      "本周六（10月24日）下午3点"
+     ]
+    },
+    {
+     "role": "optional",
+     "date": "2026-10-22",
+     "time": null,
+     "anchors": [
+      "请在周四前填写报名表"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synE08": {
+   "category": "events",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "non_task_only",
+    "calendar_invite",
+    "update"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-19",
+     "time": "10:00",
+     "anchors": [
+      "Mon 19 Oct 2026 10am - 11am Singapore Standard Time"
+     ]
+    }
+   ],
+   "secrets": [
+    "jordan.lim@u.lakeside.example"
+   ]
+  },
+  "synE09": {
+   "category": "events",
+   "needs_reply": true,
+   "needs_action": false,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "boundary",
+    "no_time",
+    "response_deadline"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-11-18",
+     "time": null,
+     "anchors": [
+      "on 18 November"
+     ]
+    },
+    {
+     "role": "deadline",
+     "deadline_id": "D27",
+     "date": "2026-11-06",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-06"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "Please let me know by 6 November"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synE10": {
+   "category": "events",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-11-03",
+     "time": "20:00",
+     "anchors": [
+      "today, 8:00 PM SGT"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://dataloom.example/live/intro-dbt"
+   ]
+  },
+  "synP01": {
+   "category": "promotions",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "promotion_expiry",
+     "date": "2026-10-18",
+     "time": null,
+     "anchors": [
+      "offer ends on 18 October 2026 at midnight"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://skillforge.example/sale"
+   ]
+  },
+  "synP02": {
+   "category": "promotions",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "zh",
+   "tags": [
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "promotion_expiry",
+     "date": "2026-10-31",
+     "time": null,
+     "anchors": [
+      "有效期至10月31日"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://shisuda.example/coupon"
+   ]
+  },
+  "synP03": {
+   "category": "promotions",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "no_time_expression",
+    "boundary_category"
+   ],
+   "items": [],
+   "secrets": [
+    "https://weeklygradient.example/142"
+   ]
+  },
+  "synP04": {
+   "category": "promotions",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "non_task_only",
+    "relative_date"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "promotion_expiry",
+     "date": "2026-10-24",
+     "time": null,
+     "anchors": [
+      "ends in 3 days"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://notenest.example/upgrade"
+   ]
+  },
+  "synP05": {
+   "category": "promotions",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "promotion_expiry",
+     "date": "2026-11-30",
+     "time": null,
+     "anchors": [
+      "by 30 November 2026"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://meridianbank.example/student-card"
+   ]
+  },
+  "synP06": {
+   "category": "promotions",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "non_task_only",
+    "false_urgency",
+    "relative_date"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "promotion_expiry",
+     "date": "2026-11-06",
+     "time": "23:59",
+     "anchors": [
+      "expires tonight at 11:59 PM"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://datapro-bootcamp.example/enrol"
+   ]
+  },
+  "synP07": {
+   "category": "promotions",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "zh",
+   "tags": [
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "promotion_expiry",
+     "date": "2026-11-11",
+     "time": null,
+     "anchors": [
+      "11月11日0点前付定金"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://youxuan-mall.example/1111"
+   ]
+  },
+  "synP08": {
+   "category": "promotions",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "no_time_expression"
+   ],
+   "items": [],
+   "secrets": []
+  },
+  "synP09": {
+   "category": "promotions",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "promotion_expiry",
+     "date": "2026-11-15",
+     "time": null,
+     "anchors": [
+      "valid till 15 Nov 2026"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synP10": {
+   "category": "promotions",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "non_task_only",
+    "mentions_course"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "promotion_expiry",
+     "date": "2026-10-25",
+     "time": null,
+     "anchors": [
+      "Offer valid until 25 October"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://harrowbooks.example/dat5310"
+   ]
+  },
+  "synO01": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "zh",
+   "tags": [
+    "non_task_only",
+    "security"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "security_token_lifetime",
+     "date": "2026-10-15",
+     "time": "09:12",
+     "anchors": [
+      "10分钟内有效"
+     ]
+    }
+   ],
+   "secrets": [
+    "482913"
+   ]
+  },
+  "synO02": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "non_task_only",
+    "security"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "security_timestamp",
+     "date": "2026-10-17",
+     "time": "22:14",
+     "anchors": [
+      "17 October 2026, 22:14 SGT"
+     ]
+    }
+   ],
+   "secrets": [
+    "https://id.lakeside.example/reset"
+   ]
+  },
+  "synO03": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "no_time"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D28",
+     "date": "2026-11-02",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-02"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "will expire on 2 November 2026"
+     ]
+    }
+   ],
+   "secrets": [
+    "6123 4567",
+    "https://id.lakeside.example/password"
+   ]
+  },
+  "synO04": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "receipt",
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "receipt_timestamp",
+     "date": "2026-10-20",
+     "time": "14:03",
+     "anchors": [
+      "Paid on: 20 October 2026, 14:03"
+     ]
+    }
+   ],
+   "secrets": [
+    "2231-8717-0042"
+   ]
+  },
+  "synO05": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "no_time"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D29",
+     "date": "2026-11-01",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-01"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "due on 1 November 2026"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synO06": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "no_time"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D30",
+     "date": "2026-10-28",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-28"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "due on 28 Oct 2026"
+     ]
+    }
+   ],
+   "secrets": [
+    "30012004417"
+   ]
+  },
+  "synO07": {
+   "category": "other",
+   "needs_reply": true,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "relative_date",
+    "no_time",
+    "response_deadline"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-27",
+     "time": "14:00",
+     "anchors": [
+      "Tuesday 27 October or Wednesday 28 October, between 2 and 4 pm"
+     ]
+    },
+    {
+     "role": "deadline",
+     "deadline_id": "D36",
+     "date": "2026-10-23",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-23"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "Please let me know by Friday"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synO08": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "no_time",
+    "two_dates"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "expiry_context",
+     "date": "2026-11-30",
+     "time": null,
+     "anchors": [
+      "expires on 30 November 2026"
+     ]
+    },
+    {
+     "role": "deadline",
+     "deadline_id": "D31",
+     "date": "2026-11-16",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-16"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "by 16 November 2026"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synO09": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-25",
+     "time": "02:00",
+     "anchors": [
+      "Sunday, 25 October, from 02:00 to 06:00"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synO10": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "non_task_only",
+    "injection",
+    "phishing"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "phishing_threat",
+     "date": "2026-10-20",
+     "time": null,
+     "anchors": [
+      "deactivated on 20 October"
+     ]
+    }
+   ],
+   "secrets": [
+    "audit@secure-check.example"
+   ]
+  },
+  "synO11": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "no_time",
+    "two_dates"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "statement_date",
+     "date": "2026-10-31",
+     "time": null,
+     "anchors": [
+      "Statement date: 31 October 2026"
+     ]
+    },
+    {
+     "role": "deadline",
+     "deadline_id": "D32",
+     "date": "2026-11-21",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-21"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "Payment due date: 21 November 2026"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synO12": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "receipt",
+    "non_task_only",
+    "two_dates"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "receipt_timestamp",
+     "date": "2026-11-03",
+     "time": null,
+     "anchors": [
+      "renewed on 3 November 2026"
+     ]
+    },
+    {
+     "role": "non_task",
+     "kind": "billing_date",
+     "date": "2026-12-03",
+     "time": null,
+     "anchors": [
+      "Next billing date: 3 December 2026"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synO13": {
+   "category": "other",
+   "needs_reply": true,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "en",
+   "tags": [
+    "no_time",
+    "response_deadline"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "event_time",
+     "date": "2026-10-26",
+     "time": "09:40",
+     "anchors": [
+      "Monday, 26 October 2026 at 9:40 AM"
+     ]
+    },
+    {
+     "role": "deadline",
+     "deadline_id": "D39",
+     "date": "2026-10-23",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-23"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "by Friday, 23 October"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synO14": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "hard",
+   "language": "en",
+   "tags": [
+    "relative_date"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D33",
+     "date": "2026-10-29",
+     "time": "10:00",
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-29"
+     ],
+     "accept_times": [
+      "10:00",
+      null,
+      "12:00"
+     ],
+     "current": true,
+     "anchors": [
+      "Thursday, 29 October, between 10 am and 12 pm",
+      "Please clear the area around the air-con unit and the window before then"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synO15": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "receipt",
+    "non_task_only",
+    "two_dates"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "order_timestamp",
+     "date": "2026-10-26",
+     "time": null,
+     "anchors": [
+      "Placed on: 26 Oct 2026"
+     ]
+    },
+    {
+     "role": "non_task",
+     "kind": "delivery_estimate",
+     "date": "2026-10-29",
+     "time": null,
+     "anchors": [
+      "Estimated delivery: 29-31 Oct"
+     ]
+    }
+   ],
+   "secrets": [
+    "2231871"
+   ]
+  },
+  "synO16": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": false,
+   "difficulty": "medium",
+   "language": "zh",
+   "tags": [
+    "receipt",
+    "non_task_only"
+   ],
+   "items": [
+    {
+     "role": "non_task",
+     "kind": "receipt_timestamp",
+     "date": "2026-10-28",
+     "time": "15:32",
+     "anchors": [
+      "于10月28日15:32支出人民币268.00元"
+     ]
+    }
+   ],
+   "secrets": [
+    "400-820-1234"
+   ]
+  },
+  "synO17": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "medium",
+   "language": "zh",
+   "tags": [],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D34",
+     "date": "2026-11-08",
+     "time": "18:00",
+     "timezone": null,
+     "accept_dates": [
+      "2026-11-08"
+     ],
+     "accept_times": [
+      "18:00"
+     ],
+     "current": true,
+     "anchors": [
+      "请于11月8日（周日）18:00前在住宿系统中登记寒假去向"
+     ]
+    }
+   ],
+   "secrets": []
+  },
+  "synO18": {
+   "category": "other",
+   "needs_reply": false,
+   "needs_action": true,
+   "difficulty": "easy",
+   "language": "en",
+   "tags": [
+    "no_time"
+   ],
+   "items": [
+    {
+     "role": "deadline",
+     "deadline_id": "D35",
+     "date": "2026-10-31",
+     "time": null,
+     "timezone": null,
+     "accept_dates": [
+      "2026-10-31"
+     ],
+     "accept_times": [
+      null
+     ],
+     "current": true,
+     "anchors": [
+      "by 31 October 2026"
+     ]
+    }
+   ],
+   "secrets": []
+  }
+ }
+}

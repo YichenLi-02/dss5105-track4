@@ -1,0 +1,3714 @@
+{
+ "meta": {
+  "name": "mail_samples_run1",
+  "mail_set": "samples",
+  "started_at": "2026-11-10T10:28:30+00:00",
+  "finished_at": "2026-11-10T10:34:55+00:00",
+  "provider": "openai",
+  "model": "gpt-6-luna",
+  "prompt_version": "p00-p02.v1",
+  "schema_version": "mail_analysis.v6",
+  "code_commit": "14f3950",
+  "app_code_modified": false,
+  "dataset": {
+   "version": "selected_50",
+   "sha256": {
+    "selected_50.jsonl": "56bf772ad77bd27bc1ff25c6abf9372027b192f2b2bd565d6d682e3d310b5bbe",
+    "date_candidates.jsonl": "8d9d7663751dce8f121cd38ce374dc19b27a94a413a19dca65c4079ba111cc0e"
+   }
+  },
+  "messages": 40,
+  "analysis_seconds": 384.7,
+  "first_pass_errors": {
+   "M25": "MODEL_EVIDENCE_INVALID"
+  },
+  "errors": {
+   "M25": "MODEL_EVIDENCE_INVALID"
+  },
+  "retried": 0,
+  "outbound_calls": {
+   "model": 40
+  },
+  "refused_requests": [],
+  "stored": {
+   "messages_created": 50,
+   "messages_updated": 0,
+   "messages_unchanged": 0,
+   "inbound": 40,
+   "outbound_style": 10,
+   "tasks_created": 19,
+   "reference_view_loaded": true
+  }
+ },
+ "predictions": {
+  "M31": {
+   "source_id": "M31",
+   "sent_at": "2026-02-21T21:07:39+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "career"
+   },
+   "summary": "Deloitte 招聘人员邀请你考虑软件工程解决方案分析师职位，申请截止日期未注明。",
+   "summary_en": "A Deloitte recruiter invites you to consider a Software Engineering Solutions Analyst role; no application deadline is specified.",
+   "attention_flags": [
+    "邮件称申请截止日期临近，但未提供具体日期。",
+    "职位消息内容被截断。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "申请截止日期",
+    "职位申请的具体步骤"
+   ],
+   "candidates": [
+    {
+     "title": "申请软件工程解决方案分析师职位",
+     "title_en": "Apply for the Software Engineering Solutions Analyst role",
+     "course": null,
+     "deliverable": "职位申请",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": true,
+     "evidence": [
+      {
+       "source_id": "M31",
+       "field": "subject",
+       "quote": "Deloitte Application Deadline Approaching! Apply Now!"
+      },
+      {
+       "source_id": "M31",
+       "field": "body",
+       "quote": "Deloitte Consulting LLP - Government & Public Services, US Delivery Center - Solution Analyst - Software Engineering Solutions"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 787,
+    "output_tokens": 472,
+    "total_tokens": 1259
+   },
+   "subject": "Deloitte Application Deadline Approaching! Apply Now!",
+   "body_view": "Rachel just messaged you about a job\n\nHi Sam, My name is Rachel, Campus Recruiting Specialist at Deloitte. I reached out to you regarding our Software Engineering Solutions Analyst role at our US Delivery Centers and wanted to sen...\n\nRead more\n\nView message\n\nMute\n\nDeloitte\n\nManagement Consulting\n\nDeloitte Consulting LLP - Government & Public Services, US Delivery Center - Solution Analyst - Software Engineering Solutions\n\nFull time\n\nMechanicsburg, PA and 2 more",
+   "sender_label": "Rachel via Handshake <[EMAIL_fa28a70f]>",
+   "tasks": [
+    {
+     "entity_key": "model_M31_0",
+     "candidate_index": 0,
+     "title": "申请软件工程解决方案分析师职位",
+     "title_en": "Apply for the Software Engineering Solutions Analyst role",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "subject",
+     "quote": "Deloitte Application Deadline Approaching! Apply Now!",
+     "start": 0,
+     "end": 53,
+     "model_status": "pending",
+     "model_needs_review": true
+    }
+   ]
+  },
+  "M24": {
+   "source_id": "M24",
+   "sent_at": "2026-01-16T15:45:53+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": true,
+    "needs_action": true,
+    "category": "career"
+   },
+   "summary": "Priya 暂停了实习进度例会，要求你完成后续事项后通过 WhatsApp 告知她，并持续更新进度。",
+   "summary_en": "Priya paused the internship progress meetings and asked you to message her on WhatsApp after completing the next steps and keep her updated.",
+   "attention_flags": [
+    "完成后续事项前，例会将暂停；邮件中提到的 1 月 9 日会议日期已过。",
+    "收到学校回复时，需告知 Priya。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "讨论过的后续事项具体内容未说明。",
+    "没有提供完成后续事项的截止日期。"
+   ],
+   "candidates": [
+    {
+     "title": "完成讨论过的后续事项并通过 WhatsApp 告知 Priya",
+     "title_en": "Complete the discussed next steps and notify Priya on WhatsApp",
+     "course": "实习进度同步",
+     "deliverable": "完成后续事项后通过 WhatsApp 告知 Priya",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": true,
+     "evidence": [
+      {
+       "source_id": "M24",
+       "field": "body",
+       "quote": "removing this reoccurring meeting until you complete your \ndiscussed next steps.🙂 Message me on WhatApp once it is complete."
+      }
+     ]
+    },
+    {
+     "title": "更新实习进度并告知学校回复",
+     "title_en": "Share internship progress and report school responses",
+     "course": "实习进度同步",
+     "deliverable": "更新进度；如收到学校回复，告知 Priya",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "conditional",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M24",
+       "field": "body",
+       "quote": "Keep me posted on your progress. Let me know if you hear back from any of \nthe schools."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 960,
+    "output_tokens": 1231,
+    "total_tokens": 2191
+   },
+   "subject": "Updated invitation with note: Sam & Priya - Internship Sync Progress @ Weekly from 9am to 10am on Friday from Fri Jan 9 to Thu Jan 15 (MST) ([EMAIL_42022df7])",
+   "body_view": "This event has been updated with a note:\n\"Hi Sam, removing this reoccurring meeting until you complete your \ndiscussed next steps.🙂 Message me on WhatApp once it is complete. Have a \ngreat weekend!\"\nChanged: time\n\nSam & Priya - Internship Sync Progress\nWeekly from 9am to 10am on Friday from Friday Jan 9 to Thursday Jan 15\nMountain Standard Time\n\nJoin with Google Meet\n[LINK_47f023e8]\n\nHi Sam,\n\nWe will regroup January 9th on your progress.\n\nKeep me posted on your progress. Let me know if you hear back from any of \nthe schools.\n\nHave a wonderful holiday season.\n\nOrganizer\nPriya\n[EMAIL_f148b5c4]\n\nGuests\nPriya - organizer\n[EMAIL_42022df7]\nView all guest info \n[LINK_d1043c1c]\n\nReply for [EMAIL_42022df7] and view more details \n[LINK_d1043c1c]\nYour attendance is optional.",
+   "sender_label": "Priya <[EMAIL_f148b5c4]>",
+   "tasks": [
+    {
+     "entity_key": "model_M24_0",
+     "candidate_index": 0,
+     "title": "完成讨论过的后续事项并通过 WhatsApp 告知 Priya",
+     "title_en": "Complete the discussed next steps and notify Priya on WhatsApp",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "removing this reoccurring meeting until you complete your \ndiscussed next steps.🙂 Message me on WhatApp once it is complete.",
+     "start": 50,
+     "end": 174,
+     "model_status": "pending",
+     "model_needs_review": true
+    },
+    {
+     "entity_key": "model_M24_1",
+     "candidate_index": 1,
+     "title": "更新实习进度并告知学校回复",
+     "title_en": "Share internship progress and report school responses",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "Keep me posted on your progress. Let me know if you hear back from any of \nthe schools.",
+     "start": 443,
+     "end": 530,
+     "model_status": "conditional",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M12": {
+   "source_id": "M12",
+   "sent_at": "2025-12-10T05:02:55+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "期末项目成绩已发布；如有疑问，请在截止时间前申请重新评分。",
+   "summary_en": "Final project grades are posted; submit a regrade request by the deadline if you have concerns.",
+   "attention_flags": [
+    "重新评分申请截止时间为2025年12月11日23:59。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "时区未注明。"
+   ],
+   "candidates": [
+    {
+     "title": "有异议时提交重新评分申请",
+     "title_en": "Submit a regrade request if you have concerns",
+     "course": "CS 4310: Intro Natural Language Process (2025 Fall)",
+     "deliverable": "如对期末项目成绩有疑问，提交重新评分申请。",
+     "date": "2025-12-11",
+     "time": "23:59",
+     "timezone": null,
+     "status": "conditional",
+     "needs_review": true,
+     "evidence": [
+      {
+       "source_id": "M12",
+       "field": "body",
+       "quote": "Please review your grades, and if you have any concerns, submit a regrade request by 11:59 PM on December 11, 2025."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 763,
+    "output_tokens": 566,
+    "total_tokens": 1329
+   },
+   "subject": "Final Project Grades and Regrade Window: CS 4310: Intro Natural Language Process (2025 Fall)",
+   "body_view": "Hi Class, \nThe grades for the Final Project are now posted on Gradescope. Please review your grades, and if you have any concerns, submit a regrade request by 11:59 PM on December 11, 2025.\n\nThanks,\n\nOmar\n\n[LINK_cca930cb]",
+   "sender_label": "\"CS 4310: Intro Natural Language Process (2025 Fall)\" <[EMAIL_20746ade]>",
+   "tasks": [
+    {
+     "entity_key": "model_M12_0",
+     "candidate_index": 0,
+     "title": "有异议时提交重新评分申请",
+     "title_en": "Submit a regrade request if you have concerns",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-11",
+     "time": "23:59",
+     "timezone": null,
+     "deadline_status": "explicit",
+     "required": true,
+     "field": "body_view",
+     "quote": "Please review your grades, and if you have any concerns, submit a regrade request by 11:59 PM on December 11, 2025.",
+     "start": 74,
+     "end": 189,
+     "model_status": "conditional",
+     "model_needs_review": true
+    }
+   ]
+  },
+  "M11": {
+   "source_id": "M11",
+   "sent_at": "2025-12-08T01:57:20+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "CS 3120 数据库管理期末考试将于 12 月 8 日在线开放，需使用 Respondus LockDown Browser 完成。",
+   "summary_en": "The CS 3120 Database Management final exam is available online on December 8 and requires Respondus LockDown Browser.",
+   "attention_flags": [
+    "考试仅可尝试一次。",
+    "必须使用启用摄像头和屏幕录制的 Respondus LockDown Browser。",
+    "考试闭卷，但允许最多 5 页双面手写小抄。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "考试时区未注明。"
+   ],
+   "candidates": [
+    {
+     "title": "完成 CS 3120 数据库管理期末考试",
+     "title_en": "Complete the CS 3120 Database Management final exam",
+     "course": "CS 3120: Database Management",
+     "deliverable": "在线期末考试",
+     "date": "2025-12-08",
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M11",
+       "field": "subject",
+       "quote": "Final Exam Reminder -  December 8: CS 3120: Database Management (2025 Fall)"
+      },
+      {
+       "source_id": "M11",
+       "field": "body",
+       "quote": "Availability Window: December 8 (12:00 AM) – December 8 (11:59 PM)"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 934,
+    "output_tokens": 797,
+    "total_tokens": 1731
+   },
+   "subject": "Final Exam Reminder -  December 8: CS 3120: Database Management (2025 Fall)",
+   "body_view": "Dear Students, \n\nPlease carefully review the instructions for the final exam below:\n\nExam Details:\n\nMode: Online (LockDown Browser required)\nAvailability Window: December 8 (12:00 AM) – December 8 (11:59 PM)\nCoverage: Topics from Week 01 to Week 13 Modules\nFormat: 35 Multiple Choice Questions (MCQs) – 35 points total (No Query Writing)\nDuration: 75 minutes\nAttempts: One attempt only\n\nBrowser Requirement\n\n* Respondus LockDown Browser (with Camera and Screen Recording enabled) is mandatory.\n\n* Ensure it is installed and tested before starting the exam.\n\n* Questions will be presented one at a time. You will be able to navigate back to previous questions.\n\nTopics Covered\n\nRefer to the Final Exam Study Topics in the document [here] ([LINK_883fc119]\n\nAdditional Instructions\n\n* The exam is closed book, however, a cheat sheet up to 5 pages (double-sided, Handwritten only)\n\n* Academic integrity policies strictly apply.\n\n[LINK_cca930cb]",
+   "sender_label": "\"CS 3120: Database Management (2025 Fall)\" <[EMAIL_20746ade]>",
+   "tasks": [
+    {
+     "entity_key": "model_M11_0",
+     "candidate_index": 0,
+     "title": "完成 CS 3120 数据库管理期末考试",
+     "title_en": "Complete the CS 3120 Database Management final exam",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-08",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "subject",
+     "quote": "Final Exam Reminder -  December 8: CS 3120: Database Management (2025 Fall)",
+     "start": 0,
+     "end": 75,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M03": {
+   "source_id": "M03",
+   "sent_at": "2025-12-06T04:37:05+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "CS 4310期末项目延长至12月6日23:59，需在Canvas提交结果JSON并在Gradescope提交报告。",
+   "summary_en": "The CS 4310 final project deadline is extended to Dec 6 at 23:59; submit the results JSON on Canvas and the report on Gradescope.",
+   "attention_flags": [
+    "截止时间的时区未说明。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "截止时间时区未说明。",
+    "是否在原截止时间前提交两项内容以获得额外学分未知。"
+   ],
+   "candidates": [
+    {
+     "title": "提交项目结果 JSON 文件",
+     "title_en": "Submit the project results JSON file",
+     "course": "CS 4310: Intro Natural Language Process (2025 Fall)",
+     "deliverable": "在 Canvas 提交结果 JSON 文件",
+     "date": "2025-12-06",
+     "time": "23:59",
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M03",
+       "field": "body",
+       "quote": "New deadline: Friday, Dec 6, 11:59 PM"
+      },
+      {
+       "source_id": "M03",
+       "field": "body",
+       "quote": "Results JSON file on Canvas"
+      }
+     ]
+    },
+    {
+     "title": "提交期末项目报告",
+     "title_en": "Submit the final project report",
+     "course": "CS 4310: Intro Natural Language Process (2025 Fall)",
+     "deliverable": "在 Gradescope 提交期末项目报告",
+     "date": "2025-12-06",
+     "time": "23:59",
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M03",
+       "field": "body",
+       "quote": "New deadline: Friday, Dec 6, 11:59 PM"
+      },
+      {
+       "source_id": "M03",
+       "field": "body",
+       "quote": "Final project report on Gradescope"
+      }
+     ]
+    },
+    {
+     "title": "原截止前提交可获 0.5% 额外学分",
+     "title_en": "Receive 0.5% extra credit for submitting by the original deadline",
+     "course": "CS 4310: Intro Natural Language Process (2025 Fall)",
+     "deliverable": null,
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "status": "conditional",
+     "needs_review": true,
+     "evidence": [
+      {
+       "source_id": "M03",
+       "field": "body",
+       "quote": "To recognize those who submitted by the original deadline (Dec 5), anyone who turned in both components on time will receive 0.5% extra credit toward their final course grade."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 851,
+    "output_tokens": 1714,
+    "total_tokens": 2565
+   },
+   "subject": "Final Project Deadline Extended to Dec 6 (Tomorrow): CS 4310: Intro Natural Language Process (2025 Fall)",
+   "body_view": "Hi everyone,\n\nWe are granting a 24-hour extension for the final project submission (both the results JSON file and the final report).\n\n*\n\nNew deadline: Friday, Dec 6, 11:59 PM\n\n*\n\nWhat to submit:\n\n*\n\nResults JSON file on Canvas\n\n*\n\nFinal project report on Gradescope\n\nTo recognize those who submitted by the original deadline (Dec 5), anyone who turned in both components on time will receive 0.5% extra credit toward their final course grade.\n\nIf you have any questions about the submission formats or logistics, please let us know.\n\nGood luck!\nKevin\n\n[LINK_cca930cb]",
+   "sender_label": "\"CS 4310: Intro Natural Language Process (2025 Fall)\" <[EMAIL_20746ade]>",
+   "tasks": [
+    {
+     "entity_key": "model_M03_0",
+     "candidate_index": 0,
+     "title": "提交项目结果 JSON 文件",
+     "title_en": "Submit the project results JSON file",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-06",
+     "time": "23:59",
+     "timezone": null,
+     "deadline_status": "explicit",
+     "required": true,
+     "field": "body_view",
+     "quote": "New deadline: Friday, Dec 6, 11:59 PM",
+     "start": 138,
+     "end": 175,
+     "model_status": "pending",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M03_1",
+     "candidate_index": 1,
+     "title": "提交期末项目报告",
+     "title_en": "Submit the final project report",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-06",
+     "time": "23:59",
+     "timezone": null,
+     "deadline_status": "explicit",
+     "required": true,
+     "field": "body_view",
+     "quote": "New deadline: Friday, Dec 6, 11:59 PM",
+     "start": 138,
+     "end": 175,
+     "model_status": "pending",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M03_2",
+     "candidate_index": 2,
+     "title": "原截止前提交可获 0.5% 额外学分",
+     "title_en": "Receive 0.5% extra credit for submitting by the original deadline",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "body_view",
+     "quote": "To recognize those who submitted by the original deadline (Dec 5), anyone who turned in both components on time will receive 0.5% extra credit toward their final course grade.",
+     "start": 268,
+     "end": 443,
+     "model_status": "conditional",
+     "model_needs_review": true
+    }
+   ]
+  },
+  "M04": {
+   "source_id": "M04",
+   "sent_at": "2025-12-06T01:08:15+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "CS 4310 的期末项目和迷你实验 5 今天截止，逾期未获批准可能得零分。",
+   "summary_en": "The CS 4310 final project and mini lab 5 are due today; unapproved late work may receive a zero.",
+   "attention_flags": [
+    "延期必须在截止前申请；未经批准的逾期提交可能得零分。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "具体截止时间和时区未说明。"
+   ],
+   "candidates": [
+    {
+     "title": "提交期末项目",
+     "title_en": "Submit the final project",
+     "course": "CS 4310: Intro Natural Language Process",
+     "deliverable": "期末项目",
+     "date": "2025-12-06",
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M04",
+       "field": "body",
+       "quote": "this is a friendly reminder that both the final project and mini lab 5 are due today."
+      },
+      {
+       "source_id": "M04",
+       "field": "body",
+       "quote": "Per the course policy, you must request extensions before the deadline."
+      }
+     ]
+    },
+    {
+     "title": "提交迷你实验 5",
+     "title_en": "Submit mini lab 5",
+     "course": "CS 4310: Intro Natural Language Process",
+     "deliverable": "mini lab 5",
+     "date": "2025-12-06",
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M04",
+       "field": "body",
+       "quote": "this is a friendly reminder that both the final project and mini lab 5 are due today."
+      },
+      {
+       "source_id": "M04",
+       "field": "body",
+       "quote": "Any late submissions without prior approval of extensions or valid causes will not be accepted and will result in a zero."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 767,
+    "output_tokens": 870,
+    "total_tokens": 1637
+   },
+   "subject": "Reminder of final submissions: CS 4310: Intro Natural Language Process (2025 Fall)",
+   "body_view": "Hi all, \n\nthis is a friendly reminder that both the final project and mini lab 5 are due today. Per the course policy, you must request extensions before the deadline. Any late submissions without prior approval of extensions or valid causes will not be accepted and will result in a zero.\n\nProf. Duarte\n\n[LINK_cca930cb]",
+   "sender_label": "\"CS 4310: Intro Natural Language Process (2025 Fall)\" <[EMAIL_20746ade]>",
+   "tasks": [
+    {
+     "entity_key": "model_M04_0",
+     "candidate_index": 0,
+     "title": "提交期末项目",
+     "title_en": "Submit the final project",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-06",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "body_view",
+     "quote": "this is a friendly reminder that both the final project and mini lab 5 are due today.",
+     "start": 10,
+     "end": 95,
+     "model_status": "pending",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M04_1",
+     "candidate_index": 1,
+     "title": "提交迷你实验 5",
+     "title_en": "Submit mini lab 5",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-06",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "body_view",
+     "quote": "this is a friendly reminder that both the final project and mini lab 5 are due today.",
+     "start": 10,
+     "end": 95,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M09": {
+   "source_id": "M09",
+   "sent_at": "2025-12-02T21:44:34+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "CS 4370：12月5日提交截止，12月10日期末考试。",
+   "summary_en": "CS 4370: submissions are due December 5, and the final exam is December 10.",
+   "attention_flags": [
+    "期末考试需使用 Respondus Lockdown 浏览器和摄像头。",
+    "考试为闭卷考试。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "提交截止时间和考试时间所用时区未知。",
+    "周三复习的具体时间未知。"
+   ],
+   "candidates": [
+    {
+     "title": "上传所有作业",
+     "title_en": "Upload all submissions",
+     "course": "CS 4370: Intro Computer-Aided Geom Desg (2025 Fall)",
+     "deliverable": "将所有作业上传到 Canvas",
+     "date": "2025-12-05",
+     "time": "23:50",
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M09",
+       "field": "body",
+       "quote": "All submissions must be uploaded to Canvas by Friday, Dec 5 at 11:50pm."
+      }
+     ]
+    },
+    {
+     "title": "期末考试",
+     "title_en": "Final exam",
+     "course": "CS 4370: Intro Computer-Aided Geom Desg (2025 Fall)",
+     "deliverable": "参加 Canvas 测验；需使用 Respondus Lockdown 浏览器和摄像头",
+     "date": "2025-12-10",
+     "time": "09:50",
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M09",
+       "field": "body",
+       "quote": "The final exam is on Wednesday, Dec 10 at 9:50am. It is a canvas quiz that requires Respondus Lockdown browser with a webcam."
+      }
+     ]
+    },
+    {
+     "title": "复习模拟期末考试",
+     "title_en": "Review the mock final exam",
+     "course": "CS 4370: Intro Computer-Aided Geom Desg (2025 Fall)",
+     "deliverable": "复习模拟期末考试文档；可讨论不清楚的内容",
+     "date": "2025-12-03",
+     "time": null,
+     "timezone": null,
+     "status": "conditional",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M09",
+       "field": "body",
+       "quote": "On Wednesday we will review the mock final document and I am happy to discuss any material that is not clear."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 958,
+    "output_tokens": 1118,
+    "total_tokens": 2076
+   },
+   "subject": "Course Wrap-up and Final Exam: CS 4370: Intro Computer-Aided Geom Desg (2025 Fall)",
+   "body_view": "Hello CS 4370ers,\n\nOn Wednesday we will review the mock final document and I am happy to discuss any material that is not clear.\n\nAll submissions must be uploaded to Canvas by Friday, Dec 5 at 11:50pm.\n\nThe final exam is on Wednesday, Dec 10 at 9:50am. It is a canvas quiz that requires Respondus Lockdown browser with a webcam.\n\nFinal exam instructions:\n\nYou have 75 minutes to complete this final exam. There are 40 questions.\n\nIf you see \"^\" in a question, this is indicates a superscript; for example \"M^T\", meaning M transpose. A subscript will be denoted by \"_\", as in a_1.\nQuestions will use the notation from the class slides, not MM notation (for array access).\n\nThis is a closed-book exam. You may have a blank piece of paper and pencil/pen with you during the exam.\n\nIf you have a question about the exam, answer the question as best as you can, and then email me afterwards.\n\nTake your time and review your answers.\n\nElena Hart, PhD\n\n[LINK_cca930cb]",
+   "sender_label": "\"CS 4370: Intro Computer-Aided Geom Desg (2025 Fall)\" <[EMAIL_20746ade]>",
+   "tasks": [
+    {
+     "entity_key": "model_M09_0",
+     "candidate_index": 0,
+     "title": "上传所有作业",
+     "title_en": "Upload all submissions",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-05",
+     "time": "23:50",
+     "timezone": null,
+     "deadline_status": "explicit",
+     "required": true,
+     "field": "body_view",
+     "quote": "All submissions must be uploaded to Canvas by Friday, Dec 5 at 11:50pm.",
+     "start": 130,
+     "end": 201,
+     "model_status": "pending",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M09_1",
+     "candidate_index": 1,
+     "title": "期末考试",
+     "title_en": "Final exam",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-10",
+     "time": "09:50",
+     "timezone": null,
+     "deadline_status": "explicit",
+     "required": true,
+     "field": "body_view",
+     "quote": "The final exam is on Wednesday, Dec 10 at 9:50am. It is a canvas quiz that requires Respondus Lockdown browser with a webcam.",
+     "start": 203,
+     "end": 328,
+     "model_status": "pending",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M09_2",
+     "candidate_index": 2,
+     "title": "复习模拟期末考试",
+     "title_en": "Review the mock final exam",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-03",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "body_view",
+     "quote": "On Wednesday we will review the mock final document and I am happy to discuss any material that is not clear.",
+     "start": 19,
+     "end": 128,
+     "model_status": "conditional",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M29": {
+   "source_id": "M29",
+   "sent_at": "2025-12-02T16:45:06-06:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "你已获Harbor录取，需在所列截止时间前接受录取。",
+   "summary_en": "You have been admitted to Harbor and need to accept the offer by the stated deadline.",
+   "attention_flags": [
+    "截止日期未注明年份，且邮件所列星期与发送年份可能不符。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "截止日期年份不明；邮件未说明“12月5日”对应哪一年。"
+   ],
+   "candidates": [
+    {
+     "title": "接受Harbor录取通知",
+     "title_en": "Accept the Harbor offer",
+     "course": null,
+     "deliverable": "通过MyNorthbridge门户接受Harbor项目录取。",
+     "date": null,
+     "time": "12:00",
+     "timezone": null,
+     "status": "pending",
+     "needs_review": true,
+     "evidence": [
+      {
+       "source_id": "M29",
+       "field": "body",
+       "quote": "To accept your offer: Log into your MyNorthbridge portal."
+      },
+      {
+       "source_id": "M29",
+       "field": "body",
+       "quote": "Your admissions offer will be available until Monday, December 5, at 12 p.m. Mountain Standard Time."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 1348,
+    "output_tokens": 806,
+    "total_tokens": 2154
+   },
+   "subject": "CORRECTED DEADLINE: You’ve been admitted to Harbor | Accept your offer today!",
+   "body_view": "You have been specially selected to join Harbor’s community of global leaders.\n\n[LINK_60fa5e61]\n\nDear Sam,\n\nCongratulations on your acceptance to Harbor School of Global Management at Northbridge University! Through Northbridge Personalized Graduate Admissions, you have been specially selected to join Harbor’s community of global leaders who thrive across sectors, including business, government, NGOs, and international organizations. Your global journey — and your global legacy — begins here. \n\nWe invite you to learn more about Harbor's Master of Global Management degree, and our Master of Leadership and Management degree in the following videos:\n\nMaster of Global Management\n\n[LINK_96a9b21d]\n\n | Master of Leadership and Management\n\n[LINK_177a5ed6]\n\nScholarships are available for students applying to Harbor's Master of Global Management program for spring and fall 2026. There are many opportunities to help fund your global education. We encourage you to contact us here\n\nmailto:[EMAIL_cdaee178]?subject=Scholarship%20opportunities%20for%20spring%[LONG_NUMBER_REMOVED]\n\n with any questions. \n\nTo accept your offer: Log into your MyNorthbridge portal. On the right hand side of your homepage under Priority Tasks, expand the section titled Personalized Admissions Offer. Select View my Personalized Graduate Admissions offer, and you will be redirected to a new window, where you can view a short video and proceed to viewing your program options available to accept. To accept your Harbor offer, ensure you are selecting the program labeled either Leadership and Management, MLM or Global Management, MGM (All Concentrations) from Harbor School of Global Management.\n\nPrograms are listed alphabetically by program name. Please reach out to our admissions team\n\nmailto:[EMAIL_cdaee178]?subject=PGA%20Assistance\n\n or reply to this email with any questions on this process. Your admissions offer will be available until Monday, December 5, at 12 p.m. Mountain Standard Time. Please accept your offer any time before this deadline.\n\nWelcome to Harbor at Northbridge — the world is waiting!\n\nAccept offer\n\n[LINK_f762f896]\n\n[LINK_333e1c94]\n\n[LINK_[LONG_NUMBER_REMOVED]ad]\n\n[LINK_4d6f6612]\n\n[LINK_37059a9a]\n\n[LINK_b6b2a450]\n\nHarbor School of Global Management at Northbridge University\n\n 100 Harbor Way | Lakeview, ST 00000\n\n W: harbor.northbridge.example\n\n[LINK_db[LONG_NUMBER_REMOVED]]\n\n | E: [EMAIL_cdaee178]\n\nmailto:[EMAIL_cdaee178]\n\n Unsubscribe from all emails\n\n[LINK_aabbca30]\n\n | Privacy Policy\n\n[LINK_d00e6ca7]\n\n Email not displaying correctly? View it in your browser\n\n[LINK_7d67ab10]\n\n.\n\n Copyright © 2026, All rights reserved.",
+   "sender_label": "Harbor School of Global Management <[EMAIL_cdaee178]>",
+   "tasks": [
+    {
+     "entity_key": "model_M29_0",
+     "candidate_index": 0,
+     "title": "接受Harbor录取通知",
+     "title_en": "Accept the Harbor offer",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "To accept your offer: Log into your MyNorthbridge portal.",
+     "start": 1105,
+     "end": 1162,
+     "model_status": "pending",
+     "model_needs_review": true
+    }
+   ]
+  },
+  "M06": {
+   "source_id": "M06",
+   "sent_at": "2025-12-02T05:47:04+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "Quiz 13 和 Quiz 14 已发布，均须在 2025 年 12 月 5 日前完成；Midterm 2 解答已发布。",
+   "summary_en": "Quizzes 13 and 14 are published and due by December 5, 2025; the Midterm 2 solution has been released.",
+   "attention_flags": [
+    "本周 TA 常规答疑暂停；如有问题可发邮件联系。",
+    "Quiz 13 和 Quiz 14 均于 2025 年 12 月 5 日截止。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "截止时间未注明。",
+    "时区未注明。"
+   ],
+   "candidates": [
+    {
+     "title": "完成 Quiz 13",
+     "title_en": "Complete Quiz 13",
+     "course": "CS 4310: Intro Natural Language Process",
+     "deliverable": "Quiz 13",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M06",
+       "field": "body",
+       "quote": "Quiz 13 and Quiz 14 are now published on Canvas. Both quizzes are due on 12/05. Please make sure to complete them before the deadline."
+      }
+     ]
+    },
+    {
+     "title": "完成 Quiz 14",
+     "title_en": "Complete Quiz 14",
+     "course": "CS 4310: Intro Natural Language Process",
+     "deliverable": "Quiz 14",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M06",
+       "field": "body",
+       "quote": "Quiz 13 and Quiz 14 are now published on Canvas. Both quizzes are due on 12/05. Please make sure to complete them before the deadline."
+      }
+     ]
+    },
+    {
+     "title": "Midterm 2 解答已发布",
+     "title_en": "Midterm 2 Solution Released",
+     "course": "CS 4310: Intro Natural Language Process",
+     "deliverable": "Midterm 2 解答",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "completed",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M06",
+       "field": "body",
+       "quote": "The solution for Midterm 2 has been released and is attached to this announcement."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 914,
+    "output_tokens": 1187,
+    "total_tokens": 2101
+   },
+   "subject": "TA Updates: Office Hours, Midterm 2 Solution, Quizzes 13 & 14: CS 4310: Intro Natural Language Process (2025 Fall)",
+   "body_view": "Hi everyone,\n\nA few quick updates:\n\n*\n\nTA office hours: I’ll be traveling for a conference and will not be able to host my regular office hours this week. If you have any questions, please feel free to email me. If I accidentally miss your email, don’t hesitate to send me a short reminder so I can follow up.\n\n*\n\nMidterm 2 solution: The solution for Midterm 2 has been released and is attached to this announcement. Please let us know if you have any questions.\n\n*\n\nQuizzes 13 and 14: Quiz 13 and Quiz 14 are now published on Canvas. Both quizzes are due on 12/05. Please make sure to complete them before the deadline.\n\nThanks!\n\nKevin\n\nFile Included: CS 4310 Fall 2025 Exam 2 Solutions.pdf - 162 KB\n [LINK_e72a5737]\n\n[LINK_cca930cb]",
+   "sender_label": "\"CS 4310: Intro Natural Language Process (2025 Fall)\" <[EMAIL_20746ade]>",
+   "tasks": [
+    {
+     "entity_key": "model_M06_0",
+     "candidate_index": 0,
+     "title": "完成 Quiz 13",
+     "title_en": "Complete Quiz 13",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "body_view",
+     "quote": "Quiz 13 and Quiz 14 are now published on Canvas. Both quizzes are due on 12/05. Please make sure to complete them before the deadline.",
+     "start": 486,
+     "end": 620,
+     "model_status": "pending",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M06_1",
+     "candidate_index": 1,
+     "title": "完成 Quiz 14",
+     "title_en": "Complete Quiz 14",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "body_view",
+     "quote": "Quiz 13 and Quiz 14 are now published on Canvas. Both quizzes are due on 12/05. Please make sure to complete them before the deadline.",
+     "start": 486,
+     "end": 620,
+     "model_status": "pending",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M06_2",
+     "candidate_index": 2,
+     "title": "Midterm 2 解答已发布",
+     "title_en": "Midterm 2 Solution Released",
+     "status": "completed",
+     "state": "done",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "The solution for Midterm 2 has been released and is attached to this announcement.",
+     "start": 334,
+     "end": 416,
+     "model_status": "completed",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M05": {
+   "source_id": "M05",
+   "sent_at": "2025-12-02T04:11:20+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "课程邮件列出三项12月5日截止的任务，并说明12月3日课程仅在线上举行。",
+   "summary_en": "The course email lists three tasks due December 5 and says the December 3 lecture will be held online only.",
+   "attention_flags": [
+    "期末项目、Mini Lab 5及Quiz 13和14均于12月5日截止。",
+    "Quiz 13和14稍后发布；12月3日课程仅通过Zoom举行。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "各项任务的具体截止时间未说明。",
+    "Quiz 13和14的发布及开放时间未说明。",
+    "12月3日课程的具体上课时间未说明。"
+   ],
+   "candidates": [
+    {
+     "title": "提交期末项目",
+     "title_en": "Submit the final project",
+     "course": "CS 4310: Intro Natural Language Process (2025 Fall)",
+     "deliverable": "提交最终测试数据输出JSON文件和GitHub代码仓库链接；仓库需包含说明agent运作方式、开发与评估过程及运行新测试用例方法的README。",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M05",
+       "field": "subject",
+       "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)"
+      },
+      {
+       "source_id": "M05",
+       "field": "body",
+       "quote": "1. The final project (Due 12/05)"
+      }
+     ]
+    },
+    {
+     "title": "完成Mini Lab 5",
+     "title_en": "Complete Mini Lab 5",
+     "course": "CS 4310: Intro Natural Language Process (2025 Fall)",
+     "deliverable": "完成Mini Lab 5。",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M05",
+       "field": "subject",
+       "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)"
+      },
+      {
+       "source_id": "M05",
+       "field": "body",
+       "quote": "2. Mini Lab 5 (Due 12/05)"
+      }
+     ]
+    },
+    {
+     "title": "完成Quiz 13和14",
+     "title_en": "Complete Quizzes 13 and 14",
+     "course": "CS 4310: Intro Natural Language Process (2025 Fall)",
+     "deliverable": "完成Quiz 13和14；测验稍后发布，并保持开放至截止日期。",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M05",
+       "field": "subject",
+       "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)"
+      },
+      {
+       "source_id": "M05",
+       "field": "body",
+       "quote": "3. Quiz 13 and 14 will later be released and remain open until 12/05."
+      }
+     ]
+    },
+    {
+     "title": "参加Zoom课程讲座",
+     "title_en": "Attend the lecture on Zoom",
+     "course": "CS 4310: Intro Natural Language Process (2025 Fall)",
+     "deliverable": "课程讲座仅在线上举行；是否必须参加未说明。",
+     "date": "2025-12-03",
+     "time": null,
+     "timezone": null,
+     "status": "unknown",
+     "needs_review": true,
+     "evidence": [
+      {
+       "source_id": "M05",
+       "field": "subject",
+       "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)"
+      },
+      {
+       "source_id": "M05",
+       "field": "body",
+       "quote": "The Wednesday (12/03) lecture will be held solely on Zoom"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 962,
+    "output_tokens": 1873,
+    "total_tokens": 2835
+   },
+   "subject": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)",
+   "body_view": "Hello everyone, \n\nThank you all for sticking with the course, and we are now almost ready for an end-of-semester celebration! Here are some logistics: \n\nFinal submissions: \n1. The final project (Due 12/05) should contain a final test data output JSON file and a GitHub repo link for your code. In your GitHub repo, there should be a clear README file on how your agent works (e.g., what are the three (minimal) components, and what are some additional highlights? How did you develop/evaluate your agent along the way?), as well as instructions on how we can run your agent on a new test case. The TA will make a separate annoucement on the submission portal soon. \n2. Mini Lab 5 (Due 12/05)\n3. Quiz 13 and 14 will later be released and remain open until 12/05. \n\nThe Wednesday (12/03) lecture will be held solely on Zoom ([[LINK_faa04edb] ([LINK_74e1b6f3] We will continue to discuss LLM trustworthiness. Please reach out to me or the TA with any potential questions. \n\nThanks, Prof. Duarte\n\n[LINK_cca930cb]",
+   "sender_label": "\"CS 4310: Intro Natural Language Process (2025 Fall)\" <[EMAIL_20746ade]>",
+   "tasks": [
+    {
+     "entity_key": "model_M05_0",
+     "candidate_index": 0,
+     "title": "提交期末项目",
+     "title_en": "Submit the final project",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "subject",
+     "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)",
+     "start": 0,
+     "end": 78,
+     "model_status": "pending",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M05_1",
+     "candidate_index": 1,
+     "title": "完成Mini Lab 5",
+     "title_en": "Complete Mini Lab 5",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "subject",
+     "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)",
+     "start": 0,
+     "end": 78,
+     "model_status": "pending",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M05_2",
+     "candidate_index": 2,
+     "title": "完成Quiz 13和14",
+     "title_en": "Complete Quizzes 13 and 14",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "subject",
+     "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)",
+     "start": 0,
+     "end": 78,
+     "model_status": "pending",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M05_3",
+     "candidate_index": 3,
+     "title": "参加Zoom课程讲座",
+     "title_en": "Attend the lecture on Zoom",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-03",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "subject",
+     "quote": "End-of-semester Logistics: CS 4310: Intro Natural Language Process (2025 Fall)",
+     "start": 0,
+     "end": 78,
+     "model_status": "unknown",
+     "model_needs_review": true
+    }
+   ]
+  },
+  "M10": {
+   "source_id": "M10",
+   "sent_at": "2025-12-01T23:35:13+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "CS 3120期末考试将于2025年12月8日在线开放，需使用LockDown Browser。",
+   "summary_en": "The CS 3120 final exam is available online on December 8, 2025, and requires LockDown Browser.",
+   "attention_flags": [
+    "需安装并测试 Respondus LockDown Browser，并开启摄像头和屏幕录制。",
+    "仅可作答一次；闭卷，但允许最多5页双面手写小抄。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "考试时区未说明。"
+   ],
+   "candidates": [
+    {
+     "title": "CS 3120数据库管理期末考试",
+     "title_en": "CS 3120 Database Management Final Exam",
+     "course": "CS 3120: Database Management",
+     "deliverable": "在线期末考试；75分钟，仅一次作答机会。",
+     "date": "2025-12-08",
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M10",
+       "field": "subject",
+       "quote": "Final Exam (December 8, 12:00 am - 11:59 pm) Instructions - Online: CS 3120: Database Management (2025 Fall)"
+      },
+      {
+       "source_id": "M10",
+       "field": "body",
+       "quote": "Availability Window: December 8 (12:00 AM) – December 8 (11:59 PM)"
+      },
+      {
+       "source_id": "M10",
+       "field": "body",
+       "quote": "Duration: 75 minutes"
+      },
+      {
+       "source_id": "M10",
+       "field": "body",
+       "quote": "Attempts: One attempt only"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 958,
+    "output_tokens": 928,
+    "total_tokens": 1886
+   },
+   "subject": "Final Exam (December 8, 12:00 am - 11:59 pm) Instructions - Online: CS 3120: Database Management (2025 Fall)",
+   "body_view": "Dear Students, \n\nPlease carefully review the instructions for the final exam below:\n\nExam Details:\n\nMode: Online (LockDown Browser required)\nAvailability Window: December 8 (12:00 AM) – December 8 (11:59 PM)\nCoverage: Topics from Week 01 to Week 13 Modules\nFormat: 35 Multiple Choice Questions (MCQs) – 35 points total (No Query Writing)\nDuration: 75 minutes\nAttempts: One attempt only\n\nBrowser Requirement\n\n* Respondus LockDown Browser (with Camera and Screen Recording enabled) is mandatory.\n\n* Ensure it is installed and tested before starting the exam.\n\n* Questions will be presented one at a time. You will be able to navigate back to previous questions.\n\nTopics Covered\n\nRefer to the Final Exam Study Topics in the document [here] ([LINK_9abd7947]\n\nAdditional Instructions\n\n* The exam is closed book, however, a cheat sheet up to 5 pages (double-sided, Handwritten only)\n\n* Academic integrity policies strictly apply.\n\nBest, \n\nDr. Lam\n\n[LINK_cca930cb]",
+   "sender_label": "\"CS 3120: Database Management (2025 Fall)\" <[EMAIL_20746ade]>",
+   "tasks": [
+    {
+     "entity_key": "model_M10_0",
+     "candidate_index": 0,
+     "title": "CS 3120数据库管理期末考试",
+     "title_en": "CS 3120 Database Management Final Exam",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-08",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "subject",
+     "quote": "Final Exam (December 8, 12:00 am - 11:59 pm) Instructions - Online: CS 3120: Database Management (2025 Fall)",
+     "start": 0,
+     "end": 108,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M01": {
+   "source_id": "M01",
+   "sent_at": "2025-11-25T22:18:04+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "CS 4310 期末项目需按指定 JSON 格式提交，截止日期为 2025 年 12 月 5 日。",
+   "summary_en": "The CS 4310 final project must be submitted in the specified JSON format by December 5, 2025.",
+   "attention_flags": [
+    "格式检查不通过将得零分。",
+    "邮件未说明截止时间。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "提交截止的具体时间未说明。"
+   ],
+   "candidates": [
+    {
+     "title": "提交期末项目 JSON 输出文件",
+     "title_en": "Submit the final project JSON output file",
+     "course": "CS 4310: Intro Natural Language Process",
+     "deliverable": "将符合指定格式的 JSON 输出文件上传至 Canvas 的 Final Project Submission。",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M01",
+       "field": "subject",
+       "quote": "Due 12/05"
+      },
+      {
+       "source_id": "M01",
+       "field": "body",
+       "quote": "* Upload your JSON output file on Canvas (Assignments → Final Project Submission)."
+      },
+      {
+       "source_id": "M01",
+       "field": "body",
+       "quote": "Deadline: 12/05"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 997,
+    "output_tokens": 779,
+    "total_tokens": 1776
+   },
+   "subject": "[Final Project] Test Data Released + Important Format Requirement — Due 12/05: CS 4310: Intro Natural Language Process (2025 Fall)",
+   "body_view": "Hi Class,\n\nWe have released the final project test set. To make sure your submission is readable by our auto-grader, please pay attention to the following format requirements:\n\nSubmission format\n\n* Submit one JSON file where each row corresponds to one test question.\n\n* Each row must have an \"output\" field whose value is a string containing only the final answer (e.g., \"output\": \"42\").\n\n* Please make sure the output string contains the final answer only, without any intermediate reasoning or tool traces.\n\nHow to generate\n\n* We have prepared the starter script: generate_answer_template.py\n\n* Replace the logic inside build_answers() to call your agent loop and return the final answer string for each question.\n\n* Do not change the output schema or file format produced by the script.\n\nHard checks\n\n* The script includes format validations. If your file fails these checks, you will receive a grade of 0.\n\nWhere to submit\n\n* Upload your JSON output file on Canvas (Assignments → Final Project Submission).\n\nDeadline: 12/05\n\nPlease let us know if you have any questions or run into any issues. Good luck!\n\nKevin\n\nFile Included: cs4310_final_project_submission.zip - 1.41 MB\n [LINK_e72a5737]\n\n[LINK_cca930cb]",
+   "sender_label": "\"CS 4310: Intro Natural Language Process (2025 Fall)\" <[EMAIL_20746ade]>",
+   "tasks": [
+    {
+     "entity_key": "model_M01_0",
+     "candidate_index": 0,
+     "title": "提交期末项目 JSON 输出文件",
+     "title_en": "Submit the final project JSON output file",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-05",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "subject",
+     "quote": "Due 12/05",
+     "start": 68,
+     "end": 77,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M28": {
+   "source_id": "M28",
+   "sent_at": "2025-11-21T12:52:49-07:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "Marcus 将通过手机参加会议，但会关闭摄像头且可能分心。",
+   "summary_en": "Marcus will join the meeting by phone, with his camera off and possibly distracted.",
+   "attention_flags": [
+    "Marcus 将关闭摄像头，且可能会分心。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "会议时区未注明。"
+   ],
+   "candidates": [
+    {
+     "title": "CS4860 第三次导师会议：Lyrebird AI",
+     "title_en": "CS4860 Third Instructor Meeting: Lyrebird AI",
+     "course": "CS4860",
+     "deliverable": null,
+     "date": "2025-11-21",
+     "time": "13:00",
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M28",
+       "field": "subject",
+       "quote": "Re: CS4860: 3rd Instructor Meeting- Lyrebird AI 11/21 1:00pm-1:30pm"
+      },
+      {
+       "source_id": "M28",
+       "field": "body",
+       "quote": "I'll be able to attend our meeting on my phone, but I'll have my camera off\nand I might be a bit distracted."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 768,
+    "output_tokens": 982,
+    "total_tokens": 1750
+   },
+   "subject": "Re: CS4860: 3rd Instructor Meeting- Lyrebird AI 11/21 1:00pm-1:30pm",
+   "body_view": "Hey, Sam.\n\nI've had a bit of a weird day, and I'm currently cooking a very late lunch.\nI'll be able to attend our meeting on my phone, but I'll have my camera off\nand I might be a bit distracted. Sorry for any inconvenience.\n\nThanks,\nMarcus",
+   "sender_label": "Marcus <[EMAIL_a1864ac3]>",
+   "tasks": [
+    {
+     "entity_key": "model_M28_0",
+     "candidate_index": 0,
+     "title": "CS4860 第三次导师会议：Lyrebird AI",
+     "title_en": "CS4860 Third Instructor Meeting: Lyrebird AI",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-11-21",
+     "time": "13:00",
+     "timezone": null,
+     "deadline_status": "explicit",
+     "required": true,
+     "field": "subject",
+     "quote": "Re: CS4860: 3rd Instructor Meeting- Lyrebird AI 11/21 1:00pm-1:30pm",
+     "start": 0,
+     "end": 67,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M07": {
+   "source_id": "M07",
+   "sent_at": "2025-11-19T17:39:29+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "Mini Lab 5 已发布，需在 12 月 5 日 23:59 前提交。",
+   "summary_en": "Mini Lab 5 is available and must be submitted by December 5 at 23:59.",
+   "attention_flags": [
+    "邮件提到有附件。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "截止时间的时区未说明。"
+   ],
+   "candidates": [
+    {
+     "title": "提交 Mini Lab 5",
+     "title_en": "Submit Mini Lab 5",
+     "course": "CS 4310: Intro Natural Language Process",
+     "deliverable": "Mini Lab 5 作业",
+     "date": "2025-12-05",
+     "time": "23:59",
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M07",
+       "field": "subject",
+       "quote": "Mini Lab 5 Released: CS 4310: Intro Natural Language Process (2025 Fall)"
+      },
+      {
+       "source_id": "M07",
+       "field": "body",
+       "quote": "Mini Lab 5 is now available. Please download the attached file, get started, and submit your work on Gradescope. Due: 12/05 11:59 PM."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 775,
+    "output_tokens": 599,
+    "total_tokens": 1374
+   },
+   "subject": "Mini Lab 5 Released: CS 4310: Intro Natural Language Process (2025 Fall)",
+   "body_view": "Hi class,\n\nMini Lab 5 is now available. Please download the attached file, get started, and submit your work on Gradescope. Due: 12/05 11:59 PM.\n\nKevin\n\nFile Included: mini_lab5.ipynb - 36.2 KB\n [LINK_e72a5737] \n\n[LINK_cca930cb]",
+   "sender_label": "\"CS 4310: Intro Natural Language Process (2025 Fall)\" <[EMAIL_20746ade]>",
+   "tasks": [
+    {
+     "entity_key": "model_M07_0",
+     "candidate_index": 0,
+     "title": "提交 Mini Lab 5",
+     "title_en": "Submit Mini Lab 5",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-05",
+     "time": "23:59",
+     "timezone": null,
+     "deadline_status": "explicit",
+     "required": true,
+     "field": "subject",
+     "quote": "Mini Lab 5 Released: CS 4310: Intro Natural Language Process (2025 Fall)",
+     "start": 0,
+     "end": 72,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M21": {
+   "source_id": "M21",
+   "sent_at": "2025-11-19T16:18:43+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "对方发送了推荐信修改稿，并表示有问题可联系。",
+   "summary_en": "The sender provided recommendation letter edits and invited questions.",
+   "attention_flags": [
+    "邮件提及附件，但附件内容未包含在邮件正文中。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "附件内容"
+   ],
+   "candidates": [
+    {
+     "title": "收到推荐信修改稿",
+     "title_en": "Received recommendation letter edits",
+     "course": null,
+     "deliverable": "一份干净版和一份带修订痕迹版",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "completed",
+     "needs_review": true,
+     "evidence": [
+      {
+       "source_id": "M21",
+       "field": "body",
+       "quote": "Attached you will find my edits, one clean file and another with tracked changes."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 708,
+    "output_tokens": 727,
+    "total_tokens": 1435
+   },
+   "subject": "RE: Request for a Letter of Recommendation",
+   "body_view": "Attached you will find my edits, one clean file and another with tracked changes. Let me know if you have any questions.",
+   "sender_label": "\"Okafor\" <[EMAIL_c1760c87]>",
+   "tasks": [
+    {
+     "entity_key": "model_M21_0",
+     "candidate_index": 0,
+     "title": "收到推荐信修改稿",
+     "title_en": "Received recommendation letter edits",
+     "status": "completed",
+     "state": "done",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "Attached you will find my edits, one clean file and another with tracked changes.",
+     "start": 0,
+     "end": 81,
+     "model_status": "completed",
+     "model_needs_review": true
+    }
+   ]
+  },
+  "M17": {
+   "source_id": "M17",
+   "sent_at": "2025-11-18T04:50:46+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": true,
+    "needs_action": true,
+    "category": "career"
+   },
+   "summary": "请检查推荐信草稿，并按建议修改简历、补充相关经历信息。",
+   "summary_en": "Please review the recommendation letter draft, revise your resume as suggested, and provide relevant experience information.",
+   "attention_flags": [
+    "对方询问是否有志愿服务或领导经历。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "是否有志愿服务或领导经历尚不清楚。"
+   ],
+   "candidates": [
+    {
+     "title": "统一并修正简历内容",
+     "title_en": "Make the resume consistent and correct its content",
+     "course": null,
+     "deliverable": "更新后的简历",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M17",
+       "field": "body",
+       "quote": "8.2022- 2025.12(Expected), keep the format consistent for the time"
+      },
+      {
+       "source_id": "M17",
+       "field": "body",
+       "quote": "Core course: should be Core courses:"
+      },
+      {
+       "source_id": "M17",
+       "field": "body",
+       "quote": "Predictive Model Analysis..., here use past tense for the activities in bullet points, to be consistent with other roles."
+      },
+      {
+       "source_id": "M17",
+       "field": "body",
+       "quote": "For Skills, you left \" Tools/Technologies:\" blank, maybe you delete this line."
+      }
+     ]
+    },
+    {
+     "title": "回复推荐信草稿反馈并说明相关经历",
+     "title_en": "Respond with feedback on the recommendation letter draft and share relevant experience",
+     "course": null,
+     "deliverable": "对草稿的反馈及志愿服务或领导经历信息（如有）",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M17",
+       "field": "body",
+       "quote": "This is the draft of the letter. Let me know if I missed anything."
+      },
+      {
+       "source_id": "M17",
+       "field": "body",
+       "quote": "Any volunteering or leadership experience?"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 810,
+    "output_tokens": 1068,
+    "total_tokens": 1878
+   },
+   "subject": "Re: Request for a Letter of Recommendation",
+   "body_view": "This is the draft of the letter. Let me know if I missed anything.\n\nAlso, I noticed on your resume,\n\n 1.\n8.2022- 2025.12(Expected), keep the format consistent for the time\n 2.\nCore course: should be Core courses:\n 3.\nPredictive Model Analysis..., here use past tense for the activities in bullet points, to be consistent with other roles.\n 4.\nFor Skills, you left \" Tools/Technologies:\" blank, maybe you delete this line.\n 5.\nAny volunteering or leadership experience?",
+   "sender_label": "\"Okafor\" <[EMAIL_c1760c87]>",
+   "tasks": [
+    {
+     "entity_key": "model_M17_0",
+     "candidate_index": 0,
+     "title": "统一并修正简历内容",
+     "title_en": "Make the resume consistent and correct its content",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "8.2022- 2025.12(Expected), keep the format consistent for the time",
+     "start": 105,
+     "end": 171,
+     "model_status": "pending",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M17_1",
+     "candidate_index": 1,
+     "title": "回复推荐信草稿反馈并说明相关经历",
+     "title_en": "Respond with feedback on the recommendation letter draft and share relevant experience",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "This is the draft of the letter. Let me know if I missed anything.",
+     "start": 0,
+     "end": 66,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M32": {
+   "source_id": "M32",
+   "sent_at": "2025-07-25T17:27:47+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "other"
+   },
+   "summary": "Microsoft OneDrive 验证码用于验证账户并访问共享文档，15分钟内有效。",
+   "summary_en": "The Microsoft OneDrive verification code is for verifying the account and accessing a shared document; it is valid for 15 minutes.",
+   "attention_flags": [
+    "验证码仅在15分钟内有效。"
+   ],
+   "account_security": true,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [],
+   "candidates": [
+    {
+     "title": "验证账户以访问共享文档",
+     "title_en": "Verify the account to access the shared document",
+     "course": null,
+     "deliverable": "输入验证码验证账户并访问共享文档",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M32",
+       "field": "body",
+       "quote": "For security purposes, you must enter the code below to verify your account to access the shared document."
+      },
+      {
+       "source_id": "M32",
+       "field": "body",
+       "quote": "The code will only work for 15 minutes"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 812,
+    "output_tokens": 741,
+    "total_tokens": 1553
+   },
+   "subject": "[LONG_NUMBER_REMOVED] is your Microsoft OneDrive verification code.",
+   "body_view": "Hello,\n\nFor security purposes, you must enter the code below to verify your account to access the shared document. The code will only work for 15 minutes and if you request a new code, this code will stop working. \n[SECRET_REMOVED]\n\n [LONG_NUMBER_REMOVED]\n\n Having problems with the code?\n\n View the error and make sure that the email identifier is [IDENTIFIER_REMOVED]. If it's not, look for an updated email or try requesting a new code.\n\nPrivacy Statement\n\nThis email is generated through Eastfield University's use of Microsoft 365.",
+   "sender_label": "Microsoft Notifications <[EMAIL_01dfe722]>",
+   "tasks": [
+    {
+     "entity_key": "model_M32_0",
+     "candidate_index": 0,
+     "title": "验证账户以访问共享文档",
+     "title_en": "Verify the account to access the shared document",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "For security purposes, you must enter the code below to verify your account to access the shared document.",
+     "start": 8,
+     "end": 114,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M37": {
+   "source_id": "M37",
+   "sent_at": "2025-05-30T16:23:34-06:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "退款支票已签发但尚未邮寄；请在五天内提交表格并选择退款方式。",
+   "summary_en": "A refund check was issued but not mailed; submit the form and choose a refund option within five days.",
+   "attention_flags": [
+    "退款支票尚未邮寄。",
+    "账户可能仍有欠款。"
+   ],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "退款金额已遮蔽。",
+    "具体截止日期未注明。"
+   ],
+   "candidates": [
+    {
+     "title": "提交国际学生退款表格",
+     "title_en": "Submit the International Student Refund Form",
+     "course": null,
+     "deliverable": "填写、签名并提交表格，选择一种退款方式。",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": true,
+     "evidence": [
+      {
+       "source_id": "M37",
+       "field": "body",
+       "quote": "Within 5 days of this email"
+      },
+      {
+       "source_id": "M37",
+       "field": "body",
+       "quote": "Complete #2 on above form - Select your Northbridge student refund option (choose only ONE A,B or C)."
+      },
+      {
+       "source_id": "M37",
+       "field": "body",
+       "quote": "Complete #3 on above form - Required - signature, name, date and Northbridge ID number"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 1385,
+    "output_tokens": 1113,
+    "total_tokens": 2498
+   },
+   "subject": "Northbridge Student Refund - student response needed",
+   "body_view": "To view this email as a web page, go to the link below, or copy and paste it into your browser's address window.\n[LINK_4ac9dab1] \n\nDear Sam,\n\nIf you have a United States bank account you can enroll in direct deposit to receive future student account refunds. Please contact our office at \nmailto:[EMAIL_6fb24108]?subject=Student%20Indemnity%20-%20International%20form \n[EMAIL_6fb24108] for further details.\n\nAn Northbridge student refund check has been issued to you with an international mailing address, but not mailed. Please follow the below instructions for disbursement.\n\nYou can also request to have the refund applied towards charges on your account.\n\nWithin 5 days of this email\n\n[LINK_414fc783] \nClick here to begin this form \n[LINK_414fc783] \nStudent Indemnity - International form \n - Complete #1 on above form - using the details below of your Northbridge issued refund check:Check Number: #[LONG_NUMBER_REMOVED]Date Issued: 5/28/2025Amount: [AMOUNT_REMOVED]\n - Complete #2 on above form - Select your Northbridge student refund option (choose only ONE A,B or C).Choose option A on the above if you would like your student refund mailed. If you are located in the United States, update your MAIL address in \n[LINK_[LONG_NUMBER_REMOVED]] \nmy.northbridge.example and select Profile.\n\nChoose option B or C on the above form, to receive your refund via Flywire if you are not located in the United States or unable to cash a US dollar check. \n - Complete #3 on above form - Required - signature, name, date and Northbridge ID number\n - Once the form is signed and submitted the form is automatically emailed to \nmailto:[EMAIL_6fb24108]?subject=Student%20Indemnity%20-%20International%20form \n[EMAIL_6fb24108] Other helpful student resources:\n\nAlthough you have been issued a refund check, you may still have a balance due to Northbridge. Details of your refund check can be found on \n[LINK_[LONG_NUMBER_REMOVED]] \nmy.northbridge.example by selecting Finances at the top of the page, then select Refunds within the Charge Summary section.\n\nNOTE: All student correspondence must include the students full name and Northbridge ID#.\n\nSincerely,\n\nStudent Business Services\n\nmailto:[EMAIL_6fb24108]?subject=Student%20Indemnity%20-%20International%20form \n[EMAIL_6fb24108] \n\n[PHONE_REMOVED]\n\n Questions? \nEmail [EMAIL_dc4ab0d4] \ncall [PHONE_REMOVED]\nor visit students.northbridge.example/tuitionandbilling\n\nVideo Tutorials - [LINK_36bd6c5b] \nActivation Code and Password Reset Instructions - [LINK_c9c57fce] \n\nThis email was sent to: [EMAIL_42022df7]\n \nNorthbridge University - Student Business Services\n1151 S Forest Ave\nLakeview, ST, 85281",
+   "sender_label": "Northbridge Student Refunds <[EMAIL_d4e8d767]>",
+   "tasks": [
+    {
+     "entity_key": "model_M37_0",
+     "candidate_index": 0,
+     "title": "提交国际学生退款表格",
+     "title_en": "Submit the International Student Refund Form",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "Within 5 days of this email",
+     "start": 660,
+     "end": 687,
+     "model_status": "pending",
+     "model_needs_review": true
+    }
+   ]
+  },
+  "M02": {
+   "source_id": "M02",
+   "sent_at": "2025-12-03T06:40:15+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "需在 Gradescope 提交期末项目报告，并在 Canvas 提交最终结果 JSON 文件。",
+   "summary_en": "Submit the final project report on Gradescope and the final results JSON file on Canvas.",
+   "attention_flags": [],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "未说明提交截止日期。"
+   ],
+   "candidates": [
+    {
+     "title": "提交期末项目报告",
+     "title_en": "Submit the Final Project Report",
+     "course": "CS 4310: Intro Natural Language Process (2025 Fall)",
+     "deliverable": "在 Gradescope 提交报告，说明智能体的工作方式、指出代码中的关键实现细节、提供 GitHub 仓库链接，并在仓库和报告中提供足以复现结果的 README。",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M02",
+       "field": "body",
+       "quote": "Final Project Report (on Gradescope)"
+      },
+      {
+       "source_id": "M02",
+       "field": "body",
+       "quote": "Describes how your agent works"
+      },
+      {
+       "source_id": "M02",
+       "field": "body",
+       "quote": "Points to the key implementation details in your code (e.g., specific files, functions, or code blocks)"
+      },
+      {
+       "source_id": "M02",
+       "field": "body",
+       "quote": "Includes a GitHub link to your repository"
+      },
+      {
+       "source_id": "M02",
+       "field": "body",
+       "quote": "Ensures the repo and the final report has a README with enough detail for someone else to reproduce your results"
+      }
+     ]
+    },
+    {
+     "title": "提交最终结果 JSON 文件",
+     "title_en": "Submit the Final Results JSON File",
+     "course": "CS 4310: Intro Natural Language Process (2025 Fall)",
+     "deliverable": "在 Canvas 提交最终结果 JSON 文件。",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M02",
+       "field": "body",
+       "quote": "Final Results File (on Canvas)"
+      },
+      {
+       "source_id": "M02",
+       "field": "body",
+       "quote": "your final results file (JSON) should be submitted on Canvas."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 928,
+    "output_tokens": 703,
+    "total_tokens": 1631
+   },
+   "subject": "[Final Project] Final Project Report and Results Submission: CS 4310: Intro Natural Language Process (2025 Fall)",
+   "body_view": "Hi everyone,\n\nThe submission portal for the Final Project Report on Gradescope is now open.\n\nAs a reminder, for the final project you need to submit:\n\n*\n\nFinal Project Report (on Gradescope)\n\n*\n\nPlease upload a report (see attached instructions) that:\n\n*\n\nDescribes how your agent works\n\n*\n\nPoints to the key implementation details in your code (e.g., specific files, functions, or code blocks)\n\n*\n\nIncludes a GitHub link to your repository\n\n*\n\nEnsures the repo and the final report has a README with enough detail for someone else to reproduce your results\n\n*\n\nFinal Results File (on Canvas)\nAs mentioned in our [previous announcement] ([LINK_25b9c5af] your final results file (JSON) should be submitted on Canvas.\n\nPlease make sure you complete both submissions (report on Gradescope and JSON results on Canvas). Please let us know if you have any questions. Good luck!\n\nKevin\n\n[LINK_cca930cb]",
+   "sender_label": "\"CS 4310: Intro Natural Language Process (2025 Fall)\" <[EMAIL_20746ade]>",
+   "tasks": [
+    {
+     "entity_key": "model_M02_0",
+     "candidate_index": 0,
+     "title": "提交期末项目报告",
+     "title_en": "Submit the Final Project Report",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "Final Project Report (on Gradescope)",
+     "start": 154,
+     "end": 190,
+     "model_status": "pending",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M02_1",
+     "candidate_index": 1,
+     "title": "提交最终结果 JSON 文件",
+     "title_en": "Submit the Final Results JSON File",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "Final Results File (on Canvas)",
+     "start": 562,
+     "end": 592,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M08": {
+   "source_id": "M08",
+   "sent_at": "2025-12-01T23:21:52+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "CS 3120 数据库管理课程 Quiz 04 已开放，须于 2025-12-03 23:59 前完成。",
+   "summary_en": "Quiz 04 is available for CS 3120 Database Management and is due by 2025-12-03 23:59.",
+   "attention_flags": [],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "截止时间的时区"
+   ],
+   "candidates": [
+    {
+     "title": "完成 Quiz 04",
+     "title_en": "Complete Quiz 04",
+     "course": "CS 3120: Database Management",
+     "deliverable": "Quiz 04",
+     "date": "2025-12-03",
+     "time": "23:59",
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M08",
+       "field": "subject",
+       "quote": "Quiz 04 Available: CS 3120: Database Management (2025 Fall)"
+      },
+      {
+       "source_id": "M08",
+       "field": "body",
+       "quote": "Quiz 04 is now available and will be due on December 3 at 11:59 PM."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 753,
+    "output_tokens": 542,
+    "total_tokens": 1295
+   },
+   "subject": "Quiz 04 Available: CS 3120: Database Management (2025 Fall)",
+   "body_view": "Dear Students,\n\nQuiz 04 is now available and will be due on December 3 at 11:59 PM. It covers the topics from Weeks 12 and 13, including Transactions and Query Optimization.\n\nBest,\n\nDr. Lam\n\n[LINK_cca930cb]",
+   "sender_label": "\"CS 3120: Database Management (2025 Fall)\" <[EMAIL_20746ade]>",
+   "tasks": [
+    {
+     "entity_key": "model_M08_0",
+     "candidate_index": 0,
+     "title": "完成 Quiz 04",
+     "title_en": "Complete Quiz 04",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-03",
+     "time": "23:59",
+     "timezone": null,
+     "deadline_status": "explicit",
+     "required": true,
+     "field": "subject",
+     "quote": "Quiz 04 Available: CS 3120: Database Management (2025 Fall)",
+     "start": 0,
+     "end": 59,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M16": {
+   "source_id": "M16",
+   "sent_at": "2025-11-30T19:52:58-07:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": true,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "请重新检查并提供一个未关闭的 CS 4640 项目拉取请求，以便教师合并。",
+   "summary_en": "Please recheck and provide an open CS 4640 project pull request so the instructor can merge it.",
+   "attention_flags": [],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "未提供截止日期。"
+   ],
+   "candidates": [
+    {
+     "title": "重新检查并提供未关闭的拉取请求",
+     "title_en": "Recheck and provide an open pull request",
+     "course": "CS 4640",
+     "deliverable": "一个未关闭的拉取请求",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M16",
+       "field": "body",
+       "quote": "Can you please recheck it and provide\nme a pull request which is not closed so that I can merge it."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 754,
+    "output_tokens": 384,
+    "total_tokens": 1138
+   },
+   "subject": "Re: CS 4640 Project Part 3 Code Review Request -Sam",
+   "body_view": "Hello Sam,\n\nI reviewed the link you provided in the sheet and I see the\npull request has been closed already. Can you please recheck it and provide\nme a pull request which is not closed so that I can merge it. Thank you\nin advance.\n\nBest,\nLena.",
+   "sender_label": "Lena <[EMAIL_[LONG_NUMBER_REMOVED]]>",
+   "tasks": [
+    {
+     "entity_key": "model_M16_0",
+     "candidate_index": 0,
+     "title": "重新检查并提供未关闭的拉取请求",
+     "title_en": "Recheck and provide an open pull request",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "Can you please recheck it and provide\nme a pull request which is not closed so that I can merge it.",
+     "start": 110,
+     "end": 209,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M20": {
+   "source_id": "M20",
+   "sent_at": "2025-01-21T10:21:30-07:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": true,
+    "needs_action": true,
+    "category": "academic"
+   },
+   "summary": "队友征求对聊天平台和项目联系邮件草稿的意见。",
+   "summary_en": "A teammate asks for feedback on the chat platform and the project contact email draft.",
+   "attention_flags": [],
+   "account_security": false,
+   "important": true,
+   "amount": null,
+   "currency": null,
+   "unknowns": [],
+   "candidates": [
+    {
+     "title": "商定团队聊天平台",
+     "title_en": "Agree on a team chat platform",
+     "course": "Lyrebird AI Capstone Project",
+     "deliverable": "选择团队交流平台并告知队友",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M20",
+       "field": "body",
+       "quote": "Let's make a chatroom on a platform where everyone is available, like\nDiscord or a text group; either one works for me."
+      },
+      {
+       "source_id": "M20",
+       "field": "body",
+       "quote": "Let me know what you guys think about the draft."
+      }
+     ]
+    },
+    {
+     "title": "审阅并反馈初次联系邮件草稿",
+     "title_en": "Review and give feedback on the initial contact email draft",
+     "course": "Lyrebird AI Capstone Project",
+     "deliverable": "向队友提供邮件草稿意见",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M20",
+       "field": "body",
+       "quote": "For the initial email,\nhow does this draft look?"
+      },
+      {
+       "source_id": "M20",
+       "field": "body",
+       "quote": "Let me know what you guys think about the draft."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 998,
+    "output_tokens": 663,
+    "total_tokens": 1661
+   },
+   "subject": "Hello I'm your teammate in capstone",
+   "body_view": "Let's make a chatroom on a platform where everyone is available, like\nDiscord or a text group; either one works for me. For the initial email,\nhow does this draft look?\nThis is my discord handle: [HANDLE_REMOVED] and phone number: [LONG_NUMBER_REMOVED]. If\nthis doesn't work for everyone we can do something else as well.\nLet me know what you guys think about the draft.\n\nDraft Email:\n\n*Subject:* Initial Contact: Lyrebird AI Capstone Project Team Introduction\n\nHello Priya,\n\nMy name is Diego, and I am reaching out on behalf of our team for\nthe Lyrebird AI Capstone Project. We are excited to collaborate with you\non this project. Here is a brief introduction to our team:\n\n*Mei* ([EMAIL_7a0e28db])\n\n*Sam* ([EMAIL_42022df7])\n\n*Diego* ([EMAIL_aa5023af])\n\nWe have reviewed the project description and kickoff materials and are\neager to contribute our skills to this project. We would like to schedule\nan initial meeting to discuss the project in more detail, review\ndeliverables, and align expectations. Please let us know your availability\nor any preferred times for a virtual meeting.\n\nThank you for this opportunity, and we look forward to working with you to\nmake Lyrebird AI even more impactful.\n\nBest regards,\nDiego",
+   "sender_label": "Diego <[EMAIL_aa5023af]>",
+   "tasks": [
+    {
+     "entity_key": "model_M20_0",
+     "candidate_index": 0,
+     "title": "商定团队聊天平台",
+     "title_en": "Agree on a team chat platform",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "Let's make a chatroom on a platform where everyone is available, like\nDiscord or a text group; either one works for me.",
+     "start": 0,
+     "end": 119,
+     "model_status": "pending",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M20_1",
+     "candidate_index": 1,
+     "title": "审阅并反馈初次联系邮件草稿",
+     "title_en": "Review and give feedback on the initial contact email draft",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "For the initial email,\nhow does this draft look?",
+     "start": 120,
+     "end": 168,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M40": {
+   "source_id": "M40",
+   "sent_at": "2026-02-07T17:02:10-06:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": false,
+    "category": "promotions"
+   },
+   "summary": "Calvin Klein 提供消费满75美元减10美元优惠，优惠有效至2026年2月8日。",
+   "summary_en": "Calvin Klein offers $10 off purchases of $75 or more, valid through February 8, 2026.",
+   "attention_flags": [
+    "优惠需满足最低消费条件，并于2026年2月8日到期。"
+   ],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "优惠截止时间标注为 PT，无法确定对应的 IANA 时区。"
+   ],
+   "candidates": [
+    {
+     "title": "购物满75美元减10美元",
+     "title_en": "Save $10 on purchases of $75 or more",
+     "course": null,
+     "deliverable": null,
+     "date": "2026-02-08",
+     "time": "23:59",
+     "timezone": null,
+     "status": "conditional",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M40",
+       "field": "body",
+       "quote": "Enjoy $10 off $75+ purchase"
+      },
+      {
+       "source_id": "M40",
+       "field": "body",
+       "quote": "Valid 01.26.26 through 02.08.26 at 11:59 PM PT."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 1473,
+    "output_tokens": 696,
+    "total_tokens": 2169
+   },
+   "subject": "Exclusive Offer Ends Tomorrow – Extra $10 off Your Purchase of $75+",
+   "body_view": "CK \n\nExclusive Offer Ends Tomorrow – Extra $10 off Your Purchase of $75+ | \n[LINK_faad050c] \nShop Now \n\n[LINK_0aa6af62] \n\n[LINK_58de1b59] \n\n[LINK_f[LONG_NUMBER_REMOVED]] \n\n Shop Online with code [COUPON_REMOVED]\n\n or show the barcode below in stores.\n\n In addition to online and in-store offers.\n\n[LINK_3235c0c7] \nFind Your Store\n\n[LINK_853c22bf] \nShop Now\n\n Exclusive Offer\n\n Enjoy $10 off $75+ purchase\n\n In store only. \n\n Valid 01.26.26 through 02.08.26.\n\n Please present this barcode in store.\n\n[LINK_0b[LONG_NUMBER_REMOVED]] \n\n[LONG_NUMBER_REMOVED]\n\n[LINK_14e4cea6] \n\n[LONG_NUMBER_REMOVED]\n\n[LINK_ade87efe] \n\n[LINK_36e3157c] \n\n Follow us to discover new offers.\n\n[LINK_f04accde] \n\n[LINK_7ea8c6d9] \n\n[LINK_477cff7a] \n\n[LINK_b1ebcbee] \n\n[LINK_a47e71b0] \n\n[LINK_bd3f811e] \n\n[LINK_8427d9b7] \nFind a store \n\n[LINK_95975dc3] \n\n Shop online\n\n[LINK_c8b61cd8] \n\n My Calvin Rewards\n\n[LINK_06e09d5c] \nUnsubscribe \n \n[LINK_baa1845d] \nView in Browser \n\n * $10 off your $75+ purchase with code. Valid 01.26.26 through 02.08.26 at 11:59 PM PT. Discount in cart. Cannot be combined with any other offer. Only valid at \n[LINK_46a2a860] \ncalvinklein.us . Not valid on gift cards or previous purchases.\n\n*$10 off your purchase of $75+ in store with barcode. Valid 01.26.26 through 02.08.26 at 11:59 PM PT. Offer valid in all US Calvin Klein Company Stores and US Calvin Klein Underwear Stores, excluding US Calvin Klein Clearance Store locations. This offer can be combined with one additional discount offer. One redemption per household, per store, per day. If above discount is presented with a reward within the transaction, discount above will apply to the balance due AFTER the value of rewards has been deducted. This offer is not valid on gift cards, or previous purchases, and is not redeemable for store credit or cash. Certain restrictions may apply. Excludes watches, jewelry, eyewear and fragrance. Please see store for details. PVH Corp associates are not eligible.\n\n Please view our \n[LINK_32895f09] \nMy Calvin Rewards Program Terms , \n[LINK_187fe5d3] \nPrivacy Policy and our \n[LINK_b[LONG_NUMBER_REMOVED]a] \nTerms and Conditions which contains information about our dispute resolution process including a mandatory individual arbitration clause.\n\n Calvin Klein, 205 West 39th Street, New York, NY 10018\n\nPVH Corp. 1001 Frontier Rd. Bridgewater Township NJ 08807 US\n\n[LINK_e60b2c40] \nUpdate Profile",
+   "sender_label": "Calvin Klein <[EMAIL_3fc56c57]>",
+   "tasks": []
+  },
+  "M39": {
+   "source_id": "M39",
+   "sent_at": "2025-12-18T05:38:15+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": false,
+    "category": "academic"
+   },
+   "summary": "电子成绩单订单已提交，寄送将等待成绩和学位发布。",
+   "summary_en": "The electronic transcript order was placed; delivery will wait for grades and degree posting.",
+   "attention_flags": [
+    "成绩和学位发布是否都必须满足才会处理，邮件未说明清楚。"
+   ],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "订单总额已被隐藏。",
+    "成绩和学位发布的先后关系及是否都为处理条件不明确。"
+   ],
+   "candidates": [
+    {
+     "title": "电子成绩单订单已成功提交",
+     "title_en": "Electronic transcript order successfully placed",
+     "course": null,
+     "deliverable": "电子成绩单",
+     "date": "2025-12-18",
+     "time": null,
+     "timezone": null,
+     "status": "completed",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M39",
+       "field": "body",
+       "quote": "Your order was placed successfully on 12/18/2025."
+      },
+      {
+       "source_id": "M39",
+       "field": "body",
+       "quote": "*Item Ordered:* Electronic Transcript"
+      }
+     ]
+    },
+    {
+     "title": "等待成绩或学位发布后处理并寄送成绩单",
+     "title_en": "Wait for grades or degree posting before processing and sending the transcript",
+     "course": null,
+     "deliverable": "电子成绩单",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "conditional",
+     "needs_review": true,
+     "evidence": [
+      {
+       "source_id": "M39",
+       "field": "body",
+       "quote": "*Note:* You requested that you would like to wait until grades are out before we send your document. Once the new grades are posted, *Northbridge University* will process your order, and we will send your document to its destination."
+      },
+      {
+       "source_id": "M39",
+       "field": "body",
+       "quote": "*Note:* You requested that you would like to wait until the degree is posted before we send your document. Once the degree is posted, *Northbridge University* will process your order, and we will send your document to its destination."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 1049,
+    "output_tokens": 948,
+    "total_tokens": 1997
+   },
+   "subject": "Order Confirmation",
+   "body_view": "parchment.com ( [LINK_aa76f260] )\n\nThank you for your order!\n\nHi Sam,\n\nYour order was placed successfully on 12/18/2025.\n\nHi Sam,\n\nYour order was placed successfully on 12/18/2025:\n\n *Total*\n\n *[AMOUNT_REMOVED]*\n\nHere is your order summary:\n\n*Item Ordered:* Electronic Transcript *For:* Sam *Document ID:* [DOCUMENT_ID_REMOVED] *Delivery Method:* electronic\n*Note:* Documents selected for expedited delivery will be sent the same day when the order is processed by Northbridge University before 2PM PT weekdays. FedEx does not pick-up or deliver on Saturdays and Sundays, nor on holidays.\n*Note:* You requested that you would like to wait until grades are out before we send your document. Once the new grades are posted, *Northbridge University* will process your order, and we will send your document to its destination.\n*Note:* You requested that you would like to wait until the degree is posted before we send your document. Once the degree is posted, *Northbridge University* will process your order, and we will send your document to its destination.\n*Note:* **\n*Note:* **\n\n*FROM:*\nNorthbridge University\n*TO:*\nSam\n [EMAIL_42022df7]\n\n Once your order has been processed, we will send the official document to its destination. \n\nThank you,\nThe Parchment Team\nTurn Credentials into Opportunities\n\nParchment's Privacy Policy ( [LINK_9b705d9c] ) and Terms of Use ( [LINK_a5d12a3b] )",
+   "sender_label": "Parchment <[EMAIL_[LONG_NUMBER_REMOVED]b]>",
+   "tasks": [
+    {
+     "entity_key": "model_M39_0",
+     "candidate_index": 0,
+     "title": "电子成绩单订单已成功提交",
+     "title_en": "Electronic transcript order successfully placed",
+     "status": "completed",
+     "state": "done",
+     "date": "2025-12-18",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "body_view",
+     "quote": "Your order was placed successfully on 12/18/2025.",
+     "start": 71,
+     "end": 120,
+     "model_status": "completed",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M39_1",
+     "candidate_index": 1,
+     "title": "等待成绩或学位发布后处理并寄送成绩单",
+     "title_en": "Wait for grades or degree posting before processing and sending the transcript",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "*Note:* You requested that you would like to wait until grades are out before we send your document. Once the new grades are posted, *Northbridge University* will process your order, and we will send your document to its destination.",
+     "start": 589,
+     "end": 822,
+     "model_status": "conditional",
+     "model_needs_review": true
+    }
+   ]
+  },
+  "M34": {
+   "source_id": "M34",
+   "sent_at": "2025-12-13T13:32:55+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": false,
+    "category": "events"
+   },
+   "summary": "每周的 Lyrebird AI 团队会议已取消并从日历移除；系列会议将在假期后重新安排。",
+   "summary_en": "The weekly Lyrebird AI team meeting was canceled and removed from the calendar; the series will be rescheduled after the holidays.",
+   "attention_flags": [
+    "会议已取消并从日历移除。",
+    "假期后的新安排日期和时间未提供。"
+   ],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "假期后的新安排日期和时间未提供。"
+   ],
+   "candidates": [
+    {
+     "title": "Lyrebird AI 团队会议（已取消）",
+     "title_en": "Lyrebird AI Team Meeting (Canceled)",
+     "course": null,
+     "deliverable": null,
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "completed",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M34",
+       "field": "body",
+       "quote": "This event has been canceled and removed from your calendar with a note:"
+      },
+      {
+       "source_id": "M34",
+       "field": "body",
+       "quote": "Team - Lyrebird AI Meeting"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 834,
+    "output_tokens": 732,
+    "total_tokens": 1566
+   },
+   "subject": "Canceled event with note: Team - Lyrebird AI Meeting @ Weekly from 9am to 10am on Thursday (MST) ([EMAIL_42022df7])",
+   "body_view": "This event has been canceled and removed from your calendar with a note:\n\"Rescheduling series after holidays with Sam. Happy holidays!\"\n\nTeam - Lyrebird AI Meeting\nWeekly from 9am to 10am on Thursday\nMountain Standard Time\n\nJoin with Google Meet\n[LINK_360c574d]\n\nTeam regroup\n\nOrganizer\nPriya\n[EMAIL_f148b5c4]\n\nGuests\nPriya - organizer\n[EMAIL_65f5c133]\n[EMAIL_42022df7]\n[EMAIL_916dab83]",
+   "sender_label": "Priya <[EMAIL_f148b5c4]>",
+   "tasks": [
+    {
+     "entity_key": "model_M34_0",
+     "candidate_index": 0,
+     "title": "Lyrebird AI 团队会议（已取消）",
+     "title_en": "Lyrebird AI Team Meeting (Canceled)",
+     "status": "completed",
+     "state": "done",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "This event has been canceled and removed from your calendar with a note:",
+     "start": 0,
+     "end": 72,
+     "model_status": "completed",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M26": {
+   "source_id": "M26",
+   "sent_at": "2025-12-04T16:36:58+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": false,
+    "category": "events"
+   },
+   "summary": "Lyrebird AI 团队周会时间和会议方式已更新，参会为可选。",
+   "summary_en": "The Lyrebird AI team meeting time and conferencing have been updated; attendance is optional.",
+   "attention_flags": [
+    "参会为可选；会议时间和会议方式已更新。"
+   ],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [],
+   "candidates": [
+    {
+     "title": "Lyrebird AI 团队周会",
+     "title_en": "Lyrebird AI Team Meeting",
+     "course": null,
+     "deliverable": null,
+     "date": null,
+     "time": "09:00",
+     "timezone": null,
+     "status": "conditional",
+     "needs_review": true,
+     "evidence": [
+      {
+       "source_id": "M26",
+       "field": "subject",
+       "quote": "Updated invitation: Team - Lyrebird AI Meeting @ Weekly from 9am to 10am on Thursday (MST) ([EMAIL_42022df7])"
+      },
+      {
+       "source_id": "M26",
+       "field": "body",
+       "quote": "Team - Lyrebird AI Meeting"
+      },
+      {
+       "source_id": "M26",
+       "field": "body",
+       "quote": "Weekly from 9am to 10am on Thursday"
+      },
+      {
+       "source_id": "M26",
+       "field": "body",
+       "quote": "Mountain Standard Time"
+      },
+      {
+       "source_id": "M26",
+       "field": "body",
+       "quote": "Your attendance is optional."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 862,
+    "output_tokens": 811,
+    "total_tokens": 1673
+   },
+   "subject": "Updated invitation: Team - Lyrebird AI Meeting @ Weekly from 9am to 10am on Thursday (MST) ([EMAIL_42022df7])",
+   "body_view": "This event has been updated\nChanged: time, conferencing\n\nTeam - Lyrebird AI Meeting\nWeekly from 9am to 10am on Thursday\nMountain Standard Time\n\nJoin with Google Meet\n[LINK_360c574d]\n\nTeam regroup\n\nOrganizer\nPriya\n[EMAIL_f148b5c4]\n\nGuests\nPriya - organizer\n[EMAIL_65f5c133]\n[EMAIL_42022df7]\n[EMAIL_916dab83]\nView all guest info \n[LINK_59cc118e]\n\nReply for [EMAIL_42022df7] and view more details \n[LINK_59cc118e]\nYour attendance is optional.",
+   "sender_label": "Priya <[EMAIL_f148b5c4]>",
+   "tasks": [
+    {
+     "entity_key": "model_M26_0",
+     "candidate_index": 0,
+     "title": "Lyrebird AI 团队周会",
+     "title_en": "Lyrebird AI Team Meeting",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "subject",
+     "quote": "Updated invitation: Team - Lyrebird AI Meeting @ Weekly from 9am to 10am on Thursday (MST) ([EMAIL_42022df7])",
+     "start": 0,
+     "end": 109,
+     "model_status": "conditional",
+     "model_needs_review": true
+    }
+   ]
+  },
+  "M18": {
+   "source_id": "M18",
+   "sent_at": "2025-11-24T17:44:07+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": true,
+    "needs_action": true,
+    "category": "events"
+   },
+   "summary": "请于2025年11月25日前确认是否需要笔记本以外的设备供电；未回复将按仅需笔记本供电处理。",
+   "summary_en": "Confirm by November 25, 2025 whether power is needed for equipment beyond laptops; otherwise, only laptop power will be assumed.",
+   "attention_flags": [
+    "回复截止日期为2025年11月25日，未说明具体时间。"
+   ],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "截止时间和时区未说明。"
+   ],
+   "candidates": [
+    {
+     "title": "确认展示活动的供电需求",
+     "title_en": "Confirm power needs for the showcase",
+     "course": null,
+     "deliverable": "说明供电是否仅用于笔记本电脑，或也用于其他设备。",
+     "date": "2025-11-25",
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M18",
+       "field": "subject",
+       "quote": "Action Needed: Fall 2025 SoC Senior Capstone Showcase Power Access"
+      },
+      {
+       "source_id": "M18",
+       "field": "body",
+       "quote": "Please confirm by Tuesday, November 25, whether the power is needed for laptops only or for other equipment as well"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 764,
+    "output_tokens": 630,
+    "total_tokens": 1394
+   },
+   "subject": "Action Needed: Fall 2025 SoC Senior Capstone Showcase Power Access",
+   "body_view": "Hello,\n\nYou indicated that you will need power access at the Capstone Showcase.\n\nPlease confirm by Tuesday, November 25, whether the power is needed for laptops only or for other equipment as well, so we can do our best to accommodate your needs. If we do not hear from you, we will assume that only laptop power access is required.",
+   "sender_label": "Hannah <[EMAIL_6ecc131e]>",
+   "tasks": [
+    {
+     "entity_key": "model_M18_0",
+     "candidate_index": 0,
+     "title": "确认展示活动的供电需求",
+     "title_en": "Confirm power needs for the showcase",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-11-25",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "subject",
+     "quote": "Action Needed: Fall 2025 SoC Senior Capstone Showcase Power Access",
+     "start": 0,
+     "end": 66,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M19": {
+   "source_id": "M19",
+   "sent_at": "2025-11-24T17:38:47+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": true,
+    "needs_action": true,
+    "category": "events"
+   },
+   "summary": "请在11月25日前确认演示是否符合默认桌面空间，或说明所需额外空间。",
+   "summary_en": "Please confirm by November 25 whether the demo fits the default table space, or specify any additional space needed.",
+   "attention_flags": [
+    "回复截止日期为2025年11月25日。"
+   ],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [],
+   "candidates": [
+    {
+     "title": "确认演示是否符合默认空间要求",
+     "title_en": "Confirm whether the demo fits the default space allocation",
+     "course": null,
+     "deliverable": "确认演示是否能放入默认的3′ × 2.5′桌面空间；如不能，说明所需额外空间。",
+     "date": "2025-11-25",
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M19",
+       "field": "body",
+       "quote": "Please confirm by Tuesday, November 25, whether your demo will fit within this space. If it does not, please specify the additional space you will require."
+      },
+      {
+       "source_id": "M19",
+       "field": "body",
+       "quote": "Each project is allocated a default table space of 3′ × 2.5′."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 790,
+    "output_tokens": 504,
+    "total_tokens": 1294
+   },
+   "subject": "Action Needed: Fall 2025 SoC Senior Capstone Showcase Demo Size",
+   "body_view": "Hello,\n\nYou indicated that you will have a demo at the Capstone Showcase.\n\nEach project is allocated a default table space of 3′ × 2.5′. Please confirm by Tuesday, November 25, whether your demo will fit within this space. If it does not, please specify the additional space you will require.\n\nIf I do not hear from you, we will not be able to provide space beyond the default allocation on the day of the event.",
+   "sender_label": "Hannah <[EMAIL_6ecc131e]>",
+   "tasks": [
+    {
+     "entity_key": "model_M19_0",
+     "candidate_index": 0,
+     "title": "确认演示是否符合默认空间要求",
+     "title_en": "Confirm whether the demo fits the default space allocation",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-11-25",
+     "time": null,
+     "timezone": null,
+     "deadline_status": "date_only",
+     "required": true,
+     "field": "body_view",
+     "quote": "Please confirm by Tuesday, November 25, whether your demo will fit within this space. If it does not, please specify the additional space you will require.",
+     "start": 137,
+     "end": 292,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M27": {
+   "source_id": "M27",
+   "sent_at": "2025-11-24T08:50:05+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": false,
+    "category": "events"
+   },
+   "summary": "每周周三有一场可选的 Lyrebird AI 团队会议，时间为 09:00–10:00（山地标准时间）。",
+   "summary_en": "An optional weekly Lyrebird AI team meeting is scheduled for Wednesdays from 09:00 to 10:00 (Mountain Standard Time).",
+   "attention_flags": [
+    "出席为可选。",
+    "邮件未注明具体日期。"
+   ],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "具体日期",
+    "对应的 IANA 时区"
+   ],
+   "candidates": [
+    {
+     "title": "Lyrebird AI 团队会议",
+     "title_en": "Lyrebird AI Team Meeting",
+     "course": null,
+     "deliverable": null,
+     "date": null,
+     "time": "09:00",
+     "timezone": null,
+     "status": "conditional",
+     "needs_review": true,
+     "evidence": [
+      {
+       "source_id": "M27",
+       "field": "body",
+       "quote": "Team - Lyrebird AI Meeting"
+      },
+      {
+       "source_id": "M27",
+       "field": "body",
+       "quote": "Weekly from 9am to 10am on Wednesday"
+      },
+      {
+       "source_id": "M27",
+       "field": "body",
+       "quote": "Mountain Standard Time"
+      },
+      {
+       "source_id": "M27",
+       "field": "body",
+       "quote": "Your attendance is optional."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 900,
+    "output_tokens": 858,
+    "total_tokens": 1758
+   },
+   "subject": "Updated invitation: Team - Lyrebird AI Meeting @ Weekly from 9am to 10am on Wednesday (MST) ([EMAIL_42022df7])",
+   "body_view": "This event has been updated\nChanged: time, conferencing\n\nTeam - Lyrebird AI Meeting\nWeekly from 9am to 10am on Wednesday\nMountain Standard Time\n\nJoin with Google Meet\n[LINK_b[LONG_NUMBER_REMOVED]] \n\nTeam regroup\n\nOrganizer\nPriya\n[EMAIL_f148b5c4]\n\nGuests\nPriya - organizer\n[EMAIL_65f5c133]\n[EMAIL_aa5023af]\nrocky[LONG_NUMBER_REMOVED]@gmail.com\n[EMAIL_7a0e28db]\n[EMAIL_42022df7]\n[EMAIL_916dab83]\nView all guest info \n[LINK_68cb29c7] \n\nReply for [EMAIL_42022df7] and view more details \n[LINK_68cb29c7] \nYour attendance is optional.",
+   "sender_label": "Priya <[EMAIL_f148b5c4]>",
+   "tasks": [
+    {
+     "entity_key": "model_M27_0",
+     "candidate_index": 0,
+     "title": "Lyrebird AI 团队会议",
+     "title_en": "Lyrebird AI Team Meeting",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "Team - Lyrebird AI Meeting",
+     "start": 57,
+     "end": 83,
+     "model_status": "conditional",
+     "model_needs_review": true
+    }
+   ]
+  },
+  "M35": {
+   "source_id": "M35",
+   "sent_at": "2025-08-29T17:32:06+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": false,
+    "category": "events"
+   },
+   "summary": "Lyrebird AI 团队会议已取消。",
+   "summary_en": "The Lyrebird AI team meeting was canceled.",
+   "attention_flags": [
+    "会议已取消。"
+   ],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "是否会重新安排未知。"
+   ],
+   "candidates": [
+    {
+     "title": "Lyrebird AI 团队会议（已取消）",
+     "title_en": "Lyrebird AI Team Meeting (Canceled)",
+     "course": null,
+     "deliverable": null,
+     "date": "2025-09-12",
+     "time": "10:00",
+     "timezone": null,
+     "status": "unknown",
+     "needs_review": true,
+     "evidence": [
+      {
+       "source_id": "M35",
+       "field": "body",
+       "quote": "This event has been canceled and removed from your calendar with a note:"
+      },
+      {
+       "source_id": "M35",
+       "field": "body",
+       "quote": "Friday Sep 12, 2025 ⋅ 10am – 11am"
+      },
+      {
+       "source_id": "M35",
+       "field": "body",
+       "quote": "Mountain Standard Time"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 882,
+    "output_tokens": 701,
+    "total_tokens": 1583
+   },
+   "subject": "Canceled event with note: Team - Lyrebird AI Meeting @ Fri Sep 12, 2025 10am - 11am (MST) ([EMAIL_42022df7])",
+   "body_view": "This event has been canceled and removed from your calendar with a note:\n\"I am on vacation. Canceling our Sep 12th call. \"\n\nTeam - Lyrebird AI Meeting\nFriday Sep 12, 2025 ⋅ 10am – 11am\nMountain Standard Time\n\nJoin with Google Meet\n[LINK_d34a6e32] \n\nTeam regroup\n\nOrganizer\nPriya\n[EMAIL_f148b5c4]\n\nGuests\nPriya - organizer\n[EMAIL_65f5c133]\n[EMAIL_aa5023af]\nrocky[LONG_NUMBER_REMOVED]@gmail.com\n[EMAIL_7a0e28db]\n[EMAIL_42022df7]\n[EMAIL_916dab83]",
+   "sender_label": "Priya <[EMAIL_f148b5c4]>",
+   "tasks": [
+    {
+     "entity_key": "model_M35_0",
+     "candidate_index": 0,
+     "title": "Lyrebird AI 团队会议（已取消）",
+     "title_en": "Lyrebird AI Team Meeting (Canceled)",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-09-12",
+     "time": "10:00",
+     "timezone": null,
+     "deadline_status": "explicit",
+     "required": true,
+     "field": "body_view",
+     "quote": "This event has been canceled and removed from your calendar with a note:",
+     "start": 0,
+     "end": 72,
+     "model_status": "unknown",
+     "model_needs_review": true
+    }
+   ]
+  },
+  "M36": {
+   "source_id": "M36",
+   "sent_at": "2025-07-15T16:14:36-06:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": true,
+    "category": "other"
+   },
+   "summary": "学校提醒你兑现尚未兑现的学生账户退款支票。",
+   "summary_en": "The university reminds you to cash an uncashed student account refund check.",
+   "attention_flags": [
+    "邮件未显示支票金额。"
+   ],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "支票金额已隐藏。",
+    "兑现的具体截止日期未说明。"
+   ],
+   "candidates": [
+    {
+     "title": "兑现学生账户退款支票",
+     "title_en": "Cash the student account refund check",
+     "course": null,
+     "deliverable": "兑现退款支票",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "pending",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M36",
+       "field": "body",
+       "quote": "Please cash this check immediately."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 1081,
+    "output_tokens": 410,
+    "total_tokens": 1491
+   },
+   "subject": "Uncashed Student Account Refund Check [LONG_NUMBER_REMOVED]",
+   "body_view": "To view this email as a web page, go to the link below, or copy and paste it into your browser's address window.\n[LINK_cdfb2074]\n\n Dear Sam,\n\nThis email is being sent as a courtesy reminder by Northbridge Student Business Services. As of July 15th, your student account refund check issued between June 1 and June 30, 2025 has not been cashed. Please cash this check immediately.\n\nCheck Number: #[LONG_NUMBER_REMOVED]\nDate Issued: 6/9/2025\nAmount: [AMOUNT_REMOVED]\n\nIf you need a replacement check, please visit the website \n[LINK_3a14ba45] \nReissuing a Student Account Check for further instructions.\n\n - \n[LINK_0dabec65] \nStudent Indemnity Agreement form \n If you have been working with Northbridge Student Refunds regarding your uncashed student account refund check, please disregard this email.\n\nContact our office with any other questions regarding this email, please forward the email along with your 10-digit Northbridge ID to \nmailto:[EMAIL_da2244c7]?subject=Uncashed%20Refund%20Check \n[EMAIL_da2244c7] . \n\nSincerely,\n\nStudent Business Service \n\n Questions? \nEmail [EMAIL_dc4ab0d4] \ncall [PHONE_REMOVED]\nor visit students.northbridge.example/tuitionandbilling\n\nVideo Tutorials - [LINK_e47411d5]\nActivation Code and Password Reset Instructions - [LINK_c9aef69c]\n\nThis email was sent to: [EMAIL_42022df7]\n \nNorthbridge University - Student Business Services\n1151 S Forest Ave\nLakeview, ST, 85281",
+   "sender_label": "Northbridge Student Refunds <[EMAIL_d4e8d767]>",
+   "tasks": [
+    {
+     "entity_key": "model_M36_0",
+     "candidate_index": 0,
+     "title": "兑现学生账户退款支票",
+     "title_en": "Cash the student account refund check",
+     "status": "needs_review",
+     "state": "pending",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "body_view",
+     "quote": "Please cash this check immediately.",
+     "start": 344,
+     "end": 379,
+     "model_status": "pending",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M30": {
+   "source_id": "M30",
+   "sent_at": "2026-10-14T11:49:13-07:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": false,
+    "category": "promotions"
+   },
+   "summary": "Educative 和 Fenzo 推出了数据科学面试课程与数字 SAT 备考项目，均为可选机会。",
+   "summary_en": "Educative and Fenzo have introduced a data science interview course and a digital SAT prep program; both are optional opportunities.",
+   "attention_flags": [],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [],
+   "candidates": [
+    {
+     "title": "数据科学面试课程",
+     "title_en": "Grokking the Data Science Interview",
+     "course": "Grokking the Data Science Interview",
+     "deliverable": null,
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "conditional",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M30",
+       "field": "body",
+       "quote": "Grokking the Data Science Interview"
+      }
+     ]
+    },
+    {
+     "title": "数字 SAT 备考项目",
+     "title_en": "SAT Prep",
+     "course": "Digital SAT",
+     "deliverable": null,
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "conditional",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M30",
+       "field": "body",
+       "quote": "SAT Prep"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 1092,
+    "output_tokens": 600,
+    "total_tokens": 1692
+   },
+   "subject": "New: Grokking the Data Science Interview",
+   "body_view": "Plus Fenzo SAT Prep for the teen in your life\n\n*Note: You are receiving this platform-related update because you have an active Educative account. If you wish to unsubscribe from product or other updates related to your account, you can do so anytime.\n\nSam,\n\nWe have two exciting new updates for you this week.\n\nOn Educative, there’s a new Grokking course for data science interviews, built around the mistakes that trip up even the strongest candidates. And if there’s a high schooler in your life — Fenzo now has a full preparation program for the digital SAT.\n\nNew on Educative\n\nGrokking the Data Science Interview ([LINK_b01bd59d] )\n\nData science interviews reward the candidate who spots what’s wrong with an answer, like a join that double-counts revenue or a significant result that came from checking a test too often. Each lesson takes a real interview question, shows a common answer that falls short, then works through a stronger one along with the follow-ups an interviewer would ask. It runs from SQL and A/B testing through take-home assignments and product case questions, authored by our very own VP of Technical Content: Jordan Avery.\n\nNew on Fenzo\n\nSAT Prep ([LINK_0840a696] )\n\nFenzo’s digital SAT program starts with a free diagnostic, which is like a shorter version of the real test. It then gives you a projected score on the 400 to 1600 scale and shows which content areas are costing points. From there, a study plan covers every skill on the test with short lessons and interactive practice. Once you've closed the gaps, you can progress to full-length mocks which mimic the digital SAT test environment.\n\nLet us know what you think!\n\nThe Educative Team\n\neducative.io ([LINK_5d551ea7] ) | fenzo.ai ([LINK_[LONG_NUMBER_REMOVED]a4] )",
+   "sender_label": "The Educative Team <[EMAIL_c3300b59]>",
+   "tasks": []
+  },
+  "M23": {
+   "source_id": "M23",
+   "sent_at": "2026-09-22T01:47:51-05:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": false,
+    "category": "promotions"
+   },
+   "summary": "推广可在 Microsoft Teams 中协作编辑图表的功能。",
+   "summary_en": "Promotion of a feature for collaboratively editing diagrams in Microsoft Teams.",
+   "attention_flags": [],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [],
+   "candidates": [],
+   "usage": {
+    "input_tokens": 989,
+    "output_tokens": 284,
+    "total_tokens": 1273
+   },
+   "subject": "Add Editable Diagrams to Your Teams Conversations",
+   "body_view": "***********************************************************\nCollaborate Using Live Visuals, not Static Images in Teams\n***********************************************************\n\nNo longer want to receive emails like this? Unsubscribe.\n[LINK_d1b1f0b1]\n\nGet feedback and build consensus with diagrams created \nright inside Microsoft Teams. Instead of sharing a static \nimage, your team can work together to edit and comment on \nvisuals as you define technical plans and processes.\n\nLearn More:\n[LINK_9631b854]\n\n---------------------------------------------------------------------\n\nNow that you're part of the SmartDraw community we invite\nyou to keep in touch with us on your favorite social networks.\n\n- Connect with SmartDraw Software on Twitter\n [LINK_[LONG_NUMBER_REMOVED]c4]\n\n- Connect with SmartDraw Software on Facebook\n [LINK_e[LONG_NUMBER_REMOVED]b]\n\n- Connect with SmartDraw Software on LinkedIn\n [LINK_3ec4ce57]\n\n- SmartDraw on YouTube\n [LINK_7455a0c0]\n\n- SmartDraw on Instagram\n [LINK_29f894c0]\n\n- SmartDraw on TikTok\n [LINK_10a852d0]\n\nSmartDraw Software, LLC\n1780 Hughes Landing Blvd. Suite 1100 The Woodlands, TX 77380\n\nAll Rights Reserved. (c) 1994-2026 SmartDraw, LLC",
+   "sender_label": "SmartDraw Software <[EMAIL_705f290c]>",
+   "tasks": []
+  },
+  "M25": {
+   "source_id": "M25",
+   "sent_at": "2025-12-13T13:36:26+00:00",
+   "analysis_origin": "reference_annotation",
+   "analysis_status": "analysis_failed",
+   "error": "MODEL_EVIDENCE_INVALID",
+   "labels": null,
+   "summary": null,
+   "summary_en": null,
+   "attention_flags": null,
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": null,
+   "candidates": [],
+   "usage": null,
+   "subject": "Invitation: Sam & Priya - Internship Sync Progress @ Weekly from 9am to 10am on Friday (MST) ([EMAIL_42022df7])",
+   "body_view": "Sam & Priya - Internship Sync Progress\nWeekly from 9am to 10am on Friday\nMountain Standard Time\n\nJoin with Google Meet\n[LINK_47f023e8]\n\nHi Sam,\n\nWe will regroup January 9th on your progress.\n\nKeep me posted on your progress. Let me know if you hear back from any of \nthe schools.\n\nHave a wonderful holiday season.\n\nOrganizer\nPriya\n[EMAIL_f148b5c4]\n\nGuests\nPriya - organizer\n[EMAIL_42022df7]\nView all guest info \n[LINK_d1043c1c]\n\nReply for [EMAIL_42022df7] and view more details \n[LINK_d1043c1c]\nYour attendance is optional.",
+   "sender_label": "Priya <[EMAIL_f148b5c4]>",
+   "tasks": []
+  },
+  "M15": {
+   "source_id": "M15",
+   "sent_at": "2025-12-10T18:09:11+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": false,
+    "category": "academic"
+   },
+   "summary": "CS 4370 期末作业已评分。",
+   "summary_en": "The CS 4370 final assignment has been graded.",
+   "attention_flags": [],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "时区未知"
+   ],
+   "candidates": [
+    {
+     "title": "期末作业评分通知",
+     "title_en": "Final assignment grading notification",
+     "course": "CS 4370: Intro Computer-Aided Geom Desg",
+     "deliverable": "Final",
+     "date": "2025-12-10",
+     "time": "10:09",
+     "timezone": null,
+     "status": "completed",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M15",
+       "field": "subject",
+       "quote": "Assignment Graded: Final - Requires Respondus LockDown Browser + Webcam, CS 4370: Intro Computer-Aided Geom Desg (2025 Fall)"
+      },
+      {
+       "source_id": "M15",
+       "field": "body",
+       "quote": "Your assignment Final - Requires Respondus LockDown Browser + Webcam has been graded."
+      },
+      {
+       "source_id": "M15",
+       "field": "body",
+       "quote": "graded: Dec 10 at 10:09am"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 757,
+    "output_tokens": 579,
+    "total_tokens": 1336
+   },
+   "subject": "Assignment Graded: Final - Requires Respondus LockDown Browser + Webcam, CS 4370: Intro Computer-Aided Geom Desg (2025 Fall)",
+   "body_view": "Your assignment Final - Requires Respondus LockDown Browser + Webcam has been graded.\n\ngraded: Dec 10 at 10:09am\n\nYou can review the assignment here:\n[LINK_[LONG_NUMBER_REMOVED]]",
+   "sender_label": "\"CS 4370: Intro Computer-Aided Geom Desg (2025 Fall)\" <[EMAIL_20746ade]>",
+   "tasks": [
+    {
+     "entity_key": "model_M15_0",
+     "candidate_index": 0,
+     "title": "期末作业评分通知",
+     "title_en": "Final assignment grading notification",
+     "status": "completed",
+     "state": "done",
+     "date": "2025-12-10",
+     "time": "10:09",
+     "timezone": null,
+     "deadline_status": "explicit",
+     "required": true,
+     "field": "subject",
+     "quote": "Assignment Graded: Final - Requires Respondus LockDown Browser + Webcam, CS 4370: Intro Computer-Aided Geom Desg (2025 Fall)",
+     "start": 0,
+     "end": 124,
+     "model_status": "completed",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M13": {
+   "source_id": "M13",
+   "sent_at": "2025-12-06T06:54:30+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": false,
+    "category": "academic"
+   },
+   "summary": "已成功提交《Final Project Report》，提交时间为2025-12-05 23:54 MST，截止时间为2025-12-06 23:59 MST。",
+   "summary_en": "Successfully submitted the Final Project Report at 2025-12-05 23:54 MST; the deadline is 2025-12-06 23:59 MST.",
+   "attention_flags": [],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [],
+   "candidates": [
+    {
+     "title": "提交最终项目报告",
+     "title_en": "Submit Final Project Report",
+     "course": "CS 4310",
+     "deliverable": "Final Project Report",
+     "date": "2025-12-05",
+     "time": "23:54",
+     "timezone": null,
+     "status": "completed",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M13",
+       "field": "subject",
+       "quote": "[CS 4310 on Gradescope] Successfully submitted to Final Project Report"
+      },
+      {
+       "source_id": "M13",
+       "field": "body",
+       "quote": "You’ve successfully submitted Final Project Report, Introduction to Natural Language Processing."
+      },
+      {
+       "source_id": "M13",
+       "field": "body",
+       "quote": "Dec 05, 2025 at 11:54:30 PM MST"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 815,
+    "output_tokens": 659,
+    "total_tokens": 1474
+   },
+   "subject": "[CS 4310 on Gradescope] Successfully submitted to Final Project Report",
+   "body_view": "Hello Sam,\n\nYou’ve successfully submitted Final Project Report, Introduction to Natural Language Processing. You may be able to resubmit until the due date (Dec 06, 2025 at 11:59:00 PM MST). You will be notified if your grades are made available.\n\nSubmitted At:\nDec 05, 2025 at 11:54:30 PM MST\n\nDue Date:\nDec 06, 2025 at 11:59:00 PM MST\n\nLink to submission:\n[LINK_c9ae413f]\n\n- The Gradescope Team",
+   "sender_label": "Gradescope <[EMAIL_af789e2f]>",
+   "tasks": [
+    {
+     "entity_key": "model_M13_0",
+     "candidate_index": 0,
+     "title": "提交最终项目报告",
+     "title_en": "Submit Final Project Report",
+     "status": "completed",
+     "state": "done",
+     "date": "2025-12-05",
+     "time": "23:54",
+     "timezone": null,
+     "deadline_status": "explicit",
+     "required": true,
+     "field": "subject",
+     "quote": "[CS 4310 on Gradescope] Successfully submitted to Final Project Report",
+     "start": 0,
+     "end": 70,
+     "model_status": "completed",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M14": {
+   "source_id": "M14",
+   "sent_at": "2025-12-06T06:46:02+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": false,
+    "category": "academic"
+   },
+   "summary": "已成功提交《最终项目报告》，并可在截止日期前重新提交。",
+   "summary_en": "The Final Project Report was successfully submitted and may be resubmitted before the deadline.",
+   "attention_flags": [],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [],
+   "candidates": [
+    {
+     "title": "提交最终项目报告",
+     "title_en": "Submit Final Project Report",
+     "course": "CS 4310",
+     "deliverable": "Final Project Report",
+     "date": "2025-12-05",
+     "time": "23:46",
+     "timezone": null,
+     "status": "completed",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M14",
+       "field": "subject",
+       "quote": "[CS 4310 on Gradescope] Successfully submitted to Final Project Report"
+      },
+      {
+       "source_id": "M14",
+       "field": "body",
+       "quote": "You’ve successfully submitted Final Project Report, Introduction to Natural Language Processing."
+      },
+      {
+       "source_id": "M14",
+       "field": "body",
+       "quote": "Dec 05, 2025 at 11:46:02 PM MST"
+      }
+     ]
+    },
+    {
+     "title": "重新提交最终项目报告（可选）",
+     "title_en": "Resubmit Final Project Report (optional)",
+     "course": "CS 4310",
+     "deliverable": "Final Project Report",
+     "date": "2025-12-06",
+     "time": "23:59",
+     "timezone": null,
+     "status": "conditional",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M14",
+       "field": "body",
+       "quote": "You may be able to resubmit until the due date (Dec 06, 2025 at 11:59:00 PM MST)."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 815,
+    "output_tokens": 878,
+    "total_tokens": 1693
+   },
+   "subject": "[CS 4310 on Gradescope] Successfully submitted to Final Project Report",
+   "body_view": "Hello Sam,\n\nYou’ve successfully submitted Final Project Report, Introduction to Natural Language Processing. You may be able to resubmit until the due date (Dec 06, 2025 at 11:59:00 PM MST). You will be notified if your grades are made available.\n\nSubmitted At:\nDec 05, 2025 at 11:46:02 PM MST\n\nDue Date:\nDec 06, 2025 at 11:59:00 PM MST\n\nLink to submission:\n[LINK_c9ae413f]\n\n- The Gradescope Team",
+   "sender_label": "Gradescope <[EMAIL_af789e2f]>",
+   "tasks": [
+    {
+     "entity_key": "model_M14_0",
+     "candidate_index": 0,
+     "title": "提交最终项目报告",
+     "title_en": "Submit Final Project Report",
+     "status": "completed",
+     "state": "done",
+     "date": "2025-12-05",
+     "time": "23:46",
+     "timezone": null,
+     "deadline_status": "explicit",
+     "required": true,
+     "field": "subject",
+     "quote": "[CS 4310 on Gradescope] Successfully submitted to Final Project Report",
+     "start": 0,
+     "end": 70,
+     "model_status": "completed",
+     "model_needs_review": false
+    },
+    {
+     "entity_key": "model_M14_1",
+     "candidate_index": 1,
+     "title": "重新提交最终项目报告（可选）",
+     "title_en": "Resubmit Final Project Report (optional)",
+     "status": "needs_review",
+     "state": "pending",
+     "date": "2025-12-06",
+     "time": "23:59",
+     "timezone": null,
+     "deadline_status": "explicit",
+     "required": true,
+     "field": "body_view",
+     "quote": "You may be able to resubmit until the due date (Dec 06, 2025 at 11:59:00 PM MST).",
+     "start": 109,
+     "end": 190,
+     "model_status": "conditional",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M38": {
+   "source_id": "M38",
+   "sent_at": "2025-11-28T00:32:19-06:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": false,
+    "category": "academic"
+   },
+   "summary": "UBC研究生项目申请费付款已成功完成。",
+   "summary_en": "Payment for the UBC Graduate Program Application Fee was completed successfully.",
+   "attention_flags": [],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [
+    "付款金额已移除，无法确认具体金额。"
+   ],
+   "candidates": [
+    {
+     "title": "UBC研究生项目申请费付款收据",
+     "title_en": "UBC Graduate Program Application Fee Payment Receipt",
+     "course": null,
+     "deliverable": null,
+     "date": "2025-11-27",
+     "time": "22:32",
+     "timezone": "America/Los_Angeles",
+     "status": "completed",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M38",
+       "field": "body",
+       "quote": "This message is an automated notification to inform you that your payment has been completed successfully."
+      },
+      {
+       "source_id": "M38",
+       "field": "body",
+       "quote": "Date/Time:November 27, 2025 at 10:32:19 PM PST"
+      },
+      {
+       "source_id": "M38",
+       "field": "body",
+       "quote": "UBC Graduate Program Application Fee"
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 989,
+    "output_tokens": 650,
+    "total_tokens": 1639
+   },
+   "subject": "Notification of Payment",
+   "body_view": "CC_PAYMENT_TEMPLATE\n\n You have received this email from [EMAIL_bc2f5c4c] in response to payment processing.\n\nNotification of Payment\n\nThis message is an automated notification to inform you that your payment has been completed successfully. Please note that all payments are subject to approval and final verification.\n\n[BILLING_DETAILS_REMOVED]\n\nPayment Information:\n\nPayment Type:Credit Card\n\n[PAYMENT_IDENTIFIER_REMOVED]\n\nCard Type:Visa\n\n[PAYMENT_IDENTIFIER_REMOVED]\n\nAdditional Amount:---\n\n[PAYMENT_IDENTIFIER_REMOVED]\n\n[PAYMENT_IDENTIFIER_REMOVED]\n\n[PAYMENT_IDENTIFIER_REMOVED]\n\n[PAYMENT_IDENTIFIER_REMOVED]\n\n[PAYMENT_IDENTIFIER_REMOVED]\n\n *** Card Not Present ***\n\n[PAYMENT_IDENTIFIER_REMOVED]\n\nDate/Time:November 27, 2025 at 10:32:19 PM PST\n\n[PAYMENT_IDENTIFIER_REMOVED]\n\n[PAYMENT_IDENTIFIER_REMOVED]\n\n Payment Amount:[AMOUNT_REMOVED]\n\n Total Paid:[AMOUNT_REMOVED]\n\nUBC Terms & Conditions Agreement:\n\nUBC Terms & Conditions\n\nPlease note that any information that you have provided is stored outside of UBC.\n\nPlease ensure that you enter the billing address that appears on your credit card statement.\n\nThank you for your order.\n\nThank You\n\nUBC Graduate Program Application Fee",
+   "sender_label": "[EMAIL_bc2f5c4c]",
+   "tasks": [
+    {
+     "entity_key": "model_M38_0",
+     "candidate_index": 0,
+     "title": "UBC研究生项目申请费付款收据",
+     "title_en": "UBC Graduate Program Application Fee Payment Receipt",
+     "status": "completed",
+     "state": "done",
+     "date": "2025-11-27",
+     "time": "22:32",
+     "timezone": "America/Los_Angeles",
+     "deadline_status": "explicit",
+     "required": true,
+     "field": "body_view",
+     "quote": "This message is an automated notification to inform you that your payment has been completed successfully.",
+     "start": 134,
+     "end": 240,
+     "model_status": "completed",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M33": {
+   "source_id": "M33",
+   "sent_at": "2025-04-29T06:48:11+00:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": false,
+    "category": "other"
+   },
+   "summary": "Google 通知称该账户已启用两步验证。",
+   "summary_en": "Google says 2-Step Verification is now on for this account.",
+   "attention_flags": [],
+   "account_security": true,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [],
+   "candidates": [
+    {
+     "title": "已启用两步验证",
+     "title_en": "2-Step Verification enabled",
+     "course": null,
+     "deliverable": null,
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "completed",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M33",
+       "field": "subject",
+       "quote": "2-Step Verification turned on"
+      },
+      {
+       "source_id": "M33",
+       "field": "body",
+       "quote": "Your Google Account [EMAIL_42022df7] is now protected with 2-Step\nVerification."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 874,
+    "output_tokens": 442,
+    "total_tokens": 1316
+   },
+   "subject": "2-Step Verification turned on",
+   "body_view": "[image: Google]\n2-Step Verification turned on\n\n[EMAIL_42022df7]\n\nYour Google Account [EMAIL_42022df7] is now protected with 2-Step\nVerification. When you sign in on a new or untrusted device, you’ll need\nyour second factor to verify your identity.\n\n*Don't get locked out!*\nYou can add a backup phone or get backup codes to use when you don’t have\nyour second factor with you.\nYou can review your 2SV settings\n<[LINK_be8727f2] >\nto make changes.\nYou can also see security activity at\n[LINK_cdd6a5e5] \nYou received this email to let you know about important changes to your\nGoogle Account and services.\n© 2025 Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA",
+   "sender_label": "Google <[EMAIL_e94b2ad7]>",
+   "tasks": [
+    {
+     "entity_key": "model_M33_0",
+     "candidate_index": 0,
+     "title": "已启用两步验证",
+     "title_en": "2-Step Verification enabled",
+     "status": "completed",
+     "state": "done",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "subject",
+     "quote": "2-Step Verification turned on",
+     "start": 0,
+     "end": 29,
+     "model_status": "completed",
+     "model_needs_review": false
+    }
+   ]
+  },
+  "M22": {
+   "source_id": "M22",
+   "sent_at": "2025-04-17T11:39:16-07:00",
+   "analysis_origin": "model",
+   "analysis_status": "complete",
+   "error": null,
+   "labels": {
+    "needs_reply": false,
+    "needs_action": false,
+    "category": "academic"
+   },
+   "summary": "教授表示，项目2迟交1分钟这次可以原谅，无需担心。",
+   "summary_en": "The professor says the one-minute-late Project 2 submission is forgiven this time; there is no need to worry.",
+   "attention_flags": [],
+   "account_security": false,
+   "important": false,
+   "amount": null,
+   "currency": null,
+   "unknowns": [],
+   "candidates": [
+    {
+     "title": "提交项目2",
+     "title_en": "Submit Project 2",
+     "course": "ACC3300",
+     "deliverable": "Project 2",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "status": "completed",
+     "needs_review": false,
+     "evidence": [
+      {
+       "source_id": "M22",
+       "field": "subject",
+       "quote": "Re: ACC3300: Apology for Late Submission of Project 2"
+      },
+      {
+       "source_id": "M22",
+       "field": "body",
+       "quote": "1 minute late could be forgiven this time."
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "input_tokens": 728,
+    "output_tokens": 590,
+    "total_tokens": 1318
+   },
+   "subject": "Re: ACC3300: Apology for Late Submission of Project 2",
+   "body_view": "Sam,\n\nThanks for letting me know! 1 minute late could be forgiven this time. You don’t have to worry!\n\nBest,\nProf. Lindqvist",
+   "sender_label": "Lindqvist <[EMAIL_8da3cd79]>",
+   "tasks": [
+    {
+     "entity_key": "model_M22_0",
+     "candidate_index": 0,
+     "title": "提交项目2",
+     "title_en": "Submit Project 2",
+     "status": "completed",
+     "state": "done",
+     "date": null,
+     "time": null,
+     "timezone": null,
+     "deadline_status": "missing",
+     "required": true,
+     "field": "subject",
+     "quote": "Re: ACC3300: Apology for Late Submission of Project 2",
+     "start": 0,
+     "end": 53,
+     "model_status": "completed",
+     "model_needs_review": false
+    }
+   ]
+  }
+ }
+}
